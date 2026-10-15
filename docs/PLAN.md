@@ -58,6 +58,7 @@ Technical notes:
 - Keep the current and next month. When fewer than about 7 days remain, fetch the next month in the background. From 1 Sha'ban, also fetch Ramadan so its timetable is offline.
 - Show the cache first and update quietly. Offline, show cached times with "Last updated".
 - A manual **Update now** action (Prayer page and Settings, Prayer & location). Fetch first; replace the cache only if the fetch succeeds; keep the old data on failure.
+- The fiqh setting is the legacy key `prayerFiqh` (raw string `sunni` | `jafari`). The prototype's internal `shia` is never stored.
 - Changing fiqh, method, school or moving more than about 10 km invalidates the key. The Hijri date adjustment is applied in the app and does not change the key.
 - Local calculation (an Adhan-style library) is a later fallback only. It must be compared against AlAdhan for several cities first, because AlAdhan's Ja'fari method is the Leva Institute, Qum.
 

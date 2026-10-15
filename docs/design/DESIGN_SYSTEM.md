@@ -95,7 +95,7 @@ Arabic scale: 0.8 to 1.6, set in Settings, applied everywhere through one CSS va
 - **Responsive menus:** one logical menu, popover on desktop, bottom sheet on mobile (46px rows).
 - **Undo over confirm:** removing shows a toast with Undo and keeps notes. Only "clear all data" asks first.
 - **Status labels on content:** chips for Qur'an, Traditional chronology, Scholarly, Source note. Always visible where content is not directly from the Qur'an.
-- **Both fiqhs:** a "Following" or "Showing" segmented control (Sunni, Ja'fari) bound to the global fiqh setting; events and explainers show both when relevant.
+- **Both fiqhs:** a "Following" or "Showing" segmented control (Sunni, Ja'fari) bound to the global fiqh setting (legacy key `prayerFiqh`, raw string `sunni` | `jafari`; the prototype's internal `shia` value is never stored); events and explainers show both when relevant.
 - **Offline states:** a clear message, the last known data when it exists, and a retry or Update now action.
 - **Empty and first-run states:** explain what the page does and how to fill it.
 - **Playing state:** the active row gets a tinted background and a pause icon; the mini player and full player reflect it.

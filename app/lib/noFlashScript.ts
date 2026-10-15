@@ -1,0 +1,5 @@
+// Runs synchronously in <head> before first paint, so the page never flashes the wrong theme.
+// Reads the legacy keys directly (raw `themeMode`, JSON `quran:accessibility:v1`); everything is wrapped in
+// try/catch because storage can throw. Keep this in sync with applyPreferences.ts (a unit test checks it).
+// An absent `themeMode` means light (the revamp's default); "system" follows the OS.
+export const NO_FLASH_SCRIPT = `(function(){try{var d=document.documentElement,s=window.localStorage,m=s.getItem('themeMode'),dark=m==='dark'||(m==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(dark)d.classList.add('dark');d.style.colorScheme=dark?'dark':'light';var a={};try{a=JSON.parse(s.getItem('quran:accessibility:v1')||'{}')||{}}catch(e){}d.dataset.highContrast=String(a.highContrast===true);d.dataset.largeTouch=String(a.largeTouchTargets===true);d.dataset.reducedMotion=String(a.reducedMotion===true||window.matchMedia('(prefers-reduced-motion: reduce)').matches);var z=Number(a.arabicFontScale);if(isFinite(z)&&z>=0.8&&z<=1.6)d.style.setProperty('--arabic-font-scale',String(z))}catch(e){}})();`;

@@ -4,6 +4,7 @@
 | --- | --- |
 | `PLAN.md` | Stack, rendering, offline model, routes, phases, definition of done |
 | `PROGRESS.md` | Status of every phase and open questions |
+| `LEGACY_INVENTORY.md` | Legacy routes, code, server routes, storage keys, PWA, "clear all" behaviour |
 | `CONTENT_TO_VERIFY.md` | Prototype placeholders that must never ship |
 | `KICKOFF_PROMPTS.md` | Prompts to give Claude Code |
 | `design/DESIGN_SYSTEM.md` | Tokens, typography, components, patterns, content rules |

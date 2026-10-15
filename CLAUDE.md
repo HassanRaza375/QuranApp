@@ -33,7 +33,7 @@ For feature behaviour, the legacy docs still win: `/MODULE_BLUEPRINT.md`, `/PROJ
    - Every Arabic string, translation, dua, date, name list and religious statement in `prototype.html` is a placeholder or was typed from memory. Never copy them into product code. See `docs/CONTENT_TO_VERIFY.md`.
    - New religious content needs a named source and a visible status label (Qur'an, Traditional, Scholarly, Source note).
    - Never present a ruling as app-generated advice. Where traditions differ, show them side by side and add: follow your own marja' or local scholar.
-6. **Fiqh is a user setting**, not a build-time identity (legacy key: `prayer.fiqh`; values `sunni` and `jafari`). Prayer calculation, the events dataset and fiqh-sensitive content filter by that setting. Pages that explain both traditions must show both.
+6. **Fiqh is a user setting**, not a build-time identity (legacy key: `prayerFiqh`, stored as a raw string, not JSON; values `sunni` and `jafari`. The prototype's internal value `shia` is prototype-only and never goes to storage). Prayer calculation, the events dataset and fiqh-sensitive content filter by that setting. Pages that explain both traditions must show both.
 7. **Design rules (non-negotiable)**
    - Scripture is never boxed in a card. Ayahs sit on the page with hairline dividers.
    - Gold appears only on verse-end markers (and Hifz mastery later). Everything interactive uses the accent.
@@ -73,7 +73,9 @@ npm install
 npm run dev -- --port 3001      # legacy app uses 3000
 npm run build && npm run preview  # required for offline/PWA testing (offline does not work in dev)
 npx eslint .
-npm test
+npm test                        # unit tests (tests/)
+npm run test:e2e                # Playwright against the production build (run npm run build first; uses port 3011)
+npm run verify                  # build + lint + unit + e2e
 ```
 
 ## When unsure
