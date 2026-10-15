@@ -61,6 +61,22 @@ On a production build (`e2e/offline.spec.ts`, Playwright offline mode):
 
 The per-route fallback `injectManifest` was not needed.
 
+## Dev server (added after review)
+
+`npm run dev` failed on Windows with `ERROR No entry found in rollupOptions.input` (`resolveServerEntry`, `@nuxt/vite-builder`), while `build` and `preview` worked.
+
+- **Versions when it failed:** `nuxt` 4.4.5, `@nuxt/vite-builder` 4.4.5, the Vite it used 7.3.7 (a Vite 8.3.4 was also installed at the top level for other packages), Nitro 2.13.4, Node 20.19.3, Windows.
+- **Cause:** a Nuxt bug, not our config. With `ssr: false`, the builder resolves the SSR entry from the client Vite config, which has only `{ entry }` and no `server`, and throws. Reproduced with a bare `defineNuxtConfig({ ssr: false })` project. With `ssr: true` it starts.
+- **Config bisect** (each variant started `nuxt dev`): removing the PWA module, the Tailwind Vite plugin, the legacy bridge plugin, `vite.server.fs.allow`, the prerender hook and routes, or `shadcn-nuxt` changed nothing (all still failed). Only `ssr: true` started. So none of the nuxt.config `vite` options, PWA dev options, prerender hook or Tailwind plugin interferes with the Vite entry.
+- **Fix:** `nuxt` `^4.6.1` (resolves to 4.6.1 with `@nuxt/vite-builder` 4.6.1 and Vite 8.3.4). The bare `ssr:false` app and the real app both start; `npm run dev -- --port 3001` answers `/` with 200 and no errors. The version floor is in `package.json`.
+- **Guard:** `npm run test:dev` (`scripts/dev-smoke.mjs`, in `npm run verify`) starts the dev server, requires `/` to be 200 with the app shell, renders `/` and `/foundation` in Chromium, and fails on any page error, console error, HTTP 5xx or server error line. Negative control: on Nuxt 4.4.5 it fails with exactly this error; on 4.6.1 it passes.
+- **Side effect of the upgrade:** the build now uses Vite 8. Build, lint, 63 unit tests, the dev smoke test and all 36 browser checks pass on it.
+- Also changed: `dev` is `nuxt dev` and the port is `devServer.port: 3001` in `nuxt.config.ts` (the script used to repeat `--port 3001`).
+
+### Flaky browser check (follow-up)
+
+The one intermittent failure seen earlier is most likely the cutover rehearsal: it checked the caches after the page's `load` event, which can fire before the new worker has replaced the old one. It now waits for the legacy-only precache entries to disappear. It passed six runs in a row afterwards. The full ten-runs-with-traces investigation you asked for has not been done yet.
+
 ## Cutover plan (new service worker replaces the legacy one)
 
 Same origin, same file name (`/sw.js`), same scope (`/`), same manifest identity, same runtime cache names, `cleanupOutdatedCaches` on, `clientsClaim` on.

@@ -76,11 +76,22 @@ test("the new service worker replaces the legacy one, keeps runtime caches, and 
     const toast = page.locator("[data-sonner-toast]").filter({ hasText: "A new version of Quran App is available." });
     await expect(toast).toBeVisible({ timeout: 20_000 });
     await toast.getByRole("button", { name: "Reload" }).click();
-    await page.waitForLoadState("load");
-    await page.waitForFunction(async () => {
-      const r = await navigator.serviceWorker.getRegistration();
-      return !!navigator.serviceWorker.controller && r?.active?.state === "activated" && !r.waiting;
-    }, null, { timeout: 20_000 });
+    // Reload activates the waiting worker and then reloads the page. Wait for the swap itself (the legacy-only
+    // precache entries disappearing), not for "the page loaded", which can be true before the swap happens.
+    const rebuildFiles = new Set(fs.readdirSync(path.join(REVAMP_PUBLIC, "_nuxt")).map((f) => "/_nuxt/" + f));
+    const legacyOnly = fs.readdirSync(path.join(LEGACY_DIST, "_nuxt")).map((f) => "/_nuxt/" + f).filter((f) => !rebuildFiles.has(f));
+    expect(legacyOnly.length).toBeGreaterThan(100);
+    const staleCount = () =>
+      page
+        .evaluate(async (stale) => {
+          const name = (await caches.keys()).find((n) => n.startsWith("workbox-precache"));
+          if (!name) return -1;
+          const keys = (await (await caches.open(name)).keys()).map((k) => new URL(k.url).pathname);
+          return keys.filter((k) => stale.includes(k)).length;
+        }, legacyOnly)
+        .catch(() => -1); // the page is reloading
+    await expect.poll(staleCount, { timeout: 30_000, intervals: [250, 500, 1000] }).toBe(0);
+    await page.waitForFunction(() => !!navigator.serviceWorker.controller, null, { timeout: 20_000 });
 
     // 3. Same file name and scope; legacy precache entries are gone; the runtime cache survived.
     const after = await page.evaluate(async () => {
@@ -95,11 +106,8 @@ test("the new service worker replaces the legacy one, keeps runtime caches, and 
     expect(after.scope).toBe(legacy.scope);
     expect(after.kept).toBe('{"kept":true}');
     expect(after.precached.some((p) => p.startsWith("/_nuxt/") && /\.(woff2)$/.test(p))).toBe(true); // new assets
-    // nothing that only the legacy build had is left in the precache (files both builds share, such as a font from the
-    // same package, legitimately stay)
-    const rebuildFiles = new Set(fs.readdirSync(path.join(REVAMP_PUBLIC, "_nuxt")).map((f) => "/_nuxt/" + f));
-    const legacyOnly = fs.readdirSync(path.join(LEGACY_DIST, "_nuxt")).map((f) => "/_nuxt/" + f).filter((f) => !rebuildFiles.has(f));
-    expect(legacyOnly.length).toBeGreaterThan(100);
+    // nothing that only the legacy build had is left in the precache (files both builds share, such as a font from
+    // the same package, legitimately stay)
     expect(after.precached.filter((p) => legacyOnly.includes(p))).toEqual([]);
 
     // 4. The rebuilt app works offline under the replaced worker.

@@ -11,6 +11,8 @@ export default defineNuxtConfig({
   // SPA by default (one precached shell makes every route work offline). Only a few public pages are prerendered.
   ssr: false,
   devtools: { enabled: false },
+  // The legacy app uses 3000. (`npm run dev -- --port N` still overrides it.)
+  devServer: { port: 3001 },
 
   modules: ["shadcn-nuxt", "@nuxt/icon", "@pinia/nuxt", "@vite-pwa/nuxt", "@nuxt/eslint"],
   css: ["~/assets/css/tailwind.css"],

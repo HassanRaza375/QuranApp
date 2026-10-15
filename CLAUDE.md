@@ -75,7 +75,8 @@ npm run build && npm run preview  # required for offline/PWA testing (offline do
 npx eslint .
 npm test                        # unit tests (tests/)
 npm run test:e2e                # Playwright against the production build (run npm run build first; uses port 3011)
-npm run verify                  # build + lint + unit + e2e
+npm run test:dev               # starts the dev server and checks / renders with no errors
+npm run verify                  # build + lint + unit + dev smoke + e2e
 ```
 
 ## When unsure

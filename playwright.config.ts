@@ -7,7 +7,7 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   reporter: [["list"]],
-  use: { baseURL: "http://localhost:3011", ...devices["Desktop Chrome"], serviceWorkers: "allow" },
+  use: { trace: "retain-on-failure", screenshot: "only-on-failure", baseURL: "http://localhost:3011", ...devices["Desktop Chrome"], serviceWorkers: "allow" },
   webServer: {
     command: "node .output/server/index.mjs",
     env: { PORT: "3011", NITRO_PORT: "3011" },
