@@ -86,6 +86,13 @@ Reading a raw key through `JSON.parse` fails silently, so the revamp's `app/lib/
 - **Export** dumps every localStorage key to a JSON file (parsed when valid JSON, raw otherwise). IndexedDB and Cache Storage are not included.
 - The revamp does **not** extend either behaviour in Phase 0 (rule from the Phase 0 approval). Settings (Phase 2) will recreate them exactly as above.
 
+## `ayah-of-day`: two legacy bugs (found in Phase 1)
+
+- **UTC date.** `useAyahOfTheDay` stores `{ date: new Date().toISOString().slice(0, 10), data }` and compares the stored `date` with the same UTC date. The ayah therefore changes at UTC midnight, not at the user's midnight: at 05:00 local time in Pakistan (UTC+5), in the evening in the US. From local midnight to 05:00 in UTC+5 the app still treats yesterday as today.
+- **Invalid ayahs.** The pick is `surah = random 1 to 114`, `ayah = random 1 to 7`. For surahs with fewer than 7 ayahs this asks for an ayah that does not exist (for example ayah 4 to 7 of surah 108, which has 3); the request fails and the card stays empty. 11 of the 114 surahs have fewer than 7 ayahs, so about 3.5% of picks (28 of the 798 surah and ayah combinations) are invalid and show nothing.
+- Stored `data` fields the legacy component reads: `arabic`, `translation` (English), `urdu`, `surah_name` (the long Arabic name), `ayah_number`, `surah_number`. It shows the Urdu translation, not the user's chosen language.
+- **Revamp fix** (`app/lib/ayahOfDay.ts`): same key and shape; `date` stays the UTC date so the legacy comparison keeps working; an additive `localDate` (local calendar day) decides "today" in the revamp; the pick is deterministic from the local date and only valid, in-range ayahs. See `docs/phases/phase-01-home.md`.
+
 ## How the legacy reader uses the three reading keys
 
 | Key | Meaning in the legacy app |
@@ -108,5 +115,7 @@ In the revamp's preferences store these map to `verseDisplay`, `translationLang`
 | Workbox | `generateSW`, `cleanupOutdatedCaches` on, no `clientsClaim`, no `skipWaiting` (only on message) | adds `clientsClaim: true`, same cleanup |
 | Runtime caches | `quran-api-cache` (quranapi.pages.dev, CacheFirst, 1000 entries, 1 year), `quran-audio-cache` (audio, CacheFirst, 300 entries, 1 year), `wajibat-data-cache` (`wajibat-data-*.js`, CacheFirst, 20 entries) | the first two now, identical. `wajibat-data-cache` returns with Phase 13. `quran-downloads-audio-cache` is app-managed (Phase 11) |
 | Precache | ~240 files, `globIgnores` `wajibat-data-*.js` | shell, JS, CSS, icons, `woff2` fonts |
+
+**Legacy prayer code (found in Phase 1):** `stores/prayer.js` reads times with `split(":").map(Number)`. The daily endpoint returns `"04:59"`, but the monthly endpoint returns `"04:59 (PKT)"`, whose minutes become `NaN` with that code, so the legacy parser cannot be reused on the monthly data (the revamp parses with a regex and tests both formats). The legacy store also falls back silently to Lahore when location is unavailable, and keys its cache per day and exact coordinates.
 
 **Observation on the legacy bug G6 (not fixed, logged separately):** the legacy `dist/sw.js` calls `createHandlerBoundToURL("/")` but its precache list has no `/` entry (the legacy app is server-rendered, so there is no `index.html`). Workbox throws `non-precached-url` when the worker script is evaluated, so every `registerRoute` after that line (including the runtime caching rules) is likely never registered. This is the probable root cause of the offline-new-tab failure. It was read from the repo's built `dist/`, which may be older than the deployed build, so verify on the deployed worker before relying on it. The revamp precaches `/` (the SPA shell), and `e2e/offline.spec.ts` proves a new tab opened offline at a deep route renders.

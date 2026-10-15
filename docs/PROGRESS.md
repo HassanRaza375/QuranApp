@@ -5,7 +5,7 @@ Update this file at the end of every phase.
 | # | Phase | Status | Phase doc | Page docs |
 | --- | --- | --- | --- | --- |
 | 0 | Foundation | Approved 2026-10-15; follow-ups done | [phase-00-foundation](phases/phase-00-foundation.md) | [app-shell](pages/app-shell.md), [foundation](pages/foundation.md), [placeholders](pages/placeholders.md) |
-| 1 | Home | **Plan written, awaiting approval** | [plan](phases/phase-01-home-plan.md) | |
+| 1 | Home | **Done, awaiting review** (2026-10-15) | [phase-01-home](phases/phase-01-home.md), [plan](phases/phase-01-home-plan.md) | [home](pages/home.md) |
 | 2 | Settings | Not started | | |
 | 3 | Surah listing, Juz, Page | Not started | | |
 | 4 | Surah reader and full player | Not started | | |
@@ -26,7 +26,6 @@ Update this file at the end of every phase.
 
 | Item | What it is | Removed or replaced in |
 | --- | --- | --- |
-| `/` (`app/pages/index.vue`) | Placeholder Home | Phase 1 |
 | `/surah-listing` (`app/pages/surah-listing.vue`) | Placeholder | Phase 3 |
 | `/about` (`app/pages/about.vue`) | Placeholder | Phase 15 |
 | `/foundation` (`app/pages/foundation.vue`, `docs/pages/foundation.md`, its tests in `e2e/foundation.spec.ts`) | Phase 0 check page. **Must be removed before cutover** (Phase 16 checklist). Keep it until the real Settings (Phase 2) and the shell tests no longer need it; move any test that still uses it to a real page first | Phase 16, at the latest |
@@ -34,6 +33,21 @@ Update this file at the end of every phase.
 | `app/stores/playerShell.ts` and `LayoutMiniPlayer` shell | Placeholder player state | Phase 4 (real player store) |
 | `PUBLIC_META` entries in `app/lib/publicMeta.ts` | Titles for the three prerendered pages | Update with each of Phases 1, 3, 15 |
 | `nav.ts` `phase` field | Which phase builds each link | Delete the field in Phase 16 |
+| `PUBLIC_META` entry for `/` | Now matches the real Home's `useSeoMeta` | Keep in step if Home's text changes |
+
+## Carried forward from earlier phases (do not lose)
+
+| Phase | Item |
+| --- | --- |
+| 2 | Settings supplies the calculation method and Asr school (new `quran:<feature>:v1` keys); `usePrayerTimes` already takes `{method, school, midnightMode}` |
+| 4 | The share card replaces Home's plain `navigator.share`; the real player store replaces `playerShell` |
+| 5 | Update now (`usePrayerTimes().refresh()`), manual city entry, the Prayer and Qibla pages |
+| 7 | Home's second resume row switches from the persons-study state to story chapters, with a new key (for example `quran:stories-progress:v1`); one adapter, `useHomeState` |
+| 8 | Ramadan banner on Home; the Sha'ban prefetch of the Ramadan month in the prayer cache |
+| 11 | `wajibat-data-cache` and `quran-downloads-audio-cache` names return with their features |
+| 13 | Daily Fiqh keeps `quran:fiqh-prefs:v1` |
+| 14 | The Hifz tile's due count ("N to practice"): the legacy queue lives in a composable that needs Nuxt state, so it is rebuilt there |
+| 16 | Remove `/foundation`; verify the legacy offline-new-tab root cause against the deployed worker |
 
 ## Open questions
 
@@ -41,8 +55,10 @@ From Phase 0 (details in `phases/phase-00-foundation.md`):
 
 Decided in the Phase 0 review: `--ink-3` is non-text only (recorded in DESIGN_SYSTEM.md); keep the server proxies until cutover; Node 22 (`.nvmrc`, `engines`, workarounds removed); placeholders and `/foundation` stay (table above).
 
+Decided in the Phase 1 review: the nav (icons kept, one row per destination, collapsible groups, "Continue reading" only with progress) and the shell gaps (fixed in Phase 1).
+
 Still open:
 
-0. **Nav decision** (Phase 0 shell comparison, `design/shell-compare/README.md`): keep the Lucide icons on nav rows? Final nav list (Continue reading, Downloads, merged rows)? Needed before Phase 1 ships the nav.
+0. **Phase 1:** the 15-character floor in the ayah pool is my addition (cap 250 as decided). Keep it? Also a screen-reader pass and a real-device check are not done.
 1. The root `README.md` fiqh-key line was also corrected (not on the approved list). Keep?
 2. Verify the probable root cause of the legacy offline-new-tab bug (missing `/` precache entry) against the deployed worker.

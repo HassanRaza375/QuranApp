@@ -70,3 +70,14 @@ describe("contrast (WCAG AA, 4.5:1 for text)", () => {
     expect(contrast(dark.gold!, dark.bg!)).toBeGreaterThanOrEqual(3);
   });
 });
+
+describe("offline rule: no remote resources in the CSS", () => {
+  it("has no http(s) import or url() (fonts and icons are bundled; `npx shadcn-vue add` re-adds a Google Fonts import, remove it)", () => {
+    expect(css).not.toMatch(/@import\s+url\(\s*['"]?https?:/i);
+    expect(css).not.toMatch(/url\(\s*['"]?https?:/i);
+    expect(css).not.toMatch(/googleapis|gstatic/i);
+  });
+  it("has one base layer (shadcn add appends a duplicate)", () => {
+    expect((css.match(/@layer base\s*\{/g) ?? []).length).toBe(1);
+  });
+});

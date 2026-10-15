@@ -11,6 +11,15 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 
 ## By page
 
+**Home (Phase 1)**
+- [x] The sample ayah (Ar-Rum 30:7) and its translation: replaced; the text comes only from the verse service. Nothing from the prototype is shipped.
+- [x] The sample prayer times, "Maghrib 1h 34m", the Qibla "260 degrees": replaced by the monthly AlAdhan data and the computed bearing.
+- [x] "Al-Baqarah 285 of 286, 5%", the Yusuf story row, "0 / 494 ayahs", "14 to practice": replaced by the legacy keys (the story row by the Prophets & People study state until Phase 7; the Hifz count by "Open Hifz" until Phase 14).
+- [x] The Arabic words used as row icons (the Qur'an word and Yusuf): not copied; Lucide icons.
+- [ ] **Which ayahs may be "ayah of the day".** The rule is every ayah whose Arabic text is 15 to 250 characters (about 5,700 of 6,236), chosen by date. A person should decide whether any ayahs (for example rulings on inheritance or divorce) should be left out of a daily card. Not decided by the app.
+- [ ] **Calculation methods.** Home shows the method name the service returns (ISNA for Sunni, "Shia Ithna-Ashari, Leva Institute, Qum" for Ja'fari). The monthly and daily endpoints agree (120 of 120 comparisons: 4 cities, both methods, 3 days, 5 prayers). They have **not** been compared with an independent source (for example the Leva Institute's own tables), as the Prayer and Qibla item below still requires.
+- [ ] The Asr school (Hanafi) is not selectable until Phase 2; Home always uses the standard school.
+
 **Surah reader**
 - [ ] Al-Fatihah Arabic (7 ayahs) and its translations in the prototype.
 - [ ] Revelation order numbers used for sorting the 8 sample surahs.

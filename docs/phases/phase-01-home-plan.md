@@ -1,4 +1,6 @@
-# Phase 1: Home (plan, awaiting approval)
+# Phase 1: Home (plan; approved with changes, see `phase-01-home.md` for what was built)
+
+**Approval changes to this plan:** Update now is not on Home (Phase 5 and Settings only); no silent default city and the legacy `last_location` is read-only; the legacy `prayer_*` cache is skipped; Hifz tile has no number; ayah pool is all ayahs under a length cap; nav is one row per destination in five collapsible groups with icons, plus the shell gaps; Home scope reduced as proposed.
 
 - Branch: `revamp-design-logic`
 - Prototype: `d-page-home` and `m-page-home` (states: Returning user, New user). Render functions: `renderResume`, `renderUtil`, the quote block, `toggleSchedule`.

@@ -1,8 +1,15 @@
 // Spike (b): offline navigation from the one precached app shell. Production build + preview only.
 import { expect, test } from "@playwright/test";
+import { localDateKey } from "../app/lib/dates";
 import { loadAndControl } from "./helpers";
+import { ayahEntry, seed } from "./mocks";
 
 test.describe("offline shell", () => {
+  // Home shows an ayah: store today's so these tests never reach the real verse API.
+  test.beforeEach(async ({ context }) => {
+    await seed(context, { "ayah-of-day": ayahEntry(localDateKey(new Date())) });
+  });
+
   test("service worker is sw.js at scope / and the manifest identity is the legacy one", async ({ page, request }) => {
     await loadAndControl(page);
     const reg = await page.evaluate(async () => {
@@ -22,7 +29,7 @@ test.describe("offline shell", () => {
     await loadAndControl(page);
     await context.setOffline(true);
     await page.reload();
-    await expect(page.getByRole("heading", { name: "Quran App", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Home", level: 1 })).toBeAttached();
     await page.getByRole("link", { name: "Surahs" }).first().click();
     await expect(page.getByRole("heading", { name: "Surahs", level: 1 })).toBeVisible();
     await page.getByRole("link", { name: "About" }).first().click();

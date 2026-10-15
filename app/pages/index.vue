@@ -1,13 +1,51 @@
 <script setup lang="ts">
-// Foundation placeholder: replaced by the real Home in Phase 1. It exists so the prerender and offline spikes
-// have a public route to test.
-useSeoMeta({ title: "Quran App", description: "A local-first Quran companion: reading, translations, tafsir, audio, prayer times and more." });
+// Home (prototype d-page-home / m-page-home). Offline level A for the page, B for the ayah and the prayer times.
+import { onBeforeUnmount } from "vue";
+
+useSeoMeta({
+  title: "Quran App",
+  description: "A local-first Quran companion: reading, translations, tafsir, audio, prayer times and more.",
+});
+
+const location = useLocation();
+const home = useHomeState();
+const prayer = usePrayerTimes();
+
+let timer: ReturnType<typeof setInterval> | undefined;
+const onVisible = () => {
+  if (document.visibilityState === "visible") prayer.tick();
+};
+
+onMounted(async () => {
+  location.load();
+  void home.load();
+  await prayer.load();
+  // Minute precision is enough for the countdown; update every 30 seconds, and straight away when the tab comes back.
+  timer = setInterval(() => {
+    if (document.visibilityState === "visible") prayer.tick();
+  }, 30_000);
+  document.addEventListener("visibilitychange", onVisible);
+});
+onBeforeUnmount(() => {
+  clearInterval(timer);
+  document.removeEventListener("visibilitychange", onVisible);
+});
+
+// If the day rolls over while the page is open and today's times are missing, load again.
+watch(
+  () => prayer.today.value,
+  (t) => {
+    if (!t && prayer.status.value === "ready" && !prayer.refreshing.value) void prayer.load();
+  },
+);
 </script>
 
 <template>
-  <section>
-    <h1 class="font-serif text-[28px] font-medium">Quran App</h1>
-    <p class="mt-2 text-ink-2">Foundation build. Pages arrive phase by phase.</p>
-    <p class="mt-4"><NuxtLink class="text-brand underline" to="/foundation">Foundation check</NuxtLink></p>
-  </section>
+  <div>
+    <h1 class="sr-only">Home</h1>
+    <HomeAyahOfDay />
+    <HomeResumeCard />
+    <HomeUtilStrip />
+    <HomePrayerSchedule />
+  </div>
 </template>

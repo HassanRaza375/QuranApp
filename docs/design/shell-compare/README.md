@@ -21,3 +21,7 @@ The page body is not compared (the revamp Home is a placeholder until Phase 1). 
 | 11 | Type: serif brand (Newsreader), sans nav (Instrument Sans) | Same families, self-hosted | Same | n/a |
 
 Not compared: screen-reader and keyboard behaviour (the prototype has none).
+
+## Status after Phase 1
+
+The images above are the Phase 0 shell. Rows 3 (icons, kept: approved as an intentional change), 4 and 5 (header: title, search link, theme menu and gear added), 6 (nav: one row per destination in the prototype's five groups, collapsible, plus "Continue reading" and Downloads) and 8 (drawer close icon now the accent colour) were resolved in Phase 1; see `docs/design/home-compare/`.

@@ -92,6 +92,14 @@ Arabic scale: 0.8 to 1.6, set in Settings, applied everywhere through one CSS va
 | Search and text fields | `Input`, `Textarea` |
 | Tasbeeh ring, Qibla compass, night strip, page chips | Custom components |
 
+## Navigation (decided in the Phase 1 review)
+
+- Five groups in this order: Read, Study (including Library and Downloads), Knowledge base, Worship, and the optional Literary modules (shown only when enabled in Settings), then Settings and About. One row per real destination (the prototype's merged rows such as "Places · Stories · Themes" are not used).
+- Groups are collapsible; Read is open by default; the group that holds the current page is always open; the choice is remembered (`quran:nav-open:v1`).
+- "Continue reading" sits at the top and appears only when there is reading progress.
+- **Intentional change from the prototype:** every row has a Lucide icon, 16px, `ink-2`, and the accent colour when active (the prototype has no icons).
+- Header: page title, a search field that links to `/search` (an icon on mobile), the theme menu, and the Settings gear; the mobile drawer's close icon uses the accent colour.
+
 ## Shared interaction patterns
 
 - **Responsive menus:** one logical menu, popover on desktop, bottom sheet on mobile (46px rows).

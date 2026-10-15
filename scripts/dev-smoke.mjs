@@ -68,11 +68,13 @@ try {
   const browser = await chromium.launch();
   try {
     const page = await browser.newPage();
+    // Home loads the ayah of the day: answer it locally so the check does not depend on the internet.
+    await page.route(/quranapi\.pages\.dev/, (r) => r.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify({ arabic1: "T", english: "T", urdu: "T", surahNameArabicLong: "T" }) }));
     page.on("pageerror", (e) => fail(`page error: ${e.message}`));
     page.on("console", (m) => m.type() === "error" && fail(`console error: ${m.text()}`));
     page.on("response", (r) => r.status() >= 500 && fail(`HTTP ${r.status()} for ${r.url()}`));
     await page.goto(`${BASE}/`, { waitUntil: "networkidle", timeout: 90_000 });
-    await page.getByRole("heading", { name: "Quran App", level: 1 }).waitFor({ timeout: 30_000 });
+    await page.getByRole("heading", { name: "Home", level: 1 }).waitFor({ state: "attached", timeout: 30_000 });
     // a second route, so a broken route transform shows up too
     await page.goto(`${BASE}/foundation`, { waitUntil: "networkidle", timeout: 90_000 });
     await page.getByRole("heading", { name: "Foundation check" }).waitFor({ timeout: 30_000 });

@@ -7,6 +7,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AddressInfo } from "node:net";
 import { expect, test } from "@playwright/test";
+import { localDateKey } from "../app/lib/dates";
+import { ayahEntry, seed } from "./mocks";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const LEGACY_DIST = path.resolve(HERE, "../../dist");
@@ -48,6 +50,7 @@ function createSite(initialRoot: string) {
 test.skip(!fs.existsSync(LEGACY_DIST) || !fs.existsSync(REVAMP_PUBLIC), "needs the legacy dist/ and a revamp build");
 
 test("the new service worker replaces the legacy one, keeps runtime caches, and the update toast works", async ({ page, context }) => {
+  await seed(context, { "ayah-of-day": ayahEntry(localDateKey(new Date())) }); // Home shows an ayah; no real API call
   const site = createSite(LEGACY_DIST);
   const origin = await site.listen();
   try {
@@ -113,7 +116,7 @@ test("the new service worker replaces the legacy one, keeps runtime caches, and 
     // 4. The rebuilt app works offline under the replaced worker.
     await context.setOffline(true);
     await page.reload();
-    await expect(page.getByRole("heading", { name: "Quran App", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Home", level: 1 })).toBeAttached();
   } finally {
     site.close();
   }

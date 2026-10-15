@@ -219,7 +219,11 @@ test.describe("shell basics", () => {
     await expect(page.getByRole("heading", { name: "This page is not rebuilt yet" })).toBeVisible();
   });
 
-  test("no console errors or hydration warnings on the public pages", async ({ page }) => {
+  test("no console errors or hydration warnings on the public pages", async ({ page, context }) => {
+    await context.addInitScript((e) => {
+      if (!localStorage.getItem("ayah-of-day")) localStorage.setItem("ayah-of-day", e);
+    }, JSON.stringify({ date: "2000-01-01", localDate: "2000-01-01", data: { arabic: "x", translation: "x", urdu: "x", surah_name: "x", ayah_number: 1, surah_number: 1 } }));
+    await context.route(/quranapi\.pages\.dev/, (r) => r.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify({ arabic1: "T", english: "T", urdu: "T", surahNameArabicLong: "T" }) }));
     const problems: string[] = [];
     page.on("console", (m) => (m.type() === "error" || m.type() === "warning") && problems.push(m.text()));
     page.on("pageerror", (e) => problems.push(String(e)));
