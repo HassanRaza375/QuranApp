@@ -21,13 +21,15 @@ Direction: **Night Study** craft with a **light default**. Ink-and-paper persona
 | `--sunken` | `#ECE7DA` | `#191B22` | Sidebar, inputs, inset notes |
 | `--ink` | `#1C1B17` | `#EDEAE2` | Primary text |
 | `--ink-2` | `#6B6558` | `#B4AFA0` | Secondary text |
-| `--ink-3` | `#9C978A` | `#75726A` | Muted, placeholders |
+| `--ink-3` | `#9C978A` | `#75726A` | **Non-text only**: decorative icons, dividers, disabled-state marks. Never for text a person needs to read (decision, Phase 0 review) |
 | `--border` | `#E1DDD0` | `#2A2D36` | Hairlines |
 | `--accent` | `#2B6777` | `#5CA0AF` | Links, active states, primary buttons, progress |
 | `--accent-soft` | `#E3EDEF` | `#1B2A2D` | Active rows, widgets, selected chips |
 | `--gold` | `#9C7A3C` | `#C9A15E` | Verse markers only |
 | `--gold-soft` | `#F1E6D2` | `#2E2717` | Gold badge backgrounds |
 | `--danger` | `#A5433A` | `#D97B72` | Destructive actions |
+
+**Contrast rule.** All readable text uses `--ink` or `--ink-2`. Measured against the page, `--ink-2` is 5.1:1 (light) and 8.3:1 (dark); `--ink-3` is only 2.6:1 (light) and 3.8:1 (dark), below WCAG AA for text. That includes placeholders, captions, timestamps and group labels: use `--ink-2`. `tests/tokens.test.ts` checks the AA pairs and records the `--ink-3` figures. The prototype uses `--ink-3` for text in places; do not copy that.
 
 High contrast mode (accessibility setting) strengthens `--border`, `--ink-2`, `--ink-3` (see the prototype's `.stage.hc` rules).
 

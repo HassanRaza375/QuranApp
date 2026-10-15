@@ -49,7 +49,8 @@ For feature behaviour, the legacy docs still win: `/MODULE_BLUEPRINT.md`, `/PROJ
    - Offline pages work from one precached app shell. Every page declares its offline level (A, B or C) in its page doc.
    - Level C (online-only) features must show a clear offline state, never a blank page or a spinner forever.
    - Never call `localStorage` directly. Use the storage wrapper. Never fetch third-party APIs from components; go through services.
-9. **Prayer times** use the monthly AlAdhan cache with an "Update now" action; fetch first, swap only on success; show "Last updated".
+9. **IndexedDB: one new database, never touch the legacy one.** All new IndexedDB data lives in a separate database, `quran-revamp-db` (its own versioning). Never open `quran-app-db` with a different version, never add or remove object stores in it, and never change its schema, so that rolling back to the legacy app stays safe (a version bump would make the legacy app fail to open its own database). The revamp may read `quran-app-db` only as the same version 1, read-only, if it ever needs the legacy cached chapters or tafsir. The same applies to `localStorage`: do not write to legacy keys that the legacy app interprets differently (for example the day-keyed `prayer_*` keys).
+10. **Prayer times** use the monthly AlAdhan cache with an "Update now" action; fetch first, swap only on success; show "Last updated".
 
 ## Workflow for every phase
 

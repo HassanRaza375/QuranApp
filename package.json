@@ -50,9 +50,7 @@
     "typescript": "^5.9.0",
     "vitest": "^4.1.11"
   },
-  "overrides": {
-    "shadcn-vue": {
-      "undici": "^7.16.0"
-    }
+  "engines": {
+    "node": ">=22"
   }
 }

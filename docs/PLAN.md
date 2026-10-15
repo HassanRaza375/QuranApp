@@ -21,7 +21,7 @@ Branch: `revamp-design-logic`. Folder: `revamp-quran/`. The legacy app stays in 
 | Icons | `@nuxt/icon` with `@iconify-json/lucide` bundled | No CDN |
 | Fonts | `@nuxt/fonts` or Fontsource, self-hosted | Newsreader, Instrument Sans, Noto Naskh Arabic, Noto Nastaliq Urdu, a Bengali serif; keep the legacy Qur'an script font |
 | State | Pinia for shared state (preferences, player, library, prayer); composables for features | |
-| Storage | IndexedDB (`idb`) and localStorage through one wrapper | Legacy keys, unchanged |
+| Storage | IndexedDB (`idb`) and localStorage through one wrapper | Legacy localStorage keys unchanged. **New IndexedDB data goes in a separate database, `quran-revamp-db`; `quran-app-db` is never changed or version-bumped, so rolling back to the legacy app stays safe** |
 | PWA | `@vite-pwa/nuxt` (Workbox) | `generateSW` first; `injectManifest` if audio range requests need custom handling |
 | Tests | Vitest (pure logic), Playwright (offline and flows) | |
 | Package manager | npm | Matches the legacy lockfile |
@@ -54,7 +54,7 @@ Technical notes:
 ### Prayer times and Hijri dates
 
 - Source: AlAdhan monthly calendar endpoint (by coordinates or city) with the user's method and Asr school. The response holds every day of the month and the Hijri date for each day.
-- Cache in IndexedDB, keyed by rounded latitude and longitude, method, school and month, for example `prayer:v1:<lat2>:<lon2>:<method>:<school>:<YYYY-MM>`. Record the fetch time, timezone and location label.
+- Cache in IndexedDB (in `quran-revamp-db`, never in the legacy `quran-app-db`), keyed by rounded latitude and longitude, method, school and month, for example `prayer:v1:<lat2>:<lon2>:<method>:<school>:<YYYY-MM>`. Record the fetch time, timezone and location label.
 - Keep the current and next month. When fewer than about 7 days remain, fetch the next month in the background. From 1 Sha'ban, also fetch Ramadan so its timetable is offline.
 - Show the cache first and update quietly. Offline, show cached times with "Last updated".
 - A manual **Update now** action (Prayer page and Settings, Prayer & location). Fetch first; replace the cache only if the fetch succeeds; keep the old data on failure.
