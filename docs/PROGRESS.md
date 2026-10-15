@@ -5,7 +5,7 @@ Update this file at the end of every phase.
 | # | Phase | Status | Phase doc | Page docs |
 | --- | --- | --- | --- | --- |
 | 0 | Foundation | Approved 2026-10-15; follow-ups done | [phase-00-foundation](phases/phase-00-foundation.md) | [app-shell](pages/app-shell.md), [foundation](pages/foundation.md), [placeholders](pages/placeholders.md) |
-| 1 | Home | Not started | | |
+| 1 | Home | **Plan written, awaiting approval** | [plan](phases/phase-01-home-plan.md) | |
 | 2 | Settings | Not started | | |
 | 3 | Surah listing, Juz, Page | Not started | | |
 | 4 | Surah reader and full player | Not started | | |
@@ -43,5 +43,6 @@ Decided in the Phase 0 review: `--ink-3` is non-text only (recorded in DESIGN_SY
 
 Still open:
 
+0. **Nav decision** (Phase 0 shell comparison, `design/shell-compare/README.md`): keep the Lucide icons on nav rows? Final nav list (Continue reading, Downloads, merged rows)? Needed before Phase 1 ships the nav.
 1. The root `README.md` fiqh-key line was also corrected (not on the approved list). Keep?
 2. Verify the probable root cause of the legacy offline-new-tab bug (missing `/` precache entry) against the deployed worker.

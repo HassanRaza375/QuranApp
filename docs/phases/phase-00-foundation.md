@@ -75,7 +75,15 @@ The per-route fallback `injectManifest` was not needed.
 
 ### Flaky browser check (follow-up)
 
-The one intermittent failure seen earlier is most likely the cutover rehearsal: it checked the caches after the page's `load` event, which can fire before the new worker has replaced the old one. It now waits for the legacy-only precache entries to disappear. It passed six runs in a row afterwards. The full ten-runs-with-traces investigation you asked for has not been done yet.
+**Evidence.** After moving to Node 22, `npm run verify` (build, lint, 63 unit tests, dev smoke test, 36 browser checks) was run **ten times in a row with traces and screenshots kept on failure** (`trace: "retain-on-failure"` in `playwright.config.ts`). Result: **10 of 10 passed**, no failure, no trace produced. Each run took 98 to 134 seconds. Before that, the cutover test alone passed six runs in a row after its fix.
+
+**What the earlier failures were.**
+- Seen once: one browser check failed in one `verify` run on the Nuxt 4.4.5 / Node 20 setup (right after build, lint and unit tests); it did not reproduce in the next full runs, and **the name of the failing test was not captured**.
+- Seen once more, with the name: after the Nuxt 4.6.1 upgrade the cutover rehearsal failed in a `verify` run. The test waited for the page's `load` event and then read the caches, but `load` can fire before the new service worker has replaced the old one. It now waits for the swap itself (the legacy-only precache entries disappearing).
+
+**Does the cutover race explain the earlier failure?** It is the only check in the suite with that kind of timing dependence, and it failed in the same circumstance (a `verify` run straight after heavy CPU work), so it is the most likely cause. **It is not proven**, because the first failure's test name was lost. With the race fixed, 16 consecutive runs (6 single and 10 full) show no failure. If a browser check fails again, the retained trace and screenshot (`test-results/`) will identify it.
+
+No check is marked as known flaky.
 
 ## Cutover plan (new service worker replaces the legacy one)
 
@@ -146,23 +154,34 @@ Migrations: none (one new key, additive).
   - `tsconfig.json`: no change needed (it only references `.nuxt/`)
   - Doc corrections for the fiqh key (amendment 1): root `CLAUDE.md`, and root `README.md` (same wrong `prayer.fiqh` string; this one was not on your list, say if you want it reverted)
 
-## Toolchain notes (Node 20.19 on this machine)
+## Toolchain and versions
 
-- The shadcn-vue CLI crashed on start (`undici` 8 needs Node 22). `package.json` has `overrides: { "shadcn-vue": { undici: "^7.16.0" } }`.
-- `shadcn-vue init` needs a root `tsconfig.json`; it was created like the legacy one.
-- `init` writes a Google Fonts `@import` into the CSS; it was removed (offline rule).
-- ESLint's config utilities use `Object.groupBy` (Node 21+); `eslint.config.mjs` has a small polyfill. Both workarounds can go after moving to Node 22.
-- Root `npm test`: still 524 passing, unaffected. Root `npx eslint .`: 123 problems that were already there; it lints 0 revamp files.
+Node **22.23.3** (`.nvmrc` is `22`, `engines.node` is `>=22`). Versions resolved in `package-lock.json` after the dev-server fix:
+
+| Package | Version |
+| --- | --- |
+| nuxt | 4.6.1 |
+| @nuxt/vite-builder | 4.6.1 |
+| vite | 8.3.4 (Nuxt 4.4.5 used 7.3.7) |
+| @vite-pwa/nuxt | 1.1.1 (vite-plugin-pwa 1.3.0, workbox-build 7.4.1) |
+| tailwindcss, @tailwindcss/vite | 4.3.3 |
+| shadcn-nuxt, shadcn-vue (CLI) | 2.8.2 (reka-ui 2.11.0) |
+
+The machine's default was Node 20.19.3, which needed two workarounds (a pinned `undici` for the shadcn-vue CLI, and an `Object.groupBy` polyfill in the ESLint config). **Both were removed** after moving to Node 22; `npx shadcn-vue --version` and `npx eslint .` work without them. The suite was run on Node 22 using a Node 22.23.3 binary placed first on `PATH` (the system Node was not changed); upgrade the machine's Node to match `.nvmrc`.
+
+Also from the first setup: `shadcn-vue init` needs a root `tsconfig.json` (created like the legacy one), and writes a Google Fonts `@import` that was removed (offline rule).
+
+Root `npm test`: still 524 passing, unaffected. Root `npx eslint .`: 123 problems that were already there; it lints 0 revamp files.
 
 ## Verification
 
-- [x] `npm run build` clean (the only console noise is a Node deprecation warning from a dependency); `npx eslint .` clean; `npm test`: 63 unit tests pass
+- [x] `npm run build` clean; `npx eslint .` clean; `npm test`: 63 unit tests pass; `npm run test:dev` (dev server smoke test) passes; all on Node 22.23.3, ten full runs
 - [x] Browser checks at 1280px and 375px, light and dark (screenshots reviewed: desktop light, mobile dark drawer, mobile sheet, desktop toast; desktop dark and mobile light were captured and not looked at one by one), first-run state
 - [x] Offline test (build and preview): 5 offline checks, 4 prerender checks, 1 cutover rehearsal
 - [x] Keyboard: skip link, visible focus ring on links, theme menu by keys and Escape, drawer focus trap and Escape returning focus (scripted)
 - [x] Contrast measured and tested (below)
 - [ ] Screen-reader pass (not done)
-- [ ] Side-by-side comparison against the prototype (not done, see below)
+- [x] Shell compared side by side with the prototype at 1280 and 375, light and dark (`docs/design/shell-compare/`, table in its README; open decisions below)
 - Total browser checks: 36 pass (`npm run test:e2e`, after `npm run build`). `npm run verify` runs everything.
 
 ### Contrast (WCAG)
@@ -171,7 +190,12 @@ Every text pair used in the shell passes 4.5:1 in light and dark (ink, ink-2, ac
 
 ## Differences from the prototype
 
-None intended in the shell. Known: the active sidebar item uses the accent bar (as `DESIGN_SYSTEM.md` states, not the prototype's gold). Group labels are `ink-2`, not `ink-3`, for contrast.
+Full table with images: `docs/design/shell-compare/README.md`. Summary:
+
+- **Intentional:** accent bar instead of gold on the active item; group labels in `ink-2` (contrast); mini player hidden until something plays (Phase 4).
+- **Mine, not in the design (decision needed):** a Lucide icon on every nav row (the prototype nav has none).
+- **Gaps:** the header has no page title, no search field and no gear (the title comes with each page, search with Phase 10); the mobile drawer's close icon is not accent-coloured.
+- **Mismatch (decision needed before Phase 1 ships the nav):** the prototype lists "Continue reading", "Downloads" and merged rows ("Places · Stories · Themes", "Duas · Events · Signs", "Prayer times · Qibla", "Ramadan & events", "Commands & Prohibitions", "Peoples & Nations"); the revamp lists one row per legacy route.
 
 ## Content placeholders replaced
 
@@ -180,7 +204,7 @@ None of `docs/CONTENT_TO_VERIFY.md` applies to this phase. The only Arabic shown
 ## Not verified
 
 - No screen-reader testing.
-- The shell was not compared with `prototype.html` side by side; do that review in Phase 1 when the first real page exists, or tell me to do it now.
+- Screen-reader behaviour of the shell, and whether the shell matches the prototype beyond the six screenshot pairs (page body not compared; it is a placeholder).
 - `Ignored Build Step` commands and "Include source files outside the Root Directory" were written from knowledge of Vercel, not tested on a real project.
 - Real-device PWA install and the update flow on a phone.
 - The mini player has no real player behind it (Phase 4); it is shown only when the placeholder store has a track.
@@ -190,7 +214,6 @@ None of `docs/CONTENT_TO_VERIFY.md` applies to this phase. The only Arabic shown
 1. **`--ink-3` contrast** (above): needs a design decision.
 2. **Server proxies are unused** (inventory): drop at cutover?
 3. **Legacy G6 root cause** (inventory): likely the missing `/` precache entry; verify against the deployed worker.
-4. **Upgrade Node to 22** to drop two workarounds.
 5. The legacy prayer cache keys (`prayer_<lat>_<lon>_<fiqh>_<date>`) are per day and exact coordinates; the revamp's monthly cache (PLAN.md) is a new key family and must not write to them.
 6. The legacy `ayah-of-day` key uses a UTC date (`toISOString()`), the known bug class in `CLAUDE.md`; fix in the revamp copy, keeping the key.
 7. `/foundation` and the placeholder pages must be removed or replaced (Phases 1, 3, 15, 16).
