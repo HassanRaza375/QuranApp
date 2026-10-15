@@ -12,6 +12,9 @@ export interface KeyValueStore {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
   removeItem(key: string): void;
+  /** Optional on fakes; the real localStorage is listed with Object.keys. */
+  keys?(): string[];
+  clear?(): void;
 }
 
 let override: KeyValueStore | null = null;
@@ -43,6 +46,30 @@ export function setRaw(key: string, value: string): boolean {
     const b = backend();
     if (!b) return false;
     b.setItem(key, value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Every key currently stored (used by Export). Empty when storage is unavailable. */
+export function listKeys(): string[] {
+  try {
+    const b = backend();
+    if (!b) return [];
+    return typeof b.keys === "function" ? b.keys() : Object.keys(b);
+  } catch {
+    return [];
+  }
+}
+
+/** Removes every key: exactly what the legacy "Clear all" does (`localStorage.clear()`). Returns false if storage is unavailable. */
+export function clearAllKeys(): boolean {
+  try {
+    const b = backend();
+    if (!b) return false;
+    if (typeof b.clear === "function") b.clear();
+    else for (const k of listKeys()) b.removeItem(k);
     return true;
   } catch {
     return false;

@@ -11,5 +11,7 @@ export function memoryStore(initial: Record<string, string> = {}, failing = fals
     getItem: (k) => (failing ? boom() : (data.get(k) ?? null)),
     setItem: (k, v) => (failing ? boom() : void data.set(k, v)),
     removeItem: (k) => (failing ? boom() : void data.delete(k)),
+    keys: () => (failing ? boom() : [...data.keys()]),
+    clear: () => (failing ? boom() : data.clear()),
   };
 }

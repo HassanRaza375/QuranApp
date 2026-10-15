@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const navOpen = ref(false);
+usePrayerNotifications(); // reminders while the app is open, on any page (no permission prompt, no location prompt)
 const route = useRoute();
 watch(() => route.path, () => {
   navOpen.value = false;

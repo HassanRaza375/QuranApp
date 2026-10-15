@@ -3,12 +3,12 @@
 //
 // States: "no-location" (nothing to compute), "loading" (no cached month yet), "ready" (a month is cached; it may be
 // refreshing or the last refresh may have failed), "failed" (no cached month and the fetch failed).
-import { FIQH_PARAMS } from "@legacy/utils/prayerFiqh.js";
 import { pruneOldPrayerMonths } from "~/db/revampDb";
 import { dateKeyInZone, nextPrayer, type NextPrayer } from "~/lib/prayerClock";
 import { roundCoord, type PrayerDay, type PrayerMonthRecord, type PrayerRequest } from "~/lib/prayerMonth";
 import { syncMonth, type SyncOutcome } from "~/lib/prayerSync";
 import { localMonthKey, nextMonthKey } from "~/lib/dates";
+import { paramsFor } from "~/lib/calcMethods";
 import { prayerSyncDeps } from "~/services/prayer.service";
 
 type Status = "no-location" | "loading" | "ready" | "failed";
@@ -16,11 +16,6 @@ export interface Failure {
   kind: "offline" | "error";
   reason: string;
 }
-
-const params = (fiqh: "sunni" | "jafari") => {
-  const p = FIQH_PARAMS[fiqh] as { method: number; school?: number; midnightMode?: number };
-  return { method: p.method, school: p.school ?? 0, midnightMode: p.midnightMode ?? 0 };
-};
 
 const monthOfKey = (dateKey: string) => dateKey.slice(0, 7);
 
@@ -37,7 +32,7 @@ export const usePrayerTimes = () => {
 
   const request = (month: string): PrayerRequest | null => {
     if (!location.value) return null;
-    return { lat: location.value.lat, lon: location.value.lon, month, ...params(prefs.prefs.fiqh) };
+    return { lat: location.value.lat, lon: location.value.lon, month, ...paramsFor(prefs.prefs.fiqh, prefs.prefs.calc) };
   };
 
   const timezone = computed(() => record.value?.timezone ?? null);
@@ -75,7 +70,7 @@ export const usePrayerTimes = () => {
       return;
     }
     // A different place or calculation method means the cached months in memory are for something else.
-    const want = params(prefs.prefs.fiqh);
+    const want = paramsFor(prefs.prefs.fiqh, prefs.prefs.calc);
     const matches = (r: PrayerMonthRecord | null) =>
       !!r && r.lat === Number(roundCoord(location.value!.lat)) && r.lon === Number(roundCoord(location.value!.lon)) && r.method === want.method && r.school === want.school;
     if (!matches(record.value)) record.value = null;
@@ -117,7 +112,9 @@ export const usePrayerTimes = () => {
     now.value = Date.now();
   };
 
-  return { status, record, failure, refreshing, today, tomorrow, next, timezone, now, load, refresh, tick };
+  const nextRecordDays = computed(() => nextRecord.value?.days ?? null);
+
+  return { status, record, nextRecord, nextRecordDays, failure, refreshing, today, tomorrow, next, timezone, now, load, refresh, tick };
 };
 
 /** "YYYY-MM" that is `back` months before `month`. */

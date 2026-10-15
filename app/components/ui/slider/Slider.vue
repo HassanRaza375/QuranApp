@@ -5,10 +5,10 @@ import { reactiveOmit } from '@vueuse/core'
 import { cn } from 'cn'
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack, useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<SliderRootProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<SliderRootProps & { class?: HTMLAttributes['class']; thumbLabel?: string; thumbValueText?: string }>()
 const emits = defineEmits<SliderRootEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegatedProps = reactiveOmit(props, 'class', 'thumbLabel', 'thumbValueText')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
@@ -42,8 +42,10 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       v-for="(_, key) in modelValue"
       :key="key"
       data-slot="slider-thumb"
+      :aria-label="props.thumbLabel"
+      :aria-valuetext="props.thumbValueText"
       :data-vertical="props.orientation === 'vertical' ? '' : undefined"
-      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      class="border-ring ring-ring/50 relative size-5 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-3 md:size-3 md:after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
     />
   </SliderRoot>
 </template>

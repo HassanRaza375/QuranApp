@@ -1,13 +1,14 @@
 <script setup lang="ts">
 // Ayah of the day. Scripture is not boxed in a card: the ayah sits on the page with a hairline divider below.
 import { translationFor } from "~/lib/ayahOfDay";
+import { effectiveTranslationLang } from "~/lib/preferences";
 
 const store = usePreferencesStore();
 const { status, entry, saved, load, toggleSaved, setSaved } = useAyahOfDay();
 const undo = useUndoToast();
 
 const data = computed(() => entry.value?.data ?? null);
-const tr = computed(() => (data.value ? translationFor(data.value, store.prefs.translationLang) : null));
+const tr = computed(() => (data.value ? translationFor(data.value, effectiveTranslationLang(store.prefs)) : null));
 const reference = computed(() => (data.value ? `${data.value.surah_name_en || `Surah ${data.value.surah_number}`} ${data.value.surah_number}:${data.value.ayah_number}` : ""));
 const href = computed(() => (data.value ? `/surah/${data.value.surah_number}#ayah-${data.value.ayah_number}` : "/"));
 const staleDate = computed(() => {

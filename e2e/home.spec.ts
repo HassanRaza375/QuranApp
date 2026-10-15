@@ -6,7 +6,7 @@ import { AYAH_LENGTHS } from "../app/data/ayahLengths.generated";
 import { buildPool, pickAyahForDate } from "../app/lib/ayahOfDay";
 import { qiblaBearing } from "../app/lib/qibla";
 import { loadAndControl } from "./helpers";
-import { ayahEntry, freezeClock, idbNames, LAHORE_LEGACY, mockAladhan, mockVerse, readStorage, seed } from "./mocks";
+import { ayahEntry, forbidRealApis, freezeClock, idbNames, LAHORE_LEGACY, mockAladhan, mockVerse, readStorage, seed } from "./mocks";
 
 const POOL = buildPool(AYAH_LENGTHS);
 const pick = (date: string) => {
@@ -15,8 +15,13 @@ const pick = (date: string) => {
 };
 
 test.use({ serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB", viewport: { width: 1280, height: 900 } });
+let leaks: string[] = [];
 test.beforeEach(async ({ context }) => {
+  leaks = await forbidRealApis(context);
   await freezeClock(context);
+});
+test.afterEach(() => {
+  expect(leaks, "a test reached a real upstream API").toEqual([]);
 });
 
 const RETURNING = {
@@ -386,6 +391,7 @@ test.describe("offline", () => {
     await loadAndControl(page, "/");
     await expect(page.getByTestId("tile-prayer")).toContainText("Dhuhr");
     await context.setOffline(true);
+    leaks.length = 0; // from here on, requests are offline attempts that fail on purpose
     await page.reload();
     await expect(page.getByTestId("tile-prayer")).toContainText("Dhuhr · 2h 34m");
     await expect(page.getByTestId("ayah-arabic")).toContainText("SEEDED ARABIC");
@@ -400,6 +406,7 @@ test.describe("offline", () => {
   test("cold: never cached and offline gives clear messages, not a blank page or an endless spinner", async ({ context, page }) => {
     await seed(context, { last_location: LAHORE_LEGACY });
     await loadAndControl(page, "/foundation"); // installs the worker while online, without caching any prayer times or ayah
+    expect(leaks).toEqual([]); // nothing reached an API while online
     await context.setOffline(true);
     await page.goto("/");
     await expect(page.getByRole("heading", { name: "Home", level: 1 })).toBeAttached();
@@ -409,6 +416,7 @@ test.describe("offline", () => {
     await expect(page.getByTestId("schedule-failed")).toContainText("Needs a connection once to load prayer times.");
     await expect(page.locator("[aria-busy='true']")).toHaveCount(0); // nothing is left loading
     await expect(page.getByTestId("resume-title")).toHaveText("Get started"); // the local parts still work
+    leaks.length = 0; // the requests made while offline were attempts that failed on purpose
   });
 });
 
@@ -567,7 +575,7 @@ test.describe("shell (Phase 1)", () => {
     await page.getByRole("button", { name: "Open menu" }).click();
     const close = page.getByRole("dialog").getByRole("button", { name: "Close" });
     expect(await close.evaluate((el) => getComputedStyle(el).color)).toBe("rgb(43, 103, 119)");
-    expect((await close.boundingBox())!.width).toBeGreaterThanOrEqual(44);
+    expect((await close.boundingBox())!.width).toBeGreaterThanOrEqual(43.9); // 44px (sub-pixel layout rounding)
     await close.click();
     await expect(page.getByRole("dialog")).toHaveCount(0);
   });

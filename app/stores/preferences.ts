@@ -17,6 +17,12 @@ export const usePreferencesStore = defineStore("preferences", () => {
     apply();
   }
 
+  /** Re-reads every preference from storage (after Reset, Undo, or a bulk change) and applies it. */
+  function reloadAll() {
+    prefs.value = loadPreferences();
+    apply();
+  }
+
   function set<K extends keyof Preferences>(key: K, value: Preferences[K]) {
     prefs.value = { ...prefs.value, [key]: value };
     savePreference(key, value);
@@ -39,5 +45,5 @@ export const usePreferencesStore = defineStore("preferences", () => {
     });
   }
 
-  return { prefs, loaded, load, set, listen };
+  return { prefs, loaded, load, reloadAll, set, listen };
 });

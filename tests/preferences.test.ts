@@ -26,6 +26,11 @@ describe("loading values written by the legacy app", () => {
       "quran:audio-prefs:v1": JSON.stringify({ playbackRate: 1.25, repeatOne: true, autoAdvance: true }),
       "quran:additional-modules-enabled:v1": "true",
       "quran:hijri-adjust:v1": JSON.stringify({ days: -1 }),
+      "quran:prayer-calc:v1": JSON.stringify({ sunniMethod: 1, jafariMethod: 7, asr: "hanafi" }),
+      "quran:download-prefs:v1": JSON.stringify({ wifiOnly: true }),
+      "quran:verse-layout:v1": JSON.stringify({ order: "tr" }),
+      prayerSettings: JSON.stringify({ notificationsEnabled: true, enabledPrayers: { Fajr: true, Dhuhr: false, Asr: true, Maghrib: true, Isha: false }, reminderOffset: 15 }),
+      "quran:fiqh-prefs:v1": JSON.stringify({ marjaId: "sistani", lang: "ur", updatedAt: 5 }),
     });
     expect(loadPreferences()).toEqual({
       fiqh: "jafari",
@@ -42,6 +47,11 @@ describe("loading values written by the legacy app", () => {
       autoplay: true,
       literaryModules: true,
       hijriAdjust: -1,
+      calc: { sunniMethod: 1, jafariMethod: 7, asr: "hanafi" },
+      wifiOnly: true,
+      verseLayout: "tr",
+      notifications: { enabled: true, prayers: { Fajr: true, Dhuhr: false, Asr: true, Maghrib: true, Isha: false }, offset: 15 },
+      marjaId: "sistani",
     } satisfies Preferences);
   });
 
@@ -137,6 +147,9 @@ describe("saving keeps the legacy formats", () => {
       fiqh: "jafari", theme: "dark", arabicScale: 1.2, translationLang: "english", tafsirAuthor: "Maarif Ul Quran",
       reciter: { reciter: "X" }, playbackRate: 1.5, autoplay: true, verseDisplay: "bengali", reducedMotion: true,
       highContrast: true, largeTouchTargets: true, literaryModules: true, hijriAdjust: 2,
+      calc: { sunniMethod: 5, jafariMethod: 7, asr: "hanafi" }, wifiOnly: true, verseLayout: "tr",
+      notifications: { enabled: true, prayers: { Fajr: false, Dhuhr: true, Asr: true, Maghrib: false, Isha: true }, offset: 30 },
+      marjaId: "sistani",
     };
     for (const k of Object.keys(next) as (keyof Preferences)[]) savePreference(k, next[k] as never);
     expect(loadPreferences()).toEqual(next);

@@ -15,15 +15,34 @@ export function getRevampDb(): Promise<IDBPDatabase> {
     upgrade(db) {
       if (!db.objectStoreNames.contains(PRAYER_MONTHS)) db.createObjectStore(PRAYER_MONTHS);
     },
+    // Another tab asked to delete or upgrade the database (Clear all data): let go of it so that request is not blocked.
+    blocking() {
+      void closeRevampDb();
+    },
   });
   return dbPromise;
 }
 
-/** Tests: close and forget the cached connection so a fresh database can be opened. */
-export async function resetRevampDbForTests() {
+/** Closes and forgets the cached connection (before deleting the database, and in tests). */
+export async function closeRevampDb() {
   const p = dbPromise;
   dbPromise = null;
   if (p) (await p.catch(() => null))?.close();
+}
+export const resetRevampDbForTests = closeRevampDb;
+
+/** Deletes a whole database by name. Resolves when done, when it errors, or after a short wait if another tab still holds it. */
+export function deleteDatabase(name: string): Promise<void> {
+  return new Promise((resolve) => {
+    try {
+      const req = indexedDB.deleteDatabase(name);
+      const done = () => resolve();
+      req.onsuccess = req.onerror = done;
+      req.onblocked = () => setTimeout(done, 3000);
+    } catch {
+      resolve();
+    }
+  });
 }
 
 export async function getPrayerMonth(key: string): Promise<PrayerMonthRecord | undefined> {

@@ -3,6 +3,10 @@
 //
 // To add a setting later (Phase 2: calculation method, Asr school, Wi-Fi-only downloads, ...): add a field to
 // `Preferences`, a default, and a descriptor using a NEW `quran:<feature>:v1` key. Nothing else changes.
+import { MARAJI } from "@legacy/data/wajibat/marja";
+import { CALC_KEY, DEFAULT_CALC, normalizeCalc, type PrayerCalc } from "./calcMethods";
+import { DEFAULT_NOTIFY, type NotifyConfig } from "./notifySchedule";
+import { PRAYERS } from "./prayerMonth";
 import { getJSON, getRaw, mergeJSON, remove, setJSON, setRaw } from "./storage";
 
 export type Fiqh = "sunni" | "jafari";
@@ -30,7 +34,15 @@ export const KEYS = {
   audioPrefs: "quran:audio-prefs:v1", // JSON {playbackRate, repeatOne, autoAdvance}
   literaryModules: "quran:additional-modules-enabled:v1", // JSON boolean
   hijriAdjust: "quran:hijri-adjust:v1", // NEW (approved): JSON {days}
+  calc: CALC_KEY, // NEW: JSON {sunniMethod, jafariMethod, asr}; the legacy app ignores it
+  wifiOnly: "quran:download-prefs:v1", // NEW: JSON {wifiOnly}
+  verseLayout: "quran:verse-layout:v1", // NEW: JSON {order: "ar" | "tr"}
+  notifications: "prayerSettings", // legacy, shared: JSON {notificationsEnabled, enabledPrayers, reminderOffset}
+  marja: "quran:fiqh-prefs:v1", // legacy (Daily Fiqh): JSON {marjaId, lang, updatedAt}
 } as const;
+
+export type VerseOrder = "ar" | "tr";
+export const MARJA_IDS: string[] = MARAJI.map((m) => m.id);
 
 export interface Preferences {
   fiqh: Fiqh;
@@ -47,6 +59,12 @@ export interface Preferences {
   largeTouchTargets: boolean;
   literaryModules: boolean;
   hijriAdjust: number;
+  calc: PrayerCalc;
+  wifiOnly: boolean;
+  verseLayout: VerseOrder;
+  notifications: NotifyConfig;
+  /** the Daily Fiqh marja' (separate from the calculation method); null = not chosen */
+  marjaId: string | null;
 }
 
 export const DEFAULTS: Preferences = {
@@ -64,6 +82,11 @@ export const DEFAULTS: Preferences = {
   largeTouchTargets: false,
   literaryModules: false,
   hijriAdjust: 0,
+  calc: DEFAULT_CALC,
+  wifiOnly: false,
+  verseLayout: "ar",
+  notifications: DEFAULT_NOTIFY,
+  marjaId: null,
 };
 
 const isOneOf = <T extends string>(list: readonly T[], v: unknown): v is T => typeof v === "string" && (list as readonly string[]).includes(v);
@@ -79,6 +102,11 @@ type Descriptors = { [K in keyof Preferences]: Descriptor<K> };
 
 const accessibility = () => getJSON<Record<string, unknown>>(KEYS.accessibility, {});
 const audio = () => getJSON<Record<string, unknown>>(KEYS.audioPrefs, {});
+
+const objectOf = (key: string): Record<string, unknown> => {
+  const v = getJSON<unknown>(key, null);
+  return v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
+};
 
 export const DESCRIPTORS: Descriptors = {
   fiqh: {
@@ -153,7 +181,47 @@ export const DESCRIPTORS: Descriptors = {
     read: () => clamp(Math.round(num(getJSON<Record<string, unknown>>(KEYS.hijriAdjust, {}).days, 0)), HIJRI_ADJUST.min, HIJRI_ADJUST.max),
     write: (v) => void setJSON(KEYS.hijriAdjust, { days: clamp(Math.round(v), HIJRI_ADJUST.min, HIJRI_ADJUST.max) }),
   },
+  calc: {
+    read: () => normalizeCalc(objectOf(KEYS.calc)),
+    write: (v) => void mergeJSON(KEYS.calc, { sunniMethod: v.sunniMethod, jafariMethod: v.jafariMethod, asr: v.asr }),
+  },
+  wifiOnly: {
+    read: () => bool(objectOf(KEYS.wifiOnly).wifiOnly, false),
+    write: (v) => void mergeJSON(KEYS.wifiOnly, { wifiOnly: v }),
+  },
+  verseLayout: {
+    read: () => (objectOf(KEYS.verseLayout).order === "tr" ? "tr" : "ar"),
+    write: (v) => void mergeJSON(KEYS.verseLayout, { order: v === "tr" ? "tr" : "ar" }),
+  },
+  notifications: {
+    // `prayerSettings` is shared with the legacy app: same field names, unknown fields kept.
+    read: () => {
+      const o = objectOf(KEYS.notifications);
+      const ep = (o.enabledPrayers && typeof o.enabledPrayers === "object" ? o.enabledPrayers : {}) as Record<string, unknown>;
+      const prayers = Object.fromEntries(PRAYERS.map((p) => [p, typeof ep[p] === "boolean" ? ep[p] : true])) as NotifyConfig["prayers"];
+      const off = typeof o.reminderOffset === "number" && Number.isFinite(o.reminderOffset) ? Math.round(o.reminderOffset) : 0;
+      return { enabled: o.notificationsEnabled === true, prayers, offset: clamp(off, 0, 120) };
+    },
+    write: (v) => void mergeJSON(KEYS.notifications, { notificationsEnabled: v.enabled, enabledPrayers: v.prayers, reminderOffset: clamp(Math.round(v.offset), 0, 120) }),
+  },
+  marjaId: {
+    read: () => {
+      const id = objectOf(KEYS.marja).marjaId;
+      return typeof id === "string" && MARJA_IDS.includes(id) ? id : null;
+    },
+    write: (v) => void mergeJSON(KEYS.marja, { marjaId: v && MARJA_IDS.includes(v) ? v : null, updatedAt: Date.now() }),
+  },
 };
+
+/**
+ * The translation Home and the reader use by default: the explicit `translationDefaultLang`, or, when that is not
+ * set, the translation the legacy reader's text tabs were set to (`preferredVerseDisplay` english, urdu or bengali).
+ * Read only: the legacy key is never written.
+ */
+export function effectiveTranslationLang(p: Pick<Preferences, "translationLang" | "verseDisplay">): TranslationLang | null {
+  if (p.translationLang) return p.translationLang;
+  return p.verseDisplay === "english" || p.verseDisplay === "urdu" || p.verseDisplay === "bengali" ? p.verseDisplay : null;
+}
 
 export function loadPreferences(): Preferences {
   const out = { ...DEFAULTS } as Record<string, unknown>;
@@ -179,6 +247,11 @@ export function preferencesForKey(storageKey: string | null): (keyof Preferences
     [KEYS.audioPrefs]: ["playbackRate", "autoplay"],
     [KEYS.literaryModules]: ["literaryModules"],
     [KEYS.hijriAdjust]: ["hijriAdjust"],
+    [KEYS.calc]: ["calc"],
+    [KEYS.wifiOnly]: ["wifiOnly"],
+    [KEYS.verseLayout]: ["verseLayout"],
+    [KEYS.notifications]: ["notifications"],
+    [KEYS.marja]: ["marjaId"],
   };
   return map[storageKey] ?? [];
 }

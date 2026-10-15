@@ -30,6 +30,20 @@ export const seed = (context: BrowserContext, values: Record<string, string>) =>
     { v: values, flag: `__seeded_${++seedCount}` }, // one flag per call, so several seeds can be combined
   );
 
+/**
+ * Register this FIRST in a test: any request to a real upstream API that no mock answers is recorded and blocked.
+ * (Playwright tries the most recently added route first, so the specific mocks added later still win.) Assert the
+ * returned list is empty at the end of the test.
+ */
+export async function forbidRealApis(context: BrowserContext): Promise<string[]> {
+  const leaks: string[] = [];
+  await context.route(/https:\/\/(api\.aladhan\.com|quranapi\.pages\.dev|api\.alquran\.cloud)\//, (route: Route) => {
+    leaks.push(route.request().url());
+    return route.abort("blockedbyclient");
+  });
+  return leaks;
+}
+
 export interface AladhanMock {
   calls: string[];
   /** change what the next requests get */
