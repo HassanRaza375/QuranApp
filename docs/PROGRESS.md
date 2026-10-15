@@ -5,8 +5,8 @@ Update this file at the end of every phase.
 | # | Phase | Status | Phase doc | Page docs |
 | --- | --- | --- | --- | --- |
 | 0 | Foundation | Approved 2026-10-15; follow-ups done | [phase-00-foundation](phases/phase-00-foundation.md) | [app-shell](pages/app-shell.md), [foundation](pages/foundation.md), [placeholders](pages/placeholders.md) |
-| 1 | Home | **Done, awaiting review** (2026-10-15) | [phase-01-home](phases/phase-01-home.md), [plan](phases/phase-01-home-plan.md) | [home](pages/home.md) |
-| 2 | Settings | Not started | | |
+| 1 | Home | Approved 2026-10-15 | [phase-01-home](phases/phase-01-home.md), [plan](phases/phase-01-home-plan.md) | [home](pages/home.md) |
+| 2 | Settings | **Plan written, awaiting approval** | [plan](phases/phase-02-settings-plan.md) | |
 | 3 | Surah listing, Juz, Page | Not started | | |
 | 4 | Surah reader and full player | Not started | | |
 | 5 | Prayer and Qibla | Not started | | |
@@ -59,6 +59,6 @@ Decided in the Phase 1 review: the nav (icons kept, one row per destination, col
 
 Still open:
 
-0. **Phase 1:** the 15-character floor in the ayah pool is my addition (cap 250 as decided). Keep it? Also a screen-reader pass and a real-device check are not done.
+0. Phase 1 review: the 15-character floor is kept; no topic-based exclusions (recorded in CONTENT_TO_VERIFY.md). The real-device check of Phase 1 is the owner's, on the Vercel preview. A screen-reader pass is still not done.
 1. The root `README.md` fiqh-key line was also corrected (not on the approved list). Keep?
 2. Verify the probable root cause of the legacy offline-new-tab bug (missing `/` precache entry) against the deployed worker.

@@ -16,7 +16,7 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [x] The sample prayer times, "Maghrib 1h 34m", the Qibla "260 degrees": replaced by the monthly AlAdhan data and the computed bearing.
 - [x] "Al-Baqarah 285 of 286, 5%", the Yusuf story row, "0 / 494 ayahs", "14 to practice": replaced by the legacy keys (the story row by the Prophets & People study state until Phase 7; the Hifz count by "Open Hifz" until Phase 14).
 - [x] The Arabic words used as row icons (the Qur'an word and Yusuf): not copied; Lucide icons.
-- [ ] **Which ayahs may be "ayah of the day".** The rule is every ayah whose Arabic text is 15 to 250 characters (about 5,700 of 6,236), chosen by date. A person should decide whether any ayahs (for example rulings on inheritance or divorce) should be left out of a daily card. Not decided by the app.
+- [x] **Which ayahs may be "ayah of the day".** Reviewed and decided (Phase 1 review, 2026-10-15): every ayah whose Arabic text is 15 to 250 characters is eligible (the 15-character floor is kept; it only leaves out the isolated-letter openings), chosen mechanically by date. **No topic-based exclusions**: nothing is left out because of what an ayah is about.
 - [ ] **Calculation methods.** Home shows the method name the service returns (ISNA for Sunni, "Shia Ithna-Ashari, Leva Institute, Qum" for Ja'fari). The monthly and daily endpoints agree (120 of 120 comparisons: 4 cities, both methods, 3 days, 5 prayers). They have **not** been compared with an independent source (for example the Leva Institute's own tables), as the Prayer and Qibla item below still requires.
 - [ ] The Asr school (Hanafi) is not selectable until Phase 2; Home always uses the standard school.
 
