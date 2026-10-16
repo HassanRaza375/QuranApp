@@ -10,7 +10,7 @@ Update this file at the end of every phase.
 | 3 | Surah listing, Juz, Page | **Done, awaiting review** (2026-10-16) | [phase-03-surah-listing](phases/phase-03-surah-listing.md), [plan](phases/phase-03-surah-listing-plan.md) | [surah-listing](pages/surah-listing.md) |
 | 4A | Surah reader | **Done, awaiting review** (2026-10-16) | [phase-04a-surah-reader](phases/phase-04a-surah-reader.md), [plan](phases/phase-04a-surah-reader-plan.md) | [surah-reader](pages/surah-reader.md) |
 | 4B | Full player (seeking, resume, repeat, auto-next, per-ayah audio, player sheet) | Not started (split from Phase 4, see the 4A plan) | | |
-| 5 | Prayer and Qibla | Not started | | |
+| 5 | Prayer and Qibla | **Plan written, awaiting approval** | [plan](phases/phase-05-prayer-qibla-plan.md) | |
 | 6 | Library | Not started | | |
 | 7 | Prophets & People and Stories | Not started | | |
 | 8 | Ramadan and events | Not started | | |
