@@ -109,7 +109,7 @@ See `docs/CONTENT_TO_VERIFY.md` (Surah reader items).
 
 ## Open issues and risks
 
-1. **Home's goal count will read higher** than in the legacy app for the same reading (table above). Needs your confirmation.
+1. **Home's goal count reads higher** than in the legacy app (table above); approved, and counts before and after cutover are not merged.
 2. **No translator is named anywhere in the data** for the English, Urdu, Bengali and Arabic (Alt) texts, and the three tafsir authors' schools are not stated; the page shows only the language and the author's name. Attribution to fill in (CONTENT_TO_VERIFY.md).
 3. **A first visit offline cannot read a surah** (nothing is bundled); the page says so. Downloads (Phase 11) will save surahs ahead of time. Surah files are small (Al-Baqarah 527 KB), but the audio is not: files up to 91 MB (`docs/audio-url-check.md`), which Phase 11 must plan for.
 4. **The Completed rule is a heuristic** (one visit, 90% read): a long surah read over several days is never marked automatically; Mark as read exists for that.
@@ -119,10 +119,14 @@ See `docs/CONTENT_TO_VERIFY.md` (Surah reader items).
 8. **Residual layout shift 0.014** on the largest surah at 4x CPU (below the 0.02 budget).
 9. The `.live.ts` check needs the internet and is run by hand.
 
+## Decision on the goals count (Phase 4A review)
+
+**Approved: keep the 1.5 s rule.** Goal counts read higher than in the legacy app (39 against 24 per 40 ayahs for a careful reader, in the simulation) because the legacy rule undercounted the readers who most deserve credit. Counts recorded before and after cutover use different rules and are **not merged or converted**; the new rule simply applies from cutover. Phase 15 (Reading goals) may need to recalibrate pace targets (see PROGRESS.md).
+
 ## Open questions
 
-1. **Confirm the daily-log change.** With the 1.5 s rule, Home's "today's goal" count is about 60% higher than the legacy app would show for the same careful reading (39 against 24 per 40 ayahs in the simulation), and a steady scroller is counted fully. You asked to confirm before shipping if the numbers differ by a lot; they do. Keep the 1.5 s rule, change the time (a longer wait gives lower counts), or go back to the legacy rule?
-2. **Translator and tafsir attribution:** supply the names (and, if you want them shown, the schools) and they become labels.
+1. ~~Confirm the daily-log change.~~ Confirmed (above). Original question: With the 1.5 s rule, Home's "today's goal" count is about 60% higher than the legacy app would show for the same careful reading (39 against 24 per 40 ayahs in the simulation), and a steady scroller is counted fully. You asked to confirm before shipping if the numbers differ by a lot; they do. Keep the 1.5 s rule, change the time (a longer wait gives lower counts), or go back to the legacy rule?
+2. **Translator and tafsir attribution (still open, does not block Phase 5):** supply the exact names for the four translations (English, Urdu, Bengali, Arabic (Alt)) and the three tafsir authors, and they become labels. Until then the app shows only the labels it already shows.
 
 ## Next phase needs
 

@@ -35,8 +35,8 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [x] Al-Fatihah Arabic and the translations in the prototype: not used; the reader shows the service's real text (all 114 chapters validated against the real service on 2026-10-16).
 - [x] Revelation order numbers: not used (no revelation-order sort).
 - [x] The bismillah: never typed; read from the data of surah 1 (checked that no surah's first ayah repeats it).
-- [ ] **Translators:** the English, Urdu, Bengali and Arabic (Alt) texts have **no translator named anywhere in the data**. Supply the names and they become labels in the Translation menu.
-- [ ] **Tafsir authors and schools:** the data names Ibn Kathir, Maarif Ul Quran and Tazkirul Quran only. The reader makes no claim about their schools (the legacy page said "Sunni sources"; that is not carried over). Supply any attribution you want shown.
+- [ ] **Translators (open, does not block Phase 5):** the English, Urdu, Bengali and Arabic (Alt) texts have **no translator named anywhere in the data**. Supply the exact names (from the data provider's documentation or your original sources) and they become labels in the Translation menu. Until then the app shows only the labels it already shows.
+- [ ] **Tafsir authors and schools (open, does not block Phase 5):** the data names Ibn Kathir, Maarif Ul Quran and Tazkirul Quran only. The reader makes no claim about their schools (the legacy page said "Sunni sources"; that is not carried over). Supply any attribution you want shown.
 - [ ] "No Ja’fari tafsir is available from this app’s data provider." is the legacy page's own statement (without "Sunni sources"); it has not been checked against the provider's full list.
 - [ ] The "Mark as read" rule (end reached and 90% counted, one visit) and the 1.5 s reading rule are decisions, not facts; the daily-log counts differ from the legacy app (see the phase doc).
 - [ ] The prototype's per-ayah tafsir "sample excerpt" text was not used.
