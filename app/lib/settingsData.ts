@@ -43,6 +43,7 @@ const WHOLE_KEYS = [
   "quran:download-prefs:v1",
   "quran:hijri-adjust:v1",
   "quran:verse-layout:v1",
+  "quran:reader-prefs:v1", // the reader's translation Off (Phase 4A)
 ] as const;
 
 /** Shared objects: only the setting fields are removed; other fields (for example `repeatOne`) are kept. */

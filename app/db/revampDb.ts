@@ -5,15 +5,18 @@ import { openDB, type IDBPDatabase } from "idb";
 import type { PrayerMonthRecord } from "~/lib/prayerMonth";
 
 export const REVAMP_DB_NAME = "quran-revamp-db";
-export const REVAMP_DB_VERSION = 1;
+// Version 2 (Phase 4A) adds the reader's text caches. Upgrades only ever create stores; nothing is changed or removed.
+export const REVAMP_DB_VERSION = 2;
 export const PRAYER_MONTHS = "prayer-months";
+export const CHAPTERS = "chapters"; // key: surah number
+export const TAFSIRS = "tafsirs"; // key: "<surah>_<ayah>"
 
 let dbPromise: Promise<IDBPDatabase> | null = null;
 
 export function getRevampDb(): Promise<IDBPDatabase> {
   dbPromise ??= openDB(REVAMP_DB_NAME, REVAMP_DB_VERSION, {
     upgrade(db) {
-      if (!db.objectStoreNames.contains(PRAYER_MONTHS)) db.createObjectStore(PRAYER_MONTHS);
+      for (const name of [PRAYER_MONTHS, CHAPTERS, TAFSIRS]) if (!db.objectStoreNames.contains(name)) db.createObjectStore(name);
     },
     // Another tab asked to delete or upgrade the database (Clear all data): let go of it so that request is not blocked.
     blocking() {
@@ -82,5 +85,23 @@ export async function pruneOldPrayerMonths(keepFromMonth: string): Promise<numbe
     return removed;
   } catch {
     return 0;
+  }
+}
+
+// ---- the reader's text caches (immutable text: fetched once, read from here afterwards). Never load-bearing: every
+// read returns undefined and every write is dropped quietly when IndexedDB is unavailable or full.
+export async function getCached<T>(store: typeof CHAPTERS | typeof TAFSIRS, key: number | string): Promise<T | undefined> {
+  try {
+    return (await (await getRevampDb()).get(store, key)) as T | undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export async function putCached(store: typeof CHAPTERS | typeof TAFSIRS, key: number | string, value: unknown): Promise<void> {
+  try {
+    await (await getRevampDb()).put(store, value, key);
+  } catch {
+    /* best effort */
   }
 }
