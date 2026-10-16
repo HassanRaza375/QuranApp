@@ -8,7 +8,8 @@ Update this file at the end of every phase.
 | 1 | Home | Approved 2026-10-15 | [phase-01-home](phases/phase-01-home.md), [plan](phases/phase-01-home-plan.md) | [home](pages/home.md) |
 | 2 | Settings | Approved 2026-10-16 | [phase-02-settings](phases/phase-02-settings.md), [plan](phases/phase-02-settings-plan.md) | [settings](pages/settings.md) |
 | 3 | Surah listing, Juz, Page | **Done, awaiting review** (2026-10-16) | [phase-03-surah-listing](phases/phase-03-surah-listing.md), [plan](phases/phase-03-surah-listing-plan.md) | [surah-listing](pages/surah-listing.md) |
-| 4 | Surah reader and full player | Not started | | |
+| 4A | Surah reader | **Plan written, awaiting approval** | [plan](phases/phase-04a-surah-reader-plan.md) | |
+| 4B | Full player (seeking, resume, repeat, auto-next, per-ayah audio, player sheet) | Not started (split from Phase 4, see the 4A plan) | | |
 | 5 | Prayer and Qibla | Not started | | |
 | 6 | Library | Not started | | |
 | 7 | Prophets & People and Stories | Not started | | |

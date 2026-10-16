@@ -397,6 +397,61 @@ test.describe("keyboard and themes", () => {
     await expect(page.getByTestId("filter-input")).toBeFocused();
   });
 
+  test("every control in a row is a real button or link with a name; Enter and Space work (the delegated handler loses nothing)", async ({ page }) => {
+    await open(page);
+    const bad = await page.evaluate(() => {
+      const out: string[] = [];
+      document.querySelectorAll<HTMLElement>('[data-testid="surah-list"] a, [data-testid="surah-list"] button, [data-testid="page-groups"] a').forEach((el) => {
+        const tag = el.tagName.toLowerCase();
+        if (tag !== "a" && tag !== "button") out.push(`${tag} is not a link or button`);
+        if (tag === "a" && !el.getAttribute("href")) out.push("link without href");
+        if (el.hasAttribute("tabindex") && el.getAttribute("tabindex") !== "0") out.push("odd tabindex");
+        const name = (el.getAttribute("aria-label") || el.textContent || "").trim();
+        if (!name) out.push(`${el.dataset.testid ?? tag} has no name`);
+      });
+      // nothing clickable that is neither a link nor a button (a div or span with a click role)
+      document.querySelectorAll<HTMLElement>('[data-testid="surah-list"] [role="button"], [data-testid="surah-list"] [onclick]').forEach(() => out.push("a role=button element"));
+      return out;
+    });
+    expect(bad).toEqual([]);
+
+    // Space and Enter on the star, Space on Play, Enter on the open link
+    const row = page.getByTestId("surah-row-5");
+    await row.getByTestId("star").focus();
+    await page.keyboard.press("Space");
+    await expect(row.getByTestId("star")).toHaveAttribute("aria-pressed", "true");
+    await page.keyboard.press("Enter");
+    await expect(row.getByTestId("star")).toHaveAttribute("aria-pressed", "false");
+    await row.getByTestId("row-play").focus();
+    await page.keyboard.press("Space");
+    await expect(row).toHaveAttribute("data-playing", "true");
+    await page.keyboard.press("Enter");
+    await expect(row).not.toHaveAttribute("data-playing", "true");
+    await row.locator("a").focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/surah\/5$/);
+  });
+
+  test("page chips are links: Enter opens the page in the app, and Go to page works from the keyboard", async ({ page }) => {
+    await open(page, "/surah-listing?tab=page");
+    await page.locator('a[data-page="7"]').focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/per-page-read\?page=7$/);
+    await page.goBack();
+    await page.getByTestId("page-input").focus();
+    await page.keyboard.type("90");
+    await page.keyboard.press("Enter");
+    await expect(page.locator('a[data-page="90"]')).toBeFocused();
+  });
+
+  test("the sort menu: wide enough for one-line labels, with the article rule stated", async ({ page }) => {
+    await open(page);
+    await page.getByRole("button", { name: /^Sort:/ }).click();
+    await expect(page.getByTestId("menu-hint")).toHaveText("Name ignores Al-, An-");
+    const wrapped = await page.getByRole("menuitemradio").evaluateAll((els) => els.filter((e) => (e as HTMLElement).getBoundingClientRect().height > 36).length);
+    expect(wrapped).toBe(0);
+  });
+
   for (const theme of ["light", "dark"]) {
     test(`renders in the ${theme} theme with the marker, the playing row and the page chips legible`, async ({ context, page }) => {
       await seed(context, { ...PROGRESS, themeMode: theme });

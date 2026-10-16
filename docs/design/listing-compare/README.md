@@ -27,6 +27,8 @@
 
 The sidebar and header differences are the Phase 1 ones (`docs/design/home-compare/README.md`).
 
-**Known cosmetic items, not fixed:** on desktop the Sort menu is narrow, so "Verse count (most first)" and "(fewest first)" wrap to two lines; the long reciter name is tight in its mobile button (it fits, checked by a test); on mobile the "Last read" line on a row may wrap to two lines.
+**Fixed after review (screenshots not regenerated):** the Sort menu is wider so its labels stay on one line (a browser test checks), and it says "Name ignores Al-, An-".
+
+**Known cosmetic items, not fixed:** the long reciter name is tight in its mobile button (it fits, checked by a test); on mobile the "Last read" line on a row may wrap to two lines.
 
 **Looked at individually:** desktop light Surah, Juz and Page pairs; desktop dark Surah; mobile light Surah; mobile dark Surah and Juz; states: playing (desktop light), cannot play (mobile dark), reciter sheet (mobile dark), page jump (mobile dark), no result (desktop light), saved (mobile dark), sort menu (desktop light). **Generated but not examined one by one:** the other pairs (desktop dark Juz and Page, mobile light Juz and Page, mobile dark Page), and the other state shots (filter results, Arabic search, last read, Juz mid-page, invalid page and no progress, at both sizes, and the remaining states at the other size).

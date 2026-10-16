@@ -9,7 +9,7 @@ export interface MenuOption {
   icon?: string;
 }
 
-const props = defineProps<{ modelValue: string | null; options: MenuOption[]; label: string; title?: string; icon?: string }>();
+const props = defineProps<{ modelValue: string | null; options: MenuOption[]; label: string; title?: string; icon?: string; hint?: string; wide?: boolean }>();
 const emit = defineEmits<{ "update:modelValue": [value: string] }>();
 
 const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -32,12 +32,13 @@ const pick = (v: string) => {
         </Button>
       </slot>
     </DropdownMenuTrigger>
-    <DropdownMenuContent align="end" class="min-w-44">
+    <DropdownMenuContent align="end" :class="wide ? 'min-w-64' : 'min-w-44'">
       <DropdownMenuRadioGroup :model-value="modelValue ?? ''" @update:model-value="(v) => pick(String(v))">
         <DropdownMenuRadioItem v-for="o in options" :key="o.value" :value="o.value">
           <Icon v-if="o.icon" :name="o.icon" size="16" class="mr-2" />{{ o.label }}
         </DropdownMenuRadioItem>
       </DropdownMenuRadioGroup>
+      <p v-if="hint" class="border-t px-2 pb-1.5 pt-2 text-[12px] text-ink-2" data-testid="menu-hint">{{ hint }}</p>
     </DropdownMenuContent>
   </DropdownMenu>
 
@@ -70,6 +71,7 @@ const pick = (v: string) => {
           </button>
         </li>
       </ul>
+      <p v-if="hint" class="px-5 pb-6 text-[12.5px] text-ink-2" data-testid="menu-hint">{{ hint }}</p>
     </DrawerContent>
   </Drawer>
 </template>

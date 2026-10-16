@@ -179,7 +179,7 @@ onBeforeUnmount(() => clearTimeout(flashTimer));
 
       <div class="grid grid-cols-2 gap-2 md:flex md:flex-wrap md:items-center [&>div>button]:w-full [&>div>button]:justify-between md:[&>div>button]:w-auto">
         <div v-if="tab === 'surah'" class="min-w-0">
-          <ResponsiveMenu v-model="sort" :options="sortOptions" label="Sort" />
+          <ResponsiveMenu v-model="sort" :options="sortOptions" label="Sort" wide hint="Name ignores Al-, An-" />
         </div>
         <div v-if="tab === 'surah'" class="min-w-0">
           <ResponsiveMenu v-model="place" :options="placeOptions" label="Place" />

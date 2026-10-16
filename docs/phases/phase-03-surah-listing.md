@@ -85,7 +85,7 @@ Budgets (in the test): first render under 3,000 ms, a keystroke under 600 ms, th
 - [x] Browser tests (`e2e/listing.spec.ts`, 26): no network request of its own; the three tabs and counts; tabs and legacy routes; filter, N of 114 and empty state with Clear; Arabic without marks and numbers; sort and place; star keys, Undo and Saved toggle; juz star; Play, Pause, the playing row, the mini player and playing on after leaving the page; reciter change and `{reciter}`; a legacy reciter entry and playback speed; the failed-file message (no "plays offline" text anywhere); the last-read marker on the right surah, juz and page; a damaged record; Go to page (valid, focus, flash, invalid, shared pages); every link target; the readers-pending notice; in-app navigation of page chips; Tab order inside a row; light and dark; offline after one visit (three tabs, failed Play); the CPU-throttled test; 44px targets, no horizontal scroll; Arabic not clipped.
 - [x] Unit tests (`tests/quranMeta.test.ts`, `tests/listing.test.ts`, `tests/player.test.ts`): generated tables against the recorded response and the legacy list; page and juz lookups; the four mid-page juz; the normaliser and search (including every surah found by each of its own names, and `الفاتحة` finds exactly surah 1); sorts; the marker mapping and bad records; audio URL resolution (every surah has a file for every reciter); the player store with a fake audio element.
 - [x] Screenshots: `docs/design/listing-compare/` (see its README for what was looked at one by one).
-- [ ] **Real audio playing:** every browser test uses a stand-in for the audio element. Real playback, pause and resume, and the speed on a device are yours to check on the Vercel preview.
+- [ ] **Real audio playing:** every browser test uses a stand-in for the audio element (all 570 URLs answer, and desktop Chromium loads the metadata of the largest files; Safari, iOS and Firefox are untested). Real playback, pause and resume, and the speed on a device are yours to check on the Vercel preview.
 - [ ] Screen-reader pass (not done).
 - [ ] Real-device check on a mid-range phone (the 4x test is only an estimate).
 
@@ -96,6 +96,12 @@ See `docs/design/listing-compare/README.md`.
 ## Content placeholders replaced
 
 See `docs/CONTENT_TO_VERIFY.md` (Surah listing, Juz, Page).
+
+## Changes after the Phase 3 review
+
+- Sort menu widened (labels on one line) and a line added: "Name ignores Al-, An-" (`ResponsiveMenu` gained optional `wide` and `hint`; the default is unchanged).
+- A keyboard test (`e2e/listing.spec.ts`): every control in the surah list and page chips is a real `button` or `a` with a name and no odd `tabindex`; Space and Enter work on the star, Play and the open link; page chips open with Enter; Go to page works from the keyboard; the sort menu labels do not wrap. Browser suite for the listing: 29 tests, all passing; lint clean. (The full suite was not re-run for this follow-up; only the listing tests, lint and the build.)
+- All 570 audio URLs were checked once (`docs/audio-url-check.md`): 570 reachable, 210 served as a generic type (see CONTENT_TO_VERIFY.md).
 
 ## Open issues and risks
 

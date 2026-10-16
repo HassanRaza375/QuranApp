@@ -40,7 +40,7 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] **Juz names** (transliterated and Arabic) are not shipped: there is no verified source. Supply a verified list and it becomes a data file.
 - [ ] **Revelation order:** not built (several traditional orders disagree). Name the source and the order and it becomes a small data file.
 - [x] Page ranges per juz: derived from the tables above (Juz 1 = pages 1 to 21 as the prototype said, but the rest are not 20 pages each; juz 4, 7, 11 and 26 start partway down a page and share it with the juz before). The prototype's page-to-surah table is not used.
-- [ ] The audio files are third-party URLs from the legacy data; one was fetched on 2026-10-16, the other 569 were not.
+- [x] The audio files are third-party URLs from the legacy data: all 570 answered a HEAD request on 2026-10-16 (`docs/audio-url-check.md`, `scripts/check-audio-urls.mjs`). 210 are served as `application/octet-stream` (up to 91 MB); desktop Chromium accepts them, **Safari, iOS and Firefox were not tried** (yours, before Phase 4B).
 - [ ] "Name (A to Z)" ignores the article (Al-, An- ...); the legacy sort did not. Confirm it is what you want.
 
 **Story reader**
