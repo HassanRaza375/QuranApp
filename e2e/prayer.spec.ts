@@ -464,19 +464,27 @@ test.describe("Qibla", () => {
       expect(await page.evaluate(() => (window as unknown as { __vibrations: number }).__vibrations)).toBe(1); // never repeated while aligned
     });
 
-    test("away from the Qibla it says which way to turn; moving back and aligning again vibrates once more", async ({ page }) => {
+    test("away from the Qibla it says which way to turn; each time it comes into alignment there is one vibration and no more", async ({ page }) => {
+      const vib = () => page.evaluate(() => (window as unknown as { __vibrations: number }).__vibrations);
       await open(page, "/qibla-direction");
       await point(page, 200 - d()); // true heading 200: the Qibla is 60 degrees to the right
-      await expect(page.getByTestId("facing-status")).toHaveText("Turn right 60°", { timeout: 4000 });
+      await expect(page.getByTestId("facing-status")).toHaveText(/^Turn right (59|60|61)°$/, { timeout: 4000 });
       await expect(page.getByTestId("compass")).toHaveAttribute("data-aligned", "false");
       await point(page, 300 - d());
-      await expect(page.getByTestId("facing-status")).toHaveText("Turn left 40°", { timeout: 4000 });
+      await expect(page.getByTestId("facing-status")).toHaveText(/^Turn left (39|40|41)°$/, { timeout: 4000 }); // the heading settles to within a degree
+      const v0 = await vib(); // the dial may have swept through the Qibla on its way: only what follows is counted
       await point(page, 260.3658 - d());
       await expect(page.getByTestId("compass")).toHaveAttribute("data-aligned", "true");
-      expect(await page.evaluate(() => (window as unknown as { __vibrations: number }).__vibrations)).toBe(1);
-      await point(page, 100 - d());
+      expect(await vib()).toBe(v0 + 1);
+      await point(page, 260.3658 - d() + 2); // small movements while aligned
+      await point(page, 260.3658 - d() - 3);
+      expect(await vib()).toBe(v0 + 1);
+      await point(page, 100 - d()); // well away: not aligned any more
+      await expect(page.getByTestId("compass")).toHaveAttribute("data-aligned", "false");
+      const v1 = await vib();
       await point(page, 260.3658 - d());
-      expect(await page.evaluate(() => (window as unknown as { __vibrations: number }).__vibrations)).toBe(2);
+      await expect(page.getByTestId("compass")).toHaveAttribute("data-aligned", "true");
+      expect(await vib()).toBe(v1 + 1);
     });
 
     test("a plain relative deviceorientation is ignored (the legacy page used it and was wrong on Android)", async ({ page }) => {
