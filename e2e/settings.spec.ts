@@ -302,7 +302,7 @@ test.describe("Prayer & location", () => {
     const aladhan = await mockAladhan(context);
     await seed(context, { last_location: LAHORE_LEGACY });
     await open(page, "prayer");
-    await expect(page.getByText(/Saved for October 2026, so Home works offline. Last updated today at 9:14 AM./)).toBeVisible();
+    await expect(page.getByText(/Saved for October 2026, so prayer times work offline. Last updated today at 9:14 AM./)).toBeVisible();
     const before = aladhan.calls.length;
     await page.getByTestId("update-now").click();
     await expect(page.getByTestId("update-message")).toHaveText("Updated just now for October 2026.");

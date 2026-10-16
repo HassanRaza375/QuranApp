@@ -38,7 +38,7 @@ export const seed = (context: BrowserContext, values: Record<string, string>) =>
  */
 export async function forbidRealApis(context: BrowserContext): Promise<string[]> {
   const leaks: string[] = [];
-  await context.route(/https:\/\/(api\.aladhan\.com|quranapi\.pages\.dev|api\.alquran\.cloud)\//, (route: Route) => {
+  await context.route(/https:\/\/(api\.aladhan\.com|quranapi\.pages\.dev|api\.alquran\.cloud|geocoding-api\.open-meteo\.com)\//, (route: Route) => {
     leaks.push(route.request().url());
     return route.abort("blockedbyclient");
   });
@@ -203,3 +203,87 @@ export const stubAudio = (context: BrowserContext) =>
     }
     w.Audio = FakeAudio;
   });
+
+// ---- Phase 5: the place search (Open-Meteo), the device position, and the orientation sensors
+
+export interface GeocodeMock {
+  calls: string[];
+  mode: "ok" | "http500" | "network";
+}
+
+/** Answers geocoding-api.open-meteo.com with the real recorded responses (Leicester, Qom; anything else has no results). */
+export async function mockGeocode(context: BrowserContext, mode: GeocodeMock["mode"] = "ok"): Promise<GeocodeMock> {
+  const state: GeocodeMock = { calls: [], mode };
+  await context.route(/https:\/\/geocoding-api\.open-meteo\.com\//, async (route: Route) => {
+    const url = route.request().url();
+    state.calls.push(url);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    const name = (new URL(url).searchParams.get("name") ?? "").toLowerCase();
+    const file = name === "leicester" ? "openmeteo-leicester.json" : name === "qom" ? "openmeteo-qom.json" : "openmeteo-none.json";
+    return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: fixture(file) });
+  });
+  return state;
+}
+
+/** Replaces navigator.geolocation: "ok" answers `pos`, "denied" refuses, "timeout" times out. `window.__geoCalls` counts the asks. */
+export const stubGeolocation = (context: BrowserContext, mode: "ok" | "denied" | "timeout", pos = { lat: 31.5204, lon: 74.3587 }) =>
+  context.addInitScript(
+    ({ mode, pos }) => {
+      const w = window as unknown as { __geoCalls: number };
+      w.__geoCalls = 0;
+      Object.defineProperty(navigator, "geolocation", {
+        configurable: true,
+        value: {
+          getCurrentPosition: (ok: (p: unknown) => void, err: (e: unknown) => void) => {
+            w.__geoCalls++;
+            if (mode === "ok") ok({ coords: { latitude: pos.lat, longitude: pos.lon } });
+            else err({ code: mode === "denied" ? 1 : 3, PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3 });
+          },
+        },
+      });
+    },
+    { mode, pos },
+  );
+
+/**
+ * Tracks the orientation listeners the page adds and removes (by type, function and capture flag), counts vibrations, and gives
+ * tests `window.__orient(type, props)` to dispatch a sensor event. `ios` adds DeviceOrientationEvent.requestPermission, whose
+ * answer is `window.__iosAnswer`; `window.__iosAsks` counts the calls.
+ */
+export const stubSensors = (context: BrowserContext, opts: { ios?: boolean } = {}) =>
+  context.addInitScript((o) => {
+    const w = window as unknown as Record<string, unknown>;
+    const active = new Set<string>();
+    const ids = new WeakMap<object, number>();
+    let next = 1;
+    const key = (type: string, fn: unknown, capture: unknown) => `${type}#${ids.get(fn as object) ?? ids.set(fn as object, next++).get(fn as object)}#${capture === true || (typeof capture === "object" && capture !== null && (capture as { capture?: boolean }).capture === true)}`;
+    const add = window.addEventListener.bind(window);
+    const remove = window.removeEventListener.bind(window);
+    window.addEventListener = ((type: string, fn: EventListenerOrEventListenerObject, capture?: boolean | AddEventListenerOptions) => {
+      if (type.startsWith("deviceorientation")) active.add(key(type, fn, capture));
+      return add(type, fn, capture);
+    }) as typeof window.addEventListener;
+    window.removeEventListener = ((type: string, fn: EventListenerOrEventListenerObject, capture?: boolean | EventListenerOptions) => {
+      if (type.startsWith("deviceorientation")) active.delete(key(type, fn, capture));
+      return remove(type, fn, capture);
+    }) as typeof window.removeEventListener;
+    w.__activeOrientationListeners = () => active.size;
+    w.__vibrations = 0;
+    Object.defineProperty(navigator, "vibrate", { configurable: true, value: () => ((w.__vibrations as number)++, true) });
+    w.__orient = (type: string, props: Record<string, unknown>) => {
+      const e = new Event(type);
+      for (const [k, v] of Object.entries(props)) Object.defineProperty(e, k, { value: v });
+      window.dispatchEvent(e);
+    };
+    if (o.ios) {
+      w.__iosAsks = 0;
+      w.__iosAnswer = "granted";
+      (window as unknown as { DeviceOrientationEvent: unknown }).DeviceOrientationEvent = Object.assign(function () {}, {
+        requestPermission: async () => {
+          (w.__iosAsks as number)++;
+          return w.__iosAnswer;
+        },
+      });
+    }
+  }, opts);

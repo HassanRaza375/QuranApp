@@ -71,7 +71,7 @@ export const useCompass = (bearing: Ref<number | null>, place: Ref<{ lat: number
   }
 
   function updateStatus(force = false) {
-    const nowMs = Date.now();
+    const nowMs = performance.now(); // not Date: the page's clock may be fixed or changed while the compass runs
     if (!force && nowMs - lastStatusAt < STATUS_EVERY_MS) return;
     if (heading.value === null || bearing.value === null) return;
     const text = facing(bearing.value, heading.value, aligned.value).text;
@@ -103,11 +103,17 @@ export const useCompass = (bearing: Ref<number | null>, place: Ref<{ lat: number
     raf = 0;
   }
 
+  /**
+   * iPhone and iPad (Safari, including the iPad's "desktop" mode) need a tap before the sensors may be read. Other browsers,
+   * including desktop Chrome (which also defines requestPermission, answering at once), are listened to straight away.
+   */
+  const needsTapToRead = () => typeof navigator !== "undefined" && (/iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1));
+
   /** The page calls this when it opens. On an iPhone the sensors need a tap first, so it only says so. */
   function start() {
     if (typeof window === "undefined") return;
     const api = (typeof DeviceOrientationEvent !== "undefined" ? DeviceOrientationEvent : null) as unknown as PermissionApi | null;
-    if (api && typeof api.requestPermission === "function") {
+    if (api && typeof api.requestPermission === "function" && needsTapToRead()) {
       mode.value = "needs-permission";
       return;
     }

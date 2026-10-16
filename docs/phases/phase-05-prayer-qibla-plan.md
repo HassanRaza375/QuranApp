@@ -1,4 +1,4 @@
-# Phase 5: Prayer times and Qibla (plan, awaiting approval)
+# Phase 5: Prayer times and Qibla (plan; approved 2026-10-16 with the decisions below)
 
 - Branch: `revamp-design-logic`
 - Prototype: `d-page-prayer` and `m-page-prayer` (`timesHTML`, `qiblaHTML`, `compassSVG`, `dayRows`, `bellHTML`, `updateQibla`, `renderPrayer`).
@@ -6,6 +6,17 @@
 - Offline level: **times B** (after the first month fetch), **Qibla A** once a location is saved (the bearing is calculated on the device; the compass needs no network).
 
 No code is written until this plan is approved. Done before the plan: the goals-count decision was recorded (page doc, PROGRESS.md Phase 15 row, CONTENT_TO_VERIFY.md); the translator and tafsir attribution stays an open item.
+
+## Approval record and the Open-Meteo terms (read before building)
+
+Approved decisions: (1) city search with Open-Meteo plus a latitude and longitude entry as the fallback, after reading its terms; (2) build the declination correction, shipped only if every NOAA test value passes; (3) the tag is **"Latest"**, not "Now", and the app makes no ruling about when a prayer time ends; (4) alignment within 5 degrees, one short vibration on entering it, none repeated, Reduce motion respected; (5) the Kaaba marker in the accent colour; (6) no Arabic prayer names until a verified list is supplied; (7) the countdown in minutes, seconds only in the final minute; (8) the city entry and the saved-times row are shared with Settings.
+
+**Open-Meteo terms, read on 2026-10-16** (`open-meteo.com/en/terms`, `/en/licence`, `/en/docs/geocoding-api`; GeoNames' export page):
+- *Use:* "You may only use the free API services for non-commercial purposes." Their examples of commercial use are operating websites or apps that have subscriptions or display advertisements, and integrating the service into commercial products. A commercial key is needed for those. This app has no accounts, no subscriptions and no advertisements (a local-first free app), so it fits the free, non-commercial use. **If the app ever gains subscriptions or advertising, the place search must move to a commercial key or be removed** (the coordinates entry would remain).
+- *Limits:* "Less than 10'000 API calls per day, 5'000 per hour and 600 per minute" for the free tier. The app makes one request per press of Search, so this is not a concern.
+- *Licence:* "API data are offered under Attribution 4.0 International (CC BY 4.0)"; "You must include a link next to any location Open-Meteo data are displayed", with the example text "Weather data by Open-Meteo.com" linked to https://open-meteo.com/. The geocoding page says "Location data based on GeoNames". GeoNames: "You should give credit to GeoNames when using data or web services with a link or another reference to GeoNames."
+- *What the app does:* the link "Place search by Open-Meteo.com, with location data from GeoNames" (to https://open-meteo.com/) is shown **in the city entry, next to the results**, with a link to the CC BY 4.0 licence, and again under Settings, Data & privacy. Only the typed city is sent; a "Sent to the place search" line shows exactly what was sent. The returned place, region and country are shown on every result so the user confirms the place; nothing says the position is exact.
+- *Not verified:* the terms pages do not define "non-commercial"; this reading is mine, and the app's owner should confirm it fits the intended use.
 
 ## 1. What the legacy app does (read from `pages/prayerTime.vue`, `pages/qibla-direction.vue`, `stores/prayer.js`)
 

@@ -24,7 +24,7 @@ const label = computed(() =>
       <text x="150" y="238" text-anchor="middle" dominant-baseline="middle" font-size="15" fill="var(--ink-2)">S</text>
       <text x="62" y="150" text-anchor="middle" dominant-baseline="middle" font-size="15" fill="var(--ink-2)">W</text>
       <g :transform="`rotate(${bearing} 150 150)`" data-testid="marker">
-        <line x1="150" y1="150" x2="150" y2="44" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 4" />
+        <line x1="150" y1="104" x2="150" y2="44" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 4" />
         <circle cx="150" cy="30" r="11" fill="var(--accent)" />
         <rect x="145.5" y="25.5" width="9" height="9" rx="1.5" fill="var(--background)" />
       </g>
