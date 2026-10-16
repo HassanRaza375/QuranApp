@@ -6,7 +6,7 @@ import { expect, test, type BrowserContext, type Page } from "@playwright/test";
 import { SURAH_ROWS } from "../app/data/quranMeta.generated";
 import { lastRead } from "../app/lib/readingMarker";
 import { loadAndControl } from "./helpers";
-import { forbidRealApis, freezeClock, readStorage, seed } from "./mocks";
+import { forbidRealApis, freezeClock, mockQuranText, readStorage, seed, stubAudio } from "./mocks";
 
 test.use({ serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB", viewport: { width: 1280, height: 900 } });
 let leaks: string[] = [];
@@ -14,42 +14,11 @@ test.beforeEach(async ({ context }) => {
   leaks = await forbidRealApis(context);
   await freezeClock(context);
   await stubAudio(context);
+  await mockQuranText(context);
 });
 test.afterEach(() => {
   expect(leaks, "a test reached a real upstream API").toEqual([]);
 });
-
-/** Replaces the browser's Audio with a recorder; `window.__audio.fail = true` makes play() fail like a missing file. */
-const stubAudio = (context: BrowserContext) =>
-  context.addInitScript(() => {
-    const w = window as unknown as { __audio: { srcs: string[]; rates: number[]; fail: boolean }; Audio: unknown };
-    w.__audio = { srcs: [], rates: [], fail: false };
-    class FakeAudio {
-      src = "";
-      preload = "";
-      playbackRate = 1;
-      h: Record<string, (() => void)[]> = {};
-      addEventListener(n: string, f: () => void) {
-        (this.h[n] ??= []).push(f);
-      }
-      emit(n: string) {
-        (this.h[n] ?? []).forEach((f) => f());
-      }
-      async play() {
-        w.__audio.srcs.push(this.src);
-        w.__audio.rates.push(this.playbackRate);
-        if (w.__audio.fail) {
-          setTimeout(() => this.emit("error"));
-          throw new DOMException("no file", "NotSupportedError");
-        }
-        this.emit("playing");
-      }
-      pause() {
-        this.emit("pause");
-      }
-    }
-    w.Audio = FakeAudio;
-  });
 
 const audio = (page: Page) => page.evaluate(() => (window as unknown as { __audio: { srcs: string[]; rates: number[] } }).__audio);
 const failAudio = (page: Page) => page.evaluate(() => ((window as unknown as { __audio: { fail: boolean } }).__audio.fail = true));
@@ -353,20 +322,23 @@ test.describe("every row opens a route that exists", () => {
       expect(Number(m![1])).toBeLessThanOrEqual(604);
     }
 
-    // follow one of each: the target is a real page that says what it is (the reader phases are not built yet)
-    for (const target of [surahLinks[0]!, juzLinks[3]!, pageLinks[10]!]) {
+    // follow one of each: surah and juz rows open the reader; a page chip opens the placeholder until Phase 9
+    for (const target of [surahLinks[0]!, juzLinks[3]!]) {
       await page.goto(target);
-      await page.waitForLoadState("networkidle");
+      await expect(page.getByTestId("reader-title")).toBeVisible();
       await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
-      await expect(page.getByRole("heading", { level: 1 })).toContainText("not rebuilt yet");
     }
+    await page.goto(pageLinks[10]!);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("not rebuilt yet");
   });
 
-  test("while the readers are not built the listing says so above the list", async ({ page }) => {
-    for (const path of ["/surah-listing", "/juz", "/surah-listing?tab=page"]) {
+  test("only the Page tab says its reader is not built yet (the surah and juz rows open the reader)", async ({ page }) => {
+    for (const path of ["/surah-listing", "/juz"]) {
       await open(page, path);
-      await expect(page.getByTestId("readers-notice")).toContainText("still being moved to the new design");
+      await expect(page.getByTestId("readers-notice")).toHaveCount(0);
     }
+    await open(page, "/surah-listing?tab=page");
+    await expect(page.getByTestId("readers-notice")).toContainText("page reader is still being moved");
   });
 
   test("a click on a page chip navigates inside the app (no full reload)", async ({ page }) => {

@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { BrowserContext, Page, Route } from "@playwright/test";
+import { AYAH_COUNTS } from "../app/lib/quranMeta";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string) => fs.readFileSync(path.resolve(HERE, "../tests/fixtures", name), "utf8");
@@ -106,3 +107,99 @@ export const readStorage = (page: Page) =>
   page.evaluate(() => Object.fromEntries(Object.keys(localStorage).map((k) => [k, localStorage.getItem(k)])));
 
 export const idbNames = (page: Page) => page.evaluate(async () => (await indexedDB.databases()).map((d) => d.name));
+
+// ---- the reader's upstream (quranapi.pages.dev): SYNTHETIC chapters and tafsir with the right ayah counts and obviously
+// fake text, so no Qur'an or tafsir text is stored in a test. Shapes match the service (checked against a real response).
+export const fakeChapter = (n: number) => {
+  const total = AYAH_COUNTS[n - 1]!;
+  const mk = (label: string) => Array.from({ length: total }, (_, i) => `${label} ${n}:${i + 1}`);
+  return {
+    surahName: `TestSurah${n}`,
+    surahNameArabic: "TEST",
+    surahNameArabicLong: `TEST LONG ${n}`,
+    surahNameTranslation: `Test Meaning ${n}`,
+    revelationPlace: "Mecca",
+    totalAyah: total,
+    surahNo: n,
+    audio: {},
+    english: mk("Test English"),
+    arabic1: mk("TEST ARABIC"),
+    arabic2: mk("TEST ARABIC ALT"),
+    bengali: mk("Test Bengali"),
+    urdu: mk("Test Urdu"),
+  };
+};
+
+export const fakeTafsir = (s: number, a: number) => ({
+  surahName: `TestSurah${s}`,
+  surahNo: s,
+  ayahNo: a,
+  tafsirs: [
+    { author: "Ibn Kathir", groupVerse: null, content: `## Heading ${s}:${a}
+
+Ibn Kathir test text for ${s}:${a}. **bold** <b>not markup</b> <script>window.__xss=1</script>` },
+    { author: "Maarif Ul Quran", groupVerse: null, content: `Maarif test text for ${s}:${a}.` },
+    { author: "Tazkirul Quran", groupVerse: `You are reading a tafsir for the group of verses ${s}:${a} to ${s}:${a + 2}`, content: `Tazkir test text for ${s}:${a}.` },
+  ],
+});
+
+export interface QuranTextMock {
+  chapters: number[];
+  tafsirs: string[];
+  /** change what the next requests get */
+  mode: "ok" | "http500" | "network";
+  /** surahs that are never answered (a hung request) */
+  delayMs: number;
+}
+
+export async function mockQuranText(context: BrowserContext, mode: QuranTextMock["mode"] = "ok"): Promise<QuranTextMock> {
+  const state: QuranTextMock = { chapters: [], tafsirs: [], mode, delayMs: 0 };
+  const respond = async (route: Route, body: unknown, record: () => void) => {
+    record();
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    if (state.delayMs) await new Promise((r) => setTimeout(r, state.delayMs));
+    return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify(body) });
+  };
+  await context.route(/https:\/\/quranapi\.pages\.dev\/api\/tafsir\/\d+_\d+\.json/, (route) => {
+    const m = /tafsir\/(\d+)_(\d+)\.json/.exec(route.request().url())!;
+    return respond(route, fakeTafsir(Number(m[1]), Number(m[2])), () => state.tafsirs.push(`${m[1]}_${m[2]}`));
+  });
+  await context.route(/https:\/\/quranapi\.pages\.dev\/api\/\d+\.json/, (route) => {
+    const n = Number(/api\/(\d+)\.json/.exec(route.request().url())![1]);
+    return respond(route, fakeChapter(n), () => state.chapters.push(n));
+  });
+  return state;
+}
+
+/** Replaces the browser's Audio with a recorder; `window.__audio.fail = true` makes play() fail like a missing file. */
+export const stubAudio = (context: BrowserContext) =>
+  context.addInitScript(() => {
+    const w = window as unknown as { __audio: { srcs: string[]; rates: number[]; fail: boolean }; Audio: unknown };
+    w.__audio = { srcs: [], rates: [], fail: false };
+    class FakeAudio {
+      src = "";
+      preload = "";
+      playbackRate = 1;
+      h: Record<string, (() => void)[]> = {};
+      addEventListener(n: string, f: () => void) {
+        (this.h[n] ??= []).push(f);
+      }
+      emit(n: string) {
+        (this.h[n] ?? []).forEach((f) => f());
+      }
+      async play() {
+        w.__audio.srcs.push(this.src);
+        w.__audio.rates.push(this.playbackRate);
+        if (w.__audio.fail) {
+          setTimeout(() => this.emit("error"));
+          throw new DOMException("no file", "NotSupportedError");
+        }
+        this.emit("playing");
+      }
+      pause() {
+        this.emit("pause");
+      }
+    }
+    w.Audio = FakeAudio;
+  });

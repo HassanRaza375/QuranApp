@@ -7,6 +7,7 @@ import { surahHref } from "~/lib/readerLinks";
 defineProps<{
   rows: SurahRow[];
   last: LastRead | null;
+  completed: Set<number>;
   saved: Set<string>;
   currentNo: number | null;
   active: boolean;
@@ -42,10 +43,10 @@ const onClick = (e: MouseEvent) => {
       <div class="flex items-center gap-2 px-1 md:gap-3 md:px-3">
         <span
           class="flex size-9 shrink-0 items-center justify-center rounded-full border text-[13px] tabular-nums"
-          :class="last?.surahNo === s.n ? 'border-brand font-medium' : 'text-ink-2'"
-          :data-testid="last?.surahNo === s.n ? 'last-read-marker' : undefined"
+          :class="completed.has(s.n) ? 'border-brand bg-brand font-medium text-background' : last?.surahNo === s.n ? 'border-brand font-medium' : 'text-ink-2'"
+          :data-testid="completed.has(s.n) ? 'completed-marker' : last?.surahNo === s.n ? 'last-read-marker' : undefined"
         >
-          {{ s.n }}
+          {{ s.n }}<span v-if="completed.has(s.n)" class="sr-only"> (completed)</span>
         </span>
         <a :href="surahHref(s.n)" data-act="open" :data-n="s.n" class="flex min-h-14 min-w-0 flex-1 items-center justify-between gap-3 py-2" :aria-label="`Open ${s.name}, ${s.en}`">
           <span class="min-w-0">

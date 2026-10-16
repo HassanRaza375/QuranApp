@@ -11,6 +11,7 @@ import { filterPlace, PLACE_OPTIONS, SORT_OPTIONS, sortSurahs, type PlaceFilter,
 import { JUZ, TOTAL_PAGES } from "~/lib/quranMeta";
 import { readersPending } from "~/lib/readerLinks";
 import { lastRead, type LastRead } from "~/lib/readingMarker";
+import { readCompleted } from "~/lib/readSurahs";
 import { RECITER_NAMES, reciterName } from "~/lib/surahAudio";
 import { getJSON } from "~/lib/storage";
 import { HISTORY_KEYS } from "~/lib/userState";
@@ -43,6 +44,7 @@ const place = ref<PlaceFilter>("all");
 const savedOnly = ref(false);
 const saved = ref<Set<string>>(new Set());
 const last = ref<LastRead | null>(null);
+const completed = ref<Set<number>>(new Set());
 const pageEl = ref<HTMLElement | null>(null);
 
 const refreshSaved = () => {
@@ -51,6 +53,7 @@ const refreshSaved = () => {
 onMounted(() => {
   refreshSaved();
   last.value = lastRead(getJSON<unknown>(HISTORY_KEYS.readingProgress, null));
+  completed.value = new Set(readCompleted().keys());
 });
 
 watch(
@@ -192,8 +195,13 @@ onBeforeUnmount(() => clearTimeout(flashTimer));
         </Button>
       </div>
 
-      <p v-if="readersPending()" class="text-[12.5px] text-ink-2" data-testid="readers-notice">
-        The reading pages are still being moved to the new design, so opening a {{ tab === "page" ? "page" : tab === "juz" ? "juz" : "surah" }} shows a placeholder for now.
+      <p v-if="readersPending() && tab === 'page'" class="text-[12.5px] text-ink-2" data-testid="readers-notice">
+        The page reader is still being moved to the new design, so opening a page shows a placeholder for now.
+      </p>
+
+      <p v-if="tab === 'surah' && (completed.size || last)" class="flex items-center gap-4 text-[12px] text-ink-2" data-testid="legend">
+        <span v-if="completed.size" class="inline-flex items-center gap-1.5"><span aria-hidden="true" class="inline-block size-2.5 rounded-full bg-brand" />Completed</span>
+        <span v-if="last" class="inline-flex items-center gap-1.5"><span aria-hidden="true" class="inline-block size-2.5 rounded-full border border-brand" style="background: linear-gradient(90deg, var(--accent) 50%, transparent 50%)" />Last read</span>
       </p>
 
       <p v-if="last && tab === 'surah'" class="text-[13px]" data-testid="last-read-line">
@@ -213,6 +221,7 @@ onBeforeUnmount(() => clearTimeout(flashTimer));
         v-if="tab === 'surah' && surahRows.length"
         :rows="surahRows"
         :last="last"
+        :completed="completed"
         :saved="saved"
         :current-no="currentNo"
         :active="active"
