@@ -31,9 +31,15 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [x] "Reminders only appear while Quran App is open." matches what the code does (timers in the open page; no push, no scheduled notifications).
 - [ ] The marja' names come from the legacy Daily Fiqh data (`app/data/wajibat/marja.ts`); that data has its own verification record in `wajibat_decisions.md`.
 
-**Surah reader**
-- [ ] Al-Fatihah Arabic (7 ayahs) and its translations in the prototype.
-- [ ] Revelation order numbers used for sorting the 8 sample surahs.
+**Surah reader (Phase 4A)**
+- [x] Al-Fatihah Arabic and the translations in the prototype: not used; the reader shows the service's real text (all 114 chapters validated against the real service on 2026-10-16).
+- [x] Revelation order numbers: not used (no revelation-order sort).
+- [x] The bismillah: never typed; read from the data of surah 1 (checked that no surah's first ayah repeats it).
+- [ ] **Translators:** the English, Urdu, Bengali and Arabic (Alt) texts have **no translator named anywhere in the data**. Supply the names and they become labels in the Translation menu.
+- [ ] **Tafsir authors and schools:** the data names Ibn Kathir, Maarif Ul Quran and Tazkirul Quran only. The reader makes no claim about their schools (the legacy page said "Sunni sources"; that is not carried over). Supply any attribution you want shown.
+- [ ] "No Ja’fari tafsir is available from this app’s data provider." is the legacy page's own statement (without "Sunni sources"); it has not been checked against the provider's full list.
+- [ ] The "Mark as read" rule (end reached and 90% counted, one visit) and the 1.5 s reading rule are decisions, not facts; the daily-log counts differ from the legacy app (see the phase doc).
+- [ ] The prototype's per-ayah tafsir "sample excerpt" text was not used.
 
 **Surah listing, Juz, Page**
 - [x] Juz start points and page starts: replaced by the `/v1/meta` response of api.alquran.cloud (30 juz, 604 pages, every reference checked against the legacy ayah counts; `tests/quranMeta.test.ts` compares the generated tables with a recorded response). Not compared with a printed mushaf.

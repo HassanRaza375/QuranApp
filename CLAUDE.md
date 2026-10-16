@@ -75,6 +75,12 @@ For feature behaviour, the legacy docs still win: `/MODULE_BLUEPRINT.md`, `/PROJ
 - Long lists (the 114 surah rows) use plain elements and one delegated click handler (`data-act`, `data-n`), not a component per row: per-row components made the Surah tab's longest task 591 ms at 4x CPU (Phase 3, `docs/phases/phase-03-surah-listing.md`). Measure with the throttled test in `e2e/listing.spec.ts` before adding per-row components.
 - Audio in browser tests: `stubAudio` in `e2e/listing.spec.ts` replaces `window.Audio` with a recorder (`window.__audio`); the store creates its element lazily, so the stub works. No test plays real audio.
 - Reader links come from `app/lib/readerLinks.ts`; flip `READERS_READY` when a reader phase ships.
+- Browser tests of the reader mock `quranapi.pages.dev` with `mockQuranText` (`e2e/mocks.ts`): synthetic chapters (right counts, obviously fake text). Mocked routes **answer even when `context.setOffline(true)`**, so to test "offline" also set `api.mode = "network"`; and route interception disables the browser cache, so an offline test must navigate **in the app** (a full page load drops the already-loaded route code).
+- Reading time in the page uses `performance.now()`, not `Date`: tests fix `Date` with `context.clock.setFixedTime`. On Windows the clipboard turns `
+` into `
+`; normalise before comparing.
+- The reader's new keys are additive and the legacy app ignores them: `quran:reader-prefs:v1`, `quran:pins:v1`, `quran:read-surahs:v1`. `quran-revamp-db` is at version 2 (`chapters`, `tafsirs`); never open `quran-app-db` (a test scans for it).
+- `scripts/live/*.live.ts` check the real services by hand (`npx vitest run --config scripts/live/vitest.config.ts`); they are not in CI.
 - Nuxt does not auto-import from `app/services/`. Import `useQuranApi` and friends explicitly (`tests/services.test.ts` covers every service).
 - Legacy files import their data with `~/...`; `build/legacyBridge.ts` redirects those imports to the legacy folder. A legacy file that does a *dynamic* `~/` import (for example `quranAyahCounts.js`) is not rewritten under Vitest; do not call such functions from tests or from revamp code.
 - Tests never use the real upstream APIs: mock them (`e2e/mocks.ts`) and fix the clock. Errors that a `catch` swallows (like the ayah of the day's) are logged with `console.debug`.

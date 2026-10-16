@@ -95,6 +95,16 @@ Reading a raw key through `JSON.parse` fails silently, so the revamp's `app/lib/
 - `layouts/default.vue` calls `prayer.init()` on every page, which also asks the browser for the device location as soon as the app opens, and falls back **silently to Lahore** if it is refused or unavailable (a small line in Settings says so).
 - The legacy Settings has no Reset and no Asr, method, Hijri, Wi-Fi or verse-layout settings; it writes `preferredVerseDisplay` (which text the reader shows) from its "Default verse display" and the reader's tabs.
 
+## The legacy Surah reader (read in Phase 4A)
+
+- **Data:** `GET quranapi.pages.dev/api/<n>.json` has the names, place, ayah count, five `audio` entries and five texts of the same length (`arabic1` with marks, `arabic2` plain, `english`, `urdu`, `bengali`); Al-Baqarah is 527 KB. Tafsir is one request per ayah, `/api/tafsir/<s>_<a>.json`, with `tafsirs: [{ author, groupVerse, content }]` for Ibn Kathir, Maarif Ul Quran and Tazkirul Quran (a `groupVerse` note can come with any of them; the largest seen was 51 KB). The content is markdown-lite, rendered by `renderTafsirMarkdown` (escape first).
+- **Cache:** IndexedDB `quran-app-db` (`chapters`, `tafsirs`), then the service worker's `quran-api-cache`. The revamp never opens `quran-app-db`.
+- **Display:** a text tab (`preferredVerseDisplay`) replaces the Arabic with another text; a per-ayah Translation panel (choosing sets `translationDefaultLang`) and a per-ayah Tafsir panel (choosing sets `tafsirDefaultAuthor`). The Tafsir picker said "Sunni sources, no Shia/Ja'fari tafsir is available from this app's data provider".
+- **No bismillah** is shown (the data has it only as ayah 1 of surah 1; no other surah's first ayah repeats it, checked for all 114). **No pin** exists. The Save star had no Undo.
+- **`#ayah-N` links** (Home, Library, Goals) are produced everywhere but nothing scrolls to the hash after the async load.
+- **Progress:** a scroll listener (400 ms) writes the last ayah above 35% of the screen to `quran:reading-progress:v1` (`surahName` is the English meaning, `surahNameArabic` the long Arabic name); ayah 1 is skipped. Each tracked ayah also appends `"<s>:<a>"` to `quran:reading-goals:v1` `dailyLog[<local day>]`, only the ayah the pause landed on, so a steady scroll logs almost nothing.
+- Per-ayah audio always used reciter 1's file (`verse.audio["1"]`).
+
 ## `ayah-of-day`: two legacy bugs (found in Phase 1)
 
 - **UTC date.** `useAyahOfTheDay` stores `{ date: new Date().toISOString().slice(0, 10), data }` and compares the stored `date` with the same UTC date. The ayah therefore changes at UTC midnight, not at the user's midnight: at 05:00 local time in Pakistan (UTC+5), in the evening in the US. From local midnight to 05:00 in UTC+5 the app still treats yesterday as today.
