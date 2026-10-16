@@ -116,7 +116,7 @@ See `docs/CONTENT_TO_VERIFY.md` (Settings items).
 ## Open issues and risks
 
 1. **Notifications while closed are not possible** without a backend (stated on the page). Reminders in a paused tab can be late; a missed one older than 5 minutes is skipped.
-2. **Asr (Hanafi) explanation text** ("when a shadow is twice the object's length") comes from the prototype and has not been checked against a source; listed in CONTENT_TO_VERIFY.md.
+2. **Asr (Hanafi) explanation text:** softened after review to "Hanafi uses the later Asr time." (the prototype's fuller sentence had no verified source); see CONTENT_TO_VERIFY.md.
 3. **Real-device checks** (notifications, GPS, Wi-Fi detection on Chrome for Android) are not done.
 4. The calculation-method choice is not visible to the legacy app (after a rollback it shows ISNA or Leva).
 5. Reading: the Surah reader (Phase 4) will use `verseLayout` and the effective default translation; until then only the preview and Home use them.

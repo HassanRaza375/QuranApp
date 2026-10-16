@@ -92,7 +92,7 @@ const savedText = computed(() => {
         <SettingsRow label="Calculation method">
           <ResponsiveMenu :model-value="methodValue" :options="methodOptions" label="Calculation method" @update:model-value="setMethod" />
         </SettingsRow>
-        <SettingsRow v-if="p.fiqh === 'sunni'" label="Asr calculation" desc="Hanafi uses the later Asr time, when a shadow is twice the object’s length.">
+        <SettingsRow v-if="p.fiqh === 'sunni'" label="Asr calculation" desc="Hanafi uses the later Asr time.">
           <template #default="{ labelId }">
             <SettingsSegmentedControl :model-value="p.calc.asr" :options="asrOptions" label="Asr calculation" :labelledby="labelId" @update:model-value="(v) => store.set('calc', { ...p.calc, asr: v as 'standard' | 'hanafi' })" />
           </template>

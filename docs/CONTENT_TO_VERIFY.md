@@ -23,9 +23,9 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 **Settings (Phase 2)**
 - [x] Calculation method names and ids: replaced by the service's own list; `tests/settingsLogic.test.ts` compares each of the seven with a recorded `GET /v1/methods`. The prototype's shortened labels are not used.
 - [ ] **Calculation defaults** (ISNA for Sunni, Leva Institute for Ja'fari) are the legacy app's, decided in the Phase 2 review. Many users in South Asia use the Karachi method; the choice is theirs, the default is not changed.
-- [ ] **Asr (Hanafi) description** in the Asr row, "Hanafi uses the later Asr time, when a shadow is twice the object's length", comes from the prototype and has not been checked against a source.
+- [x] **Asr (Hanafi) description** softened (Phase 3 review) to "Hanafi uses the later Asr time." The fuller sentence from the prototype ("when a shadow is twice the object's length") was removed because it has no verified source. Restore it only with a named source.
 - [ ] **Hijri adjustment wording** ("match your local moon sighting") comes from the prototype; the preview shows the service's own Hijri dates, not a calculation of ours.
-- [ ] **Ja'fari methods** (Leva and Tehran) have only been compared between AlAdhan's monthly and daily endpoints, not with an independent source (same open item as under Prayer and Qibla below).
+- [ ] **Ja'fari methods** (Leva and Tehran) have only been compared between AlAdhan's monthly and daily endpoints, not with an independent source. **Must be done before cutover** (compare several cities and months with the Leva Institute's own tables or another trusted source); same item as under Prayer and Qibla below. Tracked in PROGRESS.md under Phase 16.
 - [x] The Reading preview: no prototype ayah is used; it shows today's real ayah or a real surah name from the legacy data.
 - [x] The iPhone note: the Home Screen requirement is from the WebKit post "Web Push for Web Apps on iOS and iPadOS" (webkit.org/blog/13878); the app shows it only on an iPhone or iPad whose browser has no Notification API.
 - [x] "Reminders only appear while Quran App is open." matches what the code does (timers in the open page; no push, no scheduled notifications).
