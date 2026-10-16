@@ -1,0 +1,74 @@
+{
+ "Lahore": {
+  "code": 200,
+  "status": "OK",
+  "data": {
+   "latitude": 31.5204,
+   "longitude": 74.3587,
+   "direction": 260.36585743487194
+  }
+ },
+ "Leicester": {
+  "code": 200,
+  "status": "OK",
+  "data": {
+   "latitude": 52.6386,
+   "longitude": -1.13169,
+   "direction": 118.9196620099105
+  }
+ },
+ "Sydney": {
+  "code": 200,
+  "status": "OK",
+  "data": {
+   "latitude": -33.8688,
+   "longitude": 151.2093,
+   "direction": 277.499589412883
+  }
+ },
+ "New York": {
+  "code": 200,
+  "status": "OK",
+  "data": {
+   "latitude": 40.7128,
+   "longitude": -74.006,
+   "direction": 58.481712034206865
+  }
+ },
+ "Jakarta": {
+  "code": 200,
+  "status": "OK",
+  "data": {
+   "latitude": -6.2088,
+   "longitude": 106.8456,
+   "direction": 295.15174505875416
+  }
+ },
+ "Cape Town": {
+  "code": 200,
+  "status": "OK",
+  "data": {
+   "latitude": -33.9249,
+   "longitude": 18.4241,
+   "direction": 23.35250070951438
+  }
+ },
+ "Tehran": {
+  "code": 200,
+  "status": "OK",
+  "data": {
+   "latitude": 35.6892,
+   "longitude": 51.389,
+   "direction": 218.4011385087993
+  }
+ },
+ "Toronto": {
+  "code": 200,
+  "status": "OK",
+  "data": {
+   "latitude": 43.6532,
+   "longitude": -79.3832,
+   "direction": 54.58063724375705
+  }
+ }
+}

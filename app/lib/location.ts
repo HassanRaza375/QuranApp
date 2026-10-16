@@ -9,8 +9,11 @@ export const LEGACY_LOCATION_KEY = "last_location"; // legacy, read-only: { lat,
 export interface SavedLocation {
   lat: number;
   lon: number;
-  source: "device" | "legacy";
+  /** "manual" (Phase 5) is a place the user searched for or typed as coordinates; the legacy app never reads this key */
+  source: "device" | "legacy" | "manual";
   updatedAt: number;
+  /** a name to confirm the place by ("Leicester, England, United Kingdom"), for manual places found by name */
+  label?: string;
 }
 
 const valid = (lat: unknown, lon: unknown): lat is number =>
@@ -19,7 +22,9 @@ const valid = (lat: unknown, lon: unknown): lat is number =>
 export function readLocation(): SavedLocation | null {
   const own = getJSON<Partial<SavedLocation> | null>(LOCATION_KEY, null);
   if (own && valid(own.lat, own.lon)) {
-    return { lat: own.lat, lon: own.lon as number, source: own.source === "legacy" ? "legacy" : "device", updatedAt: Number(own.updatedAt) || 0 };
+    const source = own.source === "legacy" || own.source === "manual" ? own.source : "device";
+    const label = typeof own.label === "string" && own.label.trim() ? own.label.trim() : undefined;
+    return { lat: own.lat, lon: own.lon as number, source, updatedAt: Number(own.updatedAt) || 0, ...(label ? { label } : {}) };
   }
   const old = getJSON<{ lat?: unknown; lng?: unknown } | null>(LEGACY_LOCATION_KEY, null);
   if (old && valid(old.lat, old.lng)) return { lat: old.lat, lon: old.lng as number, source: "legacy", updatedAt: 0 };

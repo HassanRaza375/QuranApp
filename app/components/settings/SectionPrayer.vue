@@ -2,18 +2,16 @@
 // Prayer & location: fiqh, calculation method, Asr school, Hijri adjustment, the Daily Fiqh marja', the place, and the
 // saved prayer times with Update now. No silent default city: with no place the page says "Set location".
 import { MARAJI } from "@legacy/data/wajibat/marja";
-import { useOnline } from "@vueuse/core";
 import type { Segment } from "./SegmentedControl.vue";
 import type { MenuOption } from "~/components/ResponsiveMenu.vue";
 import { methodsFor } from "~/lib/calcMethods";
 import { formatHijri, hijriPreview } from "~/lib/hijri";
-import { dateKeyInZone, lastUpdatedText } from "~/lib/prayerClock";
+import { dateKeyInZone } from "~/lib/prayerClock";
 
 const store = usePreferencesStore();
 const p = computed(() => store.prefs);
 const prayer = usePrayerTimes();
-const { location, loaded, asking, error: locationError, load: loadLocation, requestDevice } = useLocation();
-const online = useOnline();
+const { location, loaded, load: loadLocation } = useLocation();
 
 const fiqhOptions: Segment[] = [
   { value: "sunni", label: "Sunni" },
@@ -34,7 +32,6 @@ const marjaOptions: MenuOption[] = [
   ...MARAJI.map((m) => ({ value: m.id, label: m.status === "pending-sources" ? `${m.name.en} (rulings being added)` : m.name.en })),
 ];
 
-const fiqhName = computed(() => (p.value.fiqh === "jafari" ? "Ja’fari" : "Sunni"));
 
 onMounted(async () => {
   if (!loaded.value) loadLocation();
@@ -49,34 +46,6 @@ const preview = computed(() => {
   return hijriPreview(days, dateKeyInZone(new Date(prayer.now.value), tz), p.value.hijriAdjust);
 });
 
-/* ---- place ---- */
-const place = computed(() => (location.value ? `${location.value.lat.toFixed(2)}, ${location.value.lon.toFixed(2)}` : ""));
-async function useMyLocation() {
-  if (await requestDevice()) await prayer.load();
-}
-
-/* ---- saved prayer times ---- */
-const monthLabel = (m: string) => new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1).toLocaleDateString("en-GB", { month: "long", year: "numeric" });
-const months = computed(() => [prayer.record.value, prayer.nextRecord.value].filter(Boolean).map((r) => monthLabel(r!.month)).join(" and "));
-const updated = computed(() => (prayer.record.value ? lastUpdatedText(prayer.record.value.fetchedAt, new Date(prayer.now.value)) : ""));
-const updating = ref(false);
-const updateMessage = ref("");
-async function updateNow() {
-  updating.value = true;
-  updateMessage.value = "";
-  await prayer.refresh();
-  updating.value = false;
-  const f = prayer.failure.value;
-  updateMessage.value = f ? `Couldn’t update (${f.reason}). The saved times are still in use.` : `Updated just now for ${months.value}.`;
-}
-const savedText = computed(() => {
-  if (!location.value) return "Set your location first. Prayer times are saved for the place you choose.";
-  if (updating.value) return "Updating… the saved times stay in use until the new ones arrive.";
-  if (prayer.status.value === "loading") return `Loading ${fiqhName.value} times…`;
-  if (!prayer.record.value) return `Saved times for ${fiqhName.value}: none yet. They need a connection once.`;
-  if (!online.value) return `You’re offline, so the saved times are still in use. Last updated ${updated.value}.`;
-  return `Saved for ${months.value}, so Home works offline. Last updated ${updated.value}. The app refreshes itself when fewer than 7 days are left.`;
-});
 </script>
 
 <template>
@@ -116,23 +85,8 @@ const savedText = computed(() => {
     <div>
       <h3 class="mb-2 px-1 text-[12px] font-semibold uppercase tracking-wide text-ink-2">Location</h3>
       <SettingsGroup>
-        <SettingsRow label="Location" :desc="location ? `Using your saved place (${place}). It stays on this device.` : 'Not set yet. Prayer times and Qibla direction need your location.'">
-          <Button variant="outline" class="min-h-11 gap-2 md:min-h-9" :disabled="asking" :aria-busy="asking" data-testid="use-location" @click="useMyLocation">
-            <Icon name="lucide:map-pin" size="15" />{{ asking ? "Asking…" : location ? "Use my location" : "Set location" }}
-          </Button>
-          <template #extra>
-            <span v-if="locationError" class="mt-1 block text-[12.5px] text-destructive" role="status" data-testid="location-error">{{ locationError }}</span>
-          </template>
-        </SettingsRow>
-        <SettingsRow label="Saved prayer times" :desc="savedText">
-          <Button variant="outline" class="min-h-11 gap-2 md:min-h-9" :disabled="!location || !online || updating" data-testid="update-now" @click="updateNow">
-            <Icon name="lucide:refresh-cw" size="15" />{{ updating ? "Updating" : "Update now" }}
-          </Button>
-          <template #extra>
-            <span v-if="!online && location" class="mt-1 block text-[12.5px] text-ink-2" data-testid="update-offline">You’re offline. Update now needs a connection.</span>
-            <span v-if="updateMessage" class="mt-1 block text-[12.5px] text-ink-2" role="status" data-testid="update-message">{{ updateMessage }}</span>
-          </template>
-        </SettingsRow>
+        <PrayerLocationRow />
+        <PrayerSavedRow />
       </SettingsGroup>
     </div>
   </div>

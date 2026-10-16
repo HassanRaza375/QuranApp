@@ -77,6 +77,9 @@ async function clearAll() {
           <span v-if="exportMessage" class="mt-1 block text-[12.5px] text-ink-2" role="status" data-testid="export-message">{{ exportMessage }}</span>
         </template>
       </SettingsRow>
+      <SettingsRow label="Place search" desc="Entering a city sends only the city you type to Open-Meteo’s place search, when you press Search. Prayer times are fetched from AlAdhan for your saved place. Nothing else leaves this device." data-testid="privacy-place-search">
+        <a href="https://open-meteo.com/" class="inline-flex min-h-11 items-center text-[12.5px] text-brand underline md:min-h-9" target="_blank" rel="noopener noreferrer">Place search by Open-Meteo.com, with location data from GeoNames</a>
+      </SettingsRow>
       <SettingsRow label="Reset settings" desc="Restore every setting to its default. Your bookmarks, progress, saved place and Daily Fiqh marja’ are kept.">
         <Button variant="outline" class="min-h-11 md:min-h-9" data-testid="reset" @click="reset">Reset settings</Button>
       </SettingsRow>

@@ -70,6 +70,22 @@ export function countdownText(ms: number): string {
   return h > 0 ? `${h}h ${m}m` : `${m}m`;
 }
 
+/**
+ * The countdown on the Prayer page: minutes (the Home rule), and seconds only in the final minute ("42s"), so the screen does
+ * not tick every second for hours. A prayer time that has just passed reads "now".
+ */
+export function countdownLabel(ms: number): string {
+  if (ms <= 0) return "now";
+  if (ms < 60_000) return `${Math.ceil(ms / 1000)}s`;
+  return countdownText(ms);
+}
+
+/** How far `now` is from `from` to `to`, 0 to 1 (clamped); null when either end is not known. */
+export function fractionBetween(from: Date | null, to: Date | null, now: Date): number | null {
+  if (!from || !to || to.getTime() <= from.getTime()) return null;
+  return Math.min(1, Math.max(0, (now.getTime() - from.getTime()) / (to.getTime() - from.getTime())));
+}
+
 /** "04:32" -> "4:32 AM". */
 export function formatClock12(hhmm: string): string {
   const h = Number(hhmm.slice(0, 2));
