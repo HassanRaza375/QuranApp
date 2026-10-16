@@ -17,6 +17,12 @@ const readAddedAt = (): Record<string, number> => {
   return v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, number>) : {};
 };
 
+/** When the key was first saved (milliseconds), so an Undo can put the original time back. */
+export const bookmarkAddedAt = (key: string): number | undefined => readAddedAt()[key];
+export const listBookmarks = (): string[] => readList();
+export const surahBookmarkKey = (surah: number) => `surah:${surah}`;
+export const juzBookmarkKey = (juz: number) => `juz:${juz}`;
+
 export const hasBookmark = (key: string): boolean => readList().includes(key);
 
 export function addBookmark(key: string, now = Date.now()): void {
