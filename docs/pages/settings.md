@@ -17,6 +17,10 @@ Every preference in one place. Changes are saved at once on this device, in the 
 - Each section: a `h2` with the section name, "Changes save automatically on this device.", then bordered groups of rows. A row has a label and description and one control (below the text on mobile). A switch row is one tap target across the whole row (56px).
 - One `h1` ("Settings", visually hidden; the header shows the title).
 
+## Added in Phase 5
+
+- Prayer & location now uses the same **Location** and **Saved prayer times** rows as the Prayer page: Set location or Use my location, **Enter a city** (a place search plus a coordinates entry), and Update now. Data & privacy gained a **Place search** row (what is sent, and the Open-Meteo attribution).
+
 ## Sections
 
 | Section | Controls |

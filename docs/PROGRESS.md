@@ -10,7 +10,7 @@ Update this file at the end of every phase.
 | 3 | Surah listing, Juz, Page | **Done, awaiting review** (2026-10-16) | [phase-03-surah-listing](phases/phase-03-surah-listing.md), [plan](phases/phase-03-surah-listing-plan.md) | [surah-listing](pages/surah-listing.md) |
 | 4A | Surah reader | **Done, awaiting review** (2026-10-16) | [phase-04a-surah-reader](phases/phase-04a-surah-reader.md), [plan](phases/phase-04a-surah-reader-plan.md) | [surah-reader](pages/surah-reader.md) |
 | 4B | Full player (seeking, resume, repeat, auto-next, per-ayah audio, player sheet) | Not started (split from Phase 4, see the 4A plan) | | |
-| 5 | Prayer and Qibla | **Plan written, awaiting approval** | [plan](phases/phase-05-prayer-qibla-plan.md) | |
+| 5 | Prayer and Qibla | **Done, awaiting review** (2026-10-16) | [phase-05-prayer-qibla](phases/phase-05-prayer-qibla.md), [plan](phases/phase-05-prayer-qibla-plan.md) | [prayer-qibla](pages/prayer-qibla.md) |
 | 6 | Library | Not started | | |
 | 7 | Prophets & People and Stories | Not started | | |
 | 8 | Ramadan and events | Not started | | |
@@ -45,7 +45,7 @@ Update this file at the end of every phase.
 | 4B | The image share card is its own later phase (no prototype screen; plain share is in the reader and on Home); extend `usePlayerStore` (seeking, `quran:audio-resume:v1`, repeat, auto-next from `prefs.autoplay`, per-ayah audio, Media Session); (the surah and juz flags were flipped in 4A; the reader now writes `quran:read-surahs:v1`, which the listing draws); per-ayah play and download go into the tools row of `components/reader/AyahList.vue`; **check the 210 generic-type audio files on real phones first** (`docs/audio-url-check.md`); the reader uses `verseLayout`, `effectiveTranslationLang` (explicit choice, else the legacy reader's text tab) and the tafsir default; playback speed and auto-play are in `prefs` |
 | 15 | Reading goals reads the `dailyLog` the reader writes: since 4A an ayah counts after about 1.5 s on screen (the legacy reader logged only the ayah a pause landed on). **Approved:** goal counts read higher than in the legacy app (about 60% higher for a careful reader in the simulation), so **pace targets may need recalibrating** here. Counts recorded before and after cutover use different rules and are **not merged or converted**; the new rule applies from cutover |
 | 9 | Flip `READERS_READY.page` when `/per-page-read` is rebuilt |
-| 5 | Manual city entry and the Prayer and Qibla pages; Update now also goes on the Prayer page (`usePrayerTimes().refresh()`; it is already in Settings). The Hijri adjustment is consumed by the Ramadan and Calendar pages |
+| 5 (done) | The Prayer and Qibla pages, the city entry and the saved-times row (shared with Settings) are built; the Hijri adjustment is applied on the Prayer page (reading the neighbouring cached day) and is still to be consumed by the Ramadan and Calendar pages. **WMM2025 (the declination model) is valid to 2030: replace the coefficients (`scripts/gen-wmm.mjs`, NOAA's next model) before then** |
 | 7 | Home's second resume row switches from the persons-study state to story chapters, with a new key (for example `quran:stories-progress:v1`); one adapter, `useHomeState` |
 | 8 | Ramadan banner on Home; the Sha'ban prefetch of the Ramadan month in the prayer cache |
 | 6 | The Library shows `quran:pins:v1` ("Where I stopped") and can read `quran:read-surahs:v1`; saved ayahs use the same bookmark keys the reader writes |

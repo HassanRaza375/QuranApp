@@ -105,6 +105,12 @@ Reading a raw key through `JSON.parse` fails silently, so the revamp's `app/lib/
 - **Progress:** a scroll listener (400 ms) writes the last ayah above 35% of the screen to `quran:reading-progress:v1` (`surahName` is the English meaning, `surahNameArabic` the long Arabic name); ayah 1 is skipped. Each tracked ayah also appends `"<s>:<a>"` to `quran:reading-goals:v1` `dailyLog[<local day>]`, only the ayah the pause landed on, so a steady scroll logs almost nothing.
 - Per-ayah audio always used reciter 1's file (`verse.audio["1"]`).
 
+## The legacy Prayer and Qibla pages (read in Phase 5)
+
+- **`/prayerTime`:** a header card, five cards (no Sunrise, Jumu'ah, "Now", bell, calculation or location rows), a Refresh button. Daily endpoint, cached in `localStorage` per day (`prayer_<lat>_<lon>_<fiqh>_<day>`, never cleaned). Location asked for on every page load, with a **silent fall back to Lahore**. After Isha it showed "Fajr" with today's time moved by a day. A one-second countdown.
+- **`/qibla-direction`:** the same spherical formula; the needle follows `deviceorientation` **`alpha`, which on Chrome for Android is not referenced to north** (north-referenced values come from `deviceorientationabsolute`); no tilt or screen-rotation handling; no magnetic-declination correction; a 2-degree threshold with a vibration every 2 seconds while aligned; `removeEventListener` without the capture flag it was added with (a listener leak); no message for a missing sensor or a refused permission.
+- **AlAdhan city endpoints** (checked 2026-10-16): `calendarByCity` returns times but placeholder coordinates (8.8888888, 7.7777777) for any city, an unknown city is HTTP 400, `/v1/cityInfo` is 404; `/v1/qibla/<lat>/<lon>` works (and agrees with the app's formula).
+
 ## `ayah-of-day`: two legacy bugs (found in Phase 1)
 
 - **UTC date.** `useAyahOfTheDay` stores `{ date: new Date().toISOString().slice(0, 10), data }` and compares the stored `date` with the same UTC date. The ayah therefore changes at UTC midnight, not at the user's midnight: at 05:00 local time in Pakistan (UTC+5), in the evening in the US. From local midnight to 05:00 in UTC+5 the app still treats yesterday as today.

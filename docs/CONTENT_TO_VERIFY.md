@@ -64,7 +64,13 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] Arabic snippets for 2:255, 2:286 and 18:10, and all sample notes, tags and collection names.
 
 **Prayer and Qibla**
-- [ ] All prayer times, the Hijri date, the Qibla bearing (260.4°) and the Hanafi Asr sample time.
+- [x] The prototype's sample times, Hijri date ("29 Rabīʿ al-awwal 1448") and Hanafi Asr sample: not used; the page shows the service's real times and Hijri date. The Qibla bearing is checked against AlAdhan's own `/v1/qibla` for eight cities (agrees to better than 0.001°). The prototype's cardinal label for 260.4° ("West-southwest") was wrong: it is "West".
+- [ ] **The Hijri date** (15 Oct 2026 = 4 Jumādá al-ūlá 1448 from the service) against a calendar you trust, and the adjustment at a month edge.
+- [ ] **"Latest"** is the most recent start time that has passed; the app makes no ruling about when a prayer time ends (same tag for both fiqhs). Confirm the wording is what you want.
+- [ ] **Arabic prayer names** are left out; supply a verified list to add them.
+- [ ] **Open-Meteo place search:** its free API is for non-commercial use (CC BY 4.0, attribution link shown). The terms do not define "non-commercial"; confirm the app qualifies (no subscriptions or advertising), or the search must move to a commercial key.
+- [ ] **Compass on real devices:** the declination correction (checked against NOAA's published test values, not on a phone), the sign of the landscape correction, whether the iPhone heading is already true, and the iPhone refusal wording.
+- [ ] The sentence "Corrected for your location ... using the World Magnetic Model, valid to 2030" matches NOAA's statement (WMM2025 valid 2025.0 to 2030.0; NOAA's page also says "valid until late 2029").
 - [ ] Calculation method names (ISNA, MWL, Umm al-Qura, Karachi, Egyptian; Leva Qom and Tehran for Ja'fari) must match what AlAdhan actually supports.
 - [ ] The monthly cache must be compared with live AlAdhan responses for the Ja'fari method.
 
