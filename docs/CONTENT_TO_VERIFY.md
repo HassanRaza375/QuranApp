@@ -36,8 +36,12 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] Revelation order numbers used for sorting the 8 sample surahs.
 
 **Surah listing, Juz, Page**
-- [ ] Juz start points (for example 3:93 vs 3:92 for Juz 4, 5:82 for Juz 7) and the transliterated Juz names. Use the legacy Juz table.
-- [ ] Page ranges per Juz (Juz 1 = pages 1 to 21, Juz 2 to 29 = 20 pages each, Juz 30 = 582 to 604) and the page-to-surah starts used for the first 186 pages.
+- [x] Juz start points and page starts: replaced by the `/v1/meta` response of api.alquran.cloud (30 juz, 604 pages, every reference checked against the legacy ayah counts; `tests/quranMeta.test.ts` compares the generated tables with a recorded response). Not compared with a printed mushaf.
+- [ ] **Juz names** (transliterated and Arabic) are not shipped: there is no verified source. Supply a verified list and it becomes a data file.
+- [ ] **Revelation order:** not built (several traditional orders disagree). Name the source and the order and it becomes a small data file.
+- [x] Page ranges per juz: derived from the tables above (Juz 1 = pages 1 to 21 as the prototype said, but the rest are not 20 pages each; juz 4, 7, 11 and 26 start partway down a page and share it with the juz before). The prototype's page-to-surah table is not used.
+- [ ] The audio files are third-party URLs from the legacy data; one was fetched on 2026-10-16, the other 569 were not.
+- [ ] "Name (A to Z)" ignores the article (Al-, An- ...); the legacy sort did not. Confirm it is what you want.
 
 **Story reader**
 - [ ] The ten Arabic excerpts (12:4, 12:18, 12:23, 12:55, 12:90, 12:92, 2:34, 7:12, 2:35, 7:23) and their English wording.

@@ -7,7 +7,7 @@ Update this file at the end of every phase.
 | 0 | Foundation | Approved 2026-10-15; follow-ups done | [phase-00-foundation](phases/phase-00-foundation.md) | [app-shell](pages/app-shell.md), [foundation](pages/foundation.md), [placeholders](pages/placeholders.md) |
 | 1 | Home | Approved 2026-10-15 | [phase-01-home](phases/phase-01-home.md), [plan](phases/phase-01-home-plan.md) | [home](pages/home.md) |
 | 2 | Settings | Approved 2026-10-16 | [phase-02-settings](phases/phase-02-settings.md), [plan](phases/phase-02-settings-plan.md) | [settings](pages/settings.md) |
-| 3 | Surah listing, Juz, Page | **Plan written, awaiting approval** | [plan](phases/phase-03-surah-listing-plan.md) | |
+| 3 | Surah listing, Juz, Page | **Done, awaiting review** (2026-10-16) | [phase-03-surah-listing](phases/phase-03-surah-listing.md), [plan](phases/phase-03-surah-listing-plan.md) | [surah-listing](pages/surah-listing.md) |
 | 4 | Surah reader and full player | Not started | | |
 | 5 | Prayer and Qibla | Not started | | |
 | 6 | Library | Not started | | |
@@ -26,11 +26,11 @@ Update this file at the end of every phase.
 
 | Item | What it is | Removed or replaced in |
 | --- | --- | --- |
-| `/surah-listing` (`app/pages/surah-listing.vue`) | Placeholder | Phase 3 |
+| Reader notice and `READERS_READY` flags (`app/lib/readerLinks.ts`) | The listing's rows open reader routes that show "not rebuilt yet"; the page says so | Flip `surah` and `juz` in Phase 4, `page` in Phase 9; the notice then disappears |
 | `/about` (`app/pages/about.vue`) | Placeholder | Phase 15 |
 | `/foundation` (`app/pages/foundation.vue`, `docs/pages/foundation.md`, its tests in `e2e/foundation.spec.ts`) | Phase 0 check page. **Must be removed before cutover** (Phase 16 checklist). Keep it until the real Settings (Phase 2) and the shell tests no longer need it; move any test that still uses it to a real page first | Phase 16, at the latest |
 | `[...slug].vue` ("This page is not rebuilt yet") | Catch-all for legacy routes not rebuilt yet | Phase 16, once every legacy route exists (`/surah-vedios` and `/sitemap` land in Phase 15) |
-| `app/stores/playerShell.ts` and `LayoutMiniPlayer` shell | Placeholder player state | Phase 4 (real player store) |
+| `app/stores/player.ts` and the mini player | The small Phase 3 player (play and pause one surah) | Phase 4 extends it (seeking, resume, repeat, auto-next, per-ayah, full player); `playerShell.ts` is already deleted |
 | `PUBLIC_META` entries in `app/lib/publicMeta.ts` | Titles for the three prerendered pages | Update with each of Phases 1, 3, 15 |
 | `nav.ts` `phase` field | Which phase builds each link | Delete the field in Phase 16 |
 | `PUBLIC_META` entry for `/` | Now matches the real Home's `useSeoMeta` | Keep in step if Home's text changes |
@@ -40,8 +40,9 @@ Update this file at the end of every phase.
 | Phase | Item |
 | --- | --- |
 | 2 (done) | Settings supplies the calculation method, Asr school, Hijri adjustment, verse layout, Wi-Fi-only (new keys, see the phase doc) |
-| 3 | The reciter preference (`prefs.reciter`, name only) and the Arabic size are ready for the listing and the reader |
-| 4 | The share card replaces Home's plain `navigator.share`; the real player store replaces `playerShell`; the reader uses `verseLayout`, `effectiveTranslationLang` (explicit choice, else the legacy reader's text tab) and the tafsir default; playback speed and auto-play are in `prefs` |
+| 3 (done) | The listing uses the reciter preference (by name), the playback speed, the legacy bookmark keys and the reading-progress record; see the phase doc |
+| 4 | The share card replaces Home's plain `navigator.share`; extend `usePlayerStore` (seeking, `quran:audio-resume:v1`, repeat, auto-next from `prefs.autoplay`, per-ayah audio, Media Session); flip `READERS_READY.surah` and `.juz`; the reader writes a new "surahs finished" key so the listing can draw a Completed marker (today the listing can only mark the last read place); the reader uses `verseLayout`, `effectiveTranslationLang` (explicit choice, else the legacy reader's text tab) and the tafsir default; playback speed and auto-play are in `prefs` |
+| 9 | Flip `READERS_READY.page` when `/per-page-read` is rebuilt |
 | 5 | Manual city entry and the Prayer and Qibla pages; Update now also goes on the Prayer page (`usePrayerTimes().refresh()`; it is already in Settings). The Hijri adjustment is consumed by the Ramadan and Calendar pages |
 | 7 | Home's second resume row switches from the persons-study state to story chapters, with a new key (for example `quran:stories-progress:v1`); one adapter, `useHomeState` |
 | 8 | Ramadan banner on Home; the Sha'ban prefetch of the Ramadan month in the prayer cache |
