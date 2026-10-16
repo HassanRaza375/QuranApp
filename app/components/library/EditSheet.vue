@@ -96,6 +96,7 @@ function deleteNote() {
   note.value = "";
   store.deleteNote(props.itemKey);
   status.value = "";
+  emit("close"); // the panel would cover the Undo toast
 }
 </script>
 

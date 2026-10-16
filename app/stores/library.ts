@@ -32,48 +32,51 @@ export const useLibraryStore = defineStore("library", () => {
   /** Lazily loads the legacy data tables for the kinds of item that exist (people, names, stories, fiqh), never all of them. */
   async function ensureProviders() {
     const kinds = new Set(lib.value.bookmarks.concat(Object.keys(lib.value.itemMeta)).map((k) => k.split(":")[0]!));
-    const next: Providers = { ...providers.value };
-    let changed = false;
+    // each kind is merged into the current providers as soon as it has loaded (calls can overlap, so never keep a stale copy)
+    const add = (patch: Partial<Providers>) => (providers.value = { ...providers.value, ...patch });
     if (kinds.has("person") && !loadedKinds.has("person")) {
       loadedKinds.add("person");
       const { QURAN_PERSONS } = await import("@legacy/data/quranPersons");
       const byId = new Map(QURAN_PERSONS.map((p) => [p.id, p]));
-      next.person = (id) => {
-        const p = byId.get(id);
-        return p ? { name: p.name, arabicName: p.arabicName } : null;
-      };
-      changed = true;
+      add({
+        person: (id) => {
+          const p = byId.get(id);
+          return p ? { name: p.name, arabicName: p.arabicName } : null;
+        },
+      });
     }
     if (kinds.has("name") && !loadedKinds.has("name")) {
       loadedKinds.add("name");
       const names = (await import("@legacy/assets/data/names.json")).default as { id: number; arabic: string; transliteration: string; english: string }[];
-      next.name = (id) => {
-        const n = names.find((x) => String(x.id) === id);
-        return n ? { transliteration: n.transliteration, english: n.english, arabic: n.arabic } : null;
-      };
-      changed = true;
+      add({
+        name: (id) => {
+          const n = names.find((x) => String(x.id) === id);
+          return n ? { transliteration: n.transliteration, english: n.english, arabic: n.arabic } : null;
+        },
+      });
     }
     if (kinds.has("story") && !loadedKinds.has("story")) {
       loadedKinds.add("story");
       const { QURAN_STORIES } = await import("@legacy/data/quranStories");
-      next.story = (id) => {
-        const s = QURAN_STORIES.find((x) => x.id === id);
-        return s ? { title: s.title } : null;
-      };
-      changed = true;
+      add({
+        story: (id) => {
+          const s = QURAN_STORIES.find((x) => x.id === id);
+          return s ? { title: s.title } : null;
+        },
+      });
     }
     if (kinds.has("fiqh") && !loadedKinds.has("fiqh")) {
       loadedKinds.add("fiqh");
       const [{ WAJIBAT_TOPICS }, { WAJIBAT_CATEGORIES }] = await Promise.all([import("@legacy/data/wajibat/topics"), import("@legacy/data/wajibat/categories")]);
-      next.fiqhTopic = (id) => {
-        const t = WAJIBAT_TOPICS.find((x) => x.id === id);
-        if (!t) return null;
-        const c = WAJIBAT_CATEGORIES.find((x) => x.id === t.categoryId);
-        return { title: t.title.en, category: c?.title.en ?? t.categoryId, categoryId: t.categoryId, arabicTerm: t.arabicTerm };
-      };
-      changed = true;
+      add({
+        fiqhTopic: (id) => {
+          const t = WAJIBAT_TOPICS.find((x) => x.id === id);
+          if (!t) return null;
+          const c = WAJIBAT_CATEGORIES.find((x) => x.id === t.categoryId);
+          return { title: t.title.en, category: c?.title.en ?? t.categoryId, categoryId: t.categoryId, arabicTerm: t.arabicTerm };
+        },
+      });
     }
-    if (changed) providers.value = next;
   }
 
   /** Applies one operation to a fresh read. Returns what the operation returned, or a failure (including a blocked write). */

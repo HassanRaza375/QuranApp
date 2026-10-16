@@ -18,6 +18,7 @@ const isDesktop = useMediaQuery("(min-width: 768px)");
 const open = ref(false);
 const current = computed(() => props.options.find((o) => o.value === props.modelValue));
 const pick = (v: string) => {
+  if (!open.value) return; // the radio group can report the same choice a second time while the menu closes
   emit("update:modelValue", v);
   open.value = false;
 };

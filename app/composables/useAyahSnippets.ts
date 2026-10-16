@@ -43,6 +43,12 @@ export function useAyahSnippets() {
     void pump();
   }
 
+  /** Forgets the rows that have no text (failed, none or still loading), so the next visit asks again. Loaded text stays. */
+  function forget() {
+    queue.length = 0;
+    results.value = Object.fromEntries(Object.entries(results.value).filter(([, v]) => v !== "loading" && v.state === "text"));
+  }
+
   const get = (surah: number, ayah: number) => results.value[ayahTextKey(surah, ayah)];
-  return { request, get };
+  return { request, get, forget };
 }

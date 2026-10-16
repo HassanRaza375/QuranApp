@@ -10,6 +10,7 @@ const store = useLibraryStore();
 const route = useRoute();
 const router = useRouter();
 const undo = useUndoToast();
+const snippets = useAyahSnippets();
 
 const VIEWS = [
   { id: "saved", label: "Saved" },
@@ -22,6 +23,7 @@ const setView = (v: string, extra: Record<string, string> = {}) => router.push({
 
 let stop: (() => void) | undefined;
 onMounted(() => {
+  snippets.forget(); // a revisit asks again for rows whose text could not be loaded before
   store.reload();
   void store.ensureProviders();
   stop = store.listen();
@@ -49,7 +51,7 @@ const pendingNotice = computed(() => {
   const names = [...new Set([...store.typesPresent].filter((t) => !OPENS_TODAY[t] && PENDING_PHASE[t]).map((t) => PENDING_PHASE[t]!))];
   if (!names.length) return "";
   const list = names.length === 1 ? names[0]! : `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
-  return `${list} ${names.length === 1 ? "is" : "are"} still being moved to the new design, so opening those items shows a placeholder for now.`;
+  return `${list.charAt(0).toUpperCase()}${list.slice(1)} ${names.length === 1 ? "is" : "are"} still being moved to the new design, so opening those items shows a placeholder for now.`;
 });
 
 function exportLibrary() {

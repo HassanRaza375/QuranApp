@@ -557,7 +557,7 @@ describe("nothing is typed: no hard-coded Arabic text anywhere in the app code",
         else if (/\.(vue|ts)$/.test(e.name) && !e.name.endsWith(".generated.ts") && e.name !== "listingSearch.ts") { // listingSearch holds character RANGES for diacritic stripping, not text
           fs.readFileSync(p, "utf8").split("\n").forEach((line, i) => {
             if (/^\s*(\/\/|\*|\/\*)/.test(line)) return; // a comment may quote an example
-            if (/[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/.test(line)) hits.push(`${path.relative(root, p)}:${i + 1}`);
+            if (/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/.test(line)) hits.push(`${path.relative(root, p)}:${i + 1}`);
           });
         }
       }
