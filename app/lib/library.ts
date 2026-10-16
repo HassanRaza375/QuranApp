@@ -52,11 +52,15 @@ export const isSaved = (s: LibraryState, key: string): boolean => s.bookmarks.in
 /** Meta as the legacy `getMeta` returns it (an empty one when there is none). */
 export const metaOf = (s: LibraryState, key: string): ItemMeta => s.itemMeta[key] ?? { note: "", tags: [], collectionIds: [], updatedAt: 0 };
 
+/** A copy of the record without one key. */
+function without<T>(o: Record<string, T>, key: string): Record<string, T> {
+  return Object.fromEntries(Object.entries(o).filter(([k]) => k !== key));
+}
+
 function withMeta(s: LibraryState, key: string, patch: Partial<ItemMeta>, now: number): LibraryState {
   const next: ItemMeta = { ...metaOf(s, key), ...patch, updatedAt: now };
-  const itemMeta = { ...s.itemMeta };
-  if (hasContent(next)) itemMeta[key] = next;
-  else delete itemMeta[key]; // no note, no tags, no collections: no record
+  // no note, no tags, no collections: no record
+  const itemMeta = hasContent(next) ? { ...s.itemMeta, [key]: next } : without(s.itemMeta, key);
   return { ...s, itemMeta };
 }
 
@@ -84,20 +88,20 @@ export interface RemoveResult {
 export function removeItems(s: LibraryState, keys: string[]): RemoveResult {
   const undo: RemovedItem[] = [];
   let bookmarks = [...s.bookmarks];
-  const addedAt = { ...s.addedAt };
-  const itemMeta = { ...s.itemMeta };
+  let addedAt = { ...s.addedAt };
+  let itemMeta = { ...s.itemMeta };
   let keptNote = false;
   for (const key of keys) {
     const index = bookmarks.indexOf(key);
     if (index < 0) continue;
     bookmarks = bookmarks.filter((k) => k !== key);
     const when = addedAt[key];
-    delete addedAt[key];
+    addedAt = without(addedAt, key);
     const m = itemMeta[key];
     let droppedMeta: ItemMeta | undefined;
     if (m && !hasContent(m)) {
       droppedMeta = m;
-      delete itemMeta[key];
+      itemMeta = without(itemMeta, key);
     }
     if (m && m.note.trim()) keptNote = true;
     undo.push({ key, index, addedAt: when, droppedMeta });
@@ -139,9 +143,7 @@ export function deleteNote(s: LibraryState, key: string, now: number): { state: 
 }
 
 export function restoreNote(s: LibraryState, u: NoteSnapshot): LibraryState {
-  const itemMeta = { ...s.itemMeta };
-  if (u.before) itemMeta[u.key] = u.before;
-  else delete itemMeta[u.key];
+  const itemMeta = u.before ? { ...s.itemMeta, [u.key]: u.before } : without(s.itemMeta, u.key);
   return { ...s, itemMeta };
 }
 

@@ -10,7 +10,7 @@ import { ADDED_AT_KEY, BOOKMARKS_KEY } from "../app/lib/bookmarks";
 import { ayahTextKey, loadSnippet, type SnippetDeps } from "../app/lib/ayahSnippet";
 import * as L from "../app/lib/library";
 import { buildLibraryExport, exportMessage, libraryExportName, LIBRARY_EXPORT_KEYS } from "../app/lib/libraryExport";
-import { agoText, describeItem, groupItems, matches, NO_PROVIDERS, OPENS_TODAY, sortItems, type Providers } from "../app/lib/libraryItems";
+import { agoText, describeItem, groupItems, matches, OPENS_TODAY, sortItems, type Providers } from "../app/lib/libraryItems";
 import { LIBRARY_KEY, migrateOldFavourites, OLD_FAVOURITES_KEY, readLibrary, writeLibrary } from "../app/lib/libraryStorage";
 import { PINS_KEY, readPagePin, readReadingPin, writePagePin, writeReadingPin } from "../app/lib/pins";
 import { READ_SURAHS_KEY } from "../app/lib/readSurahs";
