@@ -12,7 +12,8 @@ Update this file at the end of every phase.
 | 4B | Full player (seeking, resume, repeat, auto-next, per-ayah audio, player sheet) | Not started (split from Phase 4, see the 4A plan) | | |
 | 5 | Prayer and Qibla | **Done, awaiting review** (2026-10-16) | [phase-05-prayer-qibla](phases/phase-05-prayer-qibla.md), [plan](phases/phase-05-prayer-qibla-plan.md) | [prayer-qibla](pages/prayer-qibla.md) |
 | 6 | Library | **Done, awaiting review** (2026-10-16) | [phase-06-library](phases/phase-06-library.md), [plan](phases/phase-06-library-plan.md) | [library](pages/library.md) |
-| 7 | Prophets & People and Stories | Not started | | |
+| 7A | Prophets & People: directory, Timeline, person page | **Plan written, awaiting approval** | [plan](phases/phase-07a-people-plan.md) | |
+| 7B | Story reader, Compare tellings, entity sheets, story progress | Not started (split from Phase 7) | | |
 | 8 | Ramadan and events | Not started | | |
 | 9 | Utilities | Not started | | |
 | 10 | Search | Needs prototype | | |
