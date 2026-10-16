@@ -65,6 +65,14 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] The wording of the empty and offline lines ("Text appears once you are online or have opened this surah.", the first-run message, the not-rebuilt notice) and "Your note is kept."
 - [ ] Library on a real phone: edit panel, select mode, Undo toast, and a large library's scrolling.
 
+**Prophets & People (Phase 7A)**
+- [x] The prototype's 16 sample people, descriptions, "Story · N chapters" tags, Yusuf and Adam texts, family rows, notes and "Referenced by" are not used; the pages show the legacy data (59 entries).
+- [ ] **Relationship direction (decision pending):** the data writes 17 parent/child entries as "this person is the X of the related one" while the spec and the legacy page read the type as the related person's role. The revamp shows full sentences and flips three entries (`isa>maryam`, `maryam>isa`, `maryam>maryammother`) with `REVERSED_ENTRIES`. See `phases/phase-07a-people.md` ("Finding").
+- [ ] Other relationship gaps in the data (no reverse entry for adam>isa, yusuf>ibrahim, musa>haman, jalut>talut, jalut>dawud, zayd>muhammad, yusufbrothers>yaqub; the two sides of musa/musawarner, firaun/sahara, abulahab/muhammad use different types).
+- [ ] **Prophetic-status chips** (Prophet 12, Prophet · Messenger 13, the legacy labels verbatim): review Adam, Yusuf, Dhul-Kifl (debated among scholars; the chip does not show it), and the "Prophet · Messenger" claim for Harun, Lut, Yunus, Ilyas, Shu'ayb, Isma'il; and that Maryam, Luqman, Dhul-Qarnayn, Khidr and Uzair show no chip.
+- [ ] The chronology wording ("Traditional chronology", "Chronology uncertain", "Chronology unknown") and the story kind labels, copied from the legacy app.
+- [ ] 7 people have no direct mentions and 4 have no related passages in the data (shown as empty, not hidden).
+
 **Prayer and Qibla**
 - [x] The prototype's sample times, Hijri date ("29 Rabīʿ al-awwal 1448") and Hanafi Asr sample: not used; the page shows the service's real times and Hijri date. The Qibla bearing is checked against AlAdhan's own `/v1/qibla` for eight cities (agrees to better than 0.001°). The prototype's cardinal label for 260.4° ("West-southwest") was wrong: it is "West".
 - [ ] **The Hijri date** (15 Oct 2026 = 4 Jumādá al-ūlá 1448 from the service) against a calendar you trust, and the adjustment at a month edge.
