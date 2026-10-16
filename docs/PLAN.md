@@ -108,6 +108,14 @@ Every phase ends with a phase doc, a page doc per page, a PROGRESS update, and a
 
 Pages without a prototype are designed first (in chat or by applying `DESIGN_SYSTEM.md`) and approved before building.
 
+## Cutover checklist (Phase 16; collected from the phase reviews, PROGRESS.md has the details)
+
+- [ ] **Open-Meteo city search is non-commercial only.** Its free API may not be used by an app with subscriptions or advertising. Revisit the place search (a commercial key, or remove it and keep the coordinates entry) if the app gains either. The attribution link must stay beside the results and in Settings, Data & privacy.
+- [ ] Compare the Ja'fari prayer times (Leva, Tehran) with an independent source.
+- [ ] Remove `/foundation`; verify the legacy offline-new-tab root cause against the deployed worker.
+- [ ] Replace the World Magnetic Model coefficients before 2030 (`scripts/gen-wmm.mjs`).
+- [ ] Real-device checks recorded as done: audio (including the 210 generic-type files), the compass, notifications, share.
+
 ## Definition of done (every page)
 
 - Matches the prototype in light and dark, at 1280px and 375px, including empty, first-run and offline states.
