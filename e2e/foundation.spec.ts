@@ -180,7 +180,7 @@ test.describe("mobile shell (375px)", () => {
     const link = dialog.getByRole("link", { name: "Surahs" });
     expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
     await link.click();
-    await expect(page.getByRole("heading", { name: "Surahs", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Surah listing", level: 1 })).toBeVisible();
     await expect(page.getByRole("dialog")).toHaveCount(0);
   });
 

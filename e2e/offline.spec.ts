@@ -31,7 +31,7 @@ test.describe("offline shell", () => {
     await page.reload();
     await expect(page.getByRole("heading", { name: "Home", level: 1 })).toBeAttached();
     await page.getByRole("link", { name: "Surahs" }).first().click();
-    await expect(page.getByRole("heading", { name: "Surahs", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Surah listing", level: 1 })).toBeVisible();
     await page.getByRole("link", { name: "About" }).first().click();
     await expect(page.getByRole("heading", { name: "About", level: 1 })).toBeVisible();
   });
