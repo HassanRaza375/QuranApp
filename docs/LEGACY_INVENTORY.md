@@ -86,6 +86,15 @@ Reading a raw key through `JSON.parse` fails silently, so the revamp's `app/lib/
 - **Export** dumps every localStorage key to a JSON file (parsed when valid JSON, raw otherwise). IndexedDB and Cache Storage are not included.
 - The revamp does **not** extend either behaviour in Phase 0 (rule from the Phase 0 approval). Settings (Phase 2) will recreate them exactly as above.
 
+## The legacy Settings page (read in Phase 2)
+
+- One scrolling page of cards (theme, fiqh and location, notifications, reading, audio, accessibility, modules, data), not sections. It also holds the Daily Fiqh marja' picker (Ja'fari only, `quran:fiqh-prefs:v1`).
+- **Export** (`exportData`): every localStorage key, JSON parsed when valid and raw otherwise, in `quran-app-data-<date>.json`; the date is the UTC date. Not IndexedDB, not Cache Storage. No import.
+- **Clear all** (`clearAllData`): `localStorage.clear()` then `location.reload()` after a confirmation dialog. Leaves IndexedDB `quran-app-db`, Cache Storage (including downloaded audio), the `theme-resolved` cookie and the service worker.
+- **Notifications:** `prayerSettings` = `{ notificationsEnabled, enabledPrayers: {Fajr..Isha}, reminderOffset (minutes: 0, 5, 10 offered) }`. Turning the switch on calls `Notification.requestPermission()`; a refusal shows `alert()`. Reminders are `setTimeout` timers in the open page (`scheduleNotifications`) that call `registration.showNotification`. There is no push handler, background sync or notification code in the service worker, so **nothing arrives while the app is closed**; the page says so. Timers use the device-local `setHours` on today's times and roll today's time forward for tomorrow.
+- `layouts/default.vue` calls `prayer.init()` on every page, which also asks the browser for the device location as soon as the app opens, and falls back **silently to Lahore** if it is refused or unavailable (a small line in Settings says so).
+- The legacy Settings has no Reset and no Asr, method, Hijri, Wi-Fi or verse-layout settings; it writes `preferredVerseDisplay` (which text the reader shows) from its "Default verse display" and the reader's tabs.
+
 ## `ayah-of-day`: two legacy bugs (found in Phase 1)
 
 - **UTC date.** `useAyahOfTheDay` stores `{ date: new Date().toISOString().slice(0, 10), data }` and compares the stored `date` with the same UTC date. The ayah therefore changes at UTC midnight, not at the user's midnight: at 05:00 local time in Pakistan (UTC+5), in the evening in the US. From local midnight to 05:00 in UTC+5 the app still treats yesterday as today.

@@ -20,6 +20,17 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] **Calculation methods.** Home shows the method name the service returns (ISNA for Sunni, "Shia Ithna-Ashari, Leva Institute, Qum" for Ja'fari). The monthly and daily endpoints agree (120 of 120 comparisons: 4 cities, both methods, 3 days, 5 prayers). They have **not** been compared with an independent source (for example the Leva Institute's own tables), as the Prayer and Qibla item below still requires.
 - [ ] The Asr school (Hanafi) is not selectable until Phase 2; Home always uses the standard school.
 
+**Settings (Phase 2)**
+- [x] Calculation method names and ids: replaced by the service's own list; `tests/settingsLogic.test.ts` compares each of the seven with a recorded `GET /v1/methods`. The prototype's shortened labels are not used.
+- [ ] **Calculation defaults** (ISNA for Sunni, Leva Institute for Ja'fari) are the legacy app's, decided in the Phase 2 review. Many users in South Asia use the Karachi method; the choice is theirs, the default is not changed.
+- [ ] **Asr (Hanafi) description** in the Asr row, "Hanafi uses the later Asr time, when a shadow is twice the object's length", comes from the prototype and has not been checked against a source.
+- [ ] **Hijri adjustment wording** ("match your local moon sighting") comes from the prototype; the preview shows the service's own Hijri dates, not a calculation of ours.
+- [ ] **Ja'fari methods** (Leva and Tehran) have only been compared between AlAdhan's monthly and daily endpoints, not with an independent source (same open item as under Prayer and Qibla below).
+- [x] The Reading preview: no prototype ayah is used; it shows today's real ayah or a real surah name from the legacy data.
+- [x] The iPhone note: the Home Screen requirement is from the WebKit post "Web Push for Web Apps on iOS and iPadOS" (webkit.org/blog/13878); the app shows it only on an iPhone or iPad whose browser has no Notification API.
+- [x] "Reminders only appear while Quran App is open." matches what the code does (timers in the open page; no push, no scheduled notifications).
+- [ ] The marja' names come from the legacy Daily Fiqh data (`app/data/wajibat/marja.ts`); that data has its own verification record in `wajibat_decisions.md`.
+
 **Surah reader**
 - [ ] Al-Fatihah Arabic (7 ayahs) and its translations in the prototype.
 - [ ] Revelation order numbers used for sorting the 8 sample surahs.

@@ -69,6 +69,9 @@ For feature behaviour, the legacy docs still win: `/MODULE_BLUEPRINT.md`, `/PROJ
 ## Gotchas found while building
 
 - `npx shadcn-vue add <component>` rewrites `app/assets/css/tailwind.css`: it re-adds a Google Fonts `@import` (breaks the offline rule) and a duplicate `@layer base`. Remove both after adding a component; `tests/tokens.test.ts` fails if either comes back.
+- shadcn-vue's `ToggleGroup` renders `aria-pressed` buttons, not radios. For a "choose one" control use `SettingsSegmentedControl` (a real radio group).
+- Browser tests must start with `forbidRealApis(context)` (`e2e/mocks.ts`): any unmocked request to AlAdhan or the verse API fails the test, so a test can never depend on the internet by accident. For notifications, replace `Notification` with a recording stub (see `e2e/settings.spec.ts`) and use `context.clock.install` plus `page.clock.runFor` to fire reminders.
+- Anything that reacts to the saved place or the prayer settings must react to **changes**, not to the first read (`plugins/prayer-watch.client.ts`), or unrelated pages start making requests.
 - Nuxt does not auto-import from `app/services/`. Import `useQuranApi` and friends explicitly (`tests/services.test.ts` covers every service).
 - Legacy files import their data with `~/...`; `build/legacyBridge.ts` redirects those imports to the legacy folder. A legacy file that does a *dynamic* `~/` import (for example `quranAyahCounts.js`) is not rewritten under Vitest; do not call such functions from tests or from revamp code.
 - Tests never use the real upstream APIs: mock them (`e2e/mocks.ts`) and fix the clock. Errors that a `catch` swallows (like the ayah of the day's) are logged with `console.debug`.

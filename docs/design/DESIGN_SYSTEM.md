@@ -92,6 +92,13 @@ Arabic scale: 0.8 to 1.6, set in Settings, applied everywhere through one CSS va
 | Search and text fields | `Input`, `Textarea` |
 | Tasbeeh ring, Qibla compass, night strip, page chips | Custom components |
 
+## Settings controls (Phase 2)
+
+- **Segmented choice** (theme, fiqh, speed, Asr, Hijri): a radio group. One option is always chosen, filled with the accent; the chosen option is the only tab stop and the arrow keys move the choice. (The prototype's faint raised pill is not used: its selected state is hard to see.)
+- **Switch:** unchecked is an `ink-2` outline on a `sunken` track with an `ink-2` thumb; checked is the accent with a light thumb. A switch row is a `<label>`, so the whole row (56px) is the tap target.
+- **Irreversible actions** (Clear all): a solid danger button (`--danger` background, `--bg` text, at least 5:1 in both themes) after an inline confirmation that says what is removed and what stays. Reversible actions (Reset) use an Undo toast instead of a confirmation.
+- **Messages** under a group are polite live regions in `ink-2` (`danger` for a warning). Never `alert()`.
+
 ## Navigation (decided in the Phase 1 review)
 
 - Five groups in this order: Read, Study (including Library and Downloads), Knowledge base, Worship, and the optional Literary modules (shown only when enabled in Settings), then Settings and About. One row per real destination (the prototype's merged rows such as "Places · Stories · Themes" are not used).

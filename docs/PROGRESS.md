@@ -6,7 +6,7 @@ Update this file at the end of every phase.
 | --- | --- | --- | --- | --- |
 | 0 | Foundation | Approved 2026-10-15; follow-ups done | [phase-00-foundation](phases/phase-00-foundation.md) | [app-shell](pages/app-shell.md), [foundation](pages/foundation.md), [placeholders](pages/placeholders.md) |
 | 1 | Home | Approved 2026-10-15 | [phase-01-home](phases/phase-01-home.md), [plan](phases/phase-01-home-plan.md) | [home](pages/home.md) |
-| 2 | Settings | **Plan written, awaiting approval** | [plan](phases/phase-02-settings-plan.md) | |
+| 2 | Settings | **Done, awaiting review** (2026-10-16) | [phase-02-settings](phases/phase-02-settings.md), [plan](phases/phase-02-settings-plan.md) | [settings](pages/settings.md) |
 | 3 | Surah listing, Juz, Page | Not started | | |
 | 4 | Surah reader and full player | Not started | | |
 | 5 | Prayer and Qibla | Not started | | |
@@ -39,13 +39,14 @@ Update this file at the end of every phase.
 
 | Phase | Item |
 | --- | --- |
-| 2 | Settings supplies the calculation method and Asr school (new `quran:<feature>:v1` keys); `usePrayerTimes` already takes `{method, school, midnightMode}` |
-| 4 | The share card replaces Home's plain `navigator.share`; the real player store replaces `playerShell` |
-| 5 | Update now (`usePrayerTimes().refresh()`), manual city entry, the Prayer and Qibla pages |
+| 2 (done) | Settings supplies the calculation method, Asr school, Hijri adjustment, verse layout, Wi-Fi-only (new keys, see the phase doc) |
+| 3 | The reciter preference (`prefs.reciter`, name only) and the Arabic size are ready for the listing and the reader |
+| 4 | The share card replaces Home's plain `navigator.share`; the real player store replaces `playerShell`; the reader uses `verseLayout`, `effectiveTranslationLang` (explicit choice, else the legacy reader's text tab) and the tafsir default; playback speed and auto-play are in `prefs` |
+| 5 | Manual city entry and the Prayer and Qibla pages; Update now also goes on the Prayer page (`usePrayerTimes().refresh()`; it is already in Settings). The Hijri adjustment is consumed by the Ramadan and Calendar pages |
 | 7 | Home's second resume row switches from the persons-study state to story chapters, with a new key (for example `quran:stories-progress:v1`); one adapter, `useHomeState` |
 | 8 | Ramadan banner on Home; the Sha'ban prefetch of the Ramadan month in the prayer cache |
-| 11 | `wajibat-data-cache` and `quran-downloads-audio-cache` names return with their features |
-| 13 | Daily Fiqh keeps `quran:fiqh-prefs:v1` |
+| 11 | `wajibat-data-cache` and `quran-downloads-audio-cache` names return with their features; the Downloads manager enforces Wi-Fi-only (`quran:download-prefs:v1`) where the connection type is reported |
+| 13 | Daily Fiqh keeps `quran:fiqh-prefs:v1`; Settings already holds the marja' picker (Ja'fari only) on the same key |
 | 14 | The Hifz tile's due count ("N to practice"): the legacy queue lives in a composable that needs Nuxt state, so it is rebuilt there |
 | 16 | Remove `/foundation`; verify the legacy offline-new-tab root cause against the deployed worker |
 
@@ -56,6 +57,8 @@ From Phase 0 (details in `phases/phase-00-foundation.md`):
 Decided in the Phase 0 review: `--ink-3` is non-text only (recorded in DESIGN_SYSTEM.md); keep the server proxies until cutover; Node 22 (`.nvmrc`, `engines`, workarounds removed); placeholders and `/foundation` stay (table above).
 
 Decided in the Phase 1 review: the nav (icons kept, one row per destination, collapsible groups, "Continue reading" only with progress) and the shell gaps (fixed in Phase 1).
+
+Decided in the Phase 2 review: Clear all (strict legacy parity plus deleting `quran-revamp-db`), marja' under Prayer & location, default translation "Not set", ISNA and Leva defaults, Wi-Fi row greyed where unsupported, Reset with Undo, late reminders up to 5 minutes, inline messages.
 
 Still open:
 
