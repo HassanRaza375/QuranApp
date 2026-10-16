@@ -59,6 +59,10 @@ Everything you save and write, in one place: saved ayahs, surahs, juz and other 
 - Every write re-reads first, so a second tab's items are not overwritten; the page follows other tabs, the reader's star and pin (`storage` event) and the tab returning to the foreground. Two tabs editing the same note: the last writer wins.
 - Never opens `quran-app-db`.
 
+## Known quirk
+
+Search uses the shared normaliser (the same as the listing), which collapses repeated letters so that "fatiha" finds "Al-Faatiha". A side effect: a query like "zzzz" becomes "z" and matches "Juz". Harmless; kept for consistency with the listing.
+
 ## Snippets
 
 The Arabic is never typed in the code (a test scans the source). Order: the cached chapter in `quran-revamp-db`, then the `ayah-text` store, then (online only) one request for just that ayah (about 2 KB), stored for next time. A whole surah is never fetched for a snippet. Only rows on screen ask, one at a time with a short gap. A damaged cached value counts as a miss.

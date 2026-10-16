@@ -75,7 +75,7 @@ function exportLibrary() {
         <h1 class="font-serif text-[28px] font-medium">Library</h1>
         <p class="mt-1 text-[14px] text-ink-2">Everything you save and write, in one place. Stored on this device.</p>
       </div>
-      <div class="text-right">
+      <div class="text-left md:text-right">
         <Button variant="outline" class="min-h-11 gap-2 md:min-h-9" data-testid="library-export" @click="exportLibrary"><Icon name="lucide:download" size="15" />Export</Button>
         <p class="mt-1 max-w-56 text-[12px] text-ink-2">Settings, Data &amp; privacy has a full export.</p>
       </div>
