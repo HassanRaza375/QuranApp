@@ -98,7 +98,7 @@ export function describeItem(key: string, p: Providers = NO_PROVIDERS): Item {
       const ay = num(b);
       const row = SURAH_ROWS[s - 1];
       if (!row || !(ay >= 1 && ay <= row.ayahs)) return readable;
-      return { key, type: kind, title: `${row.name} ${s}:${ay}`, detail: kind === "sajda" ? "Sajda verse" : "", ord: s * 1000 + ay, href: surahHref(s, ay), ayah: { surah: s, ayah: ay } };
+      return { key, type: kind, title: `${row.name} ${s}:${ay}`, detail: "", ord: s * 1000 + ay, href: surahHref(s, ay), ayah: { surah: s, ayah: ay } };
     }
     case "juz": {
       const j = JUZ[num(a) - 1];

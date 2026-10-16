@@ -387,7 +387,7 @@ describe("what each key is (real data only)", () => {
   it("surah, ayah, sajda, juz and page come from the bundled tables", () => {
     expect(d("surah:18")).toMatchObject({ type: "surah", title: "Al-Kahf", detail: "110 verses · Mecca", href: "/surah/18" });
     expect(d("ayah:2:255")).toMatchObject({ type: "ayah", title: "Al-Baqara 2:255", href: "/surah/2#ayah-255", ayah: { surah: 2, ayah: 255 } });
-    expect(d("sajda:7:206")).toMatchObject({ type: "sajda", detail: "Sajda verse", href: "/surah/7#ayah-206" });
+    expect(d("sajda:7:206")).toMatchObject({ type: "sajda", detail: "", href: "/surah/7#ayah-206" });
     expect(d("juz:30")).toMatchObject({ type: "juz", title: "Juz 30", href: "/surah/78#ayah-1" });
     expect(d("juz:30").detail).toContain("Pages 582–604");
     expect(d("page:49")).toMatchObject({ type: "page", title: "Page 49", href: "/per-page-read?page=49" });

@@ -61,7 +61,9 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] Extra entities (Yusuf's Brothers, Al-'Aziz, Zulaikha, The King of Egypt, Egypt) are approximations of legacy entries.
 
 **Library**
-- [ ] Arabic snippets for 2:255, 2:286 and 18:10, and all sample notes, tags and collection names.
+- [x] The prototype's sample ayahs, notes, tags, collections, people and story state are not used; the Library shows only your data. Arabic under a row comes from the device cache or one per-ayah request, never from the code (a test scans the source).
+- [ ] The wording of the empty and offline lines ("Text appears once you are online or have opened this surah.", the first-run message, the not-rebuilt notice) and "Your note is kept."
+- [ ] Library on a real phone: edit panel, select mode, Undo toast, and a large library's scrolling.
 
 **Prayer and Qibla**
 - [x] The prototype's sample times, Hijri date ("29 Rabīʿ al-awwal 1448") and Hanafi Asr sample: not used; the page shows the service's real times and Hijri date. The Qibla bearing is checked against AlAdhan's own `/v1/qibla` for eight cities (agrees to better than 0.001°). The prototype's cardinal label for 260.4° ("West-southwest") was wrong: it is "West".

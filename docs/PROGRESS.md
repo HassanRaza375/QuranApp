@@ -11,7 +11,7 @@ Update this file at the end of every phase.
 | 4A | Surah reader | **Done, awaiting review** (2026-10-16) | [phase-04a-surah-reader](phases/phase-04a-surah-reader.md), [plan](phases/phase-04a-surah-reader-plan.md) | [surah-reader](pages/surah-reader.md) |
 | 4B | Full player (seeking, resume, repeat, auto-next, per-ayah audio, player sheet) | Not started (split from Phase 4, see the 4A plan) | | |
 | 5 | Prayer and Qibla | **Done, awaiting review** (2026-10-16) | [phase-05-prayer-qibla](phases/phase-05-prayer-qibla.md), [plan](phases/phase-05-prayer-qibla-plan.md) | [prayer-qibla](pages/prayer-qibla.md) |
-| 6 | Library | **Plan written, awaiting approval** | [plan](phases/phase-06-library-plan.md) | |
+| 6 | Library | **Done, awaiting review** (2026-10-16) | [phase-06-library](phases/phase-06-library.md), [plan](phases/phase-06-library-plan.md) | [library](pages/library.md) |
 | 7 | Prophets & People and Stories | Not started | | |
 | 8 | Ramadan and events | Not started | | |
 | 9 | Utilities | Not started | | |
@@ -48,7 +48,7 @@ Update this file at the end of every phase.
 | 5 (done) | The Prayer and Qibla pages, the city entry and the saved-times row (shared with Settings) are built; the Hijri adjustment is applied on the Prayer page (reading the neighbouring cached day) and is still to be consumed by the Ramadan and Calendar pages. **WMM2025 (the declination model) is valid to 2030: replace the coefficients (`scripts/gen-wmm.mjs`, NOAA's next model) before then** |
 | 7 | Home's second resume row switches from the persons-study state to story chapters, with a new key (for example `quran:stories-progress:v1`); one adapter, `useHomeState` |
 | 8 | Ramadan banner on Home; the Sha'ban prefetch of the Ramadan month in the prayer cache |
-| 6 | The Library shows `quran:pins:v1` ("Where I stopped") and can read `quran:read-surahs:v1`; saved ayahs use the same bookmark keys the reader writes |
+| 6 (done) | Built: the Library reads `quran:pins:v1` and the legacy library keys; removal keeps notes (legacy app ignores them, so rollback is safe); `retiredCollectionIds`, `pins.page` and the `ayah-text` store are additive. Phase 7 writes `story:<id>` bookmarks; Phase 9 writes the page pin and flips `READERS_READY.page`. Earlier note: the Library shows `quran:pins:v1` ("Where I stopped") and can read `quran:read-surahs:v1`; saved ayahs use the same bookmark keys the reader writes |
 | 11 | Audio files are up to 91 MB each (`docs/audio-url-check.md`): plan downloads and storage around that. `wajibat-data-cache` and `quran-downloads-audio-cache` names return with their features; the Downloads manager enforces Wi-Fi-only (`quran:download-prefs:v1`) where the connection type is reported |
 | 13 | Daily Fiqh keeps `quran:fiqh-prefs:v1`; Settings already holds the marja' picker (Ja'fari only) on the same key |
 | 14 | The Hifz tile's due count ("N to practice"): the legacy queue lives in a composable that needs Nuxt state, so it is rebuilt there |
