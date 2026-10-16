@@ -1,10 +1,9 @@
 <script setup lang="ts">
-useSeoMeta({ title: "Surahs · Quran App", description: "All 114 surahs of the Quran." });
+// /surah-listing is the Surah tab; /surah-listing?tab=page is the Page tab. The Juz tab is /juz (a legacy route).
+const route = useRoute();
+const tab = computed(() => (route.query.tab === "page" ? "page" : "surah"));
 </script>
 
 <template>
-  <section>
-    <h1 class="font-serif text-[28px] font-medium">Surahs</h1>
-    <p class="mt-2 text-ink-2">Placeholder: the real listing is built in Phase 3.</p>
-  </section>
+  <ListingPage :tab="tab" />
 </template>
