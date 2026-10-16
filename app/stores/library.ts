@@ -41,7 +41,7 @@ export const useLibraryStore = defineStore("library", () => {
       add({
         person: (id) => {
           const p = byId.get(id);
-          return p ? { name: p.name, arabicName: p.arabicName } : null;
+          return p ? { name: p.name, honorific: p.honorific?.short, arabicName: p.arabicName } : null;
         },
       });
     }
