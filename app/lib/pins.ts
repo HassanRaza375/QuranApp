@@ -26,3 +26,20 @@ export function readReadingPin(): ReadingPin | null {
 export function writeReadingPin(pin: ReadingPin | null): boolean {
   return setJSON(PINS_KEY, { ...readRecord(), v: 1, reading: pin });
 }
+
+/** The page pin (written by the page reader, Phase 9). Nothing sets it yet; the Library shows "Not set" until then. */
+export interface PagePin {
+  pageNo: number;
+  pinnedAt: number;
+}
+
+export function readPagePin(): PagePin | null {
+  const p = readRecord().page as Partial<PagePin> | null | undefined;
+  if (!p || typeof p !== "object" || typeof p.pageNo !== "number" || !Number.isInteger(p.pageNo) || p.pageNo < 1 || p.pageNo > 604) return null;
+  return { pageNo: p.pageNo, pinnedAt: typeof p.pinnedAt === "number" ? p.pinnedAt : 0 };
+}
+
+/** Sets or clears the page pin. Every other field of the record (the reading pin, unknown fields) is kept. */
+export function writePagePin(pin: PagePin | null): boolean {
+  return setJSON(PINS_KEY, { ...readRecord(), v: 1, page: pin });
+}
