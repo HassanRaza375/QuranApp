@@ -184,7 +184,7 @@ onBeforeUnmount(() => clearTimeout(flashTimer));
         <div v-if="tab === 'surah'" class="min-w-0">
           <ResponsiveMenu v-model="place" :options="placeOptions" label="Place" />
         </div>
-        <div v-if="tab !== 'page'" class="min-w-0">
+        <div v-if="tab === 'surah'" class="min-w-0">
           <ResponsiveMenu :model-value="reciter" :options="reciterOptions" label="Reciter" title="Choose a reciter" @update:model-value="onReciter" />
         </div>
         <Button v-if="tab === 'surah'" variant="outline" class="min-h-11 gap-2 md:min-h-8" :aria-pressed="savedOnly" :class="savedOnly ? 'border-brand text-brand' : ''" data-testid="saved-toggle" @click="savedOnly = !savedOnly">

@@ -51,7 +51,7 @@ const onClick = (e: MouseEvent) => {
           <span class="min-w-0">
             <span class="flex flex-wrap items-baseline gap-x-2">
               <span class="font-serif text-[16px] font-medium">{{ s.name }}</span>
-              <span class="text-[13px] text-ink-2">{{ s.en }}</span>
+              <span class="hidden text-[13px] text-ink-2 sm:inline">{{ s.en }}</span>
             </span>
             <span class="block text-[12.5px] text-ink-2">{{ s.place }} · {{ s.ayahs }} verses</span>
             <span v-if="last?.surahNo === s.n" class="block text-[12.5px] font-medium text-brand" data-testid="last-read-text">
@@ -59,7 +59,7 @@ const onClick = (e: MouseEvent) => {
               Last read: ayah {{ last.ayahNo }} of {{ last.total }}
             </span>
           </span>
-          <span class="ar shrink-0 !text-[22px] !leading-normal md:!text-[26px]" lang="ar" dir="rtl">{{ s.ar }}</span>
+          <span class="ar shrink-0 !text-[20px] !leading-normal sm:!text-[22px] md:!text-[26px]" lang="ar" dir="rtl">{{ s.ar }}</span>
         </a>
         <button
           type="button"
