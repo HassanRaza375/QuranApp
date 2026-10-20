@@ -2,7 +2,7 @@
 
 - Branch: `revamp-design-logic`
 - Date: 2026-10-16
-- Status: **Built and verified; screenshots and the compare README still to do (see "Handoff" at the end)**
+- Status: **Done, awaiting review.** Screenshots (40) and `docs/design/people-compare/README.md` are in; I looked at three pairs and say so in the README.
 - Plan and decisions: `phase-07a-people-plan.md`
 
 ## Approved decisions (as built)
@@ -58,11 +58,9 @@ The chip is the legacy label for `personType` (12 "Prophet", 13 "Prophet · Mess
 - `tests/people.test.ts` (27 tests): the data, search scope, categories, Saved and URL state, chronology and status wording, the timeline (nobody lost), sentences and the pair-consistency check, the story coverage (44 of 59 in a story, 15 not), the study record and tab mapping.
 - The existing source scan still proves no hard-coded Arabic in `app/`.
 
-## Handoff (what is left, to continue on another machine)
+## What is left for you
 
-1. `npm install`, use **Node 22** (`^22.21` or newer; Node 20 breaks eslint), `npm run build`.
-2. Screenshots: `node scripts/screenshots/phase-07a-people.mjs` (needs the production build; it serves it on port 3012). It writes 12 prototype-versus-revamp pairs (`<device>-<theme>-<browse|timeline|person>.jpg`) and 28 state shots into `docs/design/people-compare/`. (`scripts/screenshots/phase-06-library.mjs` is the same for the Library.) **Look at the images** and say which were only generated.
-3. Write `docs/design/people-compare/README.md` (the format of `library-compare/README.md`: a differences table, what was and was not examined).
-4. Update `docs/PROGRESS.md` row 7A to "Done, awaiting review" and link `phases/phase-07a-people.md`, `pages/people.md`, `pages/person.md`.
-5. `CONTENT_TO_VERIFY.md` already has the Prophets & People items added in this commit; add anything the screenshots turn up.
-6. Run `npm run verify` once more, commit as `revamp(people): ...`, then stop for review.
+- Decide the three relationship entries (a, b or c in "Finding").
+- Review the status chips and the CONTENT_TO_VERIFY items.
+- Spot-check the 37 screenshots I did not examine; real-device checks.
+- Then Phase 7B (Story reader, Compare tellings, entity sheets, story progress) needs its own plan.
