@@ -30,7 +30,7 @@
 ### `/calender`
 A Gregorian month grid with the Hijri day in each cell, a dot where a Hijri event falls, "Events This Month", a selected-day card (Ramadan day chip, event chips with their `dateNote`, Suhoor Ends and Iftar for that day), month navigation, and Personal Reminders. It calls AlAdhan's `/v1/calendar` itself and keeps its own cache in `calendar_v2_<lat>_<lon>_<fiqh>_<month>_<year>` (not the prayer cache).
 
-### The events data: `ISLAMIC_EVENTS` (32 entries, Hijri month and day only)
+### The events data: `ISLAMIC_EVENTS` (29 entries, Hijri month and day only; this plan first said 32, corrected in `phase-08b-events-plan.md`)
 Fields: `month`, `day`, `name`, `category` (major, birth, martyrdom, shia-occasion, remembrance), `tradition` (`shared`, `sunni`, `jafari`), `icon`, and, on 10 of them, a `dateNote`. **No Gregorian date, no description text, no per-tradition wording pairs.** The same Hijri day can hold a shared and a tradition-specific entry (for example Mawlid is `sunni` on 12 Rabi' I and `jafari` on 17 Rabi' I; Isra and Mi'raj is `sunni` and Mab'ath is `jafari`, both 27 Rajab; Laylat al-Bara'at is `shared` and the Birth of Imam al-Mahdi `jafari`, both 15 Sha'ban). `getIslamicEvents(month, day, fiqh)` filters by the fiqh ("shared" always passes). Laylat al-Qadr is **five `shared` entries** (21, 23, 25, 27, 29 Ramadan).
 **This is a different dataset from the Qur'anic Events module** (`quranEvents.ts`, Phase 12); this phase uses `islamicEvents.js` only.
 
@@ -45,7 +45,7 @@ Three states (before, during, last ten), a **Following** switch, a **Timetable**
 | --- | --- | --- |
 | **The event list** (26 events: Fatimiyya days, Rajab begins, Birth of Imam Ali, Martyrdom of Imam Musa al-Kadhim, Birth of Fatima, Mid-Sha'ban, ...) | 32 events with Hijri month and day (listed above) | **Not in the data:** First and Second Fatimiyya, Rajab begins, Sha'ban begins, Birth of Imam Ali, Martyrdom of Imam Musa al-Kadhim, Birth of Fatima, the "Night of 19 Ramadan" entry. **In the data but not the prototype:** Tasua, Arbaeen, Khadijah's death, the births of Imam Husayn, Abbas, Zayn al-Abidin, Hasan, the 19th and 21st martyrdom days, Hajj start. Anything not in the legacy list needs your reviewed source |
 | **Dates** ("27 Feb 2027") | none (Hijri only) | computed from the Hijri calendar data (section 3). The prototype's dates were mine and are not used |
-| **Event descriptions** (Sunni line, Ja'fari line) | only 10 `dateNote` sentences | the rest have **no description**; the row shows the name, the Hijri date, the tradition tag and the note if there is one. Nothing is written for the others |
+| **Event descriptions** (Sunni line, Ja'fari line) | only 9 `dateNote` sentences (first written as 10) | the rest have **no description**; the row shows the name, the Hijri date, the tradition tag and the note if there is one. Nothing is written for the others |
 | **"How it differs" table** (suhoor, iftar, night prayers, Imam Ali) | nothing | **Not shipped.** A table of how the two traditions differ is a set of rulings; it needs a source you review (candidate: the Wajibat data for Ja'fari rulings, which is sourced per marja') |
 | **Laylat al-Qadr by fiqh** (Sunni 21 to 29, Ja'fari 19, 21, 23) | nights **21, 23, 25, 27, 29, shared**, and a disclaimer sentence | the **Ja'fari 19, 21, 23** claim is not in the legacy data. Shown as the legacy has it for both; a Ja'fari set needs a source you review |
 | **Iftar and suhoor wording** ("Ja'fari iftar waits until the eastern redness has passed", "Imsak, a little before Fajr, as a precaution") | none; the legacy shows Imsak, Fajr (as "Suhoor Ends") and Maghrib (as "Iftar") for the selected method | **Not shipped.** The page labels the times with the **method's name** from the cache and states no ruling |
@@ -133,7 +133,7 @@ No streak or flame; no guilt wording; no "expected by the Saudi calculation"; no
 ## Open questions
 
 1. **Split into 8A (Today, Timetable) and 8B (Events)?** (Recommended: yes.)
-2. **Event list.** Ship only the 32 legacy events (no Fatimiyya days, Rajab, the Imams' births and martyrdoms the prototype lists beyond the legacy ones) and add others later from a source you review? (Recommended: yes.)
+2. **Event list.** Ship only the 29 legacy events (this line first said 32) (no Fatimiyya days, Rajab, the Imams' births and martyrdoms the prototype lists beyond the legacy ones) and add others later from a source you review? (Recommended: yes.)
 3. **Event dates and horizon.** Use the service's Hijri calendar by month (confirmed and recorded before building) in a new `hijri-months` store, listing the next 6 months with "Show later events"? Or only the months already in the prayer cache (about 2 months)? (Recommended: the 6-month version.)
 4. **No comparison table and no per-fiqh iftar or suhoor wording**, as in section 2 and 4. OK? If you want a "How it differs" section, it needs a source you review (the sourced Ja'fari rulings in the Wajibat data are the natural place).
 5. **Duas.** (a) Show the legacy `RAMADAN_DUAS` (Arabic typed in the legacy data) flagged for your review; or (b) show only the Qur'anic dua (2:201) with its text read from the cached surah, and the hadith duas as references without Arabic until a verified set is supplied. (Recommended: (b).)

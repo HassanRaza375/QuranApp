@@ -8,7 +8,7 @@
 ## Approved decisions (as built)
 
 1. Split: 8A (Today and Timetable) built and stopped for review; 8B (Events) not started.
-2. (8B) Ship only the 32 legacy events, dates for the next 6 months.
+2. (8B) Ship only the legacy events (29, not the 32 first written; see `phase-08b-events-plan.md`), dates for the next 6 months.
 3. `/calender` stays for Phase 15.
 4. The Qur'anic dua (2:201) from the cached surah text; hadith duas as references without Arabic.
 5. The Khatmah card is read-only (a link to where you stopped reading; no goal creation).
@@ -62,4 +62,4 @@ The Ja'fari Laylat al-Qadr nights (19, 21, 23); the Sunni versus Ja'fari "how it
 - Review the wording ("Dates need a connection once.", "Expected ...", the basis line, the Khatmah line, "Didn't fast"), the calendar basis name ("Hijri Calendar of Saudi Arabia (HJCoSA)", taken from the service's code) and the legacy Laylat al-Qadr note.
 - Supply reviewed sources if you want the gaps above filled.
 - Real-device checks, and the screenshots I did not look at.
-- Then Phase 8B (Events): a plan review first (the horizon, the legacy 32 events, the reminders).
+- Then Phase 8B (Events): a plan review first (the horizon, the 29 legacy events, the reminders).
