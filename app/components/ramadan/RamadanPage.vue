@@ -1,10 +1,10 @@
 <script setup lang="ts">
-// Ramadan (prototype d-page-ramadan / m-page-ramadan), Phase 8A: Today and Timetable. Everything comes from the calendar service's Hijri
-// month, the cached prayer months and the legacy record, with the Settings Hijri adjustment applied in the app. No event list yet (8B).
+// Ramadan (prototype d-page-ramadan / m-page-ramadan): Today and Timetable (8A) and Events (8B). Everything comes from the calendar service's Hijri
+// month, the cached prayer months and the legacy record, with the Settings Hijri adjustment applied in the app. Events (8B) place the legacy events on the calendar service's days.
 // See docs/phases/phase-08a-ramadan.md.
 import { onBeforeUnmount } from "vue";
 
-useSeoMeta({ title: "Ramadan · Quran App", description: "Ramadan day, suhoor and iftar times, a private fasting tracker, and Laylat al-Qadr." });
+useSeoMeta({ title: "Ramadan · Quran App", description: "Ramadan day, suhoor and iftar times, a private fasting tracker, Laylat al-Qadr, and Islamic events." });
 
 const route = useRoute();
 const router = useRouter();
@@ -16,8 +16,9 @@ const ramadan = useRamadan();
 const TABS = [
   { id: "today", label: "Today" },
   { id: "timetable", label: "Timetable" },
+  { id: "events", label: "Events" },
 ] as const;
-const tab = computed(() => (route.query.tab === "timetable" ? "timetable" : "today"));
+const tab = computed(() => (route.query.tab === "timetable" ? "timetable" : route.query.tab === "events" ? "events" : "today"));
 const setTab = (t: string) => void router.replace({ query: t === "today" ? {} : { tab: t } });
 
 let timer: ReturnType<typeof setInterval> | undefined;
@@ -90,7 +91,8 @@ const onFiqh = (v: string) => prefs.set("fiqh", v as "sunni" | "jafari");
 
     <div class="mt-4">
       <RamadanTodayPanel v-if="tab === 'today'" />
-      <RamadanTimetablePanel v-else />
+      <RamadanTimetablePanel v-else-if="tab === 'timetable'" />
+      <RamadanEventsPanel v-else />
     </div>
   </section>
 </template>

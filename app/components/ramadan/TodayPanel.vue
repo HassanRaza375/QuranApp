@@ -5,6 +5,7 @@
 import { adjustNote } from "~/lib/hijriAdjust";
 import { countdownLabel, formatClock12, fractionBetween, zonedInstant } from "~/lib/prayerClock";
 import { methodName } from "~/lib/calcMethods";
+import { expectedText, relativeDays, traditionOf, visible } from "~/lib/islamicEvents";
 import { basisLine, formatLongDate } from "~/lib/ramadanText";
 
 const prefs = usePreferencesStore();
@@ -33,6 +34,18 @@ const basisText = computed(() => basisLine(plan.value.source, plan.value.basis))
 const adjustText = computed(() => (prefs.prefs.hijriAdjust ? adjustNote(prefs.prefs.hijriAdjust) : ""));
 const dayText = computed(() => (plan.value.day ? `Day ${plan.value.day}${plan.value.length ? ` of ${plan.value.length}` : ""}` : ""));
 const retry = () => ramadan.load({ network: true, times: true });
+
+// Before Ramadan: the next event, from the first few saved months (no change to Home)
+const events = useEvents();
+const fiqhSet = ref(false);
+onMounted(() => {
+  fiqhSet.value = events.fiqhSet();
+  void events.load({ network: true, limit: 4 });
+});
+const nextEvent = computed(() => {
+  const t = traditionOf(fiqhSet.value ? "following" : "both", prefs.prefs.fiqh);
+  return events.placed.value.find((p) => visible(p.event, t)) ?? null;
+});
 const noRamadanDates = computed(() => plan.value.state === "unknown");
 </script>
 
@@ -57,6 +70,12 @@ const noRamadanDates = computed(() => plan.value.state === "unknown");
         <p class="mt-2 text-[12.5px] text-ink-2" data-testid="basis">{{ basisText }}<template v-if="adjustText"> {{ adjustText }}.</template></p>
       </div>
       <RamadanGetReady class="mt-5" />
+      <section v-if="nextEvent" class="mt-5 rounded-[10px] border p-4" aria-labelledby="next-ev-h" data-testid="next-event">
+        <h2 id="next-ev-h" class="text-[13px] font-medium uppercase tracking-wide text-ink-2">Next event</h2>
+        <p class="mt-1 text-[15px] font-medium" data-testid="next-event-name">{{ nextEvent.event.name }}</p>
+        <p class="text-[13px] text-ink-2" data-testid="next-event-date">{{ expectedText(nextEvent.date) }} · {{ nextEvent.hijriLabel }} · {{ relativeDays(nextEvent.daysUntil) }}</p>
+        <NuxtLink to="/ramadan?tab=events" class="mt-1 inline-flex min-h-11 items-center text-[13.5px] text-brand underline md:min-h-9" data-testid="next-event-link">See all coming events</NuxtLink>
+      </section>
     </section>
 
     <!-- over -->
