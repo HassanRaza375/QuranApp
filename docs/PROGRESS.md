@@ -14,7 +14,7 @@ Update this file at the end of every phase.
 | 6 | Library | **Done, awaiting review** (2026-10-16) | [phase-06-library](phases/phase-06-library.md), [plan](phases/phase-06-library-plan.md) | [library](pages/library.md) |
 | 7A | Prophets & People: directory, Timeline, person page | **Done, awaiting review** (2026-10-20; 277 browser tests; the three relationship entries are a pending decision, see the phase doc) | [phase-07a-people](phases/phase-07a-people.md), [plan](phases/phase-07a-people-plan.md) | [people](pages/people.md), [person](pages/person.md) |
 | 7B | Story reader, Compare tellings, entity sheets, story progress, Stories directory | **Done, awaiting review** (2026-10-20) | [phase-07b-story](phases/phase-07b-story.md), [plan](phases/phase-07b-story-plan.md) | [story](pages/story.md), [stories](pages/stories.md) |
-| 8 | Ramadan and events | Not started | | |
+| 8 | Ramadan and events | **Plan written, awaiting approval** (proposed split: 8A Today and Timetable, 8B Events) | [plan](phases/phase-08-ramadan-plan.md) | |
 | 9 | Utilities | Not started | | |
 | 10 | Search | Needs prototype | | |
 | 11 | Downloads and offline manager | Needs prototype | | |
