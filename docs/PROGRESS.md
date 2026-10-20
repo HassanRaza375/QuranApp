@@ -13,7 +13,7 @@ Update this file at the end of every phase.
 | 5 | Prayer and Qibla | **Done, awaiting review** (2026-10-16) | [phase-05-prayer-qibla](phases/phase-05-prayer-qibla.md), [plan](phases/phase-05-prayer-qibla-plan.md) | [prayer-qibla](pages/prayer-qibla.md) |
 | 6 | Library | **Done, awaiting review** (2026-10-16) | [phase-06-library](phases/phase-06-library.md), [plan](phases/phase-06-library-plan.md) | [library](pages/library.md) |
 | 7A | Prophets & People: directory, Timeline, person page | **Done, awaiting review** (2026-10-20; 277 browser tests; the three relationship entries are a pending decision, see the phase doc) | [phase-07a-people](phases/phase-07a-people.md), [plan](phases/phase-07a-people-plan.md) | [people](pages/people.md), [person](pages/person.md) |
-| 7B | Story reader, Compare tellings, entity sheets, story progress | Not started (split from Phase 7) | | |
+| 7B | Story reader, Compare tellings, entity sheets, story progress | **Plan written, awaiting approval** | [plan](phases/phase-07b-story-plan.md) | |
 | 8 | Ramadan and events | Not started | | |
 | 9 | Utilities | Not started | | |
 | 10 | Search | Needs prototype | | |
