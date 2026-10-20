@@ -39,7 +39,6 @@ async function revamp(device, theme, seeds = {}, text = "ok") {
 const settle = async (p) => { await p.waitForLoadState("networkidle"); await p.waitForTimeout(800); };
 
 async function protoShot(device, theme, view) {
-  const d0 = device === "desktop" ? "d" : "m";
   const ctx = await browser.newContext({ viewport: device === "desktop" ? { width: 1500, height: 900 } : { width: 700, height: 950 } });
   const page = await ctx.newPage();
   await page.goto("file:///" + ROOT + "/docs/design/prototype.html");
