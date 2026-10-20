@@ -14,7 +14,7 @@ const rows = computed(() => timetableRows(ramadan.plan.value, ramadan.todayKey.v
 const missing = computed(() => missingRows(rows.value));
 const methodText = computed(() => prayer.record.value?.methodName || methodName(prefs.prefs.fiqh === "jafari" ? prefs.prefs.calc.jafariMethod : prefs.prefs.calc.sunniMethod));
 const retry = () => ramadan.load({ network: true, times: true });
-const loading = computed(() => ramadan.timesState.value === "loading" || ramadan.monthState.value === "loading");
+const loading = computed(() => ramadan.timesState.value === "loading" || ramadan.monthState.value === "loading" || ramadan.monthState.value === "idle");
 </script>
 
 <template>

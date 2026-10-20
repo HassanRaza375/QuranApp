@@ -11,6 +11,15 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string) => fs.readFileSync(path.resolve(HERE, "../tests/fixtures", name), "utf8");
 export const SUNNI_OCT = fixture("aladhan-lahore-2026-10-sunni.json");
 export const JAFARI_OCT = fixture("aladhan-lahore-2026-10-jafari.json");
+/** Real recorded Lahore months (AlAdhan), Sunni (method 2) and Ja'fari (method 0), by "YYYY/M" as the app asks for them. */
+const MONTHS: Record<string, [string, string]> = {
+  "2026/10": ["aladhan-lahore-2026-10-sunni.json", "aladhan-lahore-2026-10-jafari.json"],
+  "2027/1": ["aladhan-lahore-2027-01-sunni.json", "aladhan-lahore-2027-01-jafari.json"],
+  "2027/2": ["aladhan-lahore-2027-02-sunni.json", "aladhan-lahore-2027-02-jafari.json"],
+  "2027/3": ["aladhan-lahore-2027-03-sunni.json", "aladhan-lahore-2027-03-jafari.json"],
+};
+/** Real recorded Hijri calendar (AlAdhan `hToGCalendar/9/1448`: Ramadan 1448, 8 Feb to 8 Mar 2027). */
+export const RAMADAN_1448 = fixture("aladhan-htog-1448-09.json");
 
 /** 15 Oct 2026, 09:14 in Karachi (UTC+5), which is 04:14 UTC. */
 export const NOW_KARACHI = "2026-10-15T09:14:00+05:00";
@@ -60,10 +69,29 @@ export async function mockAladhan(context: BrowserContext, mode: AladhanMock["mo
     if (state.mode === "network") return route.abort("internetdisconnected");
     if (state.mode === "http500") return route.fulfill({ status: 500, contentType: "application/json", body: "{}" });
     const u = new URL(url);
-    const ok = u.pathname.endsWith("/2026/10");
-    if (!ok) return route.fulfill({ status: 404, contentType: "application/json", body: "{}" });
-    const body = u.searchParams.get("method") === "0" ? JAFARI_OCT : SUNNI_OCT;
+    const m = /\/calendar\/(\d{4}\/\d{1,2})$/.exec(u.pathname);
+    const files = m ? MONTHS[m[1]!] : undefined;
+    if (!files) return route.fulfill({ status: 404, contentType: "application/json", body: "{}" });
+    const body = fixture(u.searchParams.get("method") === "0" ? files[1] : files[0]);
     return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body });
+  });
+  return state;
+}
+
+export interface HijriMock {
+  calls: string[];
+  mode: "ok" | "http500" | "network";
+}
+/** Answers api.aladhan.com Hijri month requests: only Ramadan 1448 exists (anything else is a 404). */
+export async function mockHijri(context: BrowserContext, mode: HijriMock["mode"] = "ok"): Promise<HijriMock> {
+  const state: HijriMock = { calls: [], mode };
+  await context.route(/https:\/\/api\.aladhan\.com\/v1\/hToGCalendar\//, async (route: Route) => {
+    const url = route.request().url();
+    state.calls.push(url);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, contentType: "application/json", body: "{}" });
+    if (!/\/hToGCalendar\/9\/1448$/.test(url)) return route.fulfill({ status: 404, contentType: "application/json", body: "{}" });
+    return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: RAMADAN_1448 });
   });
   return state;
 }

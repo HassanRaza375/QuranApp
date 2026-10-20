@@ -10,8 +10,8 @@ import { getJSON, setJSON } from "./storage";
 export const RAMADAN_KEY = "quran:ramadan:v1";
 /** The legacy start-date override is active for 30 days from the date (the longer month), so it never expires a day early. */
 export const OVERRIDE_WINDOW_DAYS = 30;
-/** A manual start date further ahead than this is ignored (a typo, not a plan). */
-const OVERRIDE_LOOKAHEAD_DAYS = 90;
+/** A manual start date more than a year ahead is ignored (a typo, not a plan). */
+const OVERRIDE_LOOKAHEAD_DAYS = 400;
 
 export type FastingStatus = "fasted" | "missed" | "planned";
 /** The stored value `missed` stays (the legacy key); the label is neutral. */

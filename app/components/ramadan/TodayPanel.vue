@@ -43,7 +43,7 @@ const noRamadanDates = computed(() => plan.value.state === "unknown");
 <template>
   <div class="space-y-6" data-testid="today-panel">
     <!-- the dates are not available -->
-    <div v-if="noRamadanDates && ramadan.monthState.value !== 'loading'" class="rounded-[10px] border border-dashed px-4 py-8 text-center" data-testid="no-dates">
+    <div v-if="noRamadanDates && (ramadan.monthState.value === 'needs-connection' || ramadan.monthState.value === 'error')" class="rounded-[10px] border border-dashed px-4 py-8 text-center" data-testid="no-dates">
       <p class="text-[15px]">
         {{ ramadan.monthState.value === "error" ? "Couldn’t load the calendar. Try again in a moment." : "Dates need a connection once." }}
       </p>
