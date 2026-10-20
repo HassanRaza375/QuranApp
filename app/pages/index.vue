@@ -10,6 +10,7 @@ useSeoMeta({
 const location = useLocation();
 const home = useHomeState();
 const prayer = usePrayerTimes();
+const ramadan = useRamadan();
 
 let timer: ReturnType<typeof setInterval> | undefined;
 const onVisible = () => {
@@ -20,6 +21,7 @@ onMounted(async () => {
   location.load();
   void home.load();
   await prayer.load();
+  void ramadan.loadForHome(); // saved data only, except in Sha'ban, when Ramadan is fetched ahead
   // Minute precision is enough for the countdown; update every 30 seconds, and straight away when the tab comes back.
   timer = setInterval(() => {
     if (document.visibilityState === "visible") prayer.tick();
@@ -44,6 +46,7 @@ watch(
   <div>
     <h1 class="sr-only">Home</h1>
     <HomeAyahOfDay />
+    <HomeRamadanBanner />
     <HomeResumeCard />
     <HomeUtilStrip />
     <HomePrayerSchedule />

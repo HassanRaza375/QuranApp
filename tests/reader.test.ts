@@ -190,15 +190,15 @@ describe("the revamp database", () => {
     await closeRevampDb();
   });
 
-  it("upgrading from version 1 keeps the prayer months and adds the text stores (the current version is 3: ayah-text arrived with the Library)", async () => {
+  it("upgrading from version 1 keeps the prayer months and adds the text stores (the current version is 4: ayah-text arrived with the Library, hijri-months with Ramadan)", async () => {
     // build a version-1 database the way Phase 1 did
     const { openDB } = await import("idb");
     const v1 = await openDB(REVAMP_DB_NAME, 1, { upgrade: (db) => void db.createObjectStore("prayer-months") });
     await v1.put("prayer-months", { key: "k", month: "2026-10" }, "k");
     v1.close();
     const db = await getRevampDb();
-    expect(db.version).toBe(3);
-    expect([...db.objectStoreNames].sort()).toEqual([CHAPTERS, "prayer-months", TAFSIRS, "ayah-text"].sort());
+    expect(db.version).toBe(4);
+    expect([...db.objectStoreNames].sort()).toEqual([CHAPTERS, "prayer-months", TAFSIRS, "ayah-text", "hijri-months"].sort());
     expect(await db.get("prayer-months", "k")).toEqual({ key: "k", month: "2026-10" });
   });
   it("round-trips chapters and tafsirs; a miss is undefined", async () => {
