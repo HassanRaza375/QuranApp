@@ -33,7 +33,7 @@ Holds: Compare tellings lists only references, ayah counts and the data's descri
 
 ## Findings
 
-- Of the 8 stories not fully told, all list passages in more than one surah (including supporting ones), so the notice's "several surahs" is true of each; a test checks it. `nuhflood` is "fully told" yet its chapters jump between surahs 71 and 11: it gets no notice and no Order line (the data's status is the rule).
+- Of the 8 stories not fully told, all list passages in more than one surah (including supporting ones), so the notice's "several surahs" is true of each; a test checks it. `nuhflood` is "fully told" yet its chapters jump between surahs 71 and 11. After the 7B review it is in `ARRANGED_OVERRIDES`: it shows the "Arranged for study" notice (and a dashed status chip) until you decide, has no Order line, and the legacy data is untouched; the decision is in CONTENT_TO_VERIFY.md and the cutover checklist.
 - Every id a story names (people, peoples, places) resolves in the data (a test checks it; the page shows only what resolves).
 - None of the 51 episode and supporting passages has a description, so Compare tellings shows "No description recorded yet." for all 13 supporting passages.
 - Playwright treats `aria-disabled` buttons as not enabled; the Listen test forces the click to prove it does nothing.

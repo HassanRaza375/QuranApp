@@ -16,7 +16,7 @@ test.afterEach(() => {
   expect(leaks, "a test reached a real upstream API").toEqual([]);
 });
 
-const ARRANGED = ["adamandiblis", "ibrahimnarrative", "musaandpharaoh", "musaandbaniisrael", "ayyubstory", "yunusstory", "maryamandisa", "thenightjourney"];
+const ARRANGED = ["nuhflood", "adamandiblis", "ibrahimnarrative", "musaandpharaoh", "musaandbaniisrael", "ayyubstory", "yunusstory", "maryamandisa", "thenightjourney"];
 const toast = (page: Page, text: string) => page.locator("[data-sonner-toast]").filter({ hasText: text });
 async function open(page: Page, path: string, testid = "story-page") {
   await page.goto(path);
@@ -31,7 +31,7 @@ test.describe("directory", () => {
     await expect(page.getByTestId("story-row")).toHaveCount(21);
     await expect(page.getByTestId("stories-count")).toHaveText("21 stories");
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
-    await expect(page.locator('[data-testid="row-status"].border-dashed')).toHaveCount(8);
+    await expect(page.locator('[data-testid="row-status"].border-dashed')).toHaveCount(9); // the 8 not fully told, and nuhflood (the override list)
     const yusuf = page.locator('[data-testid="story-row"][data-id="yusufstory"]');
     await expect(yusuf.getByTestId("row-chapters")).toContainText("4 chapters");
     await expect(yusuf.getByTestId("row-progress")).toHaveText("Not started");
@@ -234,7 +234,7 @@ test.describe("a pieced-together story (Adam and Iblis)", () => {
     await expect(sheet).toHaveCount(0);
   });
 
-  test("the notice is on every story not fully told (8) and on none of the other 13", async ({ page }) => {
+  test("the notice is on every story not fully told (8) and on nuhflood (the override list), and on none of the other 12", async ({ page }) => {
     for (const id of ARRANGED) {
       await open(page, `/stories/${id}`);
       await expect(page.getByTestId("arranged-notice"), id).toHaveCount(1);
@@ -242,8 +242,8 @@ test.describe("a pieced-together story (Adam and Iblis)", () => {
     await open(page, "/stories/qarunstory");
     await expect(page.getByTestId("arranged-notice")).toHaveCount(0);
     await expect(page.getByTestId("story-order")).toContainText("Order: the surah's own sequence");
-    await open(page, "/stories/nuhflood"); // complete, yet its chapters jump between surahs: no Order line, no notice
-    await expect(page.getByTestId("arranged-notice")).toHaveCount(0);
+    await open(page, "/stories/nuhflood"); // "fully told" in the data, but its chapters jump between surahs: the notice shows until the owner decides; no Order line
+    await expect(page.getByTestId("arranged-notice")).toHaveCount(1);
     await expect(page.getByTestId("story-order")).toHaveCount(0);
   });
 

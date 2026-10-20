@@ -76,8 +76,14 @@ export function orderLine(chs: StoryChapter[]): string | null {
   return `Order: the surah's own sequence (${surahName(surah)} ${surah}:${first.ayahStart}–${last})`;
 }
 
-/** Shown for every story whose narrative status is not "fully told in the Qur'an" (8 stories). */
-export const isArranged = (s: QuranStory): boolean => s.narrativeStatus !== "quran_complete";
+/**
+ * One flag per story: ids listed here get the "Arranged for study" notice although the data says "fully told", until the owner decides
+ * (a missing "fully told" is safer than a wrong one). `nuhflood` is "fully told" in the data but its chapters jump between surahs 71 and
+ * 11. The legacy data is not edited; fix it once at cutover (PLAN.md, CONTENT_TO_VERIFY.md).
+ */
+export const ARRANGED_OVERRIDES: ReadonlySet<string> = new Set(["nuhflood"]);
+/** Shown for every story whose narrative status is not "fully told in the Qur'an" (8 stories) and for the override list (1 more). */
+export const isArranged = (s: QuranStory): boolean => s.narrativeStatus !== "quran_complete" || ARRANGED_OVERRIDES.has(s.id);
 
 // ---------------------------------------------------------------- also told in (story level; no per-chapter mapping in the data)
 

@@ -3,7 +3,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { AYAH_COUNTS } from "../app/lib/quranMeta";
 import {
-  ARRANGED_NOTICE, chapterFromQuery, chapterHref, chapterQuery, chaptersOf, entitiesOf, FIRST_AYAHS, filterStories, hasSupporting, isArranged, NARRATIVE_LABELS, NO_STORY_FILTERS, orderLine, peopleInStories,
+  ARRANGED_NOTICE, ARRANGED_OVERRIDES, chapterFromQuery, chapterHref, chapterQuery, chaptersOf, entitiesOf, FIRST_AYAHS, filterStories, hasSupporting, isArranged, NARRATIVE_LABELS, NO_STORY_FILTERS, orderLine, peopleInStories,
   STORIES, storyById, storyCountLine, storyFiltersFromQuery, storyFiltersToQuery, storyKey, SUMMARY_LABEL, surahName, tellings, unresolvedIds, visibleAyahs,
 } from "../app/lib/stories";
 import {
@@ -70,16 +70,25 @@ describe("order and the arranged notice", () => {
       if (line) expect(surahs.size, s.id).toBe(1);
     }
   });
-  it("the arranged notice is for every story that is not fully told in the Qur'an: eight stories", () => {
+  it("the arranged notice is for every story that is not fully told in the Qur'an (8) plus the override list (nuhflood): nine stories", () => {
+    const byStatus = STORIES.filter((s) => s.narrativeStatus !== "quran_complete");
+    expect(byStatus).toHaveLength(8);
+    expect([...ARRANGED_OVERRIDES]).toEqual(["nuhflood"]);
+    expect([...ARRANGED_OVERRIDES].every((id) => !!storyById(id))).toBe(true);
     const arranged = STORIES.filter(isArranged);
-    expect(arranged).toHaveLength(8);
-    expect(arranged.every((s) => s.narrativeStatus !== "quran_complete")).toBe(true);
-    expect(STORIES.filter((s) => !isArranged(s)).every((s) => s.narrativeStatus === "quran_complete")).toBe(true);
+    expect(arranged.map((s) => s.id).sort()).toEqual([...byStatus.map((s) => s.id), "nuhflood"].sort());
     expect(ARRANGED_NOTICE).toBe("This story is assembled from passages in several surahs, in an order chosen for reading.");
-    // the sentence says "several surahs": it must be true of each of the eight (counting every passage the story lists)
+    // the sentence says "several surahs": it must be true of each story that carries it (counting every passage the story lists)
     for (const s of arranged) {
       const surahs = new Set([...s.primaryPassages, ...(s.supportingPassages ?? []), ...(s.episodes ?? []).flatMap((e) => e.passages)].map((p) => p.surahNumber));
       expect(surahs.size, s.id).toBeGreaterThan(1);
+    }
+  });
+  it("every override is a story whose data really contradicts its label: 'fully told' but its chapters span several surahs", () => {
+    for (const id of ARRANGED_OVERRIDES) {
+      const s = S(id);
+      expect(s.narrativeStatus).toBe("quran_complete");
+      expect(new Set(chaptersOf(s).flatMap((c) => c.passages.map((p) => p.surahNumber))).size).toBeGreaterThan(1);
     }
   });
   it("the status labels are the legacy ones; the summary label is the approved one", () => {

@@ -115,6 +115,7 @@ Pages without a prototype are designed first (in chat or by applying `DESIGN_SYS
 - [ ] Remove `/foundation`; verify the legacy offline-new-tab root cause against the deployed worker.
 - [ ] Replace the World Magnetic Model coefficients before 2030 (`scripts/gen-wmm.mjs`).
 - [ ] **Normalise the persons relationship data to one convention** (the data mixes two: 17 parent/child entries say "this person is the X of the related one", three say the opposite, and the spec reads the type as the related person's role). Do it once, when the legacy page is retired, as one reviewed commit to `app/data/quranPersons.ts`, then delete `REVERSED_ENTRIES` in `app/lib/people.ts` and update `tests/people.test.ts` (see `docs/phases/phase-07a-people.md`, "Finding").
+- [ ] **Fix the `nuhflood` story status** in the legacy data (`narrativeStatus: quran_complete` but its chapters jump between surahs 71 and 11) once the owner decides, then delete `ARRANGED_OVERRIDES` in `app/lib/stories.ts` (see `docs/CONTENT_TO_VERIFY.md`, Stories).
 - [ ] Real-device checks recorded as done: audio (including the 210 generic-type files), the compass, notifications, share.
 
 ## Definition of done (every page)

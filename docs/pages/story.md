@@ -28,7 +28,7 @@ Read one of the Qur'an's 21 narratives a chapter at a time, with the Qur'an text
 | Chapters | The episodes of the story (title, summary, its passage) or, for a story with no episodes, its primary passages (title, description). Nothing is split, merged or renamed. 11 stories have episodes (38 chapters), 10 do not (11 chapters) |
 | Text | The cached surah in `quran-revamp-db` through the reader's loader (one request per surah, shared with the reader). Arabic with the verse marker and the translation chosen in Settings, with the reader's rules for layout, Arabic size and "translation off" |
 | Order | Computed from the passages: only for a story whose chapters are all in one surah and ascend ("Order: the surah's own sequence (Yusuf 12:4–101)"); none otherwise |
-| Arranged notice | Shown for every story whose status is not "Fully told in the Qur'an" (8 stories), with the wording "This story is assembled from passages in several surahs, in an order chosen for reading." (flagged for review) |
+| Arranged notice | Shown for every story whose status is not "Fully told in the Qur'an" (8 stories) and for the `nuhflood` override (`ARRANGED_OVERRIDES`, pending your decision), with the wording "This story is assembled from passages in several surahs, in an order chosen for reading." (flagged for review) |
 | Lessons | The story's lessons (story level; the data does not say which chapter they belong to) |
 | Also told in, Compare tellings | The story's supporting passages (13 across 8 stories) and its primary passages: reference, ayah count and the data's description; "No description recorded yet." where none exists. No comparison is written |
 
