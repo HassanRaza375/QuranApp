@@ -107,7 +107,7 @@ export const countLine = (shown: number, total: number) => (shown === total ? `$
 
 // ---------------------------------------------------------------- stories that involve a person
 
-export const STORIES_READY = { reader: false } as const;
+export const STORIES_READY = { reader: true } as const;
 export const storyHref = (id: string) => `/stories/${id}`;
 
 export const storiesFor = (personId: string): QuranStory[] => QURAN_STORIES.filter((s) => s.personIds?.includes(personId));

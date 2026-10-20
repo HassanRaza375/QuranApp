@@ -200,8 +200,8 @@ describe("the stories that involve a person", () => {
     expect(PEOPLE.length - withStory.length).toBe(15);
     expect(storiesFor("adam").map((x) => x.id)).toContain("adamandiblis");
   });
-  it("the reader flag is off until 7B and every story has a route to follow", () => {
-    expect(STORIES_READY.reader).toBe(false);
+  it("the reader flag is on (7B) and every story has a route to follow", () => {
+    expect(STORIES_READY.reader).toBe(true);
     expect(storyHref("adamandiblis")).toBe("/stories/adamandiblis");
   });
 });

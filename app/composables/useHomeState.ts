@@ -3,14 +3,23 @@
 import { goalToday, type GoalToday } from "~/lib/goalToday";
 import { localDateKey } from "~/lib/dates";
 import { latestStudy, readingRow, type ReadingRow } from "~/lib/resume";
+import { latestProgress, newerOf, readAllProgress } from "~/lib/storyProgress";
 import { getJSON } from "~/lib/storage";
 import { detectUserState, HISTORY_KEYS, type UserState } from "~/lib/userState";
 
 export interface StudyRow {
+  /** which source this row is from: the latest person study or the latest story progress (whichever is newer) */
+  kind: "person" | "story";
+  /** the person id, or the story id */
   personId: string;
+  /** the second line of Home's row: the person's name, or "Chapter 3 of 4" */
   name: string;
+  /** the first line after "You were reading:": the section, or the story title */
   sectionLabel: string;
+  /** one line for the Library's Story slot */
+  line: string;
   href: string;
+  updatedAt: number;
 }
 
 export interface HomeState {
@@ -30,21 +39,35 @@ export const useHomeState = () => {
     const { AYAH_LENGTHS } = await import("~/data/ayahLengths.generated");
     const reading = readingRow(read(HISTORY_KEYS.readingProgress), AYAH_LENGTHS.map((s) => s.length));
 
-    let study: StudyRow | null = null;
+    let person: StudyRow | null = null;
     const latest = latestStudy(read(HISTORY_KEYS.personsStudy));
     if (latest) {
       // The people dataset and the section names are only loaded when there is something to resume.
       const [{ QURAN_PERSONS }, { SECTION_LABELS }] = await Promise.all([import("@legacy/data/quranPersons"), import("@legacy/utils/personStudy")]);
-      const person = QURAN_PERSONS.find((p) => p.id === latest.personId);
-      if (person) {
-        study = {
-          personId: person.id,
-          name: person.name,
-          sectionLabel: (SECTION_LABELS as Record<string, string>)[latest.lastSection] ?? latest.lastSection,
-          href: `/persons/${person.id}`,
-        };
+      const found = QURAN_PERSONS.find((p) => p.id === latest.personId);
+      if (found) {
+        const section = (SECTION_LABELS as Record<string, string>)[latest.lastSection] ?? latest.lastSection;
+        person = { kind: "person", personId: found.id, name: found.name, sectionLabel: section, line: `${found.name}: ${section}`, href: `/persons/${found.id}`, updatedAt: latest.updatedAt };
       }
     }
+
+    // Story progress (new, `quran:story-progress:v1`): only the story data is loaded, and only when there is progress.
+    let story: StudyRow | null = null;
+    const progress = readAllProgress();
+    if (Object.keys(progress).length) {
+      const { storyById, chaptersOf } = await import("~/lib/stories");
+      const best = latestProgress(progress, (id) => {
+        const s = storyById(id);
+        return s ? chaptersOf(s).length : undefined;
+      });
+      if (best) {
+        const s = storyById(best.id)!;
+        const finished = best.progress.chapter >= best.total;
+        const where = finished ? "Finished" : `Chapter ${best.progress.chapter + 1} of ${best.total}`;
+        story = { kind: "story", personId: best.id, name: where, sectionLabel: s.title, line: `${s.title}: ${where}`, href: `/stories/${best.id}${finished ? "?chapter=end" : best.progress.chapter === 0 ? "" : `?chapter=${best.progress.chapter + 1}`}`, updatedAt: best.progress.updatedAt };
+      }
+    }
+    const study = newerOf(person, story)?.value ?? null;
 
     state.value = {
       user,

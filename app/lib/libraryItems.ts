@@ -48,7 +48,7 @@ export const OPENS_TODAY: Record<ItemType, boolean> = {
   juz: READERS_READY.juz,
   page: READERS_READY.page,
   person: true, // Phase 7A
-  story: false, // Phase 7
+  story: true, // Phase 7B
   name: false, // Phase 9
   fiqh: false, // Phase 13
   audio: false, // Phase 15

@@ -5,6 +5,7 @@ import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { pageHref, surahHref } from "~/lib/readerLinks";
 import { lastRead, type LastRead } from "~/lib/readingMarker";
 import { getJSON } from "~/lib/storage";
+import { clearProgress, restoreProgress } from "~/lib/storyProgress";
 import { HISTORY_KEYS } from "~/lib/userState";
 
 const store = useLibraryStore();
@@ -20,6 +21,20 @@ onMounted(() => {
 watch(() => store.readingPin, refresh);
 
 const study = computed(() => home.state.value?.study ?? null);
+const undo = useUndoToast();
+/** Clears only a story's progress (a person's study record is not cleared from here), with Undo. */
+function clearStory() {
+  const s = study.value;
+  if (!s || s.kind !== "story") return;
+  const before = clearProgress(s.personId);
+  void home.load();
+  if (before) {
+    undo.withUndo("Story progress cleared.", () => {
+      restoreProgress(s.personId, before);
+      void home.load();
+    });
+  }
+}
 const reading = computed(() => {
   const p = store.readingPin;
   if (p) return { label: "Pinned", title: `${SURAH_ROWS[p.surahNo - 1]!.name}, ayah ${p.ayahNo}`, href: surahHref(p.surahNo, p.ayahNo), clear: true };
@@ -51,9 +66,10 @@ const reading = computed(() => {
       <div class="flex min-h-[72px] items-center gap-2 rounded-[10px] border p-3" data-testid="slot-story">
         <div class="min-w-0 flex-1">
           <p class="text-[12px] text-ink-2">Story</p>
-          <NuxtLink v-if="study" :to="study.href" class="mt-0.5 inline-flex min-h-11 items-center text-[14.5px] font-medium hover:underline md:min-h-0" data-testid="slot-story-link">{{ study.name }}: {{ study.sectionLabel }}</NuxtLink>
+          <NuxtLink v-if="study" :to="study.href" class="mt-0.5 inline-flex min-h-11 items-center text-[14.5px] font-medium hover:underline md:min-h-0" data-testid="slot-story-link">{{ study.line }}</NuxtLink>
           <p v-else class="mt-0.5 text-[13.5px]">Not set. Appears when you read a person or story.</p>
         </div>
+        <Button v-if="study?.kind === 'story'" variant="ghost" class="size-11 shrink-0 md:size-9" aria-label="Clear the story progress" data-testid="slot-story-clear" @click="clearStory"><Icon name="lucide:x" size="16" /></Button>
       </div>
     </div>
   </section>

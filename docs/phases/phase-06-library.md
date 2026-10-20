@@ -14,7 +14,7 @@ The real Library at `/bookmarks` (prototype `d-page-library` / `m-page-library`)
 1. Removing keeps note, tags and collections; Undo restores the original saved time.
 2. Every type present in the data is shown (Fiqh, Reciters pages, Pages too); rarer ones are grouped under "More types".
 3. Snippets from cached chapters, then the new `ayah-text` store (`quran-revamp-db` version 3), then one small per-ayah request. Never a whole surah, never typed Arabic; offline with nothing cached shows the reference and a clear line.
-4. `story:<id>` is reserved; nothing writes it until Phase 7.
+4. `story:<id>` was described as "reserved; nothing writes it until Phase 7". **Correction (Phase 7B review): that was wrong. The legacy app already writes `story:<id>` bookmarks** (the Save button on its story page), and the Library already lists them. It is a legacy key, not a new one.
 5. Collections: delete with Undo, no rename; a collection view lists note-only items too.
 6. The `quran:favorites:surah:v1` migration is repeated, idempotently (test).
 7. Library-only export with real counts; no separate Clear.

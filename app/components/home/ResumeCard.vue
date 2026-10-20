@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // "Pick up where you left off" (returning) or "Get started" (new). Each row decides for itself from its own data.
-// Row 2 is the Prophets & People study state until Phase 7 switches it to story chapters.
+// Row 2 is whichever is newer: the latest story progress (a story chapter) or the Prophets & People study state.
 const { state } = useHomeState();
 
 const readingRow = computed(() => {
@@ -12,7 +12,7 @@ const readingRow = computed(() => {
 const studyRow = computed(() => {
   const s = state.value?.study;
   return s
-    ? { icon: "lucide:users", title: `You were reading: ${s.sectionLabel}`, meta: s.name, cta: "Continue", to: s.href, kind: "study" }
+    ? { icon: s.kind === "story" ? "lucide:scroll-text" : "lucide:users", title: `You were reading: ${s.sectionLabel}`, meta: s.name, cta: "Continue", to: s.href, kind: "study" }
     : { icon: "lucide:users", title: "Explore Prophets & People", meta: "See how Qur’anic figures’ stories are told", cta: "Explore", to: "/persons", kind: "explore" };
 });
 const hasHistory = computed(() => !!state.value?.reading || !!state.value?.study);

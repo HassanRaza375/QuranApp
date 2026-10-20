@@ -410,7 +410,7 @@ describe("what each key is (real data only)", () => {
     expect(d("mystery:x").title).toBe("mystery: x");
   });
   it("only the readers that exist today are 'open today'", () => {
-    expect(OPENS_TODAY).toMatchObject({ ayah: true, surah: true, sajda: true, juz: true, page: false, person: true, story: false, name: false, fiqh: false, audio: false });
+    expect(OPENS_TODAY).toMatchObject({ ayah: true, surah: true, sajda: true, juz: true, page: false, person: true, story: true, name: false, fiqh: false, audio: false });
   });
   it("saved-time wording from the added-at time", () => {
     const now = new Date(T0 + 3 * 3600_000);

@@ -1,15 +1,24 @@
 <script setup lang="ts">
-// The Story tab: the overview, key lessons, and the stories that involve this person. The story reader itself is Phase 7B, so the
-// rows link to its route behind one flag (STORIES_READY.reader) with a notice, as the listing does for the page reader.
+// The Story tab: the overview, key lessons, and the stories that involve this person, each with your progress and a link to where you
+// left off. The reader shipped in 7B; the one flag (STORIES_READY.reader) still decides whether a "not rebuilt yet" notice shows.
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { NARRATIVE_LABELS, STORIES_READY, storiesFor, storyHref, type QuranPerson } from "~/lib/people";
 import { surahHref } from "~/lib/readerLinks";
+import { chapterHref, chaptersOf } from "~/lib/stories";
+import { progressText, readAllProgress, resumeChapter, type ProgressMap } from "~/lib/storyProgress";
 
 const props = defineProps<{ person: QuranPerson }>();
 const stories = computed(() => storiesFor(props.person.id));
 const refLabel = (r: { surahNumber: number; ayahNumber?: number; ayahStart?: number }) => `${SURAH_ROWS[r.surahNumber - 1]?.name ?? `Surah ${r.surahNumber}`} ${r.surahNumber}:${r.ayahNumber ?? r.ayahStart ?? 1}`;
 const refHref = (r: { surahNumber: number; ayahNumber?: number; ayahStart?: number }) => surahHref(r.surahNumber, r.ayahNumber ?? r.ayahStart);
 const detailOpen = ref(false);
+const progress = ref<ProgressMap>({});
+onMounted(() => {
+  progress.value = readAllProgress();
+});
+const total = (s: (typeof stories.value)[number]) => chaptersOf(s).length;
+const state = (s: (typeof stories.value)[number]) => progressText(progress.value[s.id] ?? null, total(s));
+const href = (s: (typeof stories.value)[number]) => (STORIES_READY.reader ? chapterHref(s.id, resumeChapter(progress.value[s.id] ?? null, total(s))) : storyHref(s.id));
 </script>
 
 <template>
@@ -34,9 +43,9 @@ const detailOpen = ref(false);
         <p v-if="!STORIES_READY.reader" class="mt-1 text-[12.5px] text-ink-2" data-testid="stories-notice">The story reader is still being moved to the new design, so opening a story shows a placeholder for now.</p>
         <ul class="mt-2">
           <li v-for="s in stories" :key="s.id" class="border-b py-3" data-testid="story-item">
-            <NuxtLink :to="storyHref(s.id)" class="block min-h-11" data-testid="story-link">
+            <NuxtLink :to="href(s)" class="block min-h-11" data-testid="story-link">
               <span class="block text-[15px] font-medium">{{ s.title }}</span>
-              <span class="block text-[12.5px] text-ink-2" data-testid="story-kind">{{ NARRATIVE_LABELS[s.narrativeStatus] }}</span>
+              <span class="block text-[12.5px] text-ink-2" data-testid="story-kind">{{ NARRATIVE_LABELS[s.narrativeStatus] }} · <span data-testid="story-progress">{{ total(s) }} {{ total(s) === 1 ? "chapter" : "chapters" }}, {{ state(s) }}</span></span>
               <span class="mt-0.5 line-clamp-2 block text-[13.5px] text-ink-2">{{ s.shortDescription }}</span>
             </NuxtLink>
           </li>

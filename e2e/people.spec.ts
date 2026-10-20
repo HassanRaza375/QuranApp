@@ -147,7 +147,8 @@ test.describe("timeline", () => {
 });
 
 test.describe("a person", () => {
-  test("Yusuf: identity, chips, tabs; the Story tab lists the stories behind the one-flag notice; every story link lands on a real page", async ({ page }) => {
+  test("Yusuf: identity, chips, tabs; the Story tab lists the stories with their progress; every story link lands on the real reader", async ({ page, context }) => {
+    await mockQuranText(context); // the reader (after the click) asks for the surah text
     await open(page, "/persons/yusuf");
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
     await expect(page.getByTestId("person-name")).toContainText("Yusuf");
@@ -158,7 +159,8 @@ test.describe("a person", () => {
     await expect(page.locator("img, canvas, picture")).toHaveCount(0);
     await expect(page.getByTestId("tab-story")).toHaveAttribute("aria-current", "page");
     await expect(page.getByTestId("overview-text")).not.toBeEmpty();
-    await expect(page.getByTestId("stories-notice")).toContainText("The story reader is still being moved to the new design");
+    await expect(page.getByTestId("stories-notice")).toHaveCount(0); // the reader exists now (7B)
+    await expect(page.getByTestId("story-progress").first()).toContainText("Not started");
     const links = await page.getByTestId("story-link").all();
     expect(links.length).toBeGreaterThan(0);
     for (const l of links) {
@@ -166,9 +168,10 @@ test.describe("a person", () => {
       expect(href).toMatch(/^\/stories\/[a-z0-9-]+$/);
       await page.goto(href!);
       // not a blank page and not a crash: the "not rebuilt yet" page now, the reader once the flag flips
-      await expect(page.getByRole("heading", { level: 1 })).toContainText(/not rebuilt yet|./);
-      await expect(page.getByRole("heading", { level: 1 })).toHaveText("This page is not rebuilt yet");
+      await expect(page.getByTestId("story-page")).toBeVisible(); // the real reader, not the placeholder
+      await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
     }
+    foreign.length = 0; // the reader talks to its own (mocked) service
   });
 
   test("More detail opens; themes and key lessons come from the data and each lesson reference opens the reader", async ({ page }) => {
