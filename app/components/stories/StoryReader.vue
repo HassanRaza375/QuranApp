@@ -149,7 +149,7 @@ function openEntity(e: Entity) {
     </div>
 
     <header class="mt-4">
-      <p class="text-[32px] leading-tight" style="font-family: var(--font-arabic); text-align: left" lang="ar" dir="rtl" data-testid="story-arabic-title">{{ story.arabicTitle }}</p>
+      <p class="text-[32px] leading-[1.8]" style="font-family: var(--font-arabic); text-align: left" lang="ar" dir="rtl" data-testid="story-arabic-title">{{ story.arabicTitle }}</p>
       <h1 class="mt-1 font-serif text-[28px] font-medium" data-testid="story-title">{{ story.title }}</h1>
       <p v-if="story.alternateTitles?.length" class="mt-0.5 text-[13.5px] text-ink-2">Also known as: {{ story.alternateTitles.join(", ") }}</p>
       <ul class="mt-2 flex flex-wrap gap-1.5" aria-label="About this story">

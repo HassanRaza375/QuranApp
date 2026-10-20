@@ -108,7 +108,7 @@ const chron = computed(() => (person.value ? chronologyInfo(person.value) : null
     </div>
 
     <header class="mt-4">
-      <p class="text-[34px] leading-tight" style="font-family: var(--font-arabic); text-align: left" lang="ar" dir="rtl" data-testid="person-arabic">{{ person.arabicName }}</p>
+      <p class="text-[34px] leading-[1.8]" style="font-family: var(--font-arabic); text-align: left" lang="ar" dir="rtl" data-testid="person-arabic">{{ person.arabicName }}</p>
       <h1 class="mt-1 font-serif text-[28px] font-medium" data-testid="person-name">
         {{ person.name }}
         <span v-if="person.honorific?.arabic" class="ml-2 align-middle text-[22px] text-ink-2" style="font-family: var(--font-arabic)" lang="ar" dir="rtl" data-testid="person-honorific">{{ person.honorific.arabic }}</span>

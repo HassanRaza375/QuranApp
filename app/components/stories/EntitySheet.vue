@@ -15,7 +15,7 @@ const model = computed({ get: () => props.entity !== null, set: (v) => !v && emi
     <SheetContent :side="isDesktop ? 'right' : 'bottom'" class="max-h-[88vh] overflow-y-auto p-5 md:max-h-none md:w-[400px] md:max-w-none" data-testid="entity-sheet">
       <template v-if="entity">
         <SheetHeader class="p-0 pr-10">
-          <p v-if="entity.arabicName" class="text-[28px] leading-tight" style="font-family: var(--font-arabic); text-align: left" lang="ar" dir="rtl" data-testid="entity-arabic">{{ entity.arabicName }}</p>
+          <p v-if="entity.arabicName" class="text-[28px] leading-[1.8]" style="font-family: var(--font-arabic); text-align: left" lang="ar" dir="rtl" data-testid="entity-arabic">{{ entity.arabicName }}</p>
           <SheetTitle class="text-[18px]" data-testid="entity-name">{{ entity.name }}</SheetTitle>
           <SheetDescription class="sr-only">Details from the Qur’an data</SheetDescription>
         </SheetHeader>
