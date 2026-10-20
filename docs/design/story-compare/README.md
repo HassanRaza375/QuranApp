@@ -25,4 +25,4 @@ The revamp is the production build with the clock fixed and the per-surah reques
 
 The sidebar and header differences are the Phase 1 ones (`docs/design/home-compare/README.md`).
 
-**Looked at individually:** the desktop light Yusuf chapter pair, the mobile dark Adam and Iblis pair, and the mobile dark Compare tellings state. Looking at them found one fault, fixed and regenerated: the Arabic title overlapped the title (line-height too tight). **Generated but not examined one by one:** the other nine pairs and the other 33 state shots (the states are exercised by the browser tests, which check their text, links and sizes).
+**Looked at individually:** the desktop light Yusuf chapter pair, the mobile dark Adam and Iblis pair, the mobile dark Compare tellings state, and (after the fix) the directory at 1280 light. Looking at them found one fault, fixed and regenerated: the Arabic title overlapped the title (line-height too tight); the regenerated Adam and Iblis pair shows it clear. **Generated but not examined one by one:** the other nine pairs and the other 32 state shots (the states are exercised by the browser tests, which check their text, links and sizes).

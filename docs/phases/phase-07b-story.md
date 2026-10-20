@@ -41,7 +41,7 @@ Holds: Compare tellings lists only references, ayah counts and the data's descri
 
 ## Verification
 
-- `npm run verify` on Node 22: build, lint, unit tests (451 before the last small edits), dev smoke and the browser tests (25 in `e2e/stories.spec.ts`). The full result is in the commit that closes the phase.
+- `npm run verify` on Node 22: build, lint, unit tests (**451 pass**), dev smoke and **302 browser tests pass** (25 in `e2e/stories.spec.ts`). Two earlier runs failed on lint errors in the screenshot scripts I added (an unused variable); both fixed.
 - `tests/stories.test.ts` (22 tests): the 21 stories and their 49 chapters (every range inside the real ayah counts), Order, the arranged rule, tellings, the chapter in the URL, long chapters, entities, the directory, the progress key (read, clear, restore, damaged values, legacy keys untouched), and Home's newer-of rule (newer, tie, each absent).
 - The source scan still proves no hard-coded Arabic in `app/` (the chapter text is the synthetic mock in tests).
 
