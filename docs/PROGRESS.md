@@ -14,7 +14,8 @@ Update this file at the end of every phase.
 | 6 | Library | **Done, awaiting review** (2026-10-16) | [phase-06-library](phases/phase-06-library.md), [plan](phases/phase-06-library-plan.md) | [library](pages/library.md) |
 | 7A | Prophets & People: directory, Timeline, person page | **Done, awaiting review** (2026-10-20; 277 browser tests; the three relationship entries are a pending decision, see the phase doc) | [phase-07a-people](phases/phase-07a-people.md), [plan](phases/phase-07a-people-plan.md) | [people](pages/people.md), [person](pages/person.md) |
 | 7B | Story reader, Compare tellings, entity sheets, story progress, Stories directory | **Done, awaiting review** (2026-10-20) | [phase-07b-story](phases/phase-07b-story.md), [plan](phases/phase-07b-story-plan.md) | [story](pages/story.md), [stories](pages/stories.md) |
-| 8 | Ramadan and events | **Plan written, awaiting approval** (proposed split: 8A Today and Timetable, 8B Events) | [plan](phases/phase-08-ramadan-plan.md) | |
+| 8A | Ramadan: Today and Timetable | **Done, awaiting review** (2026-10-20) | [phase-08a-ramadan](phases/phase-08a-ramadan.md), [plan](phases/phase-08-ramadan-plan.md) | [ramadan](pages/ramadan.md) |
+| 8B | Events (the Events tab, the 32 legacy events, reminders) | Not started (needs a plan review) | [plan](phases/phase-08-ramadan-plan.md) | |
 | 9 | Utilities | Not started | | |
 | 10 | Search | Needs prototype | | |
 | 11 | Downloads and offline manager | Needs prototype | | |
@@ -48,7 +49,7 @@ Update this file at the end of every phase.
 | 9 | Flip `READERS_READY.page` when `/per-page-read` is rebuilt |
 | 5 (done) | The Prayer and Qibla pages, the city entry and the saved-times row (shared with Settings) are built; the Hijri adjustment is applied on the Prayer page (reading the neighbouring cached day) and is still to be consumed by the Ramadan and Calendar pages. **WMM2025 (the declination model) is valid to 2030: replace the coefficients (`scripts/gen-wmm.mjs`, NOAA's next model) before then** |
 | 7 (done in 7B) | Home's second resume row and the Library's Story slot now show whichever is newer: `quran:story-progress:v1` or `quran:persons-study:v1` (one adapter in `useHomeState`) |
-| 8 | Ramadan banner on Home; the Sha'ban prefetch of the Ramadan month in the prayer cache |
+| 8 (done in 8A) | The Ramadan banner on Home and the Sha'ban prefetch (Home fetches Ramadan ahead when the Hijri month is 8) are built. The Hijri adjustment is consumed by Ramadan; the Calendar page (Phase 15) still has to. 8B adds the Events tab and uses the same `hijri-months` store |
 | 6 (done) | Built: the Library reads `quran:pins:v1` and the legacy library keys; removal keeps notes (legacy app ignores them, so rollback is safe); `retiredCollectionIds`, `pins.page` and the `ayah-text` store are additive. Phase 7 writes `story:<id>` bookmarks; Phase 9 writes the page pin and flips `READERS_READY.page`. Earlier note: the Library shows `quran:pins:v1` ("Where I stopped") and can read `quran:read-surahs:v1`; saved ayahs use the same bookmark keys the reader writes |
 | 11 | Audio files are up to 91 MB each (`docs/audio-url-check.md`): plan downloads and storage around that. `wajibat-data-cache` and `quran-downloads-audio-cache` names return with their features; the Downloads manager enforces Wi-Fi-only (`quran:download-prefs:v1`) where the connection type is reported |
 | 13 | Daily Fiqh keeps `quran:fiqh-prefs:v1`; Settings already holds the marja' picker (Ja'fari only) on the same key |
