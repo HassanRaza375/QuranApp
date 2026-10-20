@@ -74,6 +74,15 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] The chronology wording ("Traditional chronology", "Chronology uncertain", "Chronology unknown") and the story kind labels, copied from the legacy app.
 - [ ] 7 people have no direct mentions and 4 have no related passages in the data (shown as empty, not hidden).
 
+**Stories (Phase 7B)**
+- [x] The prototype's chapter titles, summaries, ayah counts, excerpts, "Reflection" lines, "Also told in" mappings and "Traditional chronology" chips are not used; the reader shows the legacy story data and the cached surah text.
+- [ ] **"Arranged for study" sentence (ours, for your review):** "This story is assembled from passages in several surahs, in an order chosen for reading." Shown for the 8 stories whose status is not "Fully told in the Qur'an".
+- [ ] **"Summary (written for this app)"** label on the 38 episode summaries and the 11 flat-chapter descriptions, and the line "Chapter summaries are written for this app; the Qur'an text is the source." Confirm they are app-written (the data does not say who wrote them).
+- [ ] The **Order line** ("Order: the surah's own sequence (Yusuf 12:4–101)") is computed from the passages for single-surah stories whose chapters ascend; none is shown elsewhere. `nuhflood` is "fully told" in the data but its chapters jump between surahs 71 and 11: no notice and no Order line. Decide whether its status should change.
+- [ ] None of the 13 supporting passages and 38 episode passages has a description in the data, so Compare tellings says "No description recorded yet." for the supporting ones.
+- [ ] The story lessons are story-level in the data (26 lessons); they are shown on the end page, not per chapter.
+- [ ] Place, people-group and event chips have no page until Phase 12 (sheets for the first two, inert text for events).
+
 **Prayer and Qibla**
 - [x] The prototype's sample times, Hijri date ("29 Rabīʿ al-awwal 1448") and Hanafi Asr sample: not used; the page shows the service's real times and Hijri date. The Qibla bearing is checked against AlAdhan's own `/v1/qibla` for eight cities (agrees to better than 0.001°). The prototype's cardinal label for 260.4° ("West-southwest") was wrong: it is "West".
 - [ ] **The Hijri date** (15 Oct 2026 = 4 Jumādá al-ūlá 1448 from the service) against a calendar you trust, and the adjustment at a month edge.
