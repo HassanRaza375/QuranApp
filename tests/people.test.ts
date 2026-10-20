@@ -6,7 +6,7 @@ import { buildTimeline } from "@legacy/utils/personsTimeline";
 import { getMostRecentlyStudied } from "@legacy/utils/personStudy";
 import {
   CATEGORY_OPTIONS, chronologyInfo, countLine, displayName, filterCategory, filterPeople, filtersFromQuery, filtersToQuery, kinshipFact, NARRATIVE_LABELS, NO_FILTERS, PEOPLE, personById, personKey,
-  relationLines, relationSentence, REVERSED_ENTRIES, searchPeople, sectionForTab, statusLabel, STATUS_LABELS, STORIES_READY, storiesFor, storyHref, tabForSection, tabFromQuery,
+  relationLines, relationSentence, HIDDEN_STATUS_CHIPS, REVERSED_ENTRIES, searchPeople, sectionForTab, statusLabel, STATUS_LABELS, STORIES_READY, storiesFor, storyHref, tabForSection, tabFromQuery,
 } from "../app/lib/people";
 import { forgetStudy, readStudy, recordPassageView, recordReference, recordSection, STUDY_KEY } from "../app/lib/peopleStudy";
 import { getJSON, setStorageBackend } from "../app/lib/storage";
@@ -107,6 +107,10 @@ describe("chronology and status wording come from the legacy data", () => {
       if (p.personType === "prophet" || p.personType === "messenger" || p.personType === "prophet_and_messenger") expect(statusLabel(p), p.id).toBe(STATUS_LABELS[p.personType]);
       else expect(statusLabel(p), p.id).toBeNull();
     }
+  });
+  it("the per-entry hide flag exists, is empty by default, and every id in it is a real person", () => {
+    expect([...HIDDEN_STATUS_CHIPS].every((id) => !!personById(id))).toBe(true);
+    expect(HIDDEN_STATUS_CHIPS.size).toBe(0); // nothing is hidden until the review says so
   });
   it("the story kinds are the legacy labels", () => {
     expect(NARRATIVE_LABELS).toEqual({ quran_complete: "Fully told in the Qur'an", quran_primary_traditional_expansion: "Qur'an core, traditionally expanded", quran_fragmentary: "Pieced together across surahs" });

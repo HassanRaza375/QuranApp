@@ -26,7 +26,12 @@ export const STATUS_LABELS: Partial<Record<QuranPerson["personType"], string>> =
   messenger: "Messenger",
   prophet_and_messenger: "Prophet · Messenger",
 };
-export const statusLabel = (p: QuranPerson): string | null => STATUS_LABELS[p.personType] ?? null;
+/**
+ * One flag per entry: add a person id here to hide their status chip while the classification is being reviewed (a wrong label is
+ * worse than a missing one). Empty by default; the label comes from the data otherwise. See CONTENT_TO_VERIFY.md.
+ */
+export const HIDDEN_STATUS_CHIPS: ReadonlySet<string> = new Set<string>([]);
+export const statusLabel = (p: QuranPerson): string | null => (HIDDEN_STATUS_CHIPS.has(p.id) ? null : (STATUS_LABELS[p.personType] ?? null));
 
 export const SOURCE_LABELS: Record<string, string> = { quran: "Qur'an", authentic_hadith: "Authentic Hadith", traditional_account: "Traditional account" };
 export const sourceLabel = (t: string): string => SOURCE_LABELS[t] ?? t;
