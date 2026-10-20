@@ -9,7 +9,7 @@
 
 - **A count I got wrong:** I wrote "32 legacy events" in the Phase 8 plan, the approval prompt repeated it, and two docs say it. Counting the file (`app/utils/islamicEvents.js`) gives **29 events**: **14 shared, 13 Ja'fari, 2 Sunni**, and **9** (not 10) carry a `dateNote`. Everything below uses the real numbers; the docs that say 32 are corrected in this phase's first commit.
 - 8A review notes: the tracker's current state is announced on every change (a polite live region: "Day 12: Fasted", tested); Imsak keeps the service's own word; the "Night N begins at sunset" sentence stays out; a past manual start date behaves as before (tests: day 1 on the date, through day 30, then the calendar takes over). The calendar's name is one flag now (`SHOW_CALENDAR_BASIS` in `app/lib/ramadanText.ts`): off, the page says only "Dates are calculated. Local sighting can differ by a day."
-- Baseline `npm run verify` before building 8B: result at the end of this section.
+- **Baseline** `npm run verify` (Node 22) before building 8B: build, lint and **480 unit tests** pass; **334 of 335 browser tests passed** and one failed, `settings.spec.ts` "the section picker is a bottom sheet" at 375px (a height measured while the sheet was still sliding in). It passed 3 of 3 when re-run alone, so it is a timing flake under load, not a regression. I made that measurement wait for the sheet to settle (`expect.poll`); everything else is unchanged.
 
 ## 1. The 29 legacy events (every one, as the data has it)
 

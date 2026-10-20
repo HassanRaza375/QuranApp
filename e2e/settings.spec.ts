@@ -664,7 +664,8 @@ test.describe("mobile (375px)", () => {
     await page.getByTestId("section-picker").click();
     const sheet = page.getByRole("dialog");
     await expect(sheet).toBeVisible();
-    expect((await sheet.getByRole("option", { name: "Notifications" }).boundingBox())!.height).toBeGreaterThanOrEqual(46);
+    // measured once the sheet has settled (it slides in; under load the first measurement could catch it mid-animation)
+    await expect.poll(async () => (await sheet.getByRole("option", { name: "Notifications" }).boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(46);
     await sheet.getByRole("option", { name: "Notifications" }).getByRole("button").click();
     await expect(page).toHaveURL(/section=notifications/);
     await expect(page.getByTestId("section-title")).toHaveText("Notifications");
