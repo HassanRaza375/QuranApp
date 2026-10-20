@@ -3,7 +3,6 @@ import { createRequire } from "node:module";
 import fs from "node:fs";
 import { spawn } from "node:child_process";
 
-import { fileURLToPath } from "node:url";
 const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const require = createRequire(ROOT + "/package.json");
 const { chromium } = require("@playwright/test");
