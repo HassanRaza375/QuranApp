@@ -7,6 +7,7 @@ import { addDaysKey, daysBetweenKeys, weekdayOfKey } from "../app/lib/dayKeys";
 import { adjustedStart, calendarBasis, estimateRamadanYear, findRamadan, hijriMonthKey, hijriMonthUrl, normalizeHijriMonth, recordEnd, recordStart, type HijriMonthRecord } from "../app/lib/hijriMonths";
 import type { PrayerDay } from "../app/lib/prayerMonth";
 import * as R from "../app/lib/ramadan";
+import { basisLine } from "../app/lib/ramadanText";
 import { getHijriMonth, type HijriDeps } from "../app/services/hijri.service";
 import { getJSON, setStorageBackend } from "../app/lib/storage";
 import { memoryStore } from "./helpers";
@@ -146,6 +147,27 @@ describe("the plan: before, during, the adjustment and the manual start date", (
     const fut = R.planRamadan(input({ today: "2027-02-01", override: "2027-02-09" }));
     expect(fut).toMatchObject({ state: "before", start: "2027-02-09", daysUntil: 8, source: "manual" });
     expect(R.planRamadan(input({ today: "2026-10-20", override: "2030-01-01" })).source).toBe("calendar"); // a typo years ahead is ignored
+  });
+});
+
+describe("the basis line (the calendar's name can be hidden with one flag)", () => {
+  it("names the calendar the service reports; with the flag off it only says the dates are calculated; a manual date says who set it", () => {
+    expect(basisLine("calendar", "Hijri Calendar of Saudi Arabia (HJCoSA)", true)).toBe("Dates follow the Hijri Calendar of Saudi Arabia (HJCoSA). Local sighting can differ by a day.");
+    expect(basisLine("calendar", "Hijri Calendar of Saudi Arabia (HJCoSA)", false)).toBe("Dates are calculated. Local sighting can differ by a day.");
+    expect(basisLine("calendar", null, true)).toBe("Dates are calculated. Local sighting can differ by a day.");
+    expect(basisLine("manual", "anything", true)).toBe("The start date was set by you.");
+    expect(basisLine("manual", "anything", false)).toBe("The start date was set by you.");
+  });
+});
+
+describe("a past manual start date behaves as the legacy page did", () => {
+  const input = (today: string): R.PlanInput => ({ today, adjust: 0, override: "2027-02-09", month: month(), days: [] });
+  it("from the day itself it counts the days (day 1 on the date), through the 30th day, then the calendar takes over again", () => {
+    expect(R.planRamadan(input("2027-02-09"))).toMatchObject({ state: "during", day: 1, source: "manual" });
+    expect(R.planRamadan(input("2027-02-20"))).toMatchObject({ state: "during", day: 12, source: "manual" });
+    expect(R.planRamadan(input("2027-03-10"))).toMatchObject({ state: "during", day: 30, source: "manual" });
+    expect(R.planRamadan(input("2027-03-11")).source).toBe("calendar");
+    expect(R.planRamadan(input("2027-03-11")).state).toBe("over"); // the calendar's Ramadan ended on 8 March
   });
 });
 

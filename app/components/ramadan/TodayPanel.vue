@@ -5,7 +5,7 @@
 import { adjustNote } from "~/lib/hijriAdjust";
 import { countdownLabel, formatClock12, fractionBetween, zonedInstant } from "~/lib/prayerClock";
 import { methodName } from "~/lib/calcMethods";
-import { formatLongDate } from "~/lib/ramadanText";
+import { basisLine, formatLongDate } from "~/lib/ramadanText";
 
 const prefs = usePreferencesStore();
 const ramadan = useRamadan();
@@ -29,11 +29,7 @@ const untilText = computed(() => {
   return n === 0 ? "Ramadan begins today" : n === 1 ? "Ramadan begins tomorrow" : `Ramadan begins in ${n} days`;
 });
 const yearText = computed(() => (ramadan.month.value ? ` ${ramadan.month.value.hYear}` : ""));
-const basisText = computed(() => {
-  const p = plan.value;
-  if (p.source === "manual") return "The start date was set by you.";
-  return p.basis ? `Dates follow the ${p.basis}. Local sighting can differ by a day.` : "Local sighting can differ by a day.";
-});
+const basisText = computed(() => basisLine(plan.value.source, plan.value.basis));
 const adjustText = computed(() => (prefs.prefs.hijriAdjust ? adjustNote(prefs.prefs.hijriAdjust) : ""));
 const dayText = computed(() => (plan.value.day ? `Day ${plan.value.day}${plan.value.length ? ` of ${plan.value.length}` : ""}` : ""));
 const retry = () => ramadan.load({ network: true, times: true });
