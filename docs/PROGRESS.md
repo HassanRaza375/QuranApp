@@ -15,7 +15,7 @@ Update this file at the end of every phase.
 | 7A | Prophets & People: directory, Timeline, person page | **Done, awaiting review** (2026-10-20; 277 browser tests; the three relationship entries are a pending decision, see the phase doc) | [phase-07a-people](phases/phase-07a-people.md), [plan](phases/phase-07a-people-plan.md) | [people](pages/people.md), [person](pages/person.md) |
 | 7B | Story reader, Compare tellings, entity sheets, story progress, Stories directory | **Done, awaiting review** (2026-10-20) | [phase-07b-story](phases/phase-07b-story.md), [plan](phases/phase-07b-story-plan.md) | [story](pages/story.md), [stories](pages/stories.md) |
 | 8A | Ramadan: Today and Timetable | **Done, awaiting review** (2026-10-20) | [phase-08a-ramadan](phases/phase-08a-ramadan.md), [plan](phases/phase-08-ramadan-plan.md) | [ramadan](pages/ramadan.md) |
-| 8B | Events (the Events tab, the 29 legacy events, reminders) | Not started (needs a plan review) | [plan](phases/phase-08-ramadan-plan.md) | |
+| 8B | Events (the Events tab, the 29 legacy events, reminders, a reviewed-events file shape) | **Done, awaiting review** (2026-10-21) | [phase-08b-events](phases/phase-08b-events.md), [plan](phases/phase-08b-events-plan.md) | [ramadan](pages/ramadan.md) (Events section) |
 | 9 | Utilities | Not started | | |
 | 10 | Search | Needs prototype | | |
 | 11 | Downloads and offline manager | Needs prototype | | |
