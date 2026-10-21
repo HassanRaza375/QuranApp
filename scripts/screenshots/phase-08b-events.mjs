@@ -24,8 +24,6 @@ const MONTHS = {
 };
 const LAHORE = JSON.stringify({ lat: 31.5204, lng: 74.3587 });
 const BEFORE = "2026-10-15T09:14:00+05:00";
-const DAY12 = "2027-02-19T09:14:00+05:00";
-const DAY21 = "2027-02-28T09:14:00+05:00";
 
 async function revamp(device, theme, { now = BEFORE, seeds = {}, hijri = "ok", month = "ok", verse = true, gap = null } = {}) {
   const ctx = await browser.newContext({ viewport: device === "desktop" ? { width: 1280, height: 800 } : { width: 375, height: 812 }, hasTouch: device === "mobile", serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB" });
@@ -66,7 +64,7 @@ async function revamp(device, theme, { now = BEFORE, seeds = {}, hijri = "ok", m
 }
 const settle = async (p) => { await p.waitForLoadState("networkidle"); await p.waitForTimeout(1200); };
 
-async function protoShot(device, theme, state, tab) {
+async function protoShot(device, theme, state) {
   const ctx = await browser.newContext({ viewport: device === "desktop" ? { width: 1500, height: 900 } : { width: 700, height: 950 } });
   const page = await ctx.newPage();
   await page.goto("file:///" + ROOT + "/docs/design/prototype.html");
@@ -99,7 +97,7 @@ for (const device of ["desktop", "mobile"]) for (const theme of ["light", "dark"
   await settle(page);
   const right = await page.screenshot({ type: "jpeg", quality: 80 });
   await ctx.close();
-  await compose(await protoShot(device, theme, "before", "events"), right, `${OUT}/${device}-${theme}-events.jpg`);
+  await compose(await protoShot(device, theme, "before"), right, `${OUT}/${device}-${theme}-events.jpg`);
   console.log("pair", device, theme);
 }
 
@@ -114,7 +112,6 @@ async function state(name, device, theme, path, fn, opts) {
   console.log("state", name, device);
 }
 const RM = { "quran:reminders:v1": JSON.stringify([{ id: "r1", title: "Eid al-Fitr", date: "2027-03-09", note: "", recurringYearly: false, done: false, createdAt: 1 }, { id: "r2", title: "A past reminder", date: "2026-09-01", note: "", recurringYearly: false, done: false, createdAt: 2 }]) };
-const showMenu = async (p, label) => { await p.getByRole("button", { name: /^Show: / }).click(); await p.getByRole("menuitemradio", { name: label, exact: true }).or(p.getByRole("option", { name: label, exact: true })).click(); await p.waitForTimeout(300); };
 for (const [device, theme] of [["desktop", "light"], ["mobile", "dark"]]) {
   await state("both-default", device, theme, "/ramadan?tab=events", null, { now: BEFORE });
   await state("sunni-few-events", device, theme, "/ramadan?tab=events", null, { now: BEFORE, seeds: { prayerFiqh: "sunni" } });
@@ -129,7 +126,7 @@ for (const [device, theme] of [["desktop", "light"], ["mobile", "dark"]]) {
   await state("no-months-saved", device, theme, "/ramadan?tab=events", null, { now: BEFORE, hijri: "network" });
   await state("show-later", device, theme, "/ramadan?tab=events", async (p) => { await p.getByTestId("events-later").click(); await p.waitForTimeout(1500); }, { now: BEFORE });
   await state("today-next-event", device, theme, "/ramadan", null, { now: BEFORE });
-  await state("empty-filter", device, theme, "/ramadan?tab=events&show=sunni", async (p) => { await p.getByTestId("events-panel").scrollIntoViewIfNeeded(); }, { now: "2027-03-10T09:14:00+05:00" });
+  await state("sunni-after-eid", device, theme, "/ramadan?tab=events&show=sunni", async (p) => { await p.getByTestId("events-panel").scrollIntoViewIfNeeded(); }, { now: "2027-03-10T09:14:00+05:00" });
 }
 await browser.close();
 server.kill();
