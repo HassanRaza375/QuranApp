@@ -35,12 +35,12 @@ const adjustText = computed(() => (prefs.prefs.hijriAdjust ? adjustNote(prefs.pr
 const dayText = computed(() => (plan.value.day ? `Day ${plan.value.day}${plan.value.length ? ` of ${plan.value.length}` : ""}` : ""));
 const retry = () => ramadan.load({ network: true, times: true });
 
-// Before Ramadan: the next event, from the first few saved months (no change to Home)
+// Before Ramadan: the next event, from the same saved months as the Events tab (no change to Home)
 const events = useEvents();
 const fiqhSet = ref(false);
 onMounted(() => {
   fiqhSet.value = events.fiqhSet();
-  void events.load({ network: true, limit: 4 });
+  void events.load({ network: true });
 });
 const nextEvent = computed(() => {
   const t = traditionOf(fiqhSet.value ? "following" : "both", prefs.prefs.fiqh);

@@ -79,12 +79,25 @@ export async function mockAladhan(context: BrowserContext, mode: AladhanMock["mo
 }
 
 export interface HijriMock {
+  /** Hijri-month requests (`hToGCalendar`, Ramadan) */
   calls: string[];
+  /** Gregorian-month requests (`gToHCalendar`, events) */
+  gcalls: string[];
   mode: "ok" | "http500" | "network";
 }
-/** Answers api.aladhan.com Hijri month requests: only Ramadan 1448 exists (anything else is a 404). */
+/** Answers api.aladhan.com calendar requests: the Hijri month for Ramadan 1448 only, and the Gregorian months Sep 2026 to Sep 2027 (anything else is a 404). */
 export async function mockHijri(context: BrowserContext, mode: HijriMock["mode"] = "ok"): Promise<HijriMock> {
-  const state: HijriMock = { calls: [], mode };
+  const state: HijriMock = { calls: [], gcalls: [], mode };
+  await context.route(/https:\/\/api\.aladhan\.com\/v1\/gToHCalendar\//, async (route: Route) => {
+    const url = route.request().url();
+    state.gcalls.push(url);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, contentType: "application/json", body: "{}" });
+    const m = /\/gToHCalendar\/(\d{1,2})\/(\d{4})$/.exec(url);
+    const file = m ? `aladhan-gtoh-${m[2]}-${m[1]!.padStart(2, "0")}.json` : "";
+    if (!file || !fs.existsSync(path.resolve(HERE, "../tests/fixtures", file))) return route.fulfill({ status: 404, contentType: "application/json", body: "{}" });
+    return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: fixture(file) });
+  });
   await context.route(/https:\/\/api\.aladhan\.com\/v1\/hToGCalendar\//, async (route: Route) => {
     const url = route.request().url();
     state.calls.push(url);
