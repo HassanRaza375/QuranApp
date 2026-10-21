@@ -5,6 +5,7 @@
 import names from "@legacy/assets/data/names.json";
 import { ASMA_FOOTER, asmaCountLine, noMatchLine, NO_SAVED_NAMES, parseNameHash, savedNameIds, SEARCH_LABEL, searchNames, shown, type AsmaName } from "~/lib/asma";
 import { addBookmark, bookmarkAddedAt, listBookmarks, nameBookmarkKey, removeBookmark } from "~/lib/bookmarks";
+import { nameCounterId } from "~/lib/tasbeeh";
 
 useSeoMeta({
   title: "Asma-ul-Husna · Quran App",
@@ -114,7 +115,11 @@ watch(() => route.hash, fromHash);
 
     <p class="mt-6 text-[12.5px] text-ink-2" data-testid="asma-footer">{{ ASMA_FOOTER }}</p>
 
-    <AsmaNameSheet :name="current" :saved="current ? saved.has(current.id) : false" :total="TOTAL" @close="closeName" @save="current && toggleSave(current.id)" />
+    <AsmaNameSheet :name="current" :saved="current ? saved.has(current.id) : false" :total="TOTAL" @close="closeName" @save="current && toggleSave(current.id)">
+      <template #count>
+        <Button v-if="current" as-child variant="outline" class="min-h-11 gap-1.5 md:min-h-9"><NuxtLink :to="`/tasbeeh/${nameCounterId(current.id)}`" data-testid="sheet-count"><Icon name="lucide:circle-dot" size="16" />Count this name</NuxtLink></Button>
+      </template>
+    </AsmaNameSheet>
   </section>
 </template>
 
