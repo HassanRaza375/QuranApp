@@ -216,13 +216,42 @@ export async function mockQuranText(context: BrowserContext, mode: QuranTextMock
 /** Replaces the browser's Audio with a recorder; `window.__audio.fail = true` makes play() fail like a missing file. */
 export const stubAudio = (context: BrowserContext) =>
   context.addInitScript(() => {
-    const w = window as unknown as { __audio: { srcs: string[]; rates: number[]; fail: boolean }; Audio: unknown };
-    w.__audio = { srcs: [], rates: [], fail: false };
+    type Hooks = {
+      srcs: string[];
+      rates: number[];
+      fail: boolean;
+      /** make play() reject with this error name (for example "NotAllowedError") */
+      playError: string | null;
+      /** play() resolves but the file never starts (a stalled load) */
+      stall: boolean;
+      duration: number;
+      tick(t: number): void;
+      end(): void;
+      emit(name: string): void;
+    };
+    const w = window as unknown as { __audio: Hooks; Audio: unknown };
+    const els: FakeAudio[] = [];
     class FakeAudio {
-      src = "";
+      private _src = "";
+      get src() {
+        return this._src;
+      }
+      set src(v: string) {
+        this._src = v;
+        this.currentTime = 0; // a real element starts a new file at 0
+        this.announced = false;
+      }
       preload = "";
       playbackRate = 1;
+      currentTime = 0;
+      duration = w.__audio.duration;
+      paused = true;
+      ended = false;
+      announced = false;
       h: Record<string, (() => void)[]> = {};
+      constructor() {
+        els.push(this);
+      }
       addEventListener(n: string, f: () => void) {
         (this.h[n] ??= []).push(f);
       }
@@ -236,12 +265,44 @@ export const stubAudio = (context: BrowserContext) =>
           setTimeout(() => this.emit("error"));
           throw new DOMException("no file", "NotSupportedError");
         }
+        if (w.__audio.playError) throw new DOMException("blocked", w.__audio.playError);
+        if (w.__audio.stall) return;
+        this.duration = w.__audio.duration;
+        if (!this.announced) {
+          this.announced = true;
+          this.emit("loadedmetadata");
+        }
+        this.paused = false;
+        this.ended = false;
         this.emit("playing");
       }
       pause() {
+        this.paused = true;
         this.emit("pause");
       }
     }
+    const last = () => els[els.length - 1]!;
+    w.__audio = {
+      srcs: [],
+      rates: [],
+      fail: false,
+      playError: null,
+      stall: false,
+      duration: 3600,
+      tick: (t) => {
+        last().currentTime = t;
+        last().emit("timeupdate");
+      },
+      end: () => {
+        const e = last();
+        e.ended = true;
+        e.paused = true;
+        e.currentTime = e.duration;
+        e.emit("pause");
+        e.emit("ended");
+      },
+      emit: (n) => last().emit(n),
+    };
     w.Audio = FakeAudio;
   });
 

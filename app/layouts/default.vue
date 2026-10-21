@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const navOpen = ref(false);
 usePrayerNotifications(); // reminders while the app is open, on any page (no permission prompt, no location prompt)
+const player = usePlayerStore();
+onMounted(() => player.restore()); // shows a saved place paused; plays nothing
 const route = useRoute();
 watch(() => route.path, () => {
   navOpen.value = false;
@@ -32,6 +34,7 @@ watch(() => route.path, () => {
       </main>
     </div>
     <LayoutMiniPlayer />
+    <PlayerSheet />
     <Toaster
       position="bottom-center"
       :toast-options="{ classes: { toast: '!rounded-[10px] !border !border-border', actionButton: '!bg-primary !text-primary-foreground', cancelButton: '!bg-muted !text-foreground' } }"

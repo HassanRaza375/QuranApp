@@ -3,6 +3,7 @@
 // from the cached surah, entity sheets, Compare tellings, and an end page. Chapters, labels and notices come from the story data
 // (lib/stories.ts); progress is `quran:story-progress:v1` (lib/storyProgress.ts). See docs/phases/phase-07b-story.md.
 import { onBeforeUnmount } from "vue";
+import { PLAY_SOON } from "~/lib/audioText";
 import { addBookmark, bookmarkAddedAt, BOOKMARKS_KEY, hasBookmark, removeBookmark } from "~/lib/bookmarks";
 import { surahHref } from "~/lib/readerLinks";
 import {
@@ -201,7 +202,7 @@ function openEntity(e: Entity) {
         <button type="button" aria-disabled="true" aria-describedby="listen-why" class="inline-flex min-h-11 cursor-not-allowed items-center gap-2 rounded-md border px-4 text-[14px] opacity-60 md:min-h-9" data-testid="listen" @click.prevent>
           <Icon name="lucide:headphones" size="16" />Listen to this chapter
         </button>
-        <span id="listen-why" class="text-[12.5px] text-ink-2" data-testid="listen-why">Coming with the player</span>
+        <span id="listen-why" class="text-[12.5px] text-ink-2" data-testid="listen-why">{{ PLAY_SOON }}</span>
       </div>
       <div class="mt-3"><StoriesChapterText :chapter="chapter" @ready="textReady = true" /></div>
 

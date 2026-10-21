@@ -87,8 +87,8 @@ test.describe("a complete story (Yusuf)", () => {
     const listen = page.getByTestId("listen");
     await expect(listen).toBeVisible();
     await expect(listen).toHaveAttribute("aria-disabled", "true");
-    await expect(listen).toHaveAccessibleDescription("Coming with the player");
-    await expect(page.getByTestId("listen-why")).toHaveText("Coming with the player");
+    await expect(listen).toHaveAccessibleDescription("Playing single ayahs arrives soon");
+    await expect(page.getByTestId("listen-why")).toHaveText("Playing single ayahs arrives soon");
     await listen.click({ force: true }); // Playwright treats aria-disabled as not enabled; forcing proves the click does nothing
     await expect(page).toHaveURL(/\/stories\/yusufstory$/); // it does nothing
     await expect(page.getByTestId("story-arabic").first()).toHaveText("TEST ARABIC 12:44"); // the text, then the verse marker (4)

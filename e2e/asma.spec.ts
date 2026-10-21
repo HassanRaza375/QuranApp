@@ -177,7 +177,7 @@ test.describe("a name", () => {
     const play = page.getByTestId("sheet-play");
     expect(await play.evaluate((el) => el.tagName)).toBe("BUTTON");
     await expect(play).toHaveAttribute("aria-disabled", "true");
-    await expect(page.getByTestId("sheet-play-reason")).toHaveText("Coming with the player");
+    await expect(page.getByTestId("sheet-play-reason")).toHaveText("Playing single ayahs arrives soon");
     await play.click({ force: true });
     await expect(page.getByTestId("mini-player")).toHaveCount(0);
   });

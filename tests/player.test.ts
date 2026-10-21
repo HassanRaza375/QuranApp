@@ -1,7 +1,11 @@
 // The small player store: play, pause, switch, resume, error, a stale request. A fake audio element stands in for the browser's.
 import { createPinia, setActivePinia } from "pinia";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { PLAY_ERROR, usePlayerStore } from "../app/stores/player";
+
+// the preferences store relies on Nuxt auto-imports; the player only reads two values from it
+const prefsState = { playbackRate: 1, autoplay: false };
+vi.mock("../app/stores/preferences", () => ({ usePreferencesStore: () => ({ prefs: prefsState }) }));
 
 class FakeAudio {
   static last: FakeAudio;
@@ -9,6 +13,9 @@ class FakeAudio {
   src = "";
   preload = "";
   playbackRate = 1;
+  currentTime = 0;
+  duration = 100;
+  paused = true;
   private handlers: Record<string, (() => void)[]> = {};
   constructor() {
     FakeAudio.last = this;
@@ -25,9 +32,11 @@ class FakeAudio {
       this.emit("error");
       throw new Error("NotSupportedError");
     }
+    this.paused = false;
     this.emit("playing");
   }
   pause() {
+    this.paused = true;
     this.emit("pause");
   }
 }
@@ -35,6 +44,7 @@ class FakeAudio {
 beforeEach(() => {
   setActivePinia(createPinia());
   FakeAudio.failNext = false;
+  prefsState.playbackRate = 1;
   (globalThis as unknown as { Audio: typeof FakeAudio }).Audio = FakeAudio;
 });
 
@@ -43,6 +53,7 @@ const fatiha = { surahNo: 1, title: "Al-Faatiha", reciter: "Mishary Rashid Al Af
 describe("player store", () => {
   it("plays a surah from the reciter's file and reports it", async () => {
     const p = usePlayerStore();
+    prefsState.playbackRate = 1.5;
     await p.playSurah({ ...fatiha, rate: 1.5 });
     expect(p.playing).toBe(true);
     expect(p.loading).toBe(false);

@@ -13,7 +13,7 @@ Read the Qur'an one page at a time, in the order and page breaks of the standard
 ## Layout
 
 - One `h1` "Page 49" (focus target after Previous, Next and Go), a line "Page 49 of 604 · Juz 3 · Al-Baqara" (the data's names; a page with two surahs names both, "Al-Baqara, Aal-i-Imraan"), and a "‹ Pages" link back to the listing's Page tab.
-- Tools: **A−** / **A+** (the global Arabic size, in 0.1 steps between 0.8 and 1.6, disabled at the ends), **Pin page**, **Save**, **Play page** (a real button with `aria-disabled` and "Coming with the player").
+- Tools: **A−** / **A+** (the global Arabic size, in 0.1 steps between 0.8 and 1.6, disabled at the ends), **Pin page**, **Save**, **Play page** (a real button with `aria-disabled` and "Playing single ayahs arrives soon").
 - The frame: a head (the juz line, the surah names, the page number), then one section per surah run. Where a surah **starts** on the page there is a banner (its long Arabic name from the data) and, for surahs 2 to 114 except 9, the Bismillah read from surah 1's data. Ayahs flow as justified RTL Arabic with the reader's gold ayah markers (the number, with a screen-reader "ayah"). No letter spacing; the Arabic follows the Arabic size setting.
 - Below the frame: "Text flows in the order and page breaks of the standard 604-page Madani mushaf. It is not a line-for-line copy of the printed page.", and "Open Al-Baqara 2:6 in the reader" (the first ayah on the page).
 - Navigation: Previous, a slider (1 to 604, `aria-valuetext` "Page 49 of 604", commits on release or key press), Next, and **Go to page** (numeric box and Go; Arabic-Indic digits accepted).

@@ -3,6 +3,7 @@
 // Phase 4B). A bottom sheet on a phone, a side panel on desktop.
 import { useMediaQuery } from "@vueuse/core";
 import type { ShownName } from "~/lib/asma";
+import { PLAY_SOON } from "~/lib/audioText";
 
 const props = defineProps<{ name: ShownName | null; saved: boolean; total: number }>();
 const emit = defineEmits<{ close: []; save: [] }>();
@@ -30,7 +31,7 @@ const model = computed({ get: () => props.name !== null, set: (v) => !v && emit(
             <Icon name="lucide:play" size="16" />Play
           </Button>
         </div>
-        <p id="name-play-reason" class="text-[12px] text-ink-2" data-testid="sheet-play-reason">Coming with the player</p>
+        <p id="name-play-reason" class="text-[12px] text-ink-2" data-testid="sheet-play-reason">{{ PLAY_SOON }}</p>
       </template>
     </SheetContent>
   </Sheet>

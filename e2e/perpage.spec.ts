@@ -329,7 +329,7 @@ test.describe("Pin page, Save, Play page", () => {
     expect(await play.evaluate((el) => el.tagName)).toBe("BUTTON");
     await expect(play).toHaveAttribute("aria-disabled", "true");
     await expect(play).toHaveAttribute("aria-describedby", "play-reason");
-    await expect(page.getByTestId("play-reason")).toHaveText("Coming with the player");
+    await expect(page.getByTestId("play-reason")).toHaveText("Playing single ayahs arrives soon");
     await play.click({ force: true });
     await expect(page).toHaveURL(/page=3$/);
     await expect(page.getByTestId("mini-player")).toHaveCount(0);

@@ -1,9 +1,16 @@
-// The small real player (Phase 3): play and pause one surah at a time, shared app-wide, so the mini player and every
-// listing row agree. It does NOT seek, resume, repeat, auto-advance, play single ayahs or download; those arrive with
-// the full player (Phase 4) and Downloads (Phase 11). Playback keeps going when the page changes.
+// The player, shared app-wide (Phase 3 started it; Phase 4B completes the whole-surah player). The rules live in `lib/audioEngine.ts`; this
+// store mirrors its snapshot for the mini player, the player sheet and every Play button, and wires in the real element, storage and Media
+// Session. Playback keeps going when the page changes. Nothing ever starts by itself: `restore()` only shows the saved item paused.
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { AudioEngine, type AudioLike, type Snapshot } from "~/lib/audioEngine";
+import { PLAY_ERROR, readAudioPrefs, readResume, writeAudioPrefs, writeResume } from "~/lib/audioState";
+import { bindMediaSession, type MediaSessionLike } from "~/lib/mediaSession";
+import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { resolveSurahAudio } from "~/lib/surahAudio";
+import { usePreferencesStore } from "./preferences";
+
+export { PLAY_ERROR };
 
 export interface NowPlaying {
   type: "surah";
@@ -13,83 +20,84 @@ export interface NowPlaying {
   reciter: string;
 }
 
-/** Shown when a file cannot be played. Nothing here claims the audio works offline. */
-export const PLAY_ERROR = "Couldn’t play. Audio needs a connection unless it was downloaded.";
-
 export const usePlayerStore = defineStore("player", () => {
-  const nowPlaying = ref<NowPlaying | null>(null);
-  const playing = ref(false);
-  const loading = ref(false);
-  const error = ref<string | null>(null);
+  const prefs = usePreferencesStore();
+  const snap = ref<Snapshot>({ track: null, status: "idle", error: null, position: 0, duration: 0, repeat: false, seekable: false, canPrevious: false, canNext: false });
+  const sheetOpen = ref(false);
 
-  let el: HTMLAudioElement | null = null;
-  let token = 0; // a newer request makes an older one stale
+  const session = typeof navigator !== "undefined" ? (navigator as Navigator & { mediaSession?: MediaSessionLike }).mediaSession : undefined;
+  const meta = typeof MediaMetadata !== "undefined" ? (MediaMetadata as unknown as new (i: { title: string; artist: string; album: string }) => unknown) : undefined;
 
-  function element(): HTMLAudioElement {
-    if (el) return el;
-    el = new Audio();
-    el.preload = "none";
-    el.addEventListener("playing", () => {
-      playing.value = true;
-      loading.value = false;
-    });
-    el.addEventListener("pause", () => {
-      playing.value = false;
-    });
-    el.addEventListener("ended", () => {
-      playing.value = false;
-    });
-    el.addEventListener("error", () => fail());
-    return el;
+  const engine = new AudioEngine(
+    {
+      create: () => new Audio() as unknown as AudioLike,
+      resolve: resolveSurahAudio,
+      surahTitle: (n) => SURAH_ROWS[n - 1]!.name,
+      readResume,
+      writeResume,
+      readRepeat: () => readAudioPrefs().repeatOne,
+      writeRepeat: (on) => writeAudioPrefs({ repeatOne: on }),
+      autoAdvance: () => prefs.prefs.autoplay,
+      rate: () => prefs.prefs.playbackRate,
+      setInterval: (fn, ms) => setInterval(fn, ms),
+      clearInterval: (h) => clearInterval(h as number),
+      setTimeout: (fn, ms) => setTimeout(fn, ms),
+      clearTimeout: (h) => clearTimeout(h as number),
+    },
+    (s) => {
+      snap.value = s;
+      mediaSession.sync(s, prefs.prefs.playbackRate);
+    },
+  );
+  const mediaSession = bindMediaSession(session, meta, {
+    play: () => void toggleIfPaused(),
+    pause: () => engine.pause(),
+    seekTo: (t) => engine.seek(t),
+    skip: (d) => engine.skip(d),
+    next: () => void engine.next(),
+    previous: () => void engine.previous(),
+  });
+  const toggleIfPaused = async () => {
+    if (!["playing", "buffering", "loading"].includes(engine.snapshot.status)) await engine.toggle();
+  };
+
+  // the place is saved when the page is hidden or closed
+  if (typeof window !== "undefined") {
+    window.addEventListener("pagehide", () => engine.flush());
+    document.addEventListener("visibilitychange", () => document.visibilityState === "hidden" && engine.flush());
   }
 
-  function fail() {
-    playing.value = false;
-    loading.value = false;
-    error.value = PLAY_ERROR;
+  // ---- what the rest of the app reads (the Phase 3 names are kept)
+  const nowPlaying = computed<NowPlaying | null>(() => {
+    const t = snap.value.track;
+    return t ? { type: "surah", surahNo: t.surahNo, title: t.title, subtitle: `Recited by ${t.reciter}`, reciter: t.reciter } : null;
+  });
+  const playing = computed(() => snap.value.status === "playing" || snap.value.status === "buffering");
+  const loading = computed(() => snap.value.status === "loading");
+  const error = computed(() => snap.value.error?.message ?? null);
+
+  async function playSurah(track: { surahNo: number; title: string; reciter: string; rate?: number; startAt?: number }) {
+    await engine.playSurah({ surahNo: track.surahNo, title: track.title, reciter: track.reciter, startAt: track.startAt });
   }
 
-  /** Play one surah by one reciter. The same surah and reciter already loaded just resumes. */
-  async function playSurah(track: { surahNo: number; title: string; reciter: string; rate?: number }) {
-    const same = nowPlaying.value?.surahNo === track.surahNo && nowPlaying.value.reciter === track.reciter;
-    if (same && !error.value && el?.src) {
-      el.playbackRate = track.rate ?? 1;
-      await el.play().catch(fail);
-      return;
-    }
-    const mine = ++token;
-    error.value = null;
-    loading.value = true;
-    nowPlaying.value = { type: "surah", surahNo: track.surahNo, title: track.title, subtitle: `Recited by ${track.reciter}`, reciter: track.reciter };
-    const audio = element();
-    audio.pause();
-    const url = await resolveSurahAudio(track.surahNo, track.reciter).catch(() => null);
-    if (mine !== token) return;
-    if (!url) return fail();
-    audio.src = url;
-    audio.playbackRate = track.rate ?? 1;
-    try {
-      await audio.play();
-    } catch {
-      if (mine === token) fail();
-    }
-  }
-
-  function pause() {
-    el?.pause();
-  }
-
-  /** Play or pause what is loaded (the mini player's button). */
-  async function toggle(rate = 1) {
-    if (!nowPlaying.value) return;
-    if (playing.value || loading.value) {
-      ++token;
-      loading.value = false;
-      pause();
-      return;
-    }
-    await playSurah({ surahNo: nowPlaying.value.surahNo, title: nowPlaying.value.title, reciter: nowPlaying.value.reciter, rate });
-  }
-
-  return { nowPlaying, playing, loading, error, playSurah, pause, toggle };
+  return {
+    snap, sheetOpen, nowPlaying, playing, loading, error,
+    status: computed(() => snap.value.status),
+    playSurah,
+    pause: () => engine.pause(),
+    /** Play or pause what is shown (a restored item plays from its saved place). */
+    toggle: (_rate?: number) => engine.toggle(),
+    retry: () => engine.retry(),
+    restore: () => engine.restore(),
+    seek: (t: number) => engine.seek(t),
+    skipBack: () => engine.skipBack(),
+    skipForward: () => engine.skipForward(),
+    next: () => engine.next(),
+    previous: () => engine.previous(),
+    setRate: (r: number) => engine.setRate(r),
+    setRepeat: (on: boolean) => engine.setRepeat(on),
+    switchReciter: (name: string) => engine.switchReciter(name),
+    openSheet: () => (sheetOpen.value = true),
+    closeSheet: () => (sheetOpen.value = false),
+  };
 });
