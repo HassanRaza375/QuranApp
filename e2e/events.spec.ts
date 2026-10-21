@@ -49,9 +49,17 @@ test.describe("the list", () => {
     await expect(first.getByTestId("event-date")).toHaveText("Expected Tuesday 5 January 2027 · 27 Rajab 1448 · in 82 days");
     for (const d of await page.getByTestId("event-date").allTextContents()) expect(d).toMatch(/^Expected \w+day \d+ \w+ 2027 · /);
     await expect(page.getByRole("button", { name: /^Show: / })).toContainText("Both"); // no fiqh set: Both
+    await expect(page.getByTestId("events-quiet")).toHaveText("The next recorded event is expected on Tuesday 5 January 2027."); // 82 days away: no blank-looking start
     await expect(page.getByTestId("events-footer")).toHaveText("Dates and this list follow this app’s data. They are not a ruling.");
     await expect(page.getByTestId("events-basis")).toContainText("Dates follow the Hijri Calendar of Saudi Arabia (HJCoSA). Local sighting can differ by a day.");
     expect(await idbNames(page)).not.toContain("quran-app-db");
+  });
+
+  test("the quiet-months line shows only while the first event is more than 30 days away", async ({ context, page }) => {
+    await setup(context, DAY12);
+    await open(page);
+    await expect(rows(page).first()).toBeVisible();
+    await expect(page.getByTestId("events-quiet")).toHaveCount(0); // the first event is days away
   });
 
   test("a Hijri day with two entries gives two rows, each with its own tag; the data's own note shows verbatim", async ({ context, page }) => {

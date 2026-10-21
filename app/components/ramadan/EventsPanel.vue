@@ -6,7 +6,7 @@ import type { MenuOption } from "~/components/ResponsiveMenu.vue";
 import { calendarBasis } from "~/lib/hijriMonths";
 import { ALL_EVENTS } from "~/composables/useEvents";
 import { adjustNote } from "~/lib/hijriAdjust";
-import { FEW_LINE, groupByMonth, hasTraditionTags, isFew, monthHeading, showFromQuery, traditionOf, visible, type Show } from "~/lib/islamicEvents";
+import { FEW_LINE, groupByMonth, hasTraditionTags, isFew, monthHeading, quietLine, showFromQuery, traditionOf, visible, WINDOW_EMPTY_LINE, type Show } from "~/lib/islamicEvents";
 import { basisLine } from "~/lib/ramadanText";
 
 const route = useRoute();
@@ -37,6 +37,8 @@ const list = computed(() => events.placed.value.filter((p) => visible(p.event, t
 const groups = computed(() => groupByMonth(list.value));
 const first = computed(() => list.value[0] ?? null);
 const markerFor = (p: { event: { id: string }; date: string }) => (first.value && p.event.id === first.value.event.id && p.date === first.value.date ? (p.date === events.todayKey.value ? "today" : "next") : null);
+const quiet = computed(() => quietLine(first.value));
+const windowEmpty = computed(() => !events.placed.value.length);
 const few = computed(() => isFew(ALL_EVENTS, tradition.value));
 
 const basis = computed(() => {
@@ -73,9 +75,11 @@ const noMonths = computed(() => state.value === "needs-connection" || state.valu
       <p class="mt-3 text-[12.5px] text-ink-2" data-testid="events-basis">{{ basis }}<template v-if="adjust"> {{ adjust }}.</template></p>
       <p v-if="few" class="mt-2 rounded-lg border border-dashed px-3 py-2 text-[13px]" data-testid="events-few">{{ FEW_LINE }}</p>
 
+      <p v-if="quiet" class="mt-3 text-[14px]" data-testid="events-quiet">{{ quiet }}</p>
+
       <div v-if="!list.length" class="mt-4 rounded-[10px] border border-dashed px-4 py-8 text-center" data-testid="events-empty">
-        <p class="text-[15px]">No events for this view in these months.</p>
-        <Button v-if="show !== 'both'" variant="outline" class="mt-3 min-h-11 md:min-h-9" data-testid="events-show-both" @click="setShow('both')">Show both</Button>
+        <p class="text-[15px]" data-testid="events-empty-text">{{ windowEmpty ? WINDOW_EMPTY_LINE : "No events for this view in these months." }}</p>
+        <Button v-if="!windowEmpty && show !== 'both'" variant="outline" class="mt-3 min-h-11 md:min-h-9" data-testid="events-show-both" @click="setShow('both')">Show both</Button>
       </div>
       <section v-for="g in groups" :key="g.month" :aria-label="monthHeading(g.month)" data-testid="events-group">
         <h2 class="mt-5 text-[13px] font-medium uppercase tracking-wide text-ink-2" data-testid="events-month">{{ monthHeading(g.month) }}</h2>

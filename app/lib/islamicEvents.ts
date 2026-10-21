@@ -212,8 +212,17 @@ export function groupByMonth(placed: PlacedEvent[]): MonthGroup[] {
 export const monthHeading = (month: string): string => new Date(`${month}-15T12:00:00Z`).toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
 export const relativeDays = (n: number): string => (n === 0 ? "today" : n === 1 ? "tomorrow" : `in ${n} days`);
 /** "Expected Monday 8 February 2027": every event date reads "Expected" (the data does not say which depend on sighting). */
-export function expectedText(date: string): string {
+const longDate = (date: string): string => {
   const parts = new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).formatToParts(new Date(`${date}T12:00:00Z`));
   const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
-  return `Expected ${get("weekday")} ${get("day")} ${get("month")} ${get("year")}`;
-}
+  return `${get("weekday")} ${get("day")} ${get("month")} ${get("year")}`;
+};
+export const expectedText = (date: string): string => `Expected ${longDate(date)}`;
+
+/** Further than this many days away, the first event gets a plain line above the list so the page does not open on an unexplained gap. */
+export const QUIET_DAYS = 30;
+/** "The next recorded event is expected on Tuesday 5 January 2027." Only when the first event of the view is far away; nothing otherwise. */
+export const quietLine = (first: { date: string; daysUntil: number } | null): string | null =>
+  first && first.daysUntil > QUIET_DAYS ? `The next recorded event is expected on ${longDate(first.date)}.` : null;
+/** When no event of any tradition falls in the months shown. */
+export const WINDOW_EMPTY_LINE = "No recorded events fall in these months.";

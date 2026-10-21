@@ -36,6 +36,10 @@ Also: a "Next event" line on the Today tab before Ramadan (plan question 5, acce
 - Toasts (bottom centre) can sit over the lower rows for about six seconds; Playwright's pointer actions were blocked by them, so the tests click through (a real user can wait or swipe the toast away).
 - The Ramadan page loads the Ramadan month on every tab (it is saved after the first time), so an Events visit makes one extra request on the first load only.
 
+## After review: the quiet months
+
+When the first event of the view is more than 30 days away, a plain line sits above the list: "The next recorded event is expected on Tuesday 5 January 2027." (`quietLine`, `QUIET_DAYS`). If no event of any tradition falls in the months shown, the empty state reads "No recorded events fall in these months." (with Show later events below); a view that merely has none keeps "No events for this view in these months." Covered by 2 unit tests and 1 browser assertion plus a no-line test near an event; the window-empty text is not driven in a browser (the real data always has events in six months). The month names stay as the service gives them.
+
 ## Differences from the plan
 
 - The Today "Next event" card loads the same eight months as the Events tab (a first draft loaded four, which does not reach January, and was wrong).
@@ -52,7 +56,7 @@ The events the prototype lists beyond the data (the Fatimiyya days, Rajab and Sh
 
 ## Verification
 
-- `npm run verify` on Node 22 (lint, 511 unit tests, production build, 360 e2e tests): **passed, exit 0**. The Settings picker test did not fail this run. An earlier run failed only on lint (unused names in the screenshot script), fixed.
+- `npm run verify` on Node 22 (lint, 511 unit tests, production build, 361 e2e tests, 513 unit): **passed, exit 0**. The Settings picker test did not fail this run. An earlier run failed only on lint (unused names in the screenshot script), fixed.
 - `tests/events.test.ts` (31 tests): the recorded months and their agreement with the prayer cache and the Ramadan month, strict rejection of a bad response, the 29 events as the data has them (counts, notes, ids), placement on the service's own days (checked independently), the adjustment both ways and at edges, a 30th day in a 29-day month, nothing guessed beyond the saved months, the tradition rules and the few-events line, the reviewed-file validator and merge (with a sample file), grouping and wording, the reminders list in its legacy shape, the month service (saved first, network off, stale refresh, failure keeps saved), no invented text.
 - `e2e/events.spec.ts` (25 tests, recorded real months): the list, grouping, Next and Today, the two rows on 27 Rajab, notes verbatim, the five Qadr rows, Both and Following and Sunni and Ja'fari (counts 18, 10, 17), the Following control, the first load's requests and the saved reload, the adjustment both ways, no connection, a service error, a missing month, Show later events, the bell (aria, toast, legacy shape, kept across a visit, Undo, keyboard), the reminders list (legacy reminders, done, delete and Undo), Today's next event, no event card on Home, Reset keeps and Clear all removes the list, dark mode, 375px and 44px targets.
 

@@ -371,3 +371,18 @@ describe("no invented text anywhere on the Events tab", () => {
     expect(Object.keys(E.CATEGORY_LABEL).sort()).toEqual(["birth", "major", "martyrdom", "remembrance", "shia-occasion"]);
   });
 });
+
+describe("the quiet-months line", () => {
+  it("is shown only when the first event is more than 30 days away, with the long date", () => {
+    const [first] = place();
+    expect(first.daysUntil).toBe(82);
+    expect(E.quietLine(first)).toBe("The next recorded event is expected on Tuesday 5 January 2027.");
+    expect(E.quietLine({ date: "2026-11-14", daysUntil: E.QUIET_DAYS })).toBeNull();
+    expect(E.quietLine({ date: "2026-11-15", daysUntil: E.QUIET_DAYS + 1 })).not.toBeNull();
+    expect(E.quietLine(null)).toBeNull();
+  });
+  it("the empty-window line is plain, and no event is made up when none is placed", () => {
+    expect(place({ events: [] })).toEqual([]);
+    expect(E.WINDOW_EMPTY_LINE).toBe("No recorded events fall in these months.");
+  });
+});
