@@ -1,6 +1,8 @@
 <script setup lang="ts">
 // The framed text of one page (prototype `mp-frame`): a thin head, then each surah's run of ayahs as flowing, justified Arabic with the
-// reader's ayah markers. A banner and the Bismillah appear only where a surah starts on the page. It is flowing text, not mushaf lines.
+// reader's ayah markers (and a small sign after a verse of prostration, from the bundled list). A banner and the Bismillah appear only where a surah starts on the page. It is flowing text, not mushaf lines.
+import { isSajdaAyah, SAJDA_SIGN_LABEL } from "~/lib/sajda";
+
 export interface FrameSegment {
   surah: number;
   from: number;
@@ -39,7 +41,7 @@ defineProps<{
           </template>
         </template>
         <p class="ar page-text mt-4" lang="ar" dir="rtl" data-testid="page-text">
-          <template v-for="(t, i) in g.ayahs" :key="g.from + i">{{ t }}<span class="verse-mark" data-testid="verse-mark" :data-ayah="g.from + i"><span class="sr-only" lang="en" dir="ltr"> ayah </span>{{ g.from + i }}</span> </template>
+          <template v-for="(t, i) in g.ayahs" :key="g.from + i">{{ t }}<span class="verse-mark" data-testid="verse-mark" :data-ayah="g.from + i"><span class="sr-only" lang="en" dir="ltr"> ayah </span>{{ g.from + i }}</span><span v-if="isSajdaAyah(g.surah, g.from + i)" class="sajda-sign" data-testid="sajda-sign" :data-surah="g.surah" :data-ayah="g.from + i" role="img" :aria-label="SAJDA_SIGN_LABEL"><Icon name="lucide:arrow-down-to-line" size="16" aria-hidden="true" /></span> </template>
         </p>
       </section>
     </template>
@@ -50,6 +52,12 @@ defineProps<{
 .page-text {
   text-align: justify;
   overflow-wrap: break-word;
+}
+.sajda-sign {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-inline: 2px 8px;
+  color: var(--ink-2);
 }
 .verse-mark {
   display: inline-flex;
