@@ -120,16 +120,27 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] The "how it differs" table (suhoor end or Imsak, iftar timing, night prayers, Imam Ali commemoration) was written from public sources and must be reviewed. Iftar timing is a difference between individual jurists, not a rule for a whole tradition.
 - [ ] Both iftar duas (Arabic typed from memory). The Ja'fari dua has no confirmed source. The legacy app has its own dua set (`app/utils/ramadanContent.js`); use that.
 
-**Tasbeeh**
-- [ ] The Arabic of the five dhikr and the Tasbih of Fatima order (Ja'fari 34, 33, 33; Sunni common order 33, 33, 34, with other narrations) and the concluding line.
+**Tasbeeh (Phase 9B)**
+- [x] The prototype's dhikr texts are not used: the five dhikr and the custom counter are the legacy presets (`scripts/gen-tasbeeh-presets.mjs` reads them from the legacy `useTasbeeh.ts`; the legacy file is not edited).
+- [ ] **Left out (deliberate): "After prayer" / the Tasbih of Fatima, in both traditions.** The legacy app has no such data, and the prototype's Sunni order (33, 33, 34), the Ja'fari order (34, 33, 33 then La ilaha illallah), their titles and notes were typed by us. To add it, supply the wording and a source (a data file in the Events pattern; no code change planned).
+- [ ] Review the five dhikr (Arabic, transliteration, meaning) as the legacy app has them: SubhanAllah, Alhamdulillah, Allahu Akbar, La ilaha illallah, Astaghfirullah.
+- [ ] Wording of ours: "Tap the circle, or press Space or Enter, to count.", the announcements ("12 of 33", "Goal of 33 reached. 3 cycles completed.", "Count reset to 0."), the toasts ("Count reset to 0 for <name>", "Goal set to 99. The count went back to 0."), "Vibrate on count", "Off while Reduce motion is on in Settings.", "Cycles completed" / "Lifetime count".
+- [ ] Behaviour kept from the legacy counter that you may want to change later: a new goal sets the count back to 0 (now with Undo); only the goals 33, 99 and 100; the custom counter has no name; the vibration pattern (15 ms, and 120/60/120/60/120 for a finished cycle). A malformed stored value is shown as the default instead of NaN.
+- [ ] "Count this name" stores its count under `name-<n>` in `quran:tasbeeh:v1`. The legacy app tolerates it (tested against the legacy code) but does not list it.
 
-**Sajda**
-- [ ] The list of 15 verses and their numbers (41:37 to 38 and 27:26 vary between schools).
-- [ ] The Ja'fari set of four obligatory verses (32:15, 41:37, 53:62, 96:19) and the Hanafi count of 14 without the second verse in Al-Hajj.
-- [ ] The explanatory sentences for each tradition.
+**Sajda (Phase 9B)**
+- [x] The prototype's list, references and Arabic are not used. The 15 references are the service's own list (`/v1/sajda/quran-uthmani`, recorded in `tests/fixtures/alquran-sajda.json`, bundled by `scripts/gen-sajda.mjs`); the Arabic is the surah reader's text.
+- [ ] **Left out (deliberate): any statement of obligation.** The service flags 4 of the 15 (32:15, 41:38, 53:62, 96:19) as `obligatory` and 11 as `recommended`; the legacy page showed those to everyone as red and blue labels. The four are the set the Ja'fari school treats as obligatory, so showing them to all users is a ruling. They are not shown, and nothing says "obligatory", "recommended", "wajib", "Hanafi" or "Ja'fari". Also left out: the Hanafi count of 14 and its note, and the per-tradition explanatory sentences. To add them, supply wording and a source.
+- [ ] **The list itself:** "15 verses, as listed by this app's data." The set of 15 follows one common list (it includes 38:24 and both 22:18 and 22:77); schools differ (the exact verse in Ha-Mim Sajda, the second sajda of Al-Hajj, 38:24). Confirm that you want this list.
+- [ ] Wording of ours: "Verses of prostration", "Connect once to see the text.", "Couldn’t load the text.", "Open in the reader", the sign's label "Prostration verse" (Per-page reader).
+- [ ] **Decide:** the reader's own Arabic already contains the prostration sign inside exactly these 15 ayahs (checked 2026-10-21, which also confirms the list), so the SVG mark built on the Per-page reader duplicates it. Recommended: remove the visible mark. The mark is a small SVG mark (the legacy page printed the prostration character, which the no-typed-Arabic guard forbids in code); a test checks it appears on exactly the 15 ayahs.
 
-**Asma-ul-Husna**
-- [ ] All 99 names: Arabic, transliteration and meanings were typed from memory. Lists differ between sources. Use the legacy data.
+**Asma-ul-Husna (Phase 9B)**
+- [x] The prototype's 99 names are not used. The names are the legacy `names.json` (imported, never copied): Arabic, Urdu, transliteration, English, in the legacy order and numbering.
+- [ ] **For your review (not changed):** (a) the apostrophes in the transliterations are mixed in the data: curly in Al-Mu’min (6), Al-Mu’izz (24), Al-Mu’akhkhir (72), Ar-Ra’oof (83), straight in Al-Ba'ith (49), Al-Mu'eed (59), Al-Muta'ali (78). The page shows them all curly (typography only, tested: nothing else about a name changes). (b) Two English meanings repeat: "The Sustainer" (39 Al-Muqeet, 63 Al-Qayyum) and "The Originator" (58 Al-Mubdi, 95 Al-Badee); "The Just" (29) and "The Just One" (86) are near-duplicates. A test pins these points so a change in the data shows up. (c) Lists of the 99 names differ between sources (here Malik-ul-Mulk and Dhul-Jalali wal-Ikram are 84 and 85 and Allah is not counted); this is the legacy app's list. (d) The Urdu text and the audio files (third-party hosted) are legacy data I cannot verify.
+- [ ] **Left out (deliberate):** the YouTube video embed (a third-party page), and the per-name audio until Phase 4B ("Play" is a visible, disabled button, "Coming with the player").
+- [ ] Wording of ours: "The 99 names, from this app’s data. Saved names stay on this device.", "Search the names", "Lists of the 99 names differ slightly between sources. This is the list this app’s data uses.", "No names saved yet. Tap the star on a name.", "No names match “…”.", "Count this name".
+- Fixed from the legacy page: the English line was near-white (nearly invisible in light theme); the search box was labelled "Search Surah". Both have tests.
 
 **Per page (Phase 9A)**
 - [x] The prototype's page 1 text, its page-to-surah and page-to-juz mapping, its "20 pages per juz" rule, its demo page 49 and its Hizb idea are not used. A page's ayahs come from the generated page starts (`/v1/meta`), every one of the 604 pages checked against the service's own `/v1/page/<n>/quran-uthmani` answer (`tests/pageReader.test.ts`, recorded in `tests/fixtures/alquran-page-ranges.json`; no page disagreed). The Arabic is the surah reader's cached text; the Bismillah is read from surah 1's data.
