@@ -22,6 +22,8 @@ export const bookmarkAddedAt = (key: string): number | undefined => readAddedAt(
 export const listBookmarks = (): string[] => readList();
 export const surahBookmarkKey = (surah: number) => `surah:${surah}`;
 export const juzBookmarkKey = (juz: number) => `juz:${juz}`;
+/** The legacy page bookmark (`page:49`), as the legacy per-page reader and Bookmarks write and read it. */
+export const pageBookmarkKey = (page: number) => `page:${page}`;
 
 export const hasBookmark = (key: string): boolean => readList().includes(key);
 

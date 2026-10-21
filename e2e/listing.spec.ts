@@ -322,23 +322,23 @@ test.describe("every row opens a route that exists", () => {
       expect(Number(m![1])).toBeLessThanOrEqual(604);
     }
 
-    // follow one of each: surah and juz rows open the reader; a page chip opens the placeholder until Phase 9
+    // follow one of each: surah and juz rows open the surah reader; a page chip opens the page reader
     for (const target of [surahLinks[0]!, juzLinks[3]!]) {
       await page.goto(target);
       await expect(page.getByTestId("reader-title")).toBeVisible();
       await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
     }
     await page.goto(pageLinks[10]!);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("not rebuilt yet");
+    await expect(page.getByTestId("per-page-title")).toHaveText("Page 11");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   });
 
-  test("only the Page tab says its reader is not built yet (the surah and juz rows open the reader)", async ({ page }) => {
-    for (const path of ["/surah-listing", "/juz"]) {
+  test("no tab says a reader is not built yet (the surah, juz and page readers all exist)", async ({ page }) => {
+    for (const path of ["/surah-listing", "/juz", "/surah-listing?tab=page"]) {
       await open(page, path);
       await expect(page.getByTestId("readers-notice")).toHaveCount(0);
+      await expect(page.getByText(/still being moved|placeholder/)).toHaveCount(0);
     }
-    await open(page, "/surah-listing?tab=page");
-    await expect(page.getByTestId("readers-notice")).toContainText("page reader is still being moved");
   });
 
   test("a click on a page chip navigates inside the app (no full reload)", async ({ page }) => {

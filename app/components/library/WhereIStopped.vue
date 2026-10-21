@@ -59,7 +59,7 @@ const reading = computed(() => {
         <div class="min-w-0 flex-1">
           <p class="text-[12px] text-ink-2">Page{{ store.pagePin ? " · Pinned" : "" }}</p>
           <NuxtLink v-if="store.pagePin" :to="pageHref(store.pagePin.pageNo)" class="mt-0.5 inline-flex min-h-11 items-center text-[14.5px] font-medium hover:underline md:min-h-0" data-testid="slot-page-link">Page {{ store.pagePin.pageNo }}</NuxtLink>
-          <p v-else class="mt-0.5 text-[13.5px]">Not set. Pinning a page arrives with the page reader.</p>
+          <p v-else class="mt-0.5 text-[13.5px]">Not set. Pin a page from the page reader.</p>
         </div>
         <Button v-if="store.pagePin" variant="ghost" class="size-11 shrink-0 md:size-9" aria-label="Clear the page pin" data-testid="slot-page-clear" @click="store.clearPagePin()"><Icon name="lucide:x" size="16" /></Button>
       </div>

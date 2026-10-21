@@ -131,8 +131,13 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 **Asma-ul-Husna**
 - [ ] All 99 names: Arabic, transliteration and meanings were typed from memory. Lists differ between sources. Use the legacy data.
 
-**Per page**
-- [ ] Only page 1 has text in the prototype. Real pages come from the per-page endpoint or bundled data.
+**Per page (Phase 9A)**
+- [x] The prototype's page 1 text, its page-to-surah and page-to-juz mapping, its "20 pages per juz" rule, its demo page 49 and its Hizb idea are not used. A page's ayahs come from the generated page starts (`/v1/meta`), every one of the 604 pages checked against the service's own `/v1/page/<n>/quran-uthmani` answer (`tests/pageReader.test.ts`, recorded in `tests/fixtures/alquran-page-ranges.json`; no page disagreed). The Arabic is the surah reader's cached text; the Bismillah is read from surah 1's data.
+- [ ] **Flowing text, not mushaf lines.** There is no line data, so the page is a framed, justified block, and the page says so: "Text flows in the order and page breaks of the standard 604-page Madani mushaf. It is not a line-for-line copy of the printed page." Confirm the sentence, or supply line data (it then becomes an upgrade).
+- [ ] **No Hizb label.** The legacy page showed `hizbQuarter` (1 to 240) under the word "Hizb", which was wrong. Nothing is shown until real hizb data is chosen (the service has it).
+- [ ] **No sajda sign.** The legacy page printed one after sajda ayahs; the cached surah text has no sajda field and no list was typed. Sajda belongs to Phase 9B.
+- [ ] Wording of ours: "Page N of 604", the head line "Juz 4 and 5", "Open <surah> N:M in the reader", "Pin page" / "Pinned", "Save" / "Saved", "Coming with the player", "Page 700 doesn’t exist. Showing page 1.", "That page doesn’t exist. Showing page 1.", "Enter a page from 1 to 604.", "This page’s text isn’t saved on this device yet. Connect once to read it.", "Couldn’t load this page. Check your connection and try again.", and the Library's "Not set. Pin a page from the page reader."
+- [ ] The surah names in the header are the bundled list's spelling ("Al-Baqara", "Aal-i-Imraan"), not a transliteration chosen here.
 
 **Full player**
 - [ ] Scrubber, times and the save-audio behaviour are samples.

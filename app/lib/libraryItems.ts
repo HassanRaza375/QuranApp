@@ -46,7 +46,7 @@ export const OPENS_TODAY: Record<ItemType, boolean> = {
   surah: READERS_READY.surah,
   sajda: READERS_READY.surah,
   juz: READERS_READY.juz,
-  page: READERS_READY.page,
+  page: true, // the per-page reader (Phase 9A)
   person: true, // Phase 7A
   story: true, // Phase 7B
   name: false, // Phase 9
@@ -54,7 +54,7 @@ export const OPENS_TODAY: Record<ItemType, boolean> = {
   audio: false, // Phase 15
   unknown: false,
 };
-export const PENDING_PHASE: Partial<Record<ItemType, string>> = { page: "the page reader", person: "People", story: "Stories", name: "Asma-ul-Husna", fiqh: "Daily Fiqh", audio: "Reciters" };
+export const PENDING_PHASE: Partial<Record<ItemType, string>> = { person: "People", story: "Stories", name: "Asma-ul-Husna", fiqh: "Daily Fiqh", audio: "Reciters" };
 
 export interface Providers {
   person(id: string): { name: string; honorific?: string; arabicName?: string } | null;

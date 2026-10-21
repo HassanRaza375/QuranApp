@@ -9,7 +9,6 @@ import { addBookmark, bookmarkAddedAt, listBookmarks, removeBookmark } from "~/l
 import { juzMatches, parsePage, surahMatches } from "~/lib/listingSearch";
 import { filterPlace, PLACE_OPTIONS, SORT_OPTIONS, sortSurahs, type PlaceFilter, type SortKey } from "~/lib/listingSort";
 import { JUZ, TOTAL_PAGES } from "~/lib/quranMeta";
-import { readersPending } from "~/lib/readerLinks";
 import { lastRead, type LastRead } from "~/lib/readingMarker";
 import { readCompleted } from "~/lib/readSurahs";
 import { RECITER_NAMES, reciterName } from "~/lib/surahAudio";
@@ -194,10 +193,6 @@ onBeforeUnmount(() => clearTimeout(flashTimer));
           <Icon name="lucide:star" size="16" />Saved
         </Button>
       </div>
-
-      <p v-if="readersPending() && tab === 'page'" class="text-[12.5px] text-ink-2" data-testid="readers-notice">
-        The page reader is still being moved to the new design, so opening a page shows a placeholder for now.
-      </p>
 
       <p v-if="tab === 'surah' && (completed.size || last)" class="flex items-center gap-4 text-[12px] text-ink-2" data-testid="legend">
         <span v-if="completed.size" class="inline-flex items-center gap-1.5"><span aria-hidden="true" class="inline-block size-2.5 rounded-full bg-brand" />Completed</span>
