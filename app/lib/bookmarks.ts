@@ -23,6 +23,10 @@ export const listBookmarks = (): string[] => readList();
 export const surahBookmarkKey = (surah: number) => `surah:${surah}`;
 export const juzBookmarkKey = (juz: number) => `juz:${juz}`;
 /** The legacy page bookmark (`page:49`), as the legacy per-page reader and Bookmarks write and read it. */
+/** The legacy name bookmark (`name:12`), as the legacy Asma-ul-Husna page writes it and the Library lists it. */
+export const nameBookmarkKey = (id: number) => `name:${id}`;
+/** The legacy sajda bookmark (`sajda:32:15`). */
+export const sajdaBookmarkKey = (surah: number, ayah: number) => `sajda:${surah}:${ayah}`;
 export const pageBookmarkKey = (page: number) => `page:${page}`;
 
 export const hasBookmark = (key: string): boolean => readList().includes(key);

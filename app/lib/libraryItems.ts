@@ -5,6 +5,7 @@ import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { type LibraryState, metaOf } from "./library";
 import { normalize } from "./listingSearch";
 import { JUZ, pageStart } from "./quranMeta";
+import { typeset } from "./asma";
 import { juzHref, pageHref, READERS_READY, surahHref } from "./readerLinks";
 
 export type ItemType = "ayah" | "surah" | "juz" | "page" | "person" | "story" | "name" | "sajda" | "fiqh" | "audio" | "unknown";
@@ -49,12 +50,12 @@ export const OPENS_TODAY: Record<ItemType, boolean> = {
   page: true, // the per-page reader (Phase 9A)
   person: true, // Phase 7A
   story: true, // Phase 7B
-  name: false, // Phase 9
+  name: true, // Phase 9B
   fiqh: false, // Phase 13
   audio: false, // Phase 15
   unknown: false,
 };
-export const PENDING_PHASE: Partial<Record<ItemType, string>> = { person: "People", story: "Stories", name: "Asma-ul-Husna", fiqh: "Daily Fiqh", audio: "Reciters" };
+export const PENDING_PHASE: Partial<Record<ItemType, string>> = { person: "People", story: "Stories", fiqh: "Daily Fiqh", audio: "Reciters" };
 
 export interface Providers {
   person(id: string): { name: string; honorific?: string; arabicName?: string } | null;
@@ -127,8 +128,8 @@ export function describeItem(key: string, p: Providers = NO_PROVIDERS): Item {
     }
     case "name": {
       const x = a ? p.name(a) : null;
-      if (!x) return { ...readable, type: "name", title: `Name ${a}`, detail: "Asma-ul-Husna", href: "/asma-ul-husna" };
-      return { key, type: "name", title: x.transliteration, detail: x.english, arabicName: x.arabic, ord: TAIL * 5 + num(a), href: "/asma-ul-husna" };
+      if (!x) return { ...readable, type: "name", title: `Name ${a}`, detail: "Asma-ul-Husna", href: `/asma-ul-husna#name-${a}` };
+      return { key, type: "name", title: typeset(x.transliteration), detail: typeset(x.english), arabicName: x.arabic, ord: TAIL * 5 + num(a), href: `/asma-ul-husna#name-${a}` };
     }
     case "fiqh": {
       const x = a ? p.fiqhTopic(a) : null;

@@ -111,7 +111,7 @@ test.describe("a legacy library", () => {
     await expect(row(page, "juz:30").getByTestId("row-open")).toHaveAttribute("href", "/surah/78#ayah-1");
     await expect(row(page, "person:adam").getByTestId("row-open")).toHaveAttribute("href", "/persons/adam");
     const notice = await page.getByTestId("pending-notice").textContent();
-    for (const n of ["Asma-ul-Husna", "Daily Fiqh", "Reciters"]) expect(notice).toContain(n);
+    for (const n of ["Daily Fiqh", "Reciters"]) expect(notice).toContain(n);
     await assertLegacyLoads(page);
   });
 
