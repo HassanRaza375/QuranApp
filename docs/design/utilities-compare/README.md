@@ -22,6 +22,6 @@ Looked at by me: the Tasbeeh desktop light pair, the Asma name sheet at mobile d
 | Asma: a "Saved" chip, a name sheet with "Count this name" | Same, plus Play shown disabled until the player | Phase 4B |
 | (legacy only) a YouTube embed and near-invisible English text | Neither | A third-party page; contrast |
 
-## Not yet decided
+## Resolved on review
 
-`state-perpage-sajda-sign-desktop-light.jpg` shows the sajda sign twice: the text's own sign (the data carries it inside the ayah) and the SVG mark built under decision 9. See the finding in the phase doc; the recommendation is to remove the visible SVG mark.
+`state-perpage-sajda-sign-*.jpg` first showed the sajda sign twice: the text's own sign and an SVG mark added by the revamp. The SVG mark was removed; the images are regenerated with real text and show one sign.

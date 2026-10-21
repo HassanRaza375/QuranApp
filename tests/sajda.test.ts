@@ -5,9 +5,8 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { SURAH_ROWS } from "../app/data/quranMeta.generated";
 import { SAJDA_AYAHS } from "../app/data/sajda.generated";
-import { pageSegments } from "../app/lib/pageReader";
-import { AYAH_COUNTS, juzOfAyah, pageOfAyah, TOTAL_PAGES } from "../app/lib/quranMeta";
-import { isSajdaAyah, SAJDA_NO_TEXT, SAJDA_SIGN_LABEL, SAJDA_TEXT_FAILED, SAJDA_TITLE, sajdaCountLine, sajdaRows } from "../app/lib/sajda";
+import { AYAH_COUNTS, juzOfAyah, pageOfAyah } from "../app/lib/quranMeta";
+import { SAJDA_NO_TEXT, SAJDA_TEXT_FAILED, SAJDA_TITLE, sajdaCountLine, sajdaRows } from "../app/lib/sajda";
 import { sajdaBookmarkKey } from "../app/lib/bookmarks";
 
 const root = path.resolve(__dirname, "..");
@@ -49,28 +48,27 @@ describe("the bundled list against the recorded service response", () => {
   });
 });
 
-describe("the sign on the Per-page reader", () => {
-  it("isSajdaAyah is true for the 15 and false for their neighbours", () => {
-    for (const [s, a] of SAJDA_AYAHS) {
-      expect(isSajdaAyah(s, a)).toBe(true);
-      expect(isSajdaAyah(s, a + 1)).toBe(false);
-      if (a > 1) expect(isSajdaAyah(s, a - 1)).toBe(false);
-    }
-    expect(isSajdaAyah(1, 1)).toBe(false);
+describe("the sign: the reader's own text carries it, once, and the Per-page reader adds nothing", () => {
+  // REAL text: tests/fixtures/quranapi-32.json is a recorded response of the source the surah reader uses (surah 32, which holds 32:15).
+  // The prostration character is compared by code point (no Arabic is typed in code).
+  const SIGN = String.fromCharCode(0x6e9);
+  const chapter = JSON.parse(fs.readFileSync(path.join(root, "tests/fixtures/quranapi-32.json"), "utf8")) as { arabic1: string[]; totalAyah: number };
+  it("in the real text of surah 32 the sign is inside ayah 15 and only there, exactly once", () => {
+    expect(chapter.arabic1).toHaveLength(chapter.totalAyah);
+    const withSign = chapter.arabic1.map((t, i) => [i + 1, t.split(SIGN).length - 1] as const).filter(([, n]) => n > 0);
+    expect(withSign).toEqual([[15, 1]]);
+    expect(SAJDA_AYAHS.some(([s, a]) => s === 32 && a === 15)).toBe(true);
   });
-  it("across all 604 pages the sign belongs to exactly the 15 ayahs, each on exactly one page, and the page is the one the data says", () => {
-    const found: string[] = [];
-    for (let p = 1; p <= TOTAL_PAGES; p++) {
-      for (const g of pageSegments(p)!) for (let a = g.from; a <= g.to; a++) if (isSajdaAyah(g.surah, a)) found.push(`${g.surah}:${a}@${p}`);
-    }
-    expect(found).toEqual(sajdaRows().map((r) => `${r.surah}:${r.ayah}@${r.page}`));
+  it("the Per-page frame has no sign of its own (the text is the only source, so the two cannot disagree or double up)", () => {
+    const frame = fs.readFileSync(path.join(root, "app/components/perpage/Frame.vue"), "utf8");
+    expect(frame).not.toMatch(/sajda-sign|arrow-down-to-line|isSajdaAyah/);
   });
 });
 
 describe("no ruling is stated", () => {
   it("the page's words and the library's are plain: no obligatory, recommended, wajib, Hanafi, Ja'fari or marja'", () => {
     const words = /obligatory|recommended|wajib|fard|hanafi|ja.?fari|shafi|marja|scholar/i;
-    for (const s of [SAJDA_TITLE, sajdaCountLine(15), SAJDA_NO_TEXT, SAJDA_TEXT_FAILED, SAJDA_SIGN_LABEL]) expect(s).not.toMatch(words);
+    for (const s of [SAJDA_TITLE, sajdaCountLine(15), SAJDA_NO_TEXT, SAJDA_TEXT_FAILED]) expect(s).not.toMatch(words);
     const page = fs.readFileSync(path.join(root, "app/pages/sajda.vue"), "utf8");
     const template = page.slice(page.indexOf("<template>"));
     expect(template).not.toMatch(words);

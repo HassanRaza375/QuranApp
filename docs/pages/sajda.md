@@ -32,8 +32,7 @@ The Arabic loads one ayah at a time (the same source and cache as the Library's 
 ## Behaviour
 
 - **Save:** the legacy bookmark `sajda:<surah>:<ayah>` (and its added-at time) with Undo. The Library lists it under "Sajda verses" and opens the reader at that ayah.
-- **The text already carries the sign.** The reader's Arabic (`arabic1`) contains the prostration character inside exactly these 15 ayahs (checked on 2026-10-21), so this list, the surah reader and the Per-page reader show it as part of the text.
-- **The sign on the Per-page reader (built, under review):** after each of these 15 ayahs the page reader shows a small mark (an SVG, `aria-label` "Prostration verse"). A test visits the page of each of the 15 and checks the sign is on exactly that ayah and nowhere else; pages without one show none. Because the text carries its own sign, this mark is a duplicate; removing the visible mark is recommended (phase doc).
+- **The sign is the text's own.** The reader's Arabic (`arabic1`) contains the prostration character inside exactly these 15 ayahs (checked 2026-10-21), so this list, the surah reader and the Per-page reader show it as part of the text, once. Nothing is added: the Per-page reader's SVG mark was removed on review. If the sign ever shows as an empty box on a device, that is a font fix, not a second mark.
 
 ## States
 
@@ -49,4 +48,4 @@ Reads: the bundled list, the reader's caches, `quran:bookmarks:v1`. Writes: `qur
 
 ## Tests
 
-`tests/sajda.test.ts` (9) and `e2e/sajda.spec.ts` (11); see `docs/phases/phase-09b-asma-sajda-tasbeeh.md`.
+`tests/sajda.test.ts` (9) and `e2e/sajda.spec.ts` (12); see `docs/phases/phase-09b-asma-sajda-tasbeeh.md`.

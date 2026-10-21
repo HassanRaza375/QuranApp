@@ -1,6 +1,8 @@
 // Phase 9B: the verses of prostration in a real browser, on the production build. The 15 references are bundled; the Arabic is the SYNTHETIC
 // mock ("TEST ARABIC 7:206"). Every unmocked request to a real API (including the service's own /sajda endpoint) fails the test; the clock is
 // fixed. See docs/phases/phase-09b-asma-sajda-tasbeeh.md.
+import fs from "node:fs";
+import path from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import { sajdaRows } from "../app/lib/sajda";
 import { forbidRealApis, freezeClock, idbNames, mockQuranText, mockVerse, readStorage, seed, type VerseMock } from "./mocks";
@@ -119,31 +121,42 @@ test.describe("the text on the device", () => {
   });
 });
 
-test.describe("the sign on the Per-page reader", () => {
-  test("every one of the 15 verses carries the sign on its own page, and only those ayahs do", async ({ page }) => {
-    test.setTimeout(120_000);
-    const byPage = new Map<number, typeof ROWS>();
-    for (const r of ROWS) byPage.set(r.page, [...(byPage.get(r.page) ?? []), r]);
-    for (const [p, list] of byPage) {
-      await page.goto(`/per-page-read?page=${p}`);
-      await expect(page.getByTestId("page-frame")).toBeVisible();
-      const signs = page.getByTestId("sajda-sign");
-      await expect(signs, `page ${p}`).toHaveCount(list.length);
-      for (const r of list) {
-        const s = page.locator(`[data-testid="sajda-sign"][data-surah="${r.surah}"][data-ayah="${r.ayah}"]`);
-        await expect(s, `${r.surah}:${r.ayah}`).toHaveCount(1);
-        await expect(s).toHaveAttribute("aria-label", "Prostration verse");
-        // the sign follows its own ayah's marker
-        await expect(s.locator("xpath=preceding-sibling::*[1]")).toHaveAttribute("data-ayah", String(r.ayah));
-      }
-    }
+test.describe("the sign is the text's own, shown once", () => {
+  // REAL text for surah 32 (a recorded response of the reader's source, tests/fixtures/quranapi-32.json); the other surahs stay synthetic.
+  const SIGN = String.fromCharCode(0x6e9);
+  const real = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), "tests/fixtures/quranapi-32.json"), "utf8")) as { arabic1: string[] };
+  const count = (s: string) => s.split(SIGN).length - 1;
+
+  test("on the Per-page reader, the page that holds 32:15 shows the text's own sign exactly once and adds no mark of its own", async ({ page, context }) => {
+    await context.route(/quranapi\.pages\.dev\/api\/32\.json/, (r) => r.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify(real) }));
+    const p = ROWS.find((r) => r.surah === 32 && r.ayah === 15)!.page;
+    await page.goto(`/per-page-read?page=${p}`);
+    await expect(page.getByTestId("page-frame")).toBeVisible();
+    await expect(page.getByTestId("page-text").first()).not.toContainText("TEST ARABIC"); // the real text, not the synthetic one
+    const all = (await page.getByTestId("page-text").allTextContents()).join("");
+    expect(count(all)).toBe(1);
+    // and it is inside ayah 15's text: the text before the marker numbered 15 holds it
+    const first = (await page.getByTestId("page-text").allTextContents()).find((t) => count(t) === 1)!;
+    expect(first.indexOf(SIGN)).toBeLessThan(first.indexOf("15"));
+    await expect(page.locator('[data-testid="verse-mark"][data-ayah="15"]')).toHaveCount(1);
+    await expect(page.locator('[data-testid="page-frame"] svg, [data-testid="page-frame"] [role="img"], [data-testid="sajda-sign"]')).toHaveCount(0); // nothing is added
   });
 
-  test("pages without a verse of prostration show no sign (page 1, 3 and 604)", async ({ page }) => {
+  test("on the Sajda list, 32:15 from the real text shows the sign once, and the row adds no mark", async ({ page, context }) => {
+    await context.route(/quranapi\.pages\.dev\/api\/32\/15\.json/, (r) =>
+      r.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify({ ...real, arabic1: real.arabic1[14] }) }),
+    );
+    await open(page);
+    const text = (await row(page, 32, 15).getByTestId("sajda-text").textContent())!;
+    expect(count(text)).toBe(1);
+    await expect(row(page, 32, 15).locator('[role="img"], [data-testid="sajda-sign"]')).toHaveCount(0); // nothing is added to the text
+  });
+
+  test("pages without a verse of prostration have no sign and nothing added (page 1, 3 and 604, synthetic text)", async ({ page }) => {
     for (const p of [1, 3, 604]) {
       await page.goto(`/per-page-read?page=${p}`);
       await expect(page.getByTestId("page-frame")).toBeVisible();
-      await expect(page.getByTestId("sajda-sign")).toHaveCount(0);
+      expect(count((await page.getByTestId("page-text").allTextContents()).join(""))).toBe(0);
     }
   });
 });

@@ -16,7 +16,7 @@
 6. Legacy goals 33 / 99 / 100 and the unnamed custom counter.
 7. The YouTube embed is dropped, with no replacement link.
 8. Vibration with a switch next to the counter, on by default where supported, never while Reduce motion is on.
-9. The sajda sign on the Per-page reader is built as an SVG mark, with a test on the right ayahs (**see the finding below: the text already carries the sign**).
+9. ~~The sajda sign on the Per-page reader as an SVG mark~~ **Changed after review (2026-10-21): the visible SVG mark was removed.** The reader's own text already carries the sign inside exactly the 15 ayahs, so the Per-page reader adds nothing. A test with REAL cached text (surah 32, `tests/fixtures/quranapi-32.json`) confirms the sign appears exactly once on the page that holds 32:15 and in the Sajda row, and that nothing is added.
 Holds: `names.json` imported; only apostrophe typography normalised; the mixed apostrophes and the repeated meanings listed for review; tests for English-text contrast and the search label; a saved `name:<n>` shows in the Library's Names filter; the counter is a real button with a polite count, Space and Enter, and Reset with Undo; the legacy lifetime and cycle shapes tested through each operation with a legacy-shaped fixture.
 
 ## What was built
@@ -28,7 +28,7 @@ Holds: `names.json` imported; only apostrophe typography normalised; the mixed a
 
 ## Findings (please read)
 
-- **The reader's own Arabic already carries the sajda sign.** The `quranapi` text (`arabic1`, the surah reader's source) contains the prostration character (U+06E9) inside exactly these 15 ayahs and in no other ayah of those 14 surahs (checked against the live data today). So the Sajda list, the surah reader and the Per-page reader already show the sign as part of the text, and **the SVG mark built under decision 9 is a second sign next to it** (visible in `docs/design/utilities-compare/state-perpage-sajda-sign-desktop-light.jpg`: the text's own sign, then the ayah marker, then my arrow). The synthetic text in the browser tests has no such character, so the tests could not show this; the real-text screenshots did. This also independently confirms the bundled list of 15. **Recommendation: remove the visible SVG mark** (keep, at most, a screen-reader label), because the text is the better source and the duplicate looks wrong. It is a one-line change in `components/perpage/Frame.vue` plus the e2e test; I left it as approved so you can decide. (The earlier 9A note "the cached surah text has no sajda sign" was about a missing data field; the sign is in the text itself.)
+- **The reader's own Arabic already carries the sajda sign.** The `quranapi` text (`arabic1`, the surah reader's source) contains the prostration character (U+06E9) inside exactly these 15 ayahs and in no other ayah of those 14 surahs (checked against the live data today). So the Sajda list, the surah reader and the Per-page reader already show the sign as part of the text, and **the SVG mark built under decision 9 is a second sign next to it** (it showed in the real-text screenshot as the text's own sign, the ayah marker, then my arrow; the screenshot is regenerated and now shows one sign). The synthetic text in the browser tests has no such character, so the tests could not show this; the real-text screenshots did. This also independently confirms the bundled list of 15. **Resolved on review: the visible SVG mark was removed** (and the label, the helper and their tests), so there is one source of the sign. If the text's own sign ever shows as an empty box on a device, that is a font fix, not a second mark. (The earlier 9A note "the cached surah text has no sajda sign" was about a missing data field; the sign is in the text itself.)
 - **The Sajda service's flags are a ruling.** 4 of 15 are flagged `obligatory` (32:15, 41:38, 53:62, 96:19: exactly the Ja'fari set), 11 `recommended`; the legacy page showed these to everyone. Not carried over (decision 3); recorded in CONTENT_TO_VERIFY.md.
 - **The legacy composable is the test oracle for Tasbeeh.** `tests/tasbeeh.test.ts` loads the real `useTasbeeh.ts` (transpiled in memory) and applies the same 12 operations plus 100 counts to both implementations on a legacy-shaped record that includes a `name-12` counter, an unknown field and an unknown counter; the stored records are equal after every step. The legacy code also accepts and preserves the `name-<n>` counters (and its counter page would show one as a counter named by its id), so a rollback is safe.
 - **A request to `quranapi.pages.dev` from a script needs a browser-style User-Agent** (a bare Python request got HTTP 403). Browsers are unaffected; noted only for anyone scripting the data.
@@ -49,14 +49,18 @@ After prayer (both traditions), any obligation statement, the Hanafi count and n
 
 ## Verification
 
-`npm run verify` on Node 22 (build, lint, 566 unit tests, dev smoke, 428 e2e tests): **passed, exit 0**. The Settings picker test did not fail. Along the way, failed-then-fixed runs were all in new tests (a search term, a hash-opened sheet hiding the page behind a modal, an offline navigation that needs the page code already loaded, a reduced-motion duration); none was a defect in a page.
+`npm run verify` on Node 22 (build, lint, 566 unit tests, dev smoke, 428 e2e tests; 429 after the review change below): **passed, exit 0**. The Settings picker test did not fail. Along the way, failed-then-fixed runs were all in new tests (a search term, a hash-opened sheet hiding the page behind a modal, an offline navigation that needs the page code already loaded, a reduced-motion duration); none was a defect in a page.
 
-- `tests/asma.test.ts` (12), `tests/sajda.test.ts` (9), `tests/tasbeeh.test.ts` (17, including the legacy-code differential).
-- `e2e/asma.spec.ts` (10), `e2e/sajda.spec.ts` (11), `e2e/tasbeeh.spec.ts` (16). Existing tests updated: the Library's name type is "opens today", its pending notice no longer names Asma-ul-Husna, a new Per-page test for the sign.
+- `tests/asma.test.ts` (12), `tests/sajda.test.ts` (9), `tests/tasbeeh.test.ts` (17, including the legacy-code differential; keep it in the suite: it is the strongest rollback guarantee).
+- `e2e/asma.spec.ts` (10), `e2e/sajda.spec.ts` (12), `e2e/tasbeeh.spec.ts` (16). Existing tests updated: the Library's name type is "opens today", its pending notice no longer names Asma-ul-Husna, a new Per-page test for the sign.
 
 ## What is left for you
 
-- Decide the duplicate sign (remove the visible SVG mark: recommended).
 - Review `CONTENT_TO_VERIFY.md` (Tasbeeh, Sajda, Asma sections): the dhikr, the list of 15, the 99 names, the wording of ours.
 - Supply sourced wording if you want obligation statements or After prayer later.
 - Phone checks (counter by touch and vibration on a real device, 375px dark on all three pages, the name sheet) and the still-pending audio and compass checks. Phase 4B (the full player) is the next step that does not wait on content; it depends on your audio test.
+
+## After review (2026-10-21)
+
+- Removed the visible sajda mark from `components/perpage/Frame.vue`, `isSajdaAyah` and `SAJDA_SIGN_LABEL` from `lib/sajda.ts`, and the old sign tests. Added real-text tests: the unit test checks the recorded real surah 32 holds the sign exactly once (in ayah 15) and that the frame has no sign of its own; two browser tests use that real text on the Per-page reader and on the Sajda list. `npm run verify` on Node 22 after these changes (build, lint, 566 unit tests, dev smoke, 429 e2e tests): **passed, exit 0**.
+- The Sajda page stays as the list of the 15. The Asma data points stay as they are (to be corrected, if wanted, in the legacy `names.json` once at cutover, not in the revamp).

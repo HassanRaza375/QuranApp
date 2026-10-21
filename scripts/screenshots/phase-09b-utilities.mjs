@@ -13,6 +13,8 @@ const PORT = 3012;
 const BASE = `http://localhost:${PORT}`;
 const server = spawn("node", [".output/server/index.mjs"], { cwd: ROOT, env: { ...process.env, PORT: String(PORT), NITRO_PORT: String(PORT) }, stdio: "ignore" });
 await new Promise((r) => setTimeout(r, 3000));
+// optional: `node scripts/screenshots/phase-09b-utilities.mjs <state-name>` regenerates one state only
+const ONLY = process.argv[2];
 const browser = await chromium.launch();
 
 async function revamp(device, theme, { seeds = {}, textFails = false } = {}) {
@@ -58,7 +60,7 @@ const PAGES = [
   ["sajda", "sajda", "/sajda", "list", {}],
   ["asma", "asma", "/asma-ul-husna", "grid", {}],
 ];
-for (const [name, protoPage, path, label, seeds] of PAGES) for (const device of ["desktop", "mobile"]) for (const theme of ["light", "dark"]) {
+for (const [name, protoPage, path, label, seeds] of ONLY ? [] : PAGES) for (const device of ["desktop", "mobile"]) for (const theme of ["light", "dark"]) {
   const { ctx, page } = await revamp(device, theme, { seeds });
   await page.goto(BASE + path);
   await settle(page);
@@ -69,6 +71,7 @@ for (const [name, protoPage, path, label, seeds] of PAGES) for (const device of 
 }
 
 async function state(name, device, theme, path, fn, opts = {}) {
+  if (ONLY && name !== ONLY) return;
   const { ctx, page } = await revamp(device, theme, opts);
   await page.goto(BASE + path);
   await settle(page);
@@ -95,7 +98,7 @@ for (const [device, theme] of [["desktop", "light"], ["mobile", "dark"]]) {
   await state("asma-saved-empty", device, theme, "/asma-ul-husna", async (p) => { await p.getByTestId("asma-saved").click(); });
   await state("asma-saved", device, theme, "/asma-ul-husna", async (p) => { await p.locator('[data-testid="name-card"][data-id="12"] [data-testid="name-star"]').click(); await p.getByTestId("asma-saved").click(); });
   await state("asma-name-sheet", device, theme, "/asma-ul-husna#name-12", null);
-  await state("perpage-sajda-sign", device, theme, "/per-page-read?page=416", async (p) => { await p.getByTestId("sajda-sign").first().scrollIntoViewIfNeeded(); });
+  await state("perpage-sajda-sign", device, theme, "/per-page-read?page=416", async (p) => { await p.locator('[data-testid="verse-mark"][data-ayah="15"]').scrollIntoViewIfNeeded(); });
 }
 await browser.close();
 server.kill();

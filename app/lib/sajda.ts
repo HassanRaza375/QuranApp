@@ -5,10 +5,6 @@ import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { SAJDA_AYAHS } from "~/data/sajda.generated";
 import { juzOfAyah, pageOfAyah } from "./quranMeta";
 
-const SET = new Set(SAJDA_AYAHS.map(([s, a]) => `${s}:${a}`));
-/** Whether the ayah is in the list: the Per-page reader marks these. */
-export const isSajdaAyah = (surah: number, ayah: number): boolean => SET.has(`${surah}:${ayah}`);
-
 export interface SajdaRow {
   n: number;
   surah: number;
@@ -35,4 +31,3 @@ export const SAJDA_TITLE = "Verses of prostration";
 export const sajdaCountLine = (n: number): string => `${n} verses, as listed by this app’s data.`;
 export const SAJDA_NO_TEXT = "Connect once to see the text.";
 export const SAJDA_TEXT_FAILED = "Couldn’t load the text.";
-export const SAJDA_SIGN_LABEL = "Prostration verse";
