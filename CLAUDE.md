@@ -88,6 +88,11 @@ For feature behaviour, the legacy docs still win: `/MODULE_BLUEPRINT.md`, `/PROJ
 - Legacy files import their data with `~/...`; `build/legacyBridge.ts` redirects those imports to the legacy folder. A legacy file that does a *dynamic* `~/` import (for example `quranAyahCounts.js`) is not rewritten under Vitest; do not call such functions from tests or from revamp code.
 - Tests never use the real upstream APIs: mock them (`e2e/mocks.ts`) and fix the clock. Errors that a `catch` swallows (like the ayah of the day's) are logged with `console.debug`.
 
+## Working rules learned the hard way
+
+- **Do not run network sweeps or other heavy work while `npm run verify` runs.** Its performance test (the reader at 4x CPU) and the e2e suite share the machine's CPU and ports 3011 and 3012; a concurrent sweep once made a timing test fail. Wait for verify to finish, or run the research before or after it.
+- **Never remove a git worktree whose `node_modules` is a junction or symlink without unlinking it first** (`[System.IO.Directory]::Delete(path, $false)` in PowerShell removes only the link). `git worktree remove --force` followed the junction and deleted part of the real `node_modules` (including `.bin`); it was repaired with `npm ci`. Better still: do not link `node_modules` into a worktree (the build also fails there); compare commits by checking one out in place and rebuilding.
+
 ## Commands
 
 ```bash

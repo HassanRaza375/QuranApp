@@ -555,7 +555,12 @@ test.describe("a phone: 375px", () => {
   });
 
   // ---- rendering cost: 4x slower CPU, the largest surah. Numbers go to test-results/reader-perf.json and the phase doc.
-  const BUDGET = { firstRenderMs: 4000, tafsirOpenMs: 800, longTaskMs: 250, listExtraMs: 250, layoutShift: 0.02 };
+  // The timings are judged against the control run (the app's own start-up with no reader, timed in the same throttled page just before), not
+  // against fixed milliseconds: a fixed 4000 / 800 ms failed about one run in six on a busy machine with or without any change to the app
+  // (docs/phases/phase-04c-plan.md, section 0). The old absolute figures are recorded in the report, not gated on. The long task and the
+  // layout shift are not time-of-machine figures in the same way and keep their budgets.
+  const BUDGET = { firstRenderMs: 4000, tafsirOpenMs: 800, longTaskMs: 250, listExtraMs: 250, layoutShift: 0.02 }; // the old absolute figures (recorded only), and the two that still gate
+  const RELATIVE = { renderOverControl: 4, renderSlackMs: 1500, tafsirOverControl: 1.5, tafsirSlackMs: 500 };
   test("Al-Baqarah (286 ayahs) renders and scrolls within budget at 4x CPU", async ({ context, page }) => {
     const cdp = await context.newCDPSession(page);
     await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
@@ -571,10 +576,12 @@ test.describe("a phone: 375px", () => {
         const w = window as unknown as { __long: number[]; __cls: number };
         return { longTaskMs: Math.max(0, ...w.__long), longTasks: w.__long.length, layoutShift: Math.round(w.__cls * 1000) / 1000, nodes: document.getElementsByTagName("*").length };
       });
-    // control: the app's own start-up with no reader
+    // control: the app's own start-up with no reader, timed too, so the reader's figures can be judged against this machine's speed right now
+    const c0 = Date.now();
     await page.goto("/settings");
     await page.locator("main").waitFor();
-    const control = await measure();
+    const controlRenderMs = Date.now() - c0;
+    const control = { ...(await measure()), renderMs: controlRenderMs };
     // the reader, cold (the text arrives over the mocked network, then is stored)
     const t0 = Date.now();
     await page.goto("/surah/2");
@@ -590,10 +597,18 @@ test.describe("a phone: 375px", () => {
       }
       window.scrollTo(0, 0);
     });
-    const t1 = Date.now();
+    // opened twice (the second after closing it); the faster of the two is the figure, so one spike on a busy machine does not decide the test
+    const openTafsir = async () => {
+      const s = Date.now();
+      await ayah(page, 1).getByTestId("tafsir-toggle").click();
+      await expect(ayah(page, 1).getByTestId("tafsir-text")).toBeVisible();
+      return Date.now() - s;
+    };
+    const tafsirFirst = await openTafsir();
     await ayah(page, 1).getByTestId("tafsir-toggle").click();
-    await expect(ayah(page, 1).getByTestId("tafsir-text")).toBeVisible();
-    const tafsirOpenMs = Date.now() - t1;
+    await expect(ayah(page, 1).getByTestId("tafsir-text")).toHaveCount(0);
+    const tafsirSecond = await openTafsir();
+    const tafsirOpenMs = Math.min(tafsirFirst, tafsirSecond);
     const reader = await measure();
     // the same surah warm (from the device)
     const t2 = Date.now();
@@ -602,13 +617,14 @@ test.describe("a phone: 375px", () => {
     const warmRenderMs = Date.now() - t2;
     // A scripted scroll that jumps 4,000 px at a time is not a reader's scroll: rows that swap from their estimated height to their real one
     // as they are reached count as shifts when the machine is busy, so the budget applies to the load, and the scroll figure is only recorded.
-    const report = { control, reader: { firstRenderMs, warmRenderMs, tafsirOpenMs, ...reader, loadShift, scrollShift: Math.round((reader.layoutShift - loadShift) * 1000) / 1000 } };
+    const report = { control, reader: { firstRenderMs, warmRenderMs, tafsirOpenMs, tafsirOpensMs: [tafsirFirst, tafsirSecond], ...reader, loadShift, scrollShift: Math.round((reader.layoutShift - loadShift) * 1000) / 1000 } };
     fs.mkdirSync("test-results", { recursive: true });
     fs.writeFileSync("test-results/reader-perf.json", JSON.stringify({ viewport: "375x800", cpuThrottle: "4x", budget: BUDGET, report }, null, 2));
     console.log("READER PERF", JSON.stringify(report));
-    expect(firstRenderMs, "cold render").toBeLessThan(BUDGET.firstRenderMs);
-    expect(warmRenderMs, "warm render").toBeLessThan(BUDGET.firstRenderMs);
-    expect(tafsirOpenMs, "opening a tafsir").toBeLessThan(BUDGET.tafsirOpenMs);
+    const renderLimit = controlRenderMs * RELATIVE.renderOverControl + RELATIVE.renderSlackMs;
+    expect(firstRenderMs, `cold render (limit ${renderLimit} ms = ${RELATIVE.renderOverControl} x the control's ${controlRenderMs} ms + ${RELATIVE.renderSlackMs})`).toBeLessThan(renderLimit);
+    expect(warmRenderMs, "warm render").toBeLessThan(renderLimit);
+    expect(tafsirOpenMs, `opening a tafsir (limit ${RELATIVE.tafsirOverControl} x the control + ${RELATIVE.tafsirSlackMs} ms)`).toBeLessThan(controlRenderMs * RELATIVE.tafsirOverControl + RELATIVE.tafsirSlackMs);
     expect(reader.longTaskMs, "longest task").toBeLessThan(Math.max(control.longTaskMs, BUDGET.longTaskMs) + BUDGET.listExtraMs);
     expect(loadShift, "layout shift while loading").toBeLessThan(BUDGET.layoutShift);
   });
