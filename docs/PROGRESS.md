@@ -21,7 +21,7 @@ Repository: this project is its own repo (it began as the `revamp-quran/` folder
 | 8B | Events (the Events tab, the 29 legacy events, reminders, a reviewed-events file shape) | **Done, awaiting review** (2026-10-21) | [phase-08b-events](phases/phase-08b-events.md), [plan](phases/phase-08b-events-plan.md) | [ramadan](pages/ramadan.md) (Events section) |
 | 9A | Per-page reader | **Done, awaiting review** (2026-10-21) | [phase-09a-per-page](phases/phase-09a-per-page.md), [plan](phases/phase-09-plan.md) | [per-page-read](pages/per-page-read.md) |
 | 9B | Tasbeeh, Sajda, Asma-ul-Husna | **Done, awaiting review** (2026-10-21) | [phase-09b-asma-sajda-tasbeeh](phases/phase-09b-asma-sajda-tasbeeh.md), [plan](phases/phase-09b-plan.md) | [asma-ul-husna](pages/asma-ul-husna.md), [sajda](pages/sajda.md), [tasbeeh](pages/tasbeeh.md) |
-| 10 | Search | Prototype agreed 2026-10-22 (`design/prototype-remaining-pages.html`); legacy report and plan written and **approved with changes** (2026-10-22); building | [plan](phases/phase-10-search-plan.md) | |
+| 10 | Search | **Done, awaiting review** (2026-10-22; verify: 722 unit tests pass, 535 of 539 browser tests pass, the 4 failures are timing-sensitive audio-queue and per-page tests outside Search, see the phase doc; real-device checks X1 to X6 are yours) | [phase-10-search](phases/phase-10-search.md), [plan](phases/phase-10-search-plan.md) | [search](pages/search.md) |
 | 11 | Downloads and offline manager | Prototype agreed 2026-10-22; not started | | |
 | 12 | Knowledge modules | Prototype agreed 2026-10-22 for 14 of 16 routes (not `/poets`, `/poets/[slug]`); not started | | |
 | 13 | Daily Fiqh (Wajibat) | Prototype agreed 2026-10-22; not started | | |

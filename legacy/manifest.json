@@ -25,6 +25,16 @@
       "sha256": "436bfbf5a8b60ec40c44a4482a73c4de7e11ed4716db95a8d58fa440084873a7",
       "source": "git"
     },
+    "app/composables/useSearch.ts": {
+      "bytes": 3759,
+      "sha256": "9e431061f8c42dddc40f848c99b60800c4c20c9664fff3677b82fd50b8be7278",
+      "source": "git"
+    },
+    "app/composables/useSearchHistory.ts": {
+      "bytes": 1144,
+      "sha256": "a774471ce4ae4d8ea143b85ce898e9fa4939ad3e7cdec64a118bf9db78b6b6b9",
+      "source": "git"
+    },
     "app/composables/useTasbeeh.ts": {
       "bytes": 3490,
       "sha256": "2b5b71d448020509af740a10dbbbce56b4e082ad0266453f9c29faa0e5375d0d",

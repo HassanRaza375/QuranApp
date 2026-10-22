@@ -32,8 +32,10 @@ export const TRACKED_FILES = [
   "app/utils/ramadanContent.js",
   "app/utils/renderTafsirMarkdown.js",
   "app/utils/storiesSearch.ts",
-  // composables that the parity tests and the Tasbeeh generator run as they are (see scripts/lib/legacy-*.mjs)
+  // composables that the parity tests and the Tasbeeh generator run or read as they are (see scripts/lib/legacy-*.mjs)
   "app/composables/useAudioPlayer.ts",
+  "app/composables/useSearch.ts", // its edition list is compared with ours (tests/searchEditions.test.ts); read as text, never imported
+  "app/composables/useSearchHistory.ts", // run by the history parity test (scripts/lib/legacy-search-history.mjs)
   "app/composables/useTasbeeh.ts",
 ];
 

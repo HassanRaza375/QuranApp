@@ -171,6 +171,17 @@ Use the **Surah listing** Play buttons (and the reader's "Play surah"). Surah 1 
 | D2 | Sajda: open the list, tap "Open in the reader" on one | The reader opens at that ayah | |
 | D3 | Tasbeeh, Asma and Sajda at 375 in dark | Nothing cut off; targets easy to hit | |
 
+## Phase 10: Search
+
+| # | Steps | Expected | What I saw |
+| --- | --- | --- | --- |
+| X1 | Phone: open Search from the header icon | The page opens and the keyboard does **not** open by itself; tapping the box opens it | |
+| X2 | Type `mercy`, then `yusuf`, then an Arabic word | Surahs, People and Stories show at once; ayahs follow after a moment; the Arabic result is right to left and readable at your Arabic size | |
+| X3 | Type `2:255` | "Open Al-Baqara 2:255" opens the reader at that ayah | |
+| X4 | Switch on airplane mode and search `mercy`, then `2:255` | The offline message for ayahs; the ayah number still opens; People and Stories still answer; Try again works once you are back online | |
+| X5 | Filters: pick Urdu, then a surah, then a juz; Done | The sheet comes up from the bottom, every control is easy to hit, the number on Filters is right, the results follow | |
+| X6 | A hardware keyboard on a tablet or laptop: press `/` on Home | Search opens with the cursor in the box | |
+
 ---
 
 ## Manual review (not on a device)
