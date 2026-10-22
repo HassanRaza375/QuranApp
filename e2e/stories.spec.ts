@@ -86,11 +86,9 @@ test.describe("a complete story (Yusuf)", () => {
     await expect(page.getByTestId("chapter-summary")).toContainText("Summary (written for this app)");
     const listen = page.getByTestId("listen");
     await expect(listen).toBeVisible();
-    await expect(listen).toHaveAttribute("aria-disabled", "true");
-    await expect(listen).toHaveAccessibleDescription("Playing single ayahs arrives soon");
-    await expect(page.getByTestId("listen-why")).toHaveText("Playing single ayahs arrives soon");
-    await listen.click({ force: true }); // Playwright treats aria-disabled as not enabled; forcing proves the click does nothing
-    await expect(page).toHaveURL(/\/stories\/yusufstory$/); // it does nothing
+    await expect(listen).not.toHaveAttribute("aria-disabled", "true"); // real since Phase 4C (what it plays is in e2e/queue.spec.ts)
+    await expect(listen).toHaveAttribute("aria-pressed", "false");
+    await expect(page.getByTestId("mini-player")).toHaveCount(0); // opening a chapter plays nothing
     await expect(page.getByTestId("story-arabic").first()).toHaveText("TEST ARABIC 12:44"); // the text, then the verse marker (4)
     await expect(page.getByTestId("story-translation").first()).toHaveText("Test English 12:4");
     expect(api.chapters).toEqual([12]); // one request for the surah, not one per ayah

@@ -103,11 +103,16 @@ export const usePlayerStore = defineStore("player", () => {
   const playing = computed(() => snap.value.status === "playing" || snap.value.status === "buffering");
   const loading = computed(() => snap.value.status === "loading");
   const error = computed(() => snap.value.error?.message ?? null);
-  /** The ayah being played (alone or in a queue), for the highlight: while it loads, plays, buffers or is paused on it. */
-  const playingAyah = computed<AyahRef | null>(() => {
+  /** The ayah being played (alone or in a queue), for the highlight: while it loads, plays, buffers or is paused on it. A string, so it only changes when the ayah does. */
+  const playingKey = computed<string | null>(() => {
     const t = snap.value.track;
     if (!t || (t.kind !== "ayah" && t.kind !== "queue") || snap.value.status === "idle" || snap.value.status === "restored") return null;
-    return { surah: t.surahNo, ayah: t.ayah };
+    return `${t.surahNo}:${t.ayah}`;
+  });
+  const playingAyah = computed<AyahRef | null>(() => {
+    if (!playingKey.value) return null;
+    const [s, a] = playingKey.value.split(":").map(Number);
+    return { surah: s!, ayah: a! };
   });
   /** Whether that very ayah is audibly going (loading, playing or buffering), for a row's pressed state. */
   const ayahActive = (surah: number, ayah: number) => {
@@ -125,7 +130,7 @@ export const usePlayerStore = defineStore("player", () => {
   }
 
   return {
-    snap, sheetOpen, nowPlaying, playing, loading, error, playingAyah, ayahActive, queueIs, queueActive, clipIs, clipActive, playerPrefs,
+    snap, sheetOpen, nowPlaying, playing, loading, error, playingAyah, playingKey, ayahActive, queueIs, queueActive, clipIs, clipActive, playerPrefs,
     status: computed(() => snap.value.status),
     view: computed(() => snap.value.view),
     playSurah,

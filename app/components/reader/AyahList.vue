@@ -23,6 +23,9 @@ const props = defineProps<{
   pinned: number | null;
   defaultAuthor: string;
   highlight: number | null;
+  /** the ayah of THIS surah that is the player's current ayah (alone or in a queue), and whether it is audibly going */
+  playing?: number | null;
+  playingActive?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -32,6 +35,7 @@ const emit = defineEmits<{
   save: [n: number];
   pin: [n: number];
   share: [n: number];
+  play: [n: number];
 }>();
 
 const texts = computed(() => (props.translation === "english" ? props.chapter.english : props.translation === "urdu" ? props.chapter.urdu : props.translation === "bengali" ? props.chapter.bengali : props.translation === "arabic2" ? props.chapter.arabic2 : null));
@@ -53,6 +57,7 @@ const onClick = (e: MouseEvent) => {
     case "save": return emit("save", n);
     case "pin": return emit("pin", n);
     case "share": return emit("share", n);
+    case "play": return emit("play", n);
   }
 };
 </script>
@@ -65,7 +70,8 @@ const onClick = (e: MouseEvent) => {
       :key="n"
       tabindex="-1"
       class="ayah-row scroll-mt-20 border-b px-1 py-7 outline-none md:px-4 md:py-9"
-      :class="highlight === n ? 'flash' : ''"
+      :class="[highlight === n ? 'flash' : '', playing === n ? 'ayah-playing' : '']"
+      :aria-current="playing === n ? 'true' : undefined"
       :aria-label="`Ayah ${n}`"
       :data-n="n"
       :data-testid="`ayah-${n}`"
@@ -100,6 +106,19 @@ const onClick = (e: MouseEvent) => {
           Tafsir
         </button>
         <span class="flex-1" />
+        <button
+          type="button"
+          class="tool inline-flex size-11 items-center justify-center rounded-full hover:bg-sunken md:size-9"
+          :class="playing === n && playingActive ? 'bg-accent text-brand' : ''"
+          :aria-pressed="playing === n && !!playingActive"
+          :aria-label="playing === n && playingActive ? `Pause ayah ${n}` : `Play ayah ${n}`"
+          data-act="play"
+          :data-n="n"
+          data-testid="ayah-play"
+        >
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <svg viewBox="0 0 24 24" class="pointer-events-none size-[18px]" aria-hidden="true" :fill="playing === n && playingActive ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" v-html="playing === n && playingActive ? ICONS.pause : ICONS.play" />
+        </button>
         <button
           type="button"
           class="tool inline-flex size-11 items-center justify-center rounded-full hover:bg-sunken md:size-9"
@@ -194,6 +213,12 @@ const onClick = (e: MouseEvent) => {
   line-height: 1;
   vertical-align: middle;
   color: var(--ink-2);
+}
+/* the ayah that is being recited: a soft accent ground and a brand-coloured edge (gold stays for verse markers); distinct from the pale flash of #ayah-N */
+.ayah-playing {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 .flash {
   background: var(--accent-soft);

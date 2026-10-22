@@ -111,12 +111,24 @@ export async function mockHijri(context: BrowserContext, mode: HijriMock["mode"]
 
 export interface VerseMock {
   calls: string[];
+  /** the recording files asked for (the queue preloads one ahead) */
+  audioFetches: string[];
   mode: "ok" | "http500" | "network";
 }
 
+/** The five reciters of the per-ayah endpoint, in its order (the same names as the full-surah list). */
+export const AYAH_RECITERS = ["Mishary Rashid Al Afasy", "Abu Bakr Al Shatri", "Nasser Al Qatami", "Yasser Al Dosari", "Hani Ar Rifai"];
+/** What the per-ayah endpoint's `audio` holds for one ayah: a url per reciter, on a test host (the stand-in element never fetches it). */
+export const fakeAyahAudio = (s: number, a: number) => Object.fromEntries(AYAH_RECITERS.map((r, i) => [String(i + 1), { reciter: r, url: `https://audio.test/Data/${i + 1}/${s}_${a}.mp3`, originalUrl: `https://audio.test/orig/${i + 1}/${s}_${a}.mp3` }]));
+
 /** Answers quranapi.pages.dev verse requests (`/api/<surah>/<ayah>.json`) with fake test text. */
 export async function mockVerse(context: BrowserContext, mode: VerseMock["mode"] = "ok"): Promise<VerseMock> {
-  const state: VerseMock = { calls: [], mode };
+  const state: VerseMock = { calls: [], audioFetches: [], mode };
+  // the recording files themselves (a queue preloads the next one with fetch)
+  await context.route(/https:\/\/audio\.test\//, (route: Route) => {
+    state.audioFetches.push(route.request().url());
+    return route.fulfill({ status: 200, contentType: "audio/mpeg", headers: { "access-control-allow-origin": "*" }, body: "x" });
+  });
   await context.route(/https:\/\/quranapi\.pages\.dev\/api\/\d+\/\d+\.json/, async (route: Route) => {
     const m = /\/api\/(\d+)\/(\d+)\.json/.exec(route.request().url())!;
     state.calls.push(`${m[1]}:${m[2]}`);
@@ -130,6 +142,7 @@ export async function mockVerse(context: BrowserContext, mode: VerseMock["mode"]
         surahName: `TestSurah${m[1]}`, surahNameArabic: "TEST", surahNameArabicLong: "TEST LONG", surahNo: Number(m[1]),
         arabic1: `TEST ARABIC ${m[1]}:${m[2]}`, arabic2: `TEST ARABIC TWO ${m[1]}:${m[2]}`,
         english: `Test English ${m[1]}:${m[2]}`, urdu: `Test Urdu ${m[1]}:${m[2]}`, bengali: `Test Bengali ${m[1]}:${m[2]}`,
+        audio: fakeAyahAudio(Number(m[1]), Number(m[2])),
       }),
     });
   });

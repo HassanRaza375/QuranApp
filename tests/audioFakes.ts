@@ -67,7 +67,7 @@ export function setup(opts: Partial<EngineDeps> & { resume?: RestoredTrack | nul
   const writes: ResumeRecord[] = [];
   const timers: { fn: () => void; ms: number; kind: "i" | "t"; id: number; live: boolean }[] = [];
   let repeat = false;
-  const state = { autoAdvance: autoAdvance ?? false, rate: 1, resolveGate: null as Promise<void> | null, saveData: false, ayahFail: new Set<string>(), ayahFailOnce: new Set<string>() };
+  const state = { autoAdvance: autoAdvance ?? false, rate: 1, resolveGate: null as Promise<void> | null, saveData: false, ayahFail: new Set<string>(), ayahFailOnce: new Set<string>(), ayahHook: null as null | ((n: number) => Promise<void> | void) };
   const snaps: Snapshot[] = [];
   const deps: EngineDeps = {
     create: () => {
@@ -81,12 +81,16 @@ export function setup(opts: Partial<EngineDeps> & { resume?: RestoredTrack | nul
     },
     resolveAyah: async (s, a, r, fresh) => {
       calls.ayah.push(`${s}:${a}|${r}${fresh ? "|fresh" : ""}`);
+      await state.ayahHook?.(calls.ayah.length);
       if (state.ayahFail.has(`${s}:${a}`) && !(fresh && state.ayahFailOnce.has(`${s}:${a}`))) return null;
       return `https://audio.test/ayah/${r.replace(/\W+/g, "-")}/${s}_${a}.mp3`;
     },
     preload: (u) => void calls.preload.push(u),
     saveData: () => state.saveData,
-    surahTitle: (n) => `Surah ${n}`,
+    surahTitle: (n) => {
+      if (n < 1 || n > 114) throw new TypeError(`no surah ${n}`); // like the real list: a clip has no surah, and asking for its title would crash
+      return `Surah ${n}`;
+    },
     ayahCount: (n) => ({ 1: 7, 2: 286, 112: 4, 113: 5, 114: 6 })[n] ?? 10,
     readResume: () => resume ?? null,
     writeResume: (r) => void writes.push(JSON.parse(JSON.stringify(r))),

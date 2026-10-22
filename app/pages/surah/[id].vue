@@ -254,10 +254,20 @@ function onPlay() {
 function onReciter(name: string) {
   if (name === reciter.value) return;
   store.set("reciter", { reciter: name });
-  const np = player.nowPlaying;
-  if (np && (player.playing || player.loading)) void player.playSurah({ surahNo: np.surahNo, title: np.title, reciter: name, rate: store.prefs.playbackRate });
+  if (player.playing || player.loading) void player.switchReciter(name); // whatever is playing (a surah, an ayah, a queue) goes on by the new reciter
 }
 const playerError = computed(() => (player.error && player.nowPlaying?.surahNo === chapter.value?.n ? player.error : null));
+
+// ---- one ayah (Phase 4C): the row's play button, the playing-ayah highlight, and "Follow audio"
+const playingNo = computed(() => (player.playingAyah && player.playingAyah.surah === chapter.value?.n ? player.playingAyah.ayah : null));
+const playingActive = computed(() => playingNo.value !== null && player.ayahActive(chapter.value!.n, playingNo.value));
+function onPlayAyah(n: number) {
+  const c = chapter.value;
+  if (!c) return;
+  if (playingNo.value === n) return void player.toggle(); // the ayah that is current: pause it, play it on, or try it again
+  void player.playAyah({ surah: c.n, ayah: n, reciter: reciter.value });
+}
+useFollowAudio((s, a) => (s === chapter.value?.n ? document.getElementById(`ayah-${a}`) : null));
 
 // ---- completed (the new marker)
 const completedSet = ref<Set<number>>(new Set());
@@ -405,6 +415,9 @@ const next = computed(() => (chapter.value && chapter.value.n < 114 ? SURAH_ROWS
         :pinned="pinned"
         :default-author="defaultAuthor"
         :highlight="highlight"
+        :playing="playingNo"
+        :playing-active="playingActive"
+        @play="onPlayAyah"
         @tafsir="onTafsir"
         @source="onSource"
         @retry="onRetry"

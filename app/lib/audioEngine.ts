@@ -147,9 +147,9 @@ export class AudioEngine {
   // ---- what the track looks like to the user
 
   private describe(t: Track): View {
+    if (t.kind === "clip") return { title: t.title, line: t.clip!.subtitle, reciterLine: t.clip!.subtitle, mediaTitle: t.title, artist: t.clip!.subtitle, album: "Quran App" };
     const ref = `${this.deps.surahTitle(t.surahNo)} ${t.surahNo}:${t.ayah}`;
     const reciterLine = `Recited by ${t.reciter}`;
-    if (t.kind === "clip") return { title: t.title, line: t.clip!.subtitle, reciterLine: t.clip!.subtitle, mediaTitle: t.title, artist: t.clip!.subtitle, album: "Quran App" };
     if (t.kind === "ayah") return { title: ref, line: reciterLine, reciterLine, mediaTitle: ref, artist: t.reciter, album: "Quran App" };
     if (t.kind === "queue") {
       const q = t.queue!;
@@ -219,7 +219,10 @@ export class AudioEngine {
       if (!el.ended && ["playing", "buffering"].includes(this.snap.status)) this.set({ status: "paused", position: el.currentTime });
     });
     el.addEventListener("ended", () => this.ended());
-    el.addEventListener("error", () => this.problem("failed"));
+    // an error event that arrives while the next try is still looking for its file belongs to the previous file, not to this one
+    el.addEventListener("error", () => {
+      if (this.loaded) this.problem("failed");
+    });
     return el;
   }
 

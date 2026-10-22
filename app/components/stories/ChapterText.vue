@@ -6,7 +6,7 @@ import { readReaderPrefs, readerTranslation } from "~/lib/readerPrefs";
 import { FIRST_AYAHS, refText, visibleAyahs, type StoryChapter } from "~/lib/stories";
 import { surahHref } from "~/lib/readerLinks";
 
-const props = defineProps<{ chapter: StoryChapter }>();
+const props = defineProps<{ chapter: StoryChapter; playing?: { surah: number; ayah: number } | null }>();
 const emit = defineEmits<{ ready: [] }>();
 const prefs = usePreferencesStore();
 const text = useQuranText();
@@ -66,7 +66,7 @@ async function expand() {
     <template v-for="(b, bi) in blocks" :key="`${b.surahNumber}-${b.ayahStart}`">
       <p v-if="chapter.passages.length > 1" class="mt-4 text-[12.5px] text-ink-2" data-testid="passage-heading">{{ refText(b) }}</p>
       <div v-if="loaded[b.surahNumber]?.state === 'ready'">
-        <article v-for="a in range(b.surahNumber, b.ayahStart, b.ayahEnd)" :key="a.n" class="border-b py-5" :data-surah="a.s" :data-n="a.n" data-testid="story-ayah">
+        <article v-for="a in range(b.surahNumber, b.ayahStart, b.ayahEnd)" :key="a.n" class="border-b py-5" :class="playing && playing.surah === a.s && playing.ayah === a.n ? 'ayah-playing' : ''" :aria-current="playing && playing.surah === a.s && playing.ayah === a.n ? 'true' : undefined" :data-surah="a.s" :data-n="a.n" data-testid="story-ayah">
           <template v-for="mode in [order]" :key="mode">
             <p v-if="mode === 'ar'" class="ar mb-3 text-right" lang="ar" dir="rtl" data-testid="story-arabic">
               {{ (loaded[a.s] as Extract<Load, { state: "ready" }>).chapter.arabic1[a.n - 1] }}<span class="verse-mark" aria-hidden="true">{{ a.n }}</span>
@@ -96,3 +96,11 @@ async function expand() {
     </div>
   </div>
 </template>
+
+<style scoped>
+.ayah-playing {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+</style>

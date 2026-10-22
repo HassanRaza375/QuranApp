@@ -6,8 +6,10 @@ import type { FrameSegment } from "~/components/perpage/Frame.vue";
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { addBookmark, bookmarkAddedAt, hasBookmark, pageBookmarkKey, removeBookmark } from "~/lib/bookmarks";
 import { bismillahFrom, ChapterError, type Chapter } from "~/lib/chapter";
-import { firstAyahOf, GO_TO_ERROR, isPageNumber, juzLine, PAGE_FAILED, PAGE_NOTE, PAGE_OFFLINE, pageSegments, parseGoTo, parsePageParam, PLAY_REASON, surahNamesLine } from "~/lib/pageReader";
+import { firstAyahOf, GO_TO_ERROR, isPageNumber, juzLine, PAGE_FAILED, PAGE_NOTE, PAGE_OFFLINE, pageSegments, parseGoTo, parsePageParam, surahNamesLine } from "~/lib/pageReader";
+import { pageQueue, pageQueueId } from "~/lib/audioQueue";
 import { readPagePin, writePagePin, type PagePin } from "~/lib/pins";
+import { reciterName } from "~/lib/surahAudio";
 import { ARABIC_SCALE } from "~/lib/preferences";
 import { TOTAL_PAGES } from "~/lib/quranMeta";
 
@@ -15,6 +17,7 @@ const route = useRoute();
 const router = useRouter();
 const store = usePreferencesStore();
 const undo = useUndoToast();
+const player = usePlayerStore();
 const text = useQuranText();
 
 const param = computed(() => parsePageParam(route.query.page));
@@ -153,6 +156,16 @@ function onSave() {
 }
 watch(page, refreshSaved);
 
+// ---- Play page (Phase 4C): this page's ayahs in order, one after another, as a queue (and the ayah being recited is highlighted)
+const queueId = computed(() => pageQueueId(page.value));
+const playingPage = computed(() => player.queueActive(queueId.value));
+function onPlayPage() {
+  if (player.queueIs(queueId.value)) return void player.toggle(); // pause, play on, or try the failed ayah again
+  const q = pageQueue(page.value);
+  if (q) void player.playQueue({ ...q, reciter: reciterName(store.prefs.reciter), kind: "page", ref: { page: page.value } });
+}
+useFollowAudio((s, a) => document.querySelector<HTMLElement>(`[data-testid="ayah-text"][data-surah="${s}"][data-ayah="${a}"]`));
+
 onMounted(() => {
   pin.value = readPagePin();
   refreshSaved();
@@ -181,11 +194,10 @@ watch(page, () => void load());
       <Button variant="outline" class="min-h-11 gap-1.5 rounded-full md:min-h-9" :aria-pressed="saved" :class="saved ? 'border-brand text-brand' : ''" data-testid="save-page" @click="onSave">
         <Icon name="lucide:star" size="15" />{{ saved ? "Saved" : "Save" }}
       </Button>
-      <Button variant="outline" class="min-h-11 gap-1.5 rounded-full md:min-h-9" aria-disabled="true" aria-describedby="play-reason" data-testid="play-page" @click.prevent>
-        <Icon name="lucide:play" size="15" />Play page
+      <Button variant="outline" class="min-h-11 gap-1.5 rounded-full md:min-h-9" :aria-pressed="playingPage" :class="playingPage ? 'border-brand text-brand' : ''" data-testid="play-page" @click="onPlayPage">
+        <Icon :name="playingPage ? 'lucide:pause' : 'lucide:play'" size="15" />{{ playingPage ? "Pause page" : "Play page" }}
       </Button>
     </div>
-    <p id="play-reason" class="mt-1 text-center text-[12px] text-ink-2" data-testid="play-reason">{{ PLAY_REASON }}</p>
 
     <div class="mt-5">
       <div v-if="status === 'loading'" aria-busy="true" aria-label="Loading the page" data-testid="page-skeleton" class="rounded-[14px] border px-4 py-6">
@@ -195,7 +207,7 @@ watch(page, () => void load());
         <p class="text-[15px]" role="status" data-testid="load-error">{{ errorMessage }}</p>
         <Button variant="outline" class="mt-3 min-h-11 md:min-h-9" data-testid="load-retry" @click="load()">Try again</Button>
       </div>
-      <PerpageFrame v-else :page="page" :juz="juz" :names="names" :segments="segments" :bismillah="bismillah" :bismillah-state="bismillahState" />
+      <PerpageFrame v-else :page="page" :juz="juz" :names="names" :segments="segments" :bismillah="bismillah" :bismillah-state="bismillahState" :playing="player.playingAyah" />
     </div>
 
     <p class="mt-3 text-center text-[12.5px] text-ink-2" data-testid="page-note">{{ PAGE_NOTE }}</p>

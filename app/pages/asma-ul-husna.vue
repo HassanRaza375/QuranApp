@@ -3,7 +3,7 @@
 // The legacy page's YouTube embed is not carried over (a third-party page); the per-name audio waits for the player (Phase 4B).
 // See docs/pages/asma-ul-husna.md.
 import names from "@legacy/assets/data/names.json";
-import { ASMA_FOOTER, asmaCountLine, noMatchLine, NO_SAVED_NAMES, parseNameHash, savedNameIds, SEARCH_LABEL, searchNames, shown, type AsmaName } from "~/lib/asma";
+import { ASMA_FOOTER, NAME_CLIP_LINE, asmaCountLine, nameClipId, noMatchLine, NO_SAVED_NAMES, parseNameHash, savedNameIds, SEARCH_LABEL, searchNames, shown, type AsmaName } from "~/lib/asma";
 import { addBookmark, bookmarkAddedAt, listBookmarks, nameBookmarkKey, removeBookmark } from "~/lib/bookmarks";
 import { nameCounterId } from "~/lib/tasbeeh";
 
@@ -15,6 +15,7 @@ useSeoMeta({
 const route = useRoute();
 const router = useRouter();
 const undo = useUndoToast();
+const player = usePlayerStore();
 
 const NAMES = names as AsmaName[];
 const TOTAL = NAMES.length;
@@ -49,6 +50,15 @@ function toggleSave(id: number) {
     });
   }
 }
+
+// the name's own recording, through the shared player (a clip: no reciter, no queue); a second press pauses it
+function playName() {
+  const n = current.value;
+  if (!n) return;
+  if (player.clipIs(nameClipId(n.id))) return void player.toggle();
+  void player.playClip({ id: nameClipId(n.id), title: n.shownTransliteration, subtitle: NAME_CLIP_LINE, url: n.audio });
+}
+const namePlaying = computed(() => !!current.value && player.clipActive(nameClipId(current.value.id)));
 
 // a name opens in a sheet; the address holds it (#name-12) so a Library row can open it
 const fromHash = () => (open.value = parseNameHash(route.hash, TOTAL));
@@ -115,7 +125,7 @@ watch(() => route.hash, fromHash);
 
     <p class="mt-6 text-[12.5px] text-ink-2" data-testid="asma-footer">{{ ASMA_FOOTER }}</p>
 
-    <AsmaNameSheet :name="current" :saved="current ? saved.has(current.id) : false" :total="TOTAL" @close="closeName" @save="current && toggleSave(current.id)">
+    <AsmaNameSheet :name="current" :saved="current ? saved.has(current.id) : false" :total="TOTAL" :playing="namePlaying" @close="closeName" @save="current && toggleSave(current.id)" @play="playName">
       <template #count>
         <Button v-if="current" as-child variant="outline" class="min-h-11 gap-1.5 md:min-h-9"><NuxtLink :to="`/tasbeeh/${nameCounterId(current.id)}`" data-testid="sheet-count"><Icon name="lucide:circle-dot" size="16" />Count this name</NuxtLink></Button>
       </template>

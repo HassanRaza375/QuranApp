@@ -168,18 +168,12 @@ test.describe("a name", () => {
     await expect(page.getByTestId("name-sheet")).toHaveCount(0);
   });
 
-  test("Save in the sheet writes the same key with Undo; Play is a visible real button with aria-disabled and its reason", async ({ page }) => {
+  test("Save in the sheet writes the same key with Undo", async ({ page }) => {
     await page.goto("/asma-ul-husna#name-7");
     await expect(page.getByTestId("name-sheet")).toBeVisible();
     await page.getByTestId("sheet-save").click();
     expect(await bookmarks(page)).toEqual(["name:7"]);
     await expect(page.getByTestId("sheet-save")).toHaveAttribute("aria-pressed", "true");
-    const play = page.getByTestId("sheet-play");
-    expect(await play.evaluate((el) => el.tagName)).toBe("BUTTON");
-    await expect(play).toHaveAttribute("aria-disabled", "true");
-    await expect(page.getByTestId("sheet-play-reason")).toHaveText("Playing single ayahs arrives soon");
-    await play.click({ force: true });
-    await expect(page.getByTestId("mini-player")).toHaveCount(0);
   });
 });
 

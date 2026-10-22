@@ -322,16 +322,13 @@ test.describe("Pin page, Save, Play page", () => {
     await expect(page.getByTestId("jump-current")).toContainText("Jump to page 49"); // pageOfAyah(2, 285) from the same table
   });
 
-  test("Play page is a visible, real button with aria-disabled and its reason; it does nothing", async ({ page }) => {
+  test("Play page is a real, enabled button (what it plays is in e2e/queue.spec.ts); opening the page plays nothing", async ({ page }) => {
     await open(page, "?page=3");
     const play = page.getByTestId("play-page");
     await expect(play).toBeVisible();
     expect(await play.evaluate((el) => el.tagName)).toBe("BUTTON");
-    await expect(play).toHaveAttribute("aria-disabled", "true");
-    await expect(play).toHaveAttribute("aria-describedby", "play-reason");
-    await expect(page.getByTestId("play-reason")).toHaveText("Playing single ayahs arrives soon");
-    await play.click({ force: true });
-    await expect(page).toHaveURL(/page=3$/);
+    await expect(play).not.toHaveAttribute("aria-disabled", "true");
+    await expect(play).toHaveText("Play page");
     await expect(page.getByTestId("mini-player")).toHaveCount(0);
   });
 });

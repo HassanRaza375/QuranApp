@@ -3,7 +3,8 @@
 // from the cached surah, entity sheets, Compare tellings, and an end page. Chapters, labels and notices come from the story data
 // (lib/stories.ts); progress is `quran:story-progress:v1` (lib/storyProgress.ts). See docs/phases/phase-07b-story.md.
 import { onBeforeUnmount } from "vue";
-import { PLAY_SOON } from "~/lib/audioText";
+import { storyQueue, storyQueueId } from "~/lib/audioQueue";
+import { reciterName } from "~/lib/surahAudio";
 import { addBookmark, bookmarkAddedAt, BOOKMARKS_KEY, hasBookmark, removeBookmark } from "~/lib/bookmarks";
 import { surahHref } from "~/lib/readerLinks";
 import {
@@ -21,6 +22,21 @@ const story = computed<QuranStory | undefined>(() => storyById(props.id));
 useSeoMeta({ title: () => (story.value ? `${story.value.title} · Stories · Quran App` : "Story not found · Quran App"), description: () => story.value?.shortDescription });
 
 const chapters = computed(() => (story.value ? chaptersOf(story.value) : []));
+
+// ---- Listen to this chapter (Phase 4C): the chapter's passages in order, ayah by ayah, as a queue; the ayah being recited is highlighted
+const player = usePlayerStore();
+const prefsStore = usePreferencesStore();
+const queueId = computed(() => (story.value && typeof current.value === "number" ? storyQueueId(story.value.id, current.value) : ""));
+const listening = computed(() => !!queueId.value && player.queueActive(queueId.value));
+function onListen() {
+  const s = story.value;
+  const c = chapter.value;
+  if (!s || !c) return;
+  if (player.queueIs(queueId.value)) return void player.toggle(); // pause, play on, or try the failed ayah again
+  const q = storyQueue(s.id, c.index, c.title, c.passages);
+  if (q) void player.playQueue({ ...q, reciter: reciterName(prefsStore.prefs.reciter), kind: "story", ref: { storyId: s.id, chapter: c.index } });
+}
+useFollowAudio((s, a) => document.querySelector<HTMLElement>(`[data-testid="story-ayah"][data-surah="${s}"][data-n="${a}"]`));
 const total = computed(() => chapters.value.length);
 const current = computed(() => chapterFromQuery(route.query.chapter, total.value));
 const chapter = computed(() => (typeof current.value === "number" ? chapters.value[current.value] ?? null : null));
@@ -199,12 +215,11 @@ function openEntity(e: Entity) {
       <p class="mt-0.5 text-[13px] text-ink-2" data-testid="chapter-ref">{{ chapter.passages.map(refText).join(" · ") }} · {{ chapter.ayahs }} {{ chapter.ayahs === 1 ? "ayah" : "ayahs" }}</p>
       <p v-if="chapter.summary" class="mt-3 text-[15px] leading-relaxed" data-testid="chapter-summary"><span class="mb-1 block text-[12px] text-ink-2">{{ SUMMARY_LABEL }}</span>{{ chapter.summary }}</p>
       <div class="mt-3 flex flex-wrap items-center gap-2">
-        <button type="button" aria-disabled="true" aria-describedby="listen-why" class="inline-flex min-h-11 cursor-not-allowed items-center gap-2 rounded-md border px-4 text-[14px] opacity-60 md:min-h-9" data-testid="listen" @click.prevent>
-          <Icon name="lucide:headphones" size="16" />Listen to this chapter
+        <button type="button" :aria-pressed="listening" class="inline-flex min-h-11 items-center gap-2 rounded-md border px-4 text-[14px] hover:bg-accent md:min-h-9" :class="listening ? 'border-brand text-brand' : ''" data-testid="listen" @click="onListen">
+          <Icon :name="listening ? 'lucide:pause' : 'lucide:headphones'" size="16" />{{ listening ? "Pause" : "Listen to this chapter" }}
         </button>
-        <span id="listen-why" class="text-[12.5px] text-ink-2" data-testid="listen-why">{{ PLAY_SOON }}</span>
       </div>
-      <div class="mt-3"><StoriesChapterText :chapter="chapter" @ready="textReady = true" /></div>
+      <div class="mt-3"><StoriesChapterText :chapter="chapter" :playing="player.playingAyah" @ready="textReady = true" /></div>
 
       <section v-if="hasSupporting(story)" class="mt-4 rounded-[10px] border p-3" aria-labelledby="told-h" data-testid="told-in">
         <h3 id="told-h" class="text-[13px] font-medium">Also told in</h3>

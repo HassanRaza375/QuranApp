@@ -123,8 +123,7 @@ function onPlay(n: number) {
 function onReciter(name: string) {
   if (name === reciter.value) return;
   prefs.set("reciter", { reciter: name });
-  const np = player.nowPlaying;
-  if (np && active.value) void player.playSurah({ surahNo: np.surahNo, title: np.title, reciter: name, rate: prefs.prefs.playbackRate });
+  if (active.value) void player.switchReciter(name); // whatever is playing goes on by the new reciter
 }
 
 // ---- go to page

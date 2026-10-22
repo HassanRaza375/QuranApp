@@ -3,10 +3,12 @@
 // Phase 4B). A bottom sheet on a phone, a side panel on desktop.
 import { useMediaQuery } from "@vueuse/core";
 import type { ShownName } from "~/lib/asma";
-import { PLAY_SOON } from "~/lib/audioText";
+import { NO_RECORDING } from "~/lib/audioText";
+import { hasRecording } from "~/lib/asma";
 
-const props = defineProps<{ name: ShownName | null; saved: boolean; total: number }>();
-const emit = defineEmits<{ close: []; save: [] }>();
+const props = defineProps<{ name: ShownName | null; saved: boolean; total: number; playing?: boolean }>();
+const emit = defineEmits<{ close: []; save: []; play: [] }>();
+const recorded = computed(() => (props.name ? hasRecording(props.name.id) : false));
 const isDesktop = useMediaQuery("(min-width: 768px)");
 const model = computed({ get: () => props.name !== null, set: (v) => !v && emit("close") });
 </script>
@@ -27,11 +29,14 @@ const model = computed({ get: () => props.name !== null, set: (v) => !v && emit(
             <Icon name="lucide:star" size="16" />{{ saved ? "Saved" : "Save" }}
           </Button>
           <slot name="count" />
-          <Button variant="outline" class="min-h-11 gap-1.5 md:min-h-9" aria-disabled="true" aria-describedby="name-play-reason" data-testid="sheet-play" @click.prevent>
+          <Button v-if="recorded" variant="outline" class="min-h-11 gap-1.5 md:min-h-9" :aria-pressed="!!playing" :class="playing ? 'border-brand text-brand' : ''" data-testid="sheet-play" @click="emit('play')">
+            <Icon :name="playing ? 'lucide:pause' : 'lucide:play'" size="16" />{{ playing ? "Pause" : "Play" }}
+          </Button>
+          <Button v-else variant="outline" class="min-h-11 gap-1.5 md:min-h-9" aria-disabled="true" aria-describedby="name-play-reason" data-testid="sheet-play" @click.prevent>
             <Icon name="lucide:play" size="16" />Play
           </Button>
         </div>
-        <p id="name-play-reason" class="text-[12px] text-ink-2" data-testid="sheet-play-reason">{{ PLAY_SOON }}</p>
+        <p v-if="!recorded" id="name-play-reason" class="text-[12px] text-ink-2" data-testid="sheet-play-reason">{{ NO_RECORDING }}</p>
       </template>
     </SheetContent>
   </Sheet>

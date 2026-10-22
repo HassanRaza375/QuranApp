@@ -196,6 +196,35 @@ describe("a failed ayah in a queue is never skipped silently", () => {
     await flush();
     expect(s.e.snapshot).toMatchObject({ status: "playing", track: { ayah: 8 }, error: null });
   });
+  it("an error event that arrives while the second try is still looking for its file belongs to the first file and does not use up the second try", async () => {
+    const s = setup();
+    let release!: () => void;
+    const gate = new Promise<void>((r) => (release = r));
+    s.state.ayahHook = async (n) => {
+      if (n === 2) await gate; // the second lookup (the retry) waits
+    };
+    const orig = FakeEl.prototype.play;
+    let rejected = 0;
+    FakeEl.prototype.play = async function (this: FakeEl) {
+      if (rejected++ === 0) {
+        this.plays++;
+        throw Object.assign(new Error("bad file"), { name: "NotSupportedError" });
+      }
+      return orig.call(this);
+    };
+    try {
+      await s.e.playQueue(pageQ({ startIndex: 1 }));
+      await flush();
+      s.el().emit("error"); // the first file's error event, a moment late, while the retry is still looking
+      release();
+      await flush();
+      await flush();
+      expect(s.e.snapshot).toMatchObject({ status: "playing", error: null, track: { ayah: 7 } });
+      expect(s.snaps.map((x) => x.status)).not.toContain("error"); // never even flashed: the error message must not appear while the second try is still going
+    } finally {
+      FakeEl.prototype.play = orig;
+    }
+  });
   it("Skip on the last ayah ends the queue", async () => {
     const s = setup();
     s.state.ayahFail.add("2:8");

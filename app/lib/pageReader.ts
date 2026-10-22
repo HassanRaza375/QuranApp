@@ -106,4 +106,3 @@ export function parseGoTo(text: string): number | null {
 export const PAGE_NOTE = "Text flows in the order and page breaks of the standard 604-page Madani mushaf. It is not a line-for-line copy of the printed page.";
 export const PAGE_OFFLINE = "This page’s text isn’t saved on this device yet. Connect once to read it.";
 export const PAGE_FAILED = "Couldn’t load this page. Check your connection and try again.";
-export { PLAY_SOON as PLAY_REASON } from "./audioText";

@@ -506,10 +506,10 @@ test.describe("keyboard", () => {
     await expect(row.getByTestId("ayah-pin")).toHaveAttribute("aria-pressed", "true");
   });
 
-  test("tab order inside an ayah: Tafsir, Save, Pin, Share", async ({ page }) => {
+  test("tab order inside an ayah: Tafsir, Play, Save, Pin, Share", async ({ page }) => {
     await open(page, "/surah/112");
     await ayah(page, 1).getByTestId("tafsir-toggle").focus();
-    for (const id of ["ayah-save", "ayah-pin", "ayah-share"]) {
+    for (const id of ["ayah-play", "ayah-save", "ayah-pin", "ayah-share"]) {
       await page.keyboard.press("Tab");
       await expect(ayah(page, 1).getByTestId(id)).toBeFocused();
     }

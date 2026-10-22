@@ -63,3 +63,13 @@ export const NO_SAVED_NAMES = "No names saved yet. Tap the star on a name.";
 export const SEARCH_LABEL = "Search the names";
 export const asmaCountLine = (shownCount: number, total: number): string => (shownCount === total ? `${total} names` : `${shownCount} of ${total} names`);
 export const noMatchLine = (q: string): string => `No names match “${q.trim()}”.`;
+
+/**
+ * The names whose recording does not exist at the audio source today: its address answers 404 (checked 2026-10-22 against all 99; the other 96 answer
+ * `200 audio/mpeg`). The Play button for these three says so instead of pretending; there is no fallback recording.
+ */
+export const NAMES_WITHOUT_RECORDING: readonly number[] = [53, 93, 97];
+export const hasRecording = (id: number): boolean => !NAMES_WITHOUT_RECORDING.includes(id);
+/** The clip's id in the player and its second line. */
+export const nameClipId = (id: number): string => `name:${id}`;
+export const NAME_CLIP_LINE = "Asma-ul-Husna";

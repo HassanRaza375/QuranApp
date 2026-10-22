@@ -19,6 +19,8 @@ defineProps<{
   segments: FrameSegment[];
   bismillah: string | null;
   bismillahState: "none" | "loading" | "ready";
+  /** the ayah the player is on (alone or in a queue), so its text can be highlighted */
+  playing?: { surah: number; ayah: number } | null;
 }>();
 </script>
 
@@ -39,7 +41,7 @@ defineProps<{
           </template>
         </template>
         <p class="ar page-text mt-4" lang="ar" dir="rtl" data-testid="page-text">
-          <template v-for="(t, i) in g.ayahs" :key="g.from + i">{{ t }}<span class="verse-mark" data-testid="verse-mark" :data-ayah="g.from + i"><span class="sr-only" lang="en" dir="ltr"> ayah </span>{{ g.from + i }}</span> </template>
+          <template v-for="(t, i) in g.ayahs" :key="g.from + i"><span class="ayah-text" :class="playing && playing.surah === g.surah && playing.ayah === g.from + i ? 'ayah-playing' : ''" :aria-current="playing && playing.surah === g.surah && playing.ayah === g.from + i ? 'true' : undefined" :data-surah="g.surah" :data-ayah="g.from + i" data-testid="ayah-text">{{ t }}<span class="verse-mark" data-testid="verse-mark" :data-ayah="g.from + i"><span class="sr-only" lang="en" dir="ltr"> ayah </span>{{ g.from + i }}</span></span>{{ " " }}</template>
         </p>
       </section>
     </template>
@@ -50,6 +52,13 @@ defineProps<{
 .page-text {
   text-align: justify;
   overflow-wrap: break-word;
+}
+/* the ayah being recited: a soft accent ground over its text (gold stays for verse markers) */
+.ayah-playing {
+  background: var(--accent-soft);
+  border-radius: 6px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 .verse-mark {
   display: inline-flex;

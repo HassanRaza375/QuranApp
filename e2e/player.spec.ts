@@ -430,18 +430,16 @@ test.describe("Media Session (where the browser has it)", () => {
   });
 });
 
-test.describe("the other Play controls stay disabled with the one shared reason", () => {
-  test("Per page, Asma-ul-Husna and Stories say 'Playing single ayahs arrives soon' and play nothing; nothing says 'Coming with the player'", async ({ page }) => {
+test.describe("the Play controls that waited for per-ayah audio are real now", () => {
+  test("Per page, Asma-ul-Husna and Stories no longer say a placeholder; opening them plays nothing (what each plays is in e2e/queue.spec.ts and e2e/ayahaudio.spec.ts)", async ({ page }) => {
     await page.goto("/per-page-read?page=3");
-    await expect(page.getByTestId("play-page")).toHaveAttribute("aria-disabled", "true");
-    await expect(page.getByTestId("play-reason")).toHaveText("Playing single ayahs arrives soon");
+    await expect(page.getByTestId("play-page")).not.toHaveAttribute("aria-disabled", "true");
     await page.goto("/asma-ul-husna#name-5");
-    await expect(page.getByTestId("sheet-play-reason")).toHaveText("Playing single ayahs arrives soon");
-    await page.getByTestId("sheet-play").click({ force: true });
+    await expect(page.getByTestId("sheet-play")).not.toHaveAttribute("aria-disabled", "true");
     await page.keyboard.press("Escape");
     await page.goto("/stories/yusufstory");
-    await expect(page.getByTestId("listen-why")).toHaveText("Playing single ayahs arrives soon");
-    expect(await page.getByText("Coming with the player").count()).toBe(0);
+    await expect(page.getByTestId("listen")).not.toHaveAttribute("aria-disabled", "true");
+    expect(await page.getByText(/Coming with the player|arrives soon/).count()).toBe(0);
     expect((await A(page)).srcs).toEqual([]);
     await expect(page.getByTestId("mini-player")).toHaveCount(0);
   });
