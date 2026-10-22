@@ -1,32 +1,37 @@
-# CLAUDE.md (revamp-quran)
+# CLAUDE.md
 
-Guidance for Claude Code when working inside `revamp-quran/`. The repo-root `CLAUDE.md` still applies to the legacy app; this file adds the rules for the rebuild.
+Guidance for Claude Code when working in this repository.
 
-## What this folder is
+## What this repo is
 
-A rebuild of the Quran companion app's UI as a **Nuxt 4 single-page app with shadcn-vue + Tailwind CSS v4**, replacing Vuetify. It lives on the branch `revamp-design-logic`, next to the legacy app, and reuses the legacy app's data, services and logic. At the end it replaces the legacy app.
+A rebuild of the Quran companion app's UI as a **Nuxt 4 single-page app with shadcn-vue + Tailwind CSS v4**, replacing Vuetify. It began as the `revamp-quran/` folder of the legacy app's repo and is now its own repository: this folder is the repo root. It reuses the legacy app's data, services and logic through a vendored snapshot. At the end it replaces the legacy app.
 
-The legacy app (repo root) must keep working. Do not edit it.
+The legacy app lives in its own repo and keeps running until cutover. This repo holds only:
+
+- `legacy/`: a **read-only snapshot** of the legacy files this project imports or reads (data, pure utils, two composables run by the parity tests, the legacy service worker for the cutover test). It is refreshed only by `scripts/sync-legacy.mjs`. Never edit it, except for a cutover data fix (`legacy/README.md` has the rules).
+- `docs/legacy-reference/`: read-only copies of the legacy specs our docs refer to (index in `docs/legacy-reference/README.md`).
+
+Nothing here may reach outside this repository: no `../..` paths, no sibling checkouts. `tests/independence.test.ts` fails if something does.
 
 ## Read first, in this order
 
-1. `/CLAUDE.md` and `/README.md` (legacy app: stack, architecture, SSR/hydration hazards, known gaps)
+1. `docs/legacy-reference/LEGACY_CLAUDE.md` and `docs/legacy-reference/LEGACY_README.md` (legacy app: stack, architecture, SSR/hydration hazards, known gaps; its folder layout is not ours)
 2. `docs/PLAN.md` (stack, rendering, offline model, phases)
 3. `docs/design/DESIGN_SYSTEM.md` (tokens, components, patterns, content rules)
 4. `docs/design/PROTOTYPE_MAP.md` (where each page lives inside `docs/design/prototype.html`)
 5. `docs/CONTENT_TO_VERIFY.md` (placeholders in the prototype that must never ship)
 6. `docs/PROGRESS.md` (what is done, what is next)
 
-For feature behaviour, the legacy docs still win: `/MODULE_BLUEPRINT.md`, `/PROJECT_PLAN.md`, `/prophets-quran-feature.md`, and the other specs listed in `/CLAUDE.md`.
+For feature behaviour, the legacy docs still win: `docs/legacy-reference/MODULE_BLUEPRINT.md`, `PROJECT_PLAN.md`, `prophets-quran-feature.md`, the `wajibat*` docs (`wajibat_decisions.md` wins over the spec), and the other specs listed in `LEGACY_CLAUDE.md`. For how the revamp is built and looks, this file and `docs/PLAN.md` win.
 
 ## Hard rules
 
-1. **Stay inside `revamp-quran/`.** The only allowed edits outside it are small ignore entries in root tooling (ESLint, Vitest, tsconfig, `.gitignore`) so the legacy app does not pick up this folder. List any such edit in the phase doc.
+1. **Stay inside this repository, and never edit `legacy/` or `docs/legacy-reference/` by hand.** Nothing is read from or written to a sibling checkout. New legacy files come in only through `scripts/sync-legacy.mjs` (dev-only; the build never calls it) after the code that needs them exists; the file list is `scripts/lib/legacy-files.mjs`.
 2. **No Vuetify and no `@mdi/font`.** UI comes from shadcn-vue components and Tailwind tokens. Icons are Lucide through `@nuxt/icon`, bundled locally. Never load fonts or icons from a CDN, because they must work offline.
 3. **Reuse the legacy app, do not fork its data.**
-   - Pure code (JSON data, `app/utils`, `app/services`) is imported through an alias such as `@legacy`.
-   - Code that depends on Nuxt plugins or auto-imports (composables, `$storage`, `$api`) is copied and adapted.
-   - Phase 0 decides the exact mechanism and records it in `docs/phases/phase-00-foundation.md`.
+   - Pure code (JSON data, `app/utils`) is imported through the `@legacy` alias, which points at the vendored snapshot (`@legacy/utils/x` is `legacy/app/utils/x`). It is never copied into `app/`, so there is one copy.
+   - Code that depends on Nuxt plugins or auto-imports (composables, `$storage`, `$api`) is copied and adapted into `app/`. The two legacy composables that the parity tests run (`useAudioPlayer`, `useTasbeeh`) sit in the snapshot unmodified; `scripts/lib/legacy-*.mjs` load them in memory.
+   - Phase 0 chose the mechanism (`docs/phases/phase-00-foundation.md`, as built then); `legacy/README.md` is how it works now.
 4. **Keep storage keys and formats identical** to the legacy app (for example `quran:ramadan:v1`). Users must keep their bookmarks, goals, Hifz progress and settings at cutover. Migrations are additive and versioned. Inventory every key in Phase 0.
 5. **Content integrity.**
    - Qur'an text, translations, tafsir, audio and prayer data come only from the existing services and data files.
@@ -85,7 +90,7 @@ For feature behaviour, the legacy docs still win: `/MODULE_BLUEPRINT.md`, `/PROJ
 - **Place search:** AlAdhan's city endpoints return placeholder coordinates, so a typed city goes to Open-Meteo's geocoding API (`lib/geocode.ts`, only the typed text, only on Search, attribution shown). Mock it with `mockGeocode` and the recorded fixtures.
 - **Declination:** `lib/declination.ts` is NOAA's WMM2025 on `app/data/wmm2025.generated.ts` (from `scripts/gen-wmm.mjs`), tested against NOAA's published values; it is valid to 2030.
 - Nuxt does not auto-import from `app/services/`. Import `useQuranApi` and friends explicitly (`tests/services.test.ts` covers every service).
-- Legacy files import their data with `~/...`; `build/legacyBridge.ts` redirects those imports to the legacy folder. A legacy file that does a *dynamic* `~/` import (for example `quranAyahCounts.js`) is not rewritten under Vitest; do not call such functions from tests or from revamp code.
+- Legacy files import their data with `~/...`; `build/legacyBridge.ts` redirects those imports to `legacy/app`. A legacy file that does a *dynamic* `~/` import (for example `quranAyahCounts.js`) is not rewritten under Vitest; do not call such functions from tests or from revamp code.
 - Tests never use the real upstream APIs: mock them (`e2e/mocks.ts`) and fix the clock. Errors that a `catch` swallows (like the ayah of the day's) are logged with `console.debug`.
 
 ## Working rules learned the hard way
@@ -96,15 +101,17 @@ For feature behaviour, the legacy docs still win: `/MODULE_BLUEPRINT.md`, `/PROJ
 ## Commands
 
 ```bash
-cd revamp-quran
-npm install
-npm run dev -- --port 3001      # legacy app uses 3000
+npm install                     # Node 22 (.nvmrc); no legacy checkout needed
+npm run dev -- --port 3001
 npm run build && npm run preview  # required for offline/PWA testing (offline does not work in dev)
 npx eslint .
 npm test                        # unit tests (tests/)
 npm run test:e2e                # Playwright against the production build (run npm run build first; uses port 3011)
 npm run test:dev               # starts the dev server and checks / renders with no errors
 npm run verify                  # build + lint + unit + dev smoke + e2e
+
+# dev-only, never part of a build: refresh ./legacy from a checkout of the legacy repo (see legacy/README.md)
+LEGACY_REPO=<path to the legacy checkout> node scripts/sync-legacy.mjs [--check]
 ```
 
 ## When unsure

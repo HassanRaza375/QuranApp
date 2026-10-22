@@ -1,6 +1,6 @@
 # Legacy app inventory (Phase 0)
 
-What the legacy app (repo root) contains and exposes, as of the `revamp-design-logic` branch. The revamp must keep the routes, the storage keys and formats, and the PWA identity listed here.
+What the legacy app (its own repo; `legacy/` here holds only the files this project uses) contains and exposes, as of the `revamp-design-logic` branch of that repo. The revamp must keep the routes, the storage keys and formats, and the PWA identity listed here.
 
 ## Routes (50 pages in `app/pages`)
 
@@ -18,7 +18,7 @@ What the legacy app (repo root) contains and exposes, as of the `revamp-design-l
 ## Code
 
 - **Composables (52)** in `app/composables`, one per data domain (README table). They use `useState`, `useNuxtApp().$storage`, `useNuxtApp().$api`, so they are copied and adapted, not aliased.
-- **Services (7)** in `app/services`: chapters, juz, page, sajda, surahs, tafsir, verse. Each is a one-line wrapper over `$api` or `$api2`. Copied to `revamp-quran/app/services` on `useQuranApi()` / `useQuranApi2()`. One legacy bug fixed in the copy: `page.service.ts` used an absolute `http://api.alquran.cloud/...` URL (the redirect carries no CORS header, see the README gotcha).
+- **Services (7)** in `app/services`: chapters, juz, page, sajda, surahs, tafsir, verse. Each is a one-line wrapper over `$api` or `$api2`. Copied to `app/services` on `useQuranApi()` / `useQuranApi2()`. One legacy bug fixed in the copy: `page.service.ts` used an absolute `http://api.alquran.cloud/...` URL (the redirect carries no CORS header, see the README gotcha).
 - **Plugins:** `storage.client.js` (`$storage`), `api.js` (`$api`, `$api2`), `vuetify.js`, `favorites-init.client.js`, `supabase.client.ts` (inert). Only `$storage` and `$api` have a revamp counterpart (`app/lib/storage.ts`, `app/services/api.ts`).
 - **Store:** `stores/prayer.js` (the one Pinia store).
 - **Utils (38)** in `app/utils`. Most are pure (search/validate pairs per knowledge module, `islamicEvents.js`, `prayerFiqh.js`, `quranAyahCounts.js`, `wajibat*.ts`). They import data with `~/data/...`.
@@ -37,7 +37,7 @@ What the legacy app (repo root) contains and exposes, as of the `revamp-design-l
 - All three upstreams answer with `Access-Control-Allow-Origin: *` (checked with a cross-origin request). `api.aladhan.com` also sends it, after a 302 to the month-path form.
 - No file in the legacy `app/` calls `/api/chapters`, `/api/surahs`, `/api/sajda` or `/api/juz`. The proxies are present but **unused**.
 - None of them is needed for CORS. The only logic is the `juz` regrouping and input check.
-- Decision taken: the four are kept, copied into `revamp-quran/server/api`, because the build is `nuxt build` (Nitro) and the proxies cost nothing. Two lint fixes in the copies: `catch {` instead of an unused `e`, and `await` added in `chapters.get.js` (the legacy `try/catch` never caught a failure because the fetch was not awaited). **Open question for you:** drop them at cutover, since nothing uses them?
+- Decision taken: the four are kept, copied into `server/api`, because the build is `nuxt build` (Nitro) and the proxies cost nothing. Two lint fixes in the copies: `catch {` instead of an unused `e`, and `await` added in `chapters.get.js` (the legacy `try/catch` never caught a failure because the fetch was not awaited). **Open question for you:** drop them at cutover, since nothing uses them?
 
 ## Storage
 

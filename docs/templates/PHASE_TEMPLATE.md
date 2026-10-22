@@ -1,6 +1,6 @@
 # Phase NN: <name>
 
-- Branch: `revamp-design-logic`
+- Branch:
 - Date:
 - Status: Done / Partly done
 
@@ -27,7 +27,7 @@ Short, concrete list.
 
 - Added:
 - Changed:
-- Changes outside `revamp-quran/` (should be none or ignore entries only):
+- Changes to `legacy/` or `docs/legacy-reference/` (should be none; only `scripts/sync-legacy.mjs` refreshes them):
 
 ## Data and storage
 

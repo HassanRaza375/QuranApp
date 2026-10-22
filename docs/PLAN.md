@@ -1,6 +1,6 @@
 # Revamp plan
 
-Branch: `revamp-design-logic`. Folder: `revamp-quran/`. The legacy app stays in the repo root.
+Branch: `main`. This project began as the `revamp-quran/` folder of the legacy app's repo (branch `revamp-design-logic`) and is now its own repository. The legacy app lives in its own repo; `legacy/` here is a read-only snapshot of the files this project uses (see `legacy/README.md`).
 
 ## Goals
 
@@ -25,7 +25,7 @@ Branch: `revamp-design-logic`. Folder: `revamp-quran/`. The legacy app stays in 
 | PWA | `@vite-pwa/nuxt` (Workbox) | `generateSW` first; `injectManifest` if audio range requests need custom handling |
 | Tests | Vitest (pure logic), Playwright (offline and flows) | |
 | Package manager | npm | Matches the legacy lockfile |
-| Hosting | A second Vercel project with root directory `revamp-quran` | Preview URLs, installable PWA on a phone, no service-worker clash with the legacy app |
+| Hosting | Its own Vercel project for this repo (root directory = repo root, Node 22; see `DEPLOY.md`) | Preview URLs and an installable PWA on a phone before cutover, then the production domain moves to it |
 
 Not included for now: Supabase (not wired in the legacy app), the Vercel analytics package can be added at cutover.
 
@@ -101,7 +101,7 @@ Every phase ends with a phase doc, a page doc per page, a PROGRESS update, and a
 | 10 | Search | prototype is made in chat when this phase is reached | |
 | 11 | Downloads and offline manager | prototype pending | |
 | 12 | Knowledge modules (Peoples, Places, Themes, Duas, Events, Signs, Commands) | prototype pending | Reuse the Phase 7 layouts |
-| 13 | Daily Fiqh (Wajibat) | prototype pending | Ja'fari only for now; see the `wajibat_*` docs |
+| 13 | Daily Fiqh (Wajibat) | prototype pending | Ja'fari only for now; see the `wajibat*` docs in `legacy-reference/` |
 | 14 | Hifz | not designed | Apply the design system; behaviour from the legacy spec |
 | 15 | Reading goals, Calendar, About | not designed | Same |
 | 16 | Cutover | | PWA audit, accessibility, performance, basic SEO, Vercel project, switch the main domain |
@@ -114,8 +114,8 @@ Pages without a prototype are designed first (in chat or by applying `DESIGN_SYS
 - [ ] Compare the Ja'fari prayer times (Leva, Tehran) with an independent source.
 - [ ] Remove `/foundation`; verify the legacy offline-new-tab root cause against the deployed worker.
 - [ ] Replace the World Magnetic Model coefficients before 2030 (`scripts/gen-wmm.mjs`).
-- [ ] **Normalise the persons relationship data to one convention** (the data mixes two: 17 parent/child entries say "this person is the X of the related one", three say the opposite, and the spec reads the type as the related person's role). Do it once, when the legacy page is retired, as one reviewed commit to `app/data/quranPersons.ts`, then delete `REVERSED_ENTRIES` in `app/lib/people.ts` and update `tests/people.test.ts` (see `docs/phases/phase-07a-people.md`, "Finding").
-- [ ] **Fix the `nuhflood` story status** in the legacy data (`narrativeStatus: quran_complete` but its chapters jump between surahs 71 and 11) once the owner decides, then delete `ARRANGED_OVERRIDES` in `app/lib/stories.ts` (see `docs/CONTENT_TO_VERIFY.md`, Stories).
+- [ ] **Normalise the persons relationship data to one convention** (the data mixes two: 17 parent/child entries say "this person is the X of the related one", three say the opposite, and the spec reads the type as the related person's role). Do it once, when the legacy page is retired, as one reviewed commit to `legacy/app/data/quranPersons.ts` (the cutover data fix `legacy/README.md` allows: its own commit, `node scripts/sync-legacy.mjs --rehash`, a line under "Local edits"), then delete `REVERSED_ENTRIES` in `app/lib/people.ts` and update `tests/people.test.ts` (see `docs/phases/phase-07a-people.md`, "Finding").
+- [ ] **Fix the `nuhflood` story status** in the legacy data (`legacy/app/data/quranStories.ts`, same rule; `narrativeStatus: quran_complete` but its chapters jump between surahs 71 and 11) once the owner decides, then delete `ARRANGED_OVERRIDES` in `app/lib/stories.ts` (see `docs/CONTENT_TO_VERIFY.md`, Stories).
 - [ ] Real-device checks recorded as done: audio (including the 210 generic-type files), the compass, notifications, share.
 
 ## Definition of done (every page)

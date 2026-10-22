@@ -29,7 +29,7 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [x] The Reading preview: no prototype ayah is used; it shows today's real ayah or a real surah name from the legacy data.
 - [x] The iPhone note: the Home Screen requirement is from the WebKit post "Web Push for Web Apps on iOS and iPadOS" (webkit.org/blog/13878); the app shows it only on an iPhone or iPad whose browser has no Notification API.
 - [x] "Reminders only appear while Quran App is open." matches what the code does (timers in the open page; no push, no scheduled notifications).
-- [ ] The marja' names come from the legacy Daily Fiqh data (`app/data/wajibat/marja.ts`); that data has its own verification record in `wajibat_decisions.md`.
+- [ ] The marja' names come from the legacy Daily Fiqh data (`app/data/wajibat/marja.ts`); that data has its own verification record in `docs/legacy-reference/wajibat_decisions.md`.
 
 **Surah reader (Phase 4A)**
 - [x] Al-Fatihah Arabic and the translations in the prototype: not used; the reader shows the service's real text (all 114 chapters validated against the real service on 2026-10-16).

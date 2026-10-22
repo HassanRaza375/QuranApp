@@ -1,17 +1,19 @@
 # Prompts for Claude Code
 
-Start Claude Code from inside `revamp-quran/` so that both the repo-root `CLAUDE.md` and `revamp-quran/CLAUDE.md` load. Use one session per phase, and clear the context between phases.
+Start Claude Code in the repo root so that `CLAUDE.md` loads. Use one session per phase, and clear the context between phases.
 
 ## Phase 0: plan first
 
+Phase 0 is done. This is kept as the record of the original brief; it was written when this project was the `revamp-quran/` folder inside the legacy repo, so its wording about folders and root tooling no longer applies (the legacy app now lives in its own repo and `legacy/` holds a read-only snapshot).
+
 ```
-Read, in order: /CLAUDE.md, /README.md, CLAUDE.md (this folder), docs/PLAN.md,
+Read, in order: docs/legacy-reference/LEGACY_CLAUDE.md, docs/legacy-reference/LEGACY_README.md, CLAUDE.md, docs/PLAN.md,
 docs/design/DESIGN_SYSTEM.md, docs/design/PROTOTYPE_MAP.md, docs/CONTENT_TO_VERIFY.md,
-docs/PROGRESS.md. Skim /MODULE_BLUEPRINT.md. Open docs/design/prototype.html in a browser
+docs/PROGRESS.md. Skim docs/legacy-reference/MODULE_BLUEPRINT.md. Open docs/design/prototype.html in a browser
 as the visual reference.
 
-We are rebuilding the UI in revamp-quran/ as a Nuxt 4 SPA with shadcn-vue and Tailwind v4,
-replacing Vuetify. The legacy app in the repo root must stay untouched and working.
+We are rebuilding the UI as a Nuxt 4 SPA with shadcn-vue and Tailwind v4, replacing Vuetify.
+The legacy app (its own repo) must stay untouched and working; legacy/ is a read-only snapshot.
 
 Phase 0 is the foundation only, no page work. First write a plan and do not code yet:
 1. Inventory the legacy app: routes in app/pages, composables, services, plugins,

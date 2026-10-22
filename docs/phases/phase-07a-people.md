@@ -28,7 +28,7 @@ No depictions of any person (the page has no images; a test checks); Save writes
 
 You approved correcting `isa>maryam`, `maryam>isa`, `maryam>maryammother` in `app/data/quranPersons.ts`, after a check. The check found the premise does not hold, so **I did not edit**:
 
-- `prophets-quran-feature.md` section 14 gives the example "Ibrahim (AS) ├── Isma'il (AS) — Son — Qur'an", which means the type names **the related person's** role (Isma'il is the son). The legacy page draws it that way ("<related> [type]").
+- `docs/legacy-reference/prophets-quran-feature.md` section 14 gives the example "Ibrahim (AS) ├── Isma'il (AS) — Son — Qur'an", which means the type names **the related person's** role (Isma'il is the son). The legacy page draws it that way ("<related> [type]").
 - The **data** is written the other way for 17 parent/child entries ("ibrahim > ismail: father" means Ibrahim is the father). Only the three entries above follow the spec's reading.
 - So the three are not wrong against the spec; they are inconsistent with the other 17. Editing them to match the majority would make the **legacy** page show "Isa: Mother" on Maryam's page (wrong), where it is now right. Making the data match the spec would mean changing about 17 other entries.
 - Pair consistency itself (A says father of B, B says son of A) holds for every parent and ancestor pair once the three are read as reversed. Other differences (reported, not fixed): no reverse entry for `adam>isa`, `yusuf>ibrahim`, `musa>haman`, `jalut>talut`, `jalut>dawud`, `zayd>muhammad`, `yusufbrothers>yaqub`; type differs between the two sides for `musa/musawarner`, `firaun/sahara`, `abulahab/muhammad` (other vs supporter/opponent).

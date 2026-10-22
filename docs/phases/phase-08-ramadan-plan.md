@@ -11,7 +11,7 @@
 - Your review items (the "Arranged for study" sentence, the "Summary (written for this app)" label, the 7A status chips, `nuhflood`) are recorded; real-device checks are yours.
 - **Baseline** `npm run verify` on Node 22 after the override change: build, lint, **452 unit tests** and **302 browser tests all pass**.
 
-## 1. What the legacy app has (read from `pages/ramadan/index.vue`, `pages/calender.vue`, `composables/useRamadan.ts`, `useReminders.ts`, `stores/prayer.js`, `utils/islamicEvents.js`, `ramadanContent.js`, `prayerFiqh.js`, PROJECT_PLAN §18)
+## 1. What the legacy app has (read from `pages/ramadan/index.vue`, `pages/calender.vue`, `composables/useRamadan.ts`, `useReminders.ts`, `stores/prayer.js`, `utils/islamicEvents.js`, `ramadanContent.js`, `prayerFiqh.js`, `docs/legacy-reference/PROJECT_PLAN.md` §18)
 
 ### `/ramadan` (one page, no tabs)
 - **Not Ramadan:** "It isn't Ramadan right now" (detection from the calculated Hijri calendar, "Sunni" or "Ja'fari" method) and the start-date control.

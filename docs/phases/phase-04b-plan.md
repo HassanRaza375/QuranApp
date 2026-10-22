@@ -2,7 +2,7 @@
 
 Status: **plan only, waiting for approval. One input is missing: your phone audio test result** (the prompt had the placeholder `[paste the result here…]` unfilled). Everything below that does not depend on it is ready; the part that does is written as "if it plays / if it fails" so no result is assumed.
 
-Written 2026-10-21 after reading the legacy `useAudioPlayer.ts`, `useReciter.ts`, `useAudioDownload.ts`, the Phase 3 player (`stores/player.ts`, `MiniPlayer.vue`, `lib/surahAudio.ts`), `docs/audio-url-check.md`, `MODULE_BLUEPRINT.md` Module 4, the prototype's player overlay (`playerHTML`), the service worker rules in `nuxt.config.ts`, and live checks of the audio hosts.
+Written 2026-10-21 after reading the legacy `useAudioPlayer.ts`, `useReciter.ts`, `useAudioDownload.ts`, the Phase 3 player (`stores/player.ts`, `MiniPlayer.vue`, `lib/surahAudio.ts`), `docs/audio-url-check.md`, `docs/legacy-reference/MODULE_BLUEPRINT.md` Module 4, the prototype's player overlay (`playerHTML`), the service worker rules in `nuxt.config.ts`, and live checks of the audio hosts.
 
 **Reviewed 2026-10-21.** Your decisions are applied below (they replace my first split): 4B is the whole-surah player, 4C is per-ayah audio in the reader (with the ayah queue); resume is a new feature shown as a line in the sheet, never automatic; Save audio stays visible but disabled with a reason until Phase 11; no offline-play claim; the audio cache names and the two storage keys stay exactly as they are. The phone audio test result is **still not supplied** (the placeholder was empty again), so section 1 stays conditional.
 

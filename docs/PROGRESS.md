@@ -2,6 +2,8 @@
 
 Update this file at the end of every phase.
 
+Repository: this project is its own repo (it began as the `revamp-quran/` folder of the legacy repo). The legacy files it uses are vendored read-only in `legacy/`, the legacy specs it follows are in `legacy-reference/`, and `DEPLOY.md` has the Vercel setup, cutover needs and rollback.
+
 | # | Phase | Status | Phase doc | Page docs |
 | --- | --- | --- | --- | --- |
 | 0 | Foundation | Approved 2026-10-15; follow-ups done | [phase-00-foundation](phases/phase-00-foundation.md) | [app-shell](pages/app-shell.md), [foundation](pages/foundation.md), [placeholders](pages/placeholders.md) |
