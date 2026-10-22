@@ -54,7 +54,7 @@ A separate Bismillah file at a surah's first ayah on a page queue; any offline-p
 
 ## Verification
 
-`npm run verify` on Node 22 with nothing else running: result recorded in the last section.
+`npm run verify` on Node 22 with nothing else running (build, lint, 644 unit tests, dev smoke, 499 e2e tests): **passed, exit 0** (15.0 minutes). The reader's relative performance gate passed. The Settings picker test did not fail.
 
 - `tests/audioQueue.test.ts` (27: an ayah, a queue, a clip, saved places, failures, restore), `tests/audioEngine.test.ts` (33), `tests/audioState.test.ts` (13), `tests/audioLegacy.test.ts` (5, the legacy composable beside the revamp: unchanged and still passing), `tests/player.test.ts` (7).
 - `e2e/ayahaudio.spec.ts` (18: the reader's button, highlight, reciter, whole-surah vs ayah highlight, no saved place for an ayah, a failed ayah, the sheet's ayah controls, Media Session, Follow audio on/off/Reduce motion, the Asma clip and the three missing names, dark, 375px), `e2e/queue.spec.ts` (19: Play page, advance, one ayah preloaded ahead, the end, a page that crosses a surah, the sheet's queue line, Media Session, navigating away, a failed ayah with Try again and Skip, the saved place and reload, Listen to this chapter, dark, 375px), `e2e/player.spec.ts` (33, one test rewritten).
