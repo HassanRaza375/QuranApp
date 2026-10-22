@@ -480,5 +480,31 @@ test.describe("dark mode and a phone", () => {
       expect((await page.getByTestId("mini-open").boundingBox())!.height).toBeGreaterThanOrEqual(43.5);
       expect((await page.getByTestId("mini-toggle").boundingBox())!.height).toBeGreaterThanOrEqual(43.5);
     });
+
+    test("the mini player's error wraps onto two lines (nothing cut off) and Try again stays on screen and easy to hit", async ({ page }) => {
+      await openListing(page);
+      await hook(page, "fail", true);
+      await page.getByTestId("surah-row-2").getByTestId("row-play").click();
+      const status = page.getByTestId("mini-status");
+      await expect(status).toHaveText("Couldn’t play. Audio needs a connection unless it was downloaded.");
+      const fits = await status.evaluate((el) => {
+        const lh = parseFloat(getComputedStyle(el).lineHeight);
+        return { whole: el.scrollHeight <= el.clientHeight + 1, lines: Math.round(el.getBoundingClientRect().height / lh) };
+      });
+      expect(fits.whole).toBe(true); // all of the text is there, not clipped
+      expect(fits.lines).toBeGreaterThanOrEqual(2); // it wrapped (it does not fit on one line at 375px)
+      expect(fits.lines).toBeLessThanOrEqual(2);
+      const retry = (await page.getByTestId("mini-retry").boundingBox())!;
+      expect(retry.height).toBeGreaterThanOrEqual(43.5);
+      expect(retry.x).toBeGreaterThanOrEqual(0);
+      expect(retry.x + retry.width).toBeLessThanOrEqual(375);
+      expect(retry.y + retry.height).toBeLessThanOrEqual(800);
+      const toggle = (await page.getByTestId("mini-toggle").boundingBox())!;
+      expect(toggle.x + toggle.width).toBeLessThanOrEqual(375);
+      expect(await noScroll(page)).toBe(true);
+      await hook(page, "fail", false);
+      await page.getByTestId("mini-retry").click();
+      await expect(page.getByTestId("mini-toggle")).toHaveAccessibleName("Pause");
+    });
   });
 });

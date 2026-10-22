@@ -58,3 +58,9 @@ Per-ayah audio, name clips, Play page and Stories Listen (4C); Save audio (Phase
 - **The phone audio check** (it decides whether the 210 large files need anything): Surah listing, play surah 1 (control), 3 and 18, two reciters each, iPhone Safari and Chrome on Android (and Firefox); note plays or fails, the exact message, and whether seeking works in the sheet. Also the lock screen's controls, and the sheet at 375px dark.
 - Review the wording of ours and the new resume behaviour (CONTENT_TO_VERIFY.md).
 - Then 4C (per-ayah audio and the queue) needs a plan review.
+
+## After review (2026-10-22)
+
+- **The mini player's error now wraps onto two lines at 375px** (the text is never clipped) and **Try again sits under it**, so it cannot be pushed off the row; a browser test measures the lines, the clipping and the button's position and size. Screenshot regenerated (`player-compare/state-mini-error-*`).
+- `npm run verify` on Node 22 after the change: 617 unit tests, 462 e2e tests, **passed, exit 0**. (The first baseline run that morning had one failure in the reader's 4x-CPU performance budget; a retry pass on the pre-4B and 4B builds gave 5 of 6 each, so it is a timing test at its limit on this machine, not a 4B regression: see `phase-04c-plan.md`, section 0.)
+- `docs/DEVICE_CHECKS.md` was added (every real-device and manual review item so far).

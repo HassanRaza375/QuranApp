@@ -19,12 +19,15 @@ const status = computed(() => {
 <template>
   <div v-if="player.nowPlaying" class="fixed inset-x-0 bottom-0 z-30 border-t bg-surface md:left-64" role="region" aria-label="Audio player" data-testid="mini-player">
     <div class="h-0.5 bg-muted" aria-hidden="true"><i class="block h-full bg-brand" :style="{ width: `${pct}%` }" data-testid="mini-progress" /></div>
-    <div class="flex h-16 items-center gap-2 px-4">
-      <button type="button" class="flex min-h-11 min-w-0 flex-1 flex-col justify-center text-left" aria-label="Open the player" data-testid="mini-open" @click="player.openSheet()">
-        <span class="truncate text-[14px] font-medium" data-testid="mini-title">{{ player.nowPlaying.title }}</span>
-        <span class="truncate text-[12px]" :class="player.error ? 'text-destructive' : 'text-ink-2'" data-testid="mini-status">{{ status }}</span>
-      </button>
-      <Button v-if="s.status === 'error'" variant="outline" class="min-h-11 shrink-0 md:min-h-9" data-testid="mini-retry" @click="player.retry()">Try again</Button>
+    <div class="flex min-h-16 items-center gap-2 px-4 py-1">
+      <div class="flex min-w-0 flex-1 flex-col items-start">
+        <button type="button" class="flex min-h-11 w-full min-w-0 flex-col justify-center text-left" aria-label="Open the player" data-testid="mini-open" @click="player.openSheet()">
+          <span class="truncate text-[14px] font-medium" data-testid="mini-title">{{ player.nowPlaying.title }}</span>
+          <span class="line-clamp-2 break-words text-[12px] leading-[1.35]" :class="player.error ? 'text-destructive' : 'text-ink-2'" data-testid="mini-status">{{ status }}</span>
+        </button>
+        <!-- under the text, so the whole message fits on two lines and Try again is never pushed off the row -->
+        <Button v-if="s.status === 'error'" variant="outline" class="mb-1 min-h-11 shrink-0 md:min-h-9" data-testid="mini-retry" @click="player.retry()">Try again</Button>
+      </div>
       <Button variant="default" size="icon" class="size-11 shrink-0 rounded-full" :aria-label="busy ? 'Pause' : 'Play'" data-testid="mini-toggle" @click="player.toggle()">
         <Icon :name="busy ? 'lucide:pause' : 'lucide:play'" size="18" />
       </Button>
