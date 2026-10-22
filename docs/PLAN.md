@@ -98,12 +98,12 @@ Every phase ends with a phase doc, a page doc per page, a PROGRESS update, and a
 | 7 | Prophets & People and Stories | `d-page-people`, `-person`, `-story` | Story Mode rules in the design doc |
 | 8 | Ramadan and events | `d-page-ramadan` | Both-fiqh events list, timetable, tracker |
 | 9 | Utilities | `d-page-tasbeeh`, `-sajda`, `-asma`, `-mushaf` | |
-| 10 | Search | prototype is made in chat when this phase is reached | |
-| 11 | Downloads and offline manager | prototype pending | |
-| 12 | Knowledge modules (Peoples, Places, Themes, Duas, Events, Signs, Commands) | prototype pending | Reuse the Phase 7 layouts |
-| 13 | Daily Fiqh (Wajibat) | prototype pending | Ja'fari only for now; see the `wajibat*` docs in `legacy-reference/` |
-| 14 | Hifz | not designed | Apply the design system; behaviour from the legacy spec |
-| 15 | Reading goals, Calendar, About | not designed | Same |
+| 10 | Search | `prototype-remaining-pages.html` (`#/search`) | |
+| 11 | Downloads and offline manager | `prototype-remaining-pages.html` (`#/downloads`) | |
+| 12 | Knowledge modules (Peoples, Places, Themes, Duas, Events, Signs, Commands; Poets is not prototyped) | `prototype-remaining-pages.html` (`#/k/<module>`) | Reuse the Phase 7 layouts |
+| 13 | Daily Fiqh (Wajibat) | `prototype-remaining-pages.html` (`#/fiqh…`) | Ja'fari only for now; see the `wajibat*` docs in `legacy-reference/` |
+| 14 | Hifz | `prototype-hifz.html` | A new simple mode with word-slip grading; legacy engine rules and data kept (`DECISIONS.md`) |
+| 15 | Reading goals, Calendar, About | Goals and Calendar: `prototype-remaining-pages.html`; About, Sitemap, Surah videos: not designed | Apply the design system to the unprototyped ones |
 | 16 | Cutover | | PWA audit, accessibility, performance, basic SEO, Vercel project, switch the main domain |
 
 Pages without a prototype are designed first (in chat or by applying `DESIGN_SYSTEM.md`) and approved before building.
