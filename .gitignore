@@ -1,10 +1,12 @@
-﻿node_modules
+node_modules
 .nuxt
 .output
 .nitro
 .cache
 .data
 dist
+# the vendored legacy service worker is a tracked fixture (legacy/README.md), not build output
+!/legacy/dist/
 .env
 .env.*
 !.env.example
@@ -13,6 +15,7 @@ dist
 .idea
 .vscode/*
 !.vscode/extensions.json
+.vercel
 test-results
 playwright-report
 coverage

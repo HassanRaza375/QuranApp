@@ -1,0 +1,161 @@
+{
+  "note": "Written by scripts/sync-legacy.mjs. A read-only snapshot of the legacy app; see README.md.",
+  "commit": "7120b6cd6301ed267085b130052d767f95b2c15a",
+  "branch": "revamp-design-logic",
+  "committedAt": "2026-10-22T12:33:44+05:00",
+  "syncedAt": "2026-10-22",
+  "files": {
+    "app/assets/data/names.json": {
+      "bytes": 26727,
+      "sha256": "41ac02e184f565d32fcad9f2639e77ebd4836cae8cffc8d538114d175cd06f56",
+      "source": "git"
+    },
+    "app/assets/data/reciters.json": {
+      "bytes": 299,
+      "sha256": "4a8104931510fedae08706cd049f86d951500a2c7cc1f41c169046e1e67477f6",
+      "source": "git"
+    },
+    "app/assets/data/surah.json": {
+      "bytes": 167027,
+      "sha256": "90fd16653a87487a785b84c1ee0752450273525cc5013f2b17fa0e405a4cf584",
+      "source": "git"
+    },
+    "app/composables/useAudioPlayer.ts": {
+      "bytes": 8266,
+      "sha256": "436bfbf5a8b60ec40c44a4482a73c4de7e11ed4716db95a8d58fa440084873a7",
+      "source": "git"
+    },
+    "app/composables/useTasbeeh.ts": {
+      "bytes": 3490,
+      "sha256": "2b5b71d448020509af740a10dbbbce56b4e082ad0266453f9c29faa0e5375d0d",
+      "source": "git"
+    },
+    "app/data/quranCommands.ts": {
+      "bytes": 21674,
+      "sha256": "73a14af0a3b107de635b3d728931ee051d3d5a15eb958ded2418cb90aff45a46",
+      "source": "git"
+    },
+    "app/data/quranEvents.ts": {
+      "bytes": 39902,
+      "sha256": "735feb3fabd72a28625888c8c493f5209a2c56976189ae6309ed6ca6f18fc773",
+      "source": "git"
+    },
+    "app/data/quranPeoples.ts": {
+      "bytes": 47564,
+      "sha256": "c1955b9198ce778da94219b0af61514c2f98809c612c5c4b6f36d0c56a45cdd1",
+      "source": "git"
+    },
+    "app/data/quranPersons.ts": {
+      "bytes": 183538,
+      "sha256": "0a825cfb702f2276790531d2e8a1894f4adf146355f15d8c901b8a6939f7ce24",
+      "source": "git"
+    },
+    "app/data/quranPlaces.ts": {
+      "bytes": 39248,
+      "sha256": "10c8dd3fb4074e27a0f6aa78e0c3e7ec94b95450297411bd43bd3fe7996f86e3",
+      "source": "git"
+    },
+    "app/data/quranStories.ts": {
+      "bytes": 67399,
+      "sha256": "d4737b6aa6390c874c8fd435658a31a7408d291572ad71fec284327a34b94709",
+      "source": "git"
+    },
+    "app/data/wajibat/categories.ts": {
+      "bytes": 4352,
+      "sha256": "871cb77ef76e1492d701a79f6d7830175f318cdebc59686dd973e37594e10faf",
+      "source": "git"
+    },
+    "app/data/wajibat/marja.ts": {
+      "bytes": 3050,
+      "sha256": "0dc0694e11a9c27ecbc8b56a01267882be0f5b2532b715ecdab2c36b23b3780d",
+      "source": "git"
+    },
+    "app/data/wajibat/topics.ts": {
+      "bytes": 60285,
+      "sha256": "eb83e6ebd93ab016650348d6dedfa0a509faa037bfc9d787978a35177d65d372",
+      "source": "git"
+    },
+    "app/data/wajibat/types.ts": {
+      "bytes": 13144,
+      "sha256": "1a88e804a180a5039e0af9d66fc1fb49950f70c455eb82a709ee45425cec97e8",
+      "source": "git"
+    },
+    "app/utils/commandsSearch.ts": {
+      "bytes": 2765,
+      "sha256": "644de8e37767fd296d117c45de1025c0dc062cd487a807d325c444afb26577c3",
+      "source": "git"
+    },
+    "app/utils/islamicEvents.js": {
+      "bytes": 7843,
+      "sha256": "d1f5ec28e3579e5db8000505ca1eebdb00370df59192f2f3532688c0cc2a9628",
+      "source": "git"
+    },
+    "app/utils/personsChronology.ts": {
+      "bytes": 1263,
+      "sha256": "9c33637b658d467c5a69f5fde9b2457ec15b23cf11b924e9a7ad9959caaa9681",
+      "source": "git"
+    },
+    "app/utils/personsSearch.ts": {
+      "bytes": 5893,
+      "sha256": "40b01f434be0b5d562c8cc961f5e588d33901e1815d6ff76bc72e1554f4f23ee",
+      "source": "git"
+    },
+    "app/utils/personsTimeline.ts": {
+      "bytes": 2500,
+      "sha256": "2a0e5bea91911b4557988d62eba5f650d07008a5960b5372e7ce13682073f496",
+      "source": "git"
+    },
+    "app/utils/personStudy.ts": {
+      "bytes": 3277,
+      "sha256": "518c35a3fcab7eeb9474e7dfb33bad841ae29dfb2164ac21f6d85295141154bf",
+      "source": "git"
+    },
+    "app/utils/prayerFiqh.js": {
+      "bytes": 748,
+      "sha256": "782ea24633a402c9e02719979ed495702b1372c0487dc01dc66c5059a9fd0620",
+      "source": "git"
+    },
+    "app/utils/quranAyahCounts.js": {
+      "bytes": 1559,
+      "sha256": "b253a5989189ecdbcec1459ba5b6db455ee8d0002be5c65e4884788f627d0b61",
+      "source": "git"
+    },
+    "app/utils/quranReference.ts": {
+      "bytes": 2396,
+      "sha256": "4e24210a03090eadc8a4adbb739606284f90e459dd297581eb41a6fd0e3141a4",
+      "source": "git"
+    },
+    "app/utils/ramadanContent.js": {
+      "bytes": 2616,
+      "sha256": "f6827c9210af830d2e3a5b62cec14f96d235396a1071fbe7d42af58e9b515df4",
+      "source": "git"
+    },
+    "app/utils/renderTafsirMarkdown.js": {
+      "bytes": 1085,
+      "sha256": "93a9e87e398303f4f32caa8995a4bf8e4737c15fb2d1559bd16509d9083c767b",
+      "source": "git"
+    },
+    "app/utils/storiesSearch.ts": {
+      "bytes": 3703,
+      "sha256": "7830b0c3228019206d06f7ce83f7e5c29f63425714e5ce68ff033b0d1135583a",
+      "source": "git"
+    },
+    "dist/sw.js": {
+      "bytes": 12479,
+      "sha256": "44c3aec8274860cc8971741097d0dbc06334c844700a25f1fe47c891e0492de9",
+      "source": "build",
+      "builtAt": "2026-10-09T11:26:33.499Z"
+    },
+    "dist/workbox-285a0627.js": {
+      "bytes": 21788,
+      "sha256": "c7259099cca8e1018d815613a504a1e47a41885d663853bccc0bf559c88260d3",
+      "source": "build",
+      "builtAt": "2026-10-09T11:26:33.499Z"
+    },
+    "routes.json": {
+      "bytes": 985,
+      "sha256": "0c24884c81161c107b17b05d7a166f8f63999309c69c01edbd939177b3b5307f",
+      "source": "derived"
+    }
+  }
+}

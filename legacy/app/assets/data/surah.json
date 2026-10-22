@@ -1,0 +1,4106 @@
+[
+  {
+    "surahName": "Al-Faatiha",
+    "surahNameArabic": "الفاتحة",
+    "surahNameArabicLong": "سُورَةُ ٱلْفَاتِحَةِ",
+    "surahNameTranslation": "The Opening",
+    "revelationPlace": "Mecca",
+    "totalAyah": 7,
+    "surahNo": 1,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/1.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/001.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/1.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/001.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/1.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/001.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/1.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/001.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/1.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/001.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Baqara",
+    "surahNameArabic": "البقرة",
+    "surahNameArabicLong": "سورة البقرة",
+    "surahNameTranslation": "The Cow",
+    "revelationPlace": "Madina",
+    "totalAyah": 286,
+    "surahNo": 2,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/2.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/002.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/2.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/002.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/2.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/002.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/2.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/002.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/2.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/002.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Aal-i-Imraan",
+    "surahNameArabic": "آل عمران",
+    "surahNameArabicLong": "سورة آل عمران",
+    "surahNameTranslation": "The Family of Imraan",
+    "revelationPlace": "Madina",
+    "totalAyah": 200,
+    "surahNo": 3,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/3.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/003.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/3.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/003.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/3.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/003.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/3.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/003.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/3.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/003.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Nisaa",
+    "surahNameArabic": "النساء",
+    "surahNameArabicLong": "سورة النساء",
+    "surahNameTranslation": "The Women",
+    "revelationPlace": "Madina",
+    "totalAyah": 176,
+    "surahNo": 4,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/4.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/004.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/4.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/004.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/4.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/004.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/4.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/004.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/4.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/004.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Maaida",
+    "surahNameArabic": "المائدة",
+    "surahNameArabicLong": "سورة المائدة",
+    "surahNameTranslation": "The Table",
+    "revelationPlace": "Madina",
+    "totalAyah": 120,
+    "surahNo": 5,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/5.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/005.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/5.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/005.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/5.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/005.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/5.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/005.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/5.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/005.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-An'aam",
+    "surahNameArabic": "الأنعام",
+    "surahNameArabicLong": "سورة الأنعام",
+    "surahNameTranslation": "The Cattle",
+    "revelationPlace": "Mecca",
+    "totalAyah": 165,
+    "surahNo": 6,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/6.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/006.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/6.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/006.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/6.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/006.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/6.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/006.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/6.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/006.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-A'raaf",
+    "surahNameArabic": "الأعراف",
+    "surahNameArabicLong": "سورة الأعراف",
+    "surahNameTranslation": "The Heights",
+    "revelationPlace": "Mecca",
+    "totalAyah": 206,
+    "surahNo": 7,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/7.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/007.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/7.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/007.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/7.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/007.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/7.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/007.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/7.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/007.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Anfaal",
+    "surahNameArabic": "الأنفال",
+    "surahNameArabicLong": "سورة الأنفال",
+    "surahNameTranslation": "The Spoils of War",
+    "revelationPlace": "Madina",
+    "totalAyah": 75,
+    "surahNo": 8,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/8.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/008.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/8.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/008.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/8.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/008.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/8.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/008.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/8.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/008.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Tawba",
+    "surahNameArabic": "التوبة",
+    "surahNameArabicLong": "سورة التوبة",
+    "surahNameTranslation": "The Repentance",
+    "revelationPlace": "Madina",
+    "totalAyah": 129,
+    "surahNo": 9,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/9.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/009.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/9.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/009.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/9.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/009.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/9.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/009.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/9.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/009.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Yunus",
+    "surahNameArabic": "يونس",
+    "surahNameArabicLong": "سورة يونس",
+    "surahNameTranslation": "Jonas",
+    "revelationPlace": "Mecca",
+    "totalAyah": 109,
+    "surahNo": 10,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/10.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/010.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/10.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/010.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/10.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/010.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/10.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/010.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/10.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/010.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Hud",
+    "surahNameArabic": "هود",
+    "surahNameArabicLong": "سورة هود",
+    "surahNameTranslation": "Hud",
+    "revelationPlace": "Mecca",
+    "totalAyah": 123,
+    "surahNo": 11,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/11.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/011.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/11.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/011.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/11.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/011.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/11.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/011.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/11.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/011.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Yusuf",
+    "surahNameArabic": "يوسف",
+    "surahNameArabicLong": "سورة يوسف",
+    "surahNameTranslation": "Joseph",
+    "revelationPlace": "Mecca",
+    "totalAyah": 111,
+    "surahNo": 12,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/12.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/012.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/12.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/012.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/12.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/012.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/12.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/012.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/12.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/012.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ar-Ra'd",
+    "surahNameArabic": "الرعد",
+    "surahNameArabicLong": "سورة الرعد",
+    "surahNameTranslation": "The Thunder",
+    "revelationPlace": "Madina",
+    "totalAyah": 43,
+    "surahNo": 13,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/13.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/013.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/13.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/013.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/13.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/013.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/13.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/013.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/13.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/013.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ibrahim",
+    "surahNameArabic": "ابراهيم",
+    "surahNameArabicLong": "سورة ابراهيم",
+    "surahNameTranslation": "Abraham",
+    "revelationPlace": "Mecca",
+    "totalAyah": 52,
+    "surahNo": 14,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/14.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/014.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/14.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/014.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/14.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/014.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/14.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/014.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/14.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/014.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Hijr",
+    "surahNameArabic": "الحجر",
+    "surahNameArabicLong": "سورة الحجر",
+    "surahNameTranslation": "The Rock",
+    "revelationPlace": "Mecca",
+    "totalAyah": 99,
+    "surahNo": 15,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/15.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/015.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/15.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/015.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/15.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/015.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/15.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/015.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/15.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/015.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Nahl",
+    "surahNameArabic": "النحل",
+    "surahNameArabicLong": "سورة النحل",
+    "surahNameTranslation": "The Bee",
+    "revelationPlace": "Mecca",
+    "totalAyah": 128,
+    "surahNo": 16,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/16.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/016.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/16.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/016.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/16.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/016.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/16.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/016.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/16.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/016.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Israa",
+    "surahNameArabic": "الإسراء",
+    "surahNameArabicLong": "سورة الإسراء",
+    "surahNameTranslation": "The Night Journey",
+    "revelationPlace": "Mecca",
+    "totalAyah": 111,
+    "surahNo": 17,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/17.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/017.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/17.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/017.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/17.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/017.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/17.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/017.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/17.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/017.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Kahf",
+    "surahNameArabic": "الكهف",
+    "surahNameArabicLong": "سورة الكهف",
+    "surahNameTranslation": "The Cave",
+    "revelationPlace": "Mecca",
+    "totalAyah": 110,
+    "surahNo": 18,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/18.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/018.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/18.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/018.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/18.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/018.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/18.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/018.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/18.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/018.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Maryam",
+    "surahNameArabic": "مريم",
+    "surahNameArabicLong": "سورة مريم",
+    "surahNameTranslation": "Mary",
+    "revelationPlace": "Mecca",
+    "totalAyah": 98,
+    "surahNo": 19,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/19.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/019.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/19.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/019.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/19.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/019.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/19.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/019.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/19.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/019.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Taa-Haa",
+    "surahNameArabic": "طه",
+    "surahNameArabicLong": "سورة طه",
+    "surahNameTranslation": "Taa-Haa",
+    "revelationPlace": "Mecca",
+    "totalAyah": 135,
+    "surahNo": 20,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/20.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/020.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/20.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/020.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/20.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/020.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/20.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/020.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/20.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/020.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Anbiyaa",
+    "surahNameArabic": "الأنبياء",
+    "surahNameArabicLong": "سورة الأنبياء",
+    "surahNameTranslation": "The Prophets",
+    "revelationPlace": "Mecca",
+    "totalAyah": 112,
+    "surahNo": 21,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/21.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/021.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/21.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/021.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/21.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/021.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/21.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/021.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/21.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/021.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Hajj",
+    "surahNameArabic": "الحج",
+    "surahNameArabicLong": "سورة الحج",
+    "surahNameTranslation": "The Pilgrimage",
+    "revelationPlace": "Madina",
+    "totalAyah": 78,
+    "surahNo": 22,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/22.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/022.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/22.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/022.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/22.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/022.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/22.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/022.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/22.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/022.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Muminoon",
+    "surahNameArabic": "المؤمنون",
+    "surahNameArabicLong": "سورة المؤمنون",
+    "surahNameTranslation": "The Believers",
+    "revelationPlace": "Mecca",
+    "totalAyah": 118,
+    "surahNo": 23,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/23.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/023.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/23.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/023.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/23.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/023.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/23.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/023.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/23.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/023.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Noor",
+    "surahNameArabic": "النور",
+    "surahNameArabicLong": "سورة النور",
+    "surahNameTranslation": "The Light",
+    "revelationPlace": "Madina",
+    "totalAyah": 64,
+    "surahNo": 24,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/24.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/024.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/24.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/024.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/24.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/024.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/24.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/024.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/24.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/024.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Furqaan",
+    "surahNameArabic": "الفرقان",
+    "surahNameArabicLong": "سورة الفرقان",
+    "surahNameTranslation": "The Criterion",
+    "revelationPlace": "Mecca",
+    "totalAyah": 77,
+    "surahNo": 25,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/25.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/025.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/25.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/025.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/25.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/025.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/25.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/025.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/25.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/025.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ash-Shu'araa",
+    "surahNameArabic": "الشعراء",
+    "surahNameArabicLong": "سورة الشعراء",
+    "surahNameTranslation": "The Poets",
+    "revelationPlace": "Mecca",
+    "totalAyah": 227,
+    "surahNo": 26,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/26.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/026.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/26.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/026.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/26.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/026.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/26.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/026.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/26.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/026.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Naml",
+    "surahNameArabic": "النمل",
+    "surahNameArabicLong": "سورة النمل",
+    "surahNameTranslation": "The Ant",
+    "revelationPlace": "Mecca",
+    "totalAyah": 93,
+    "surahNo": 27,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/27.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/027.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/27.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/027.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/27.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/027.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/27.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/027.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/27.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/027.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Qasas",
+    "surahNameArabic": "القصص",
+    "surahNameArabicLong": "سورة القصص",
+    "surahNameTranslation": "The Stories",
+    "revelationPlace": "Mecca",
+    "totalAyah": 88,
+    "surahNo": 28,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/28.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/028.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/28.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/028.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/28.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/028.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/28.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/028.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/28.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/028.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Ankaboot",
+    "surahNameArabic": "العنكبوت",
+    "surahNameArabicLong": "سورة العنكبوت",
+    "surahNameTranslation": "The Spider",
+    "revelationPlace": "Mecca",
+    "totalAyah": 69,
+    "surahNo": 29,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/29.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/029.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/29.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/029.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/29.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/029.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/29.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/029.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/29.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/029.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ar-Room",
+    "surahNameArabic": "الروم",
+    "surahNameArabicLong": "سورة الروم",
+    "surahNameTranslation": "The Romans",
+    "revelationPlace": "Mecca",
+    "totalAyah": 60,
+    "surahNo": 30,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/30.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/030.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/30.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/030.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/30.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/030.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/30.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/030.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/30.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/030.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Luqman",
+    "surahNameArabic": "لقمان",
+    "surahNameArabicLong": "سورة لقمان",
+    "surahNameTranslation": "Luqman",
+    "revelationPlace": "Mecca",
+    "totalAyah": 34,
+    "surahNo": 31,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/31.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/031.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/31.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/031.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/31.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/031.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/31.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/031.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/31.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/031.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "As-Sajda",
+    "surahNameArabic": "السجدة",
+    "surahNameArabicLong": "سورة السجدة",
+    "surahNameTranslation": "The Prostration",
+    "revelationPlace": "Mecca",
+    "totalAyah": 30,
+    "surahNo": 32,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/32.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/032.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/32.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/032.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/32.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/032.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/32.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/032.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/32.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/032.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Ahzaab",
+    "surahNameArabic": "الأحزاب",
+    "surahNameArabicLong": "سورة الأحزاب",
+    "surahNameTranslation": "The Clans",
+    "revelationPlace": "Madina",
+    "totalAyah": 73,
+    "surahNo": 33,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/33.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/033.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/33.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/033.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/33.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/033.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/33.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/033.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/33.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/033.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Saba",
+    "surahNameArabic": "سبإ",
+    "surahNameArabicLong": "سورة سَبَأ",
+    "surahNameTranslation": "Sheba",
+    "revelationPlace": "Mecca",
+    "totalAyah": 54,
+    "surahNo": 34,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/34.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/034.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/34.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/034.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/34.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/034.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/34.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/034.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/34.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/034.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Faatir",
+    "surahNameArabic": "فاطر",
+    "surahNameArabicLong": "سورة فاطر",
+    "surahNameTranslation": "The Originator",
+    "revelationPlace": "Mecca",
+    "totalAyah": 45,
+    "surahNo": 35,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/35.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/035.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/35.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/035.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/35.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/035.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/35.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/035.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/35.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/035.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Yaseen",
+    "surahNameArabic": "يس",
+    "surahNameArabicLong": "سورة يس",
+    "surahNameTranslation": "Yaseen",
+    "revelationPlace": "Mecca",
+    "totalAyah": 83,
+    "surahNo": 36,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/36.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/036.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/36.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/036.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/36.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/036.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/36.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/036.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/36.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/036.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "As-Saaffaat",
+    "surahNameArabic": "الصافات",
+    "surahNameArabicLong": "سورة الصافات",
+    "surahNameTranslation": "Those drawn up in Ranks",
+    "revelationPlace": "Mecca",
+    "totalAyah": 182,
+    "surahNo": 37,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/37.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/037.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/37.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/037.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/37.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/037.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/37.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/037.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/37.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/037.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Saad",
+    "surahNameArabic": "ص",
+    "surahNameArabicLong": "سورة ص",
+    "surahNameTranslation": "The letter Saad",
+    "revelationPlace": "Mecca",
+    "totalAyah": 88,
+    "surahNo": 38,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/38.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/038.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/38.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/038.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/38.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/038.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/38.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/038.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/38.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/038.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Az-Zumar",
+    "surahNameArabic": "الزمر",
+    "surahNameArabicLong": "سورة الزمر",
+    "surahNameTranslation": "The Groups",
+    "revelationPlace": "Mecca",
+    "totalAyah": 75,
+    "surahNo": 39,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/39.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/039.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/39.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/039.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/39.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/039.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/39.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/039.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/39.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/039.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ghafir",
+    "surahNameArabic": "غافر",
+    "surahNameArabicLong": "سورة غافر",
+    "surahNameTranslation": "The Forgiver",
+    "revelationPlace": "Mecca",
+    "totalAyah": 85,
+    "surahNo": 40,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/40.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/040.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/40.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/040.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/40.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/040.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/40.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/040.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/40.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/040.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Fussilat",
+    "surahNameArabic": "فصلت",
+    "surahNameArabicLong": "سورة فصلت",
+    "surahNameTranslation": "Explained in detail",
+    "revelationPlace": "Mecca",
+    "totalAyah": 54,
+    "surahNo": 41,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/41.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/041.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/41.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/041.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/41.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/041.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/41.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/041.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/41.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/041.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ash-Shura",
+    "surahNameArabic": "الشورى",
+    "surahNameArabicLong": "سورة الشورى",
+    "surahNameTranslation": "Consultation",
+    "revelationPlace": "Mecca",
+    "totalAyah": 53,
+    "surahNo": 42,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/42.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/042.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/42.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/042.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/42.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/042.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/42.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/042.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/42.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/042.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Az-Zukhruf",
+    "surahNameArabic": "الزخرف",
+    "surahNameArabicLong": "سورة الزخرف",
+    "surahNameTranslation": "Ornaments of gold",
+    "revelationPlace": "Mecca",
+    "totalAyah": 89,
+    "surahNo": 43,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/43.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/043.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/43.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/043.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/43.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/043.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/43.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/043.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/43.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/043.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ad-Dukhaan",
+    "surahNameArabic": "الدخان",
+    "surahNameArabicLong": "سورة الدخان",
+    "surahNameTranslation": "The Smoke",
+    "revelationPlace": "Mecca",
+    "totalAyah": 59,
+    "surahNo": 44,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/44.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/044.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/44.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/044.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/44.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/044.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/44.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/044.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/44.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/044.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Jaathiya",
+    "surahNameArabic": "الجاثية",
+    "surahNameArabicLong": "سورة الجاثية",
+    "surahNameTranslation": "Crouching",
+    "revelationPlace": "Mecca",
+    "totalAyah": 37,
+    "surahNo": 45,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/45.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/045.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/45.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/045.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/45.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/045.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/45.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/045.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/45.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/045.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Ahqaf",
+    "surahNameArabic": "الأحقاف",
+    "surahNameArabicLong": "سورة الأحقاف",
+    "surahNameTranslation": "The Dunes",
+    "revelationPlace": "Mecca",
+    "totalAyah": 35,
+    "surahNo": 46,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/46.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/046.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/46.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/046.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/46.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/046.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/46.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/046.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/46.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/046.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Muhammad",
+    "surahNameArabic": "محمد",
+    "surahNameArabicLong": "سورة محمد",
+    "surahNameTranslation": "Muhammad",
+    "revelationPlace": "Madina",
+    "totalAyah": 38,
+    "surahNo": 47,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/47.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/047.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/47.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/047.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/47.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/047.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/47.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/047.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/47.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/047.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Fath",
+    "surahNameArabic": "الفتح",
+    "surahNameArabicLong": "سورة الفتح",
+    "surahNameTranslation": "The Victory",
+    "revelationPlace": "Madina",
+    "totalAyah": 29,
+    "surahNo": 48,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/48.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/048.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/48.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/048.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/48.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/048.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/48.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/048.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/48.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/048.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Hujuraat",
+    "surahNameArabic": "الحجرات",
+    "surahNameArabicLong": "سورة الحجرات",
+    "surahNameTranslation": "The Inner Apartments",
+    "revelationPlace": "Madina",
+    "totalAyah": 18,
+    "surahNo": 49,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/49.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/049.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/49.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/049.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/49.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/049.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/49.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/049.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/49.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/049.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Qaaf",
+    "surahNameArabic": "ق",
+    "surahNameArabicLong": "سورة ق",
+    "surahNameTranslation": "The letter Qaaf",
+    "revelationPlace": "Mecca",
+    "totalAyah": 45,
+    "surahNo": 50,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/50.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/050.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/50.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/050.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/50.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/050.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/50.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/050.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/50.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/050.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Adh-Dhaariyat",
+    "surahNameArabic": "الذاريات",
+    "surahNameArabicLong": "سورة الذاريات",
+    "surahNameTranslation": "The Winnowing Winds",
+    "revelationPlace": "Mecca",
+    "totalAyah": 60,
+    "surahNo": 51,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/51.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/051.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/51.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/051.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/51.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/051.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/51.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/051.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/51.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/051.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Tur",
+    "surahNameArabic": "الطور",
+    "surahNameArabicLong": "سورة الطور",
+    "surahNameTranslation": "The Mount",
+    "revelationPlace": "Mecca",
+    "totalAyah": 49,
+    "surahNo": 52,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/52.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/052.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/52.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/052.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/52.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/052.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/52.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/052.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/52.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/052.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Najm",
+    "surahNameArabic": "النجم",
+    "surahNameArabicLong": "سورة النجم",
+    "surahNameTranslation": "The Star",
+    "revelationPlace": "Mecca",
+    "totalAyah": 62,
+    "surahNo": 53,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/53.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/053.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/53.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/053.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/53.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/053.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/53.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/053.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/53.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/053.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Qamar",
+    "surahNameArabic": "القمر",
+    "surahNameArabicLong": "سورة القمر",
+    "surahNameTranslation": "The Moon",
+    "revelationPlace": "Mecca",
+    "totalAyah": 55,
+    "surahNo": 54,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/54.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/054.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/54.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/054.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/54.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/054.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/54.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/054.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/54.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/054.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ar-Rahmaan",
+    "surahNameArabic": "الرحمن",
+    "surahNameArabicLong": "سورة الرحمن",
+    "surahNameTranslation": "The Beneficent",
+    "revelationPlace": "Madina",
+    "totalAyah": 78,
+    "surahNo": 55,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/55.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/055.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/55.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/055.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/55.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/055.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/55.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/055.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/55.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/055.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Waaqia",
+    "surahNameArabic": "الواقعة",
+    "surahNameArabicLong": "سورة الواقعة",
+    "surahNameTranslation": "The Inevitable",
+    "revelationPlace": "Mecca",
+    "totalAyah": 96,
+    "surahNo": 56,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/56.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/056.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/56.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/056.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/56.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/056.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/56.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/056.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/56.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/056.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Hadid",
+    "surahNameArabic": "الحديد",
+    "surahNameArabicLong": "سورة الحديد",
+    "surahNameTranslation": "The Iron",
+    "revelationPlace": "Madina",
+    "totalAyah": 29,
+    "surahNo": 57,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/57.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/057.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/57.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/057.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/57.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/057.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/57.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/057.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/57.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/057.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Mujaadila",
+    "surahNameArabic": "المجادلة",
+    "surahNameArabicLong": "سورة المجادلة",
+    "surahNameTranslation": "The Pleading Woman",
+    "revelationPlace": "Madina",
+    "totalAyah": 22,
+    "surahNo": 58,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/58.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/058.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/58.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/058.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/58.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/058.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/58.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/058.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/58.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/058.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Hashr",
+    "surahNameArabic": "الحشر",
+    "surahNameArabicLong": "سورة الحشر",
+    "surahNameTranslation": "The Exile",
+    "revelationPlace": "Madina",
+    "totalAyah": 24,
+    "surahNo": 59,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/59.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/059.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/59.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/059.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/59.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/059.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/59.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/059.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/59.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/059.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Mumtahana",
+    "surahNameArabic": "الممتحنة",
+    "surahNameArabicLong": "سورة الممتحنة",
+    "surahNameTranslation": "She that is to be examined",
+    "revelationPlace": "Madina",
+    "totalAyah": 13,
+    "surahNo": 60,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/60.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/060.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/60.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/060.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/60.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/060.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/60.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/060.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/60.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/060.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "As-Saff",
+    "surahNameArabic": "الصف",
+    "surahNameArabicLong": "سورة الصف",
+    "surahNameTranslation": "The Ranks",
+    "revelationPlace": "Madina",
+    "totalAyah": 14,
+    "surahNo": 61,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/61.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/061.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/61.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/061.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/61.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/061.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/61.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/061.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/61.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/061.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Jumu'a",
+    "surahNameArabic": "الجمعة",
+    "surahNameArabicLong": "سورة الجمعة",
+    "surahNameTranslation": "Friday",
+    "revelationPlace": "Madina",
+    "totalAyah": 11,
+    "surahNo": 62,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/62.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/062.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/62.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/062.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/62.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/062.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/62.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/062.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/62.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/062.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Munaafiqoon",
+    "surahNameArabic": "المنافقون",
+    "surahNameArabicLong": "سورة المنافقون",
+    "surahNameTranslation": "The Hypocrites",
+    "revelationPlace": "Madina",
+    "totalAyah": 11,
+    "surahNo": 63,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/63.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/063.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/63.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/063.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/63.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/063.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/63.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/063.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/63.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/063.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Taghaabun",
+    "surahNameArabic": "التغابن",
+    "surahNameArabicLong": "سورة التغابن",
+    "surahNameTranslation": "Mutual Disillusion",
+    "revelationPlace": "Madina",
+    "totalAyah": 18,
+    "surahNo": 64,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/64.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/064.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/64.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/064.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/64.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/064.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/64.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/064.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/64.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/064.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Talaaq",
+    "surahNameArabic": "الطلاق",
+    "surahNameArabicLong": "سورة الطلاق",
+    "surahNameTranslation": "Divorce",
+    "revelationPlace": "Madina",
+    "totalAyah": 12,
+    "surahNo": 65,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/65.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/065.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/65.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/065.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/65.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/065.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/65.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/065.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/65.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/065.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Tahrim",
+    "surahNameArabic": "التحريم",
+    "surahNameArabicLong": "سورة التحريم",
+    "surahNameTranslation": "The Prohibition",
+    "revelationPlace": "Madina",
+    "totalAyah": 12,
+    "surahNo": 66,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/66.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/066.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/66.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/066.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/66.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/066.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/66.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/066.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/66.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/066.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Mulk",
+    "surahNameArabic": "الملك",
+    "surahNameArabicLong": "سورة الملك",
+    "surahNameTranslation": "The Sovereignty",
+    "revelationPlace": "Mecca",
+    "totalAyah": 30,
+    "surahNo": 67,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/67.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/067.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/67.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/067.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/67.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/067.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/67.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/067.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/67.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/067.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Qalam",
+    "surahNameArabic": "القلم",
+    "surahNameArabicLong": "سورة القلم",
+    "surahNameTranslation": "The Pen",
+    "revelationPlace": "Mecca",
+    "totalAyah": 52,
+    "surahNo": 68,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/68.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/068.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/68.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/068.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/68.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/068.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/68.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/068.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/68.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/068.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Haaqqa",
+    "surahNameArabic": "الحاقة",
+    "surahNameArabicLong": "سورة الحاقة",
+    "surahNameTranslation": "The Reality",
+    "revelationPlace": "Mecca",
+    "totalAyah": 52,
+    "surahNo": 69,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/69.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/069.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/69.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/069.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/69.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/069.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/69.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/069.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/69.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/069.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Ma'aarij",
+    "surahNameArabic": "المعارج",
+    "surahNameArabicLong": "سورة المعارج",
+    "surahNameTranslation": "The Ascending Stairways",
+    "revelationPlace": "Mecca",
+    "totalAyah": 44,
+    "surahNo": 70,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/70.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/070.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/70.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/070.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/70.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/070.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/70.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/070.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/70.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/070.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Nooh",
+    "surahNameArabic": "نوح",
+    "surahNameArabicLong": "سورة نوح",
+    "surahNameTranslation": "Noah",
+    "revelationPlace": "Mecca",
+    "totalAyah": 28,
+    "surahNo": 71,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/71.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/071.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/71.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/071.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/71.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/071.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/71.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/071.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/71.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/071.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Jinn",
+    "surahNameArabic": "الجن",
+    "surahNameArabicLong": "سورة الجن",
+    "surahNameTranslation": "The Jinn",
+    "revelationPlace": "Mecca",
+    "totalAyah": 28,
+    "surahNo": 72,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/72.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/072.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/72.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/072.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/72.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/072.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/72.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/072.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/72.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/072.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Muzzammil",
+    "surahNameArabic": "المزمل",
+    "surahNameArabicLong": "سورة المزمل",
+    "surahNameTranslation": "The Enshrouded One",
+    "revelationPlace": "Mecca",
+    "totalAyah": 20,
+    "surahNo": 73,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/73.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/073.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/73.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/073.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/73.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/073.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/73.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/073.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/73.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/073.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Muddaththir",
+    "surahNameArabic": "المدثر",
+    "surahNameArabicLong": "سورة المدثر",
+    "surahNameTranslation": "The Cloaked One",
+    "revelationPlace": "Mecca",
+    "totalAyah": 56,
+    "surahNo": 74,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/74.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/074.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/74.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/074.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/74.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/074.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/74.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/074.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/74.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/074.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Qiyaama",
+    "surahNameArabic": "القيامة",
+    "surahNameArabicLong": "سورة القيامة",
+    "surahNameTranslation": "The Resurrection",
+    "revelationPlace": "Mecca",
+    "totalAyah": 40,
+    "surahNo": 75,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/75.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/075.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/75.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/075.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/75.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/075.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/75.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/075.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/75.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/075.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Insaan",
+    "surahNameArabic": "الانسان",
+    "surahNameArabicLong": "سورة الانسان",
+    "surahNameTranslation": "Man",
+    "revelationPlace": "Madina",
+    "totalAyah": 31,
+    "surahNo": 76,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/76.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/076.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/76.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/076.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/76.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/076.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/76.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/076.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/76.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/076.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Mursalaat",
+    "surahNameArabic": "المرسلات",
+    "surahNameArabicLong": "سورة المرسلات",
+    "surahNameTranslation": "The Emissaries",
+    "revelationPlace": "Mecca",
+    "totalAyah": 50,
+    "surahNo": 77,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/77.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/077.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/77.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/077.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/77.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/077.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/77.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/077.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/77.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/077.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Naba",
+    "surahNameArabic": "النبإ",
+    "surahNameArabicLong": "سورة النبأ",
+    "surahNameTranslation": "The Announcement",
+    "revelationPlace": "Mecca",
+    "totalAyah": 40,
+    "surahNo": 78,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/78.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/078.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/78.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/078.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/78.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/078.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/78.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/078.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/78.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/078.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Naazi'aat",
+    "surahNameArabic": "النازعات",
+    "surahNameArabicLong": "سورة النازعات",
+    "surahNameTranslation": "Those who drag forth",
+    "revelationPlace": "Mecca",
+    "totalAyah": 46,
+    "surahNo": 79,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/79.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/079.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/79.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/079.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/79.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/079.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/79.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/079.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/79.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/079.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Abasa",
+    "surahNameArabic": "عبس",
+    "surahNameArabicLong": "سورة عبس",
+    "surahNameTranslation": "He frowned",
+    "revelationPlace": "Mecca",
+    "totalAyah": 42,
+    "surahNo": 80,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/80.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/080.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/80.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/080.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/80.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/080.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/80.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/080.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/80.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/080.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Takwir",
+    "surahNameArabic": "التكوير",
+    "surahNameArabicLong": "سورة التكوير",
+    "surahNameTranslation": "The Overthrowing",
+    "revelationPlace": "Mecca",
+    "totalAyah": 29,
+    "surahNo": 81,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/81.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/081.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/81.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/081.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/81.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/081.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/81.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/081.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/81.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/081.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Infitaar",
+    "surahNameArabic": "الإنفطار",
+    "surahNameArabicLong": "سورة الإنفطار",
+    "surahNameTranslation": "The Cleaving",
+    "revelationPlace": "Mecca",
+    "totalAyah": 19,
+    "surahNo": 82,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/82.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/082.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/82.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/082.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/82.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/082.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/82.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/082.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/82.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/082.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Mutaffifin",
+    "surahNameArabic": "المطففين",
+    "surahNameArabicLong": "سورة المطففين",
+    "surahNameTranslation": "Defrauding",
+    "revelationPlace": "Mecca",
+    "totalAyah": 36,
+    "surahNo": 83,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/83.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/083.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/83.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/083.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/83.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/083.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/83.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/083.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/83.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/083.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Inshiqaaq",
+    "surahNameArabic": "الإنشقاق",
+    "surahNameArabicLong": "سورة الإنشقاق",
+    "surahNameTranslation": "The Splitting Open",
+    "revelationPlace": "Mecca",
+    "totalAyah": 25,
+    "surahNo": 84,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/84.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/084.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/84.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/084.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/84.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/084.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/84.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/084.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/84.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/084.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Burooj",
+    "surahNameArabic": "البروج",
+    "surahNameArabicLong": "سورة البروج",
+    "surahNameTranslation": "The Constellations",
+    "revelationPlace": "Mecca",
+    "totalAyah": 22,
+    "surahNo": 85,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/85.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/085.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/85.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/085.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/85.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/085.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/85.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/085.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/85.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/085.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Taariq",
+    "surahNameArabic": "الطارق",
+    "surahNameArabicLong": "سورة الطارق",
+    "surahNameTranslation": "The Morning Star",
+    "revelationPlace": "Mecca",
+    "totalAyah": 17,
+    "surahNo": 86,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/86.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/086.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/86.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/086.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/86.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/086.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/86.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/086.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/86.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/086.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-A'laa",
+    "surahNameArabic": "الأعلى",
+    "surahNameArabicLong": "سورة الأعلى",
+    "surahNameTranslation": "The Most High",
+    "revelationPlace": "Mecca",
+    "totalAyah": 19,
+    "surahNo": 87,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/87.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/087.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/87.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/087.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/87.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/087.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/87.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/087.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/87.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/087.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Ghaashiya",
+    "surahNameArabic": "الغاشية",
+    "surahNameArabicLong": "سورة الغاشية",
+    "surahNameTranslation": "The Overwhelming",
+    "revelationPlace": "Mecca",
+    "totalAyah": 26,
+    "surahNo": 88,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/88.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/088.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/88.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/088.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/88.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/088.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/88.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/088.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/88.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/088.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Fajr",
+    "surahNameArabic": "الفجر",
+    "surahNameArabicLong": "سورة الفجر",
+    "surahNameTranslation": "The Dawn",
+    "revelationPlace": "Mecca",
+    "totalAyah": 30,
+    "surahNo": 89,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/89.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/089.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/89.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/089.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/89.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/089.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/89.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/089.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/89.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/089.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Balad",
+    "surahNameArabic": "البلد",
+    "surahNameArabicLong": "سورة البلد",
+    "surahNameTranslation": "The City",
+    "revelationPlace": "Mecca",
+    "totalAyah": 20,
+    "surahNo": 90,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/90.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/090.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/90.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/090.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/90.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/090.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/90.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/090.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/90.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/090.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ash-Shams",
+    "surahNameArabic": "الشمس",
+    "surahNameArabicLong": "سورة الشمس",
+    "surahNameTranslation": "The Sun",
+    "revelationPlace": "Mecca",
+    "totalAyah": 15,
+    "surahNo": 91,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/91.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/091.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/91.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/091.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/91.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/091.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/91.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/091.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/91.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/091.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Lail",
+    "surahNameArabic": "الليل",
+    "surahNameArabicLong": "سورة الليل",
+    "surahNameTranslation": "The Night",
+    "revelationPlace": "Mecca",
+    "totalAyah": 21,
+    "surahNo": 92,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/92.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/092.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/92.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/092.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/92.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/092.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/92.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/092.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/92.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/092.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ad-Dhuhaa",
+    "surahNameArabic": "الضحى",
+    "surahNameArabicLong": "سورة الضحى",
+    "surahNameTranslation": "The Morning Hours",
+    "revelationPlace": "Mecca",
+    "totalAyah": 11,
+    "surahNo": 93,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/93.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/093.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/93.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/093.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/93.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/093.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/93.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/093.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/93.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/093.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Ash-Sharh",
+    "surahNameArabic": "الشرح",
+    "surahNameArabicLong": "سورة الشرح",
+    "surahNameTranslation": "The Consolation",
+    "revelationPlace": "Mecca",
+    "totalAyah": 8,
+    "surahNo": 94,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/94.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/094.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/94.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/094.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/94.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/094.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/94.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/094.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/94.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/094.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Tin",
+    "surahNameArabic": "التين",
+    "surahNameArabicLong": "سورة التين",
+    "surahNameTranslation": "The Fig",
+    "revelationPlace": "Mecca",
+    "totalAyah": 8,
+    "surahNo": 95,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/95.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/095.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/95.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/095.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/95.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/095.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/95.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/095.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/95.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/095.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Alaq",
+    "surahNameArabic": "العلق",
+    "surahNameArabicLong": "سورة العلق",
+    "surahNameTranslation": "The Clot",
+    "revelationPlace": "Mecca",
+    "totalAyah": 19,
+    "surahNo": 96,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/96.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/096.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/96.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/096.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/96.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/096.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/96.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/096.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/96.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/096.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Qadr",
+    "surahNameArabic": "القدر",
+    "surahNameArabicLong": "سورة القدر",
+    "surahNameTranslation": "The Power, Fate",
+    "revelationPlace": "Mecca",
+    "totalAyah": 5,
+    "surahNo": 97,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/97.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/097.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/97.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/097.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/97.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/097.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/97.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/097.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/97.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/097.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Bayyina",
+    "surahNameArabic": "البينة",
+    "surahNameArabicLong": "سورة البينة",
+    "surahNameTranslation": "The Evidence",
+    "revelationPlace": "Madina",
+    "totalAyah": 8,
+    "surahNo": 98,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/98.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/098.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/98.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/098.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/98.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/098.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/98.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/098.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/98.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/098.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Az-Zalzala",
+    "surahNameArabic": "الزلزلة",
+    "surahNameArabicLong": "سورة الزلزلة",
+    "surahNameTranslation": "The Earthquake",
+    "revelationPlace": "Madina",
+    "totalAyah": 8,
+    "surahNo": 99,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/99.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/099.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/99.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/099.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/99.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/099.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/99.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/099.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/99.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/099.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Aadiyaat",
+    "surahNameArabic": "العاديات",
+    "surahNameArabicLong": "سورة العاديات",
+    "surahNameTranslation": "The Chargers",
+    "revelationPlace": "Mecca",
+    "totalAyah": 11,
+    "surahNo": 100,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/100.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/100.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/100.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/100.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/100.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/100.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/100.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/100.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/100.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/100.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Qaari'a",
+    "surahNameArabic": "القارعة",
+    "surahNameArabicLong": "سورة القارعة",
+    "surahNameTranslation": "The Calamity",
+    "revelationPlace": "Mecca",
+    "totalAyah": 11,
+    "surahNo": 101,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/101.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/101.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/101.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/101.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/101.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/101.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/101.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/101.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/101.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/101.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "At-Takaathur",
+    "surahNameArabic": "التكاثر",
+    "surahNameArabicLong": "سورة التكاثر",
+    "surahNameTranslation": "Competition",
+    "revelationPlace": "Mecca",
+    "totalAyah": 8,
+    "surahNo": 102,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/102.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/102.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/102.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/102.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/102.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/102.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/102.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/102.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/102.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/102.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Asr",
+    "surahNameArabic": "العصر",
+    "surahNameArabicLong": "سورة العصر",
+    "surahNameTranslation": "The Declining Day, Epoch",
+    "revelationPlace": "Mecca",
+    "totalAyah": 3,
+    "surahNo": 103,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/103.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/103.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/103.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/103.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/103.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/103.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/103.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/103.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/103.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/103.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Humaza",
+    "surahNameArabic": "الهمزة",
+    "surahNameArabicLong": "سورة الهمزة",
+    "surahNameTranslation": "The Traducer",
+    "revelationPlace": "Mecca",
+    "totalAyah": 9,
+    "surahNo": 104,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/104.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/104.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/104.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/104.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/104.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/104.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/104.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/104.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/104.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/104.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Fil",
+    "surahNameArabic": "الفيل",
+    "surahNameArabicLong": "سورة الفيل",
+    "surahNameTranslation": "The Elephant",
+    "revelationPlace": "Mecca",
+    "totalAyah": 5,
+    "surahNo": 105,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/105.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/105.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/105.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/105.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/105.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/105.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/105.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/105.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/105.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/105.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Quraish",
+    "surahNameArabic": "قريش",
+    "surahNameArabicLong": "سورة قريش",
+    "surahNameTranslation": "Quraysh",
+    "revelationPlace": "Mecca",
+    "totalAyah": 4,
+    "surahNo": 106,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/106.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/106.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/106.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/106.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/106.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/106.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/106.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/106.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/106.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/106.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Maa'un",
+    "surahNameArabic": "الماعون",
+    "surahNameArabicLong": "سورة الماعون",
+    "surahNameTranslation": "Almsgiving",
+    "revelationPlace": "Mecca",
+    "totalAyah": 7,
+    "surahNo": 107,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/107.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/107.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/107.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/107.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/107.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/107.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/107.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/107.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/107.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/107.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Kawthar",
+    "surahNameArabic": "الكوثر",
+    "surahNameArabicLong": "سورة الكوثر",
+    "surahNameTranslation": "Abundance",
+    "revelationPlace": "Mecca",
+    "totalAyah": 3,
+    "surahNo": 108,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/108.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/108.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/108.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/108.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/108.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/108.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/108.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/108.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/108.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/108.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Kaafiroon",
+    "surahNameArabic": "الكافرون",
+    "surahNameArabicLong": "سورة الكافرون",
+    "surahNameTranslation": "The Disbelievers",
+    "revelationPlace": "Mecca",
+    "totalAyah": 6,
+    "surahNo": 109,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/109.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/109.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/109.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/109.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/109.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/109.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/109.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/109.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/109.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/109.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Nasr",
+    "surahNameArabic": "النصر",
+    "surahNameArabicLong": "سورة النصر",
+    "surahNameTranslation": "Divine Support",
+    "revelationPlace": "Madina",
+    "totalAyah": 3,
+    "surahNo": 110,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/110.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/110.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/110.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/110.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/110.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/110.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/110.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/110.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/110.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/110.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Masad",
+    "surahNameArabic": "المسد",
+    "surahNameArabicLong": "سورة المسد",
+    "surahNameTranslation": "The Palm Fibre",
+    "revelationPlace": "Mecca",
+    "totalAyah": 5,
+    "surahNo": 111,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/111.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/111.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/111.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/111.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/111.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/111.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/111.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/111.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/111.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/111.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Ikhlaas",
+    "surahNameArabic": "الإخلاص",
+    "surahNameArabicLong": "سورة الإخلاص",
+    "surahNameTranslation": "Sincerity",
+    "revelationPlace": "Mecca",
+    "totalAyah": 4,
+    "surahNo": 112,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/112.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/112.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/112.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/112.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/112.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/112.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/112.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/112.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/112.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/112.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "Al-Falaq",
+    "surahNameArabic": "الفلق",
+    "surahNameArabicLong": "سورة الفلق",
+    "surahNameTranslation": "The Dawn",
+    "revelationPlace": "Mecca",
+    "totalAyah": 5,
+    "surahNo": 113,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/113.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/113.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/113.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/113.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/113.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/113.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/113.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/113.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/113.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/113.mp3"
+      }
+    }
+  },
+  {
+    "surahName": "An-Naas",
+    "surahNameArabic": "الناس",
+    "surahNameArabicLong": "سورة الناس",
+    "surahNameTranslation": "Mankind",
+    "revelationPlace": "Mecca",
+    "totalAyah": 6,
+    "surahNo": 114,
+    "audio": {
+      "1": {
+        "reciter": "Mishary Rashid Al Afasy",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/1/114.mp3",
+        "originalUrl": "https://server8.mp3quran.net/afs/114.mp3"
+      },
+      "2": {
+        "reciter": "Abu Bakr Al Shatri",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/2/114.mp3",
+        "originalUrl": "https://server11.mp3quran.net/shatri/114.mp3"
+      },
+      "3": {
+        "reciter": "Nasser Al Qatami",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/3/114.mp3",
+        "originalUrl": "https://server6.mp3quran.net/qtm/114.mp3"
+      },
+      "4": {
+        "reciter": "Yasser Al Dosari",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/4/114.mp3",
+        "originalUrl": "https://server11.mp3quran.net/yasser/114.mp3"
+      },
+      "5": {
+        "reciter": "Hani Ar Rifai",
+        "url": "https://github.com/The-Quran-Project/Quran-Audio-Chapters/raw/refs/heads/main/Data/5/114.mp3",
+        "originalUrl": "https://server8.mp3quran.net/hani/114.mp3"
+      }
+    }
+  }
+]

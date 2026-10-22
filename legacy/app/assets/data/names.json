@@ -1,0 +1,802 @@
+[
+  {
+    "id": 1,
+    "arabic": "ٱلرَّحْمَـٰنُ",
+    "transliteration": "Ar-Rahman",
+    "english": "The Most Merciful",
+    "urdu": "نہایت رحم کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/1.%20ar-rahman.mp3"
+  },
+  {
+    "id": 2,
+    "arabic": "ٱلرَّحِيمُ",
+    "transliteration": "Ar-Raheem",
+    "english": "The Especially Merciful",
+    "urdu": "بہت مہربان",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/2.%20ar-raheem.mp3"
+  },
+  {
+    "id": 3,
+    "arabic": "ٱلْمَلِكُ",
+    "transliteration": "Al-Malik",
+    "english": "The King",
+    "urdu": "بادشاہ",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/3.%20al-malik.mp3"
+  },
+  {
+    "id": 4,
+    "arabic": "ٱلْقُدُّوسُ",
+    "transliteration": "Al-Quddus",
+    "english": "The Most Sacred",
+    "urdu": "نہایت مقدس",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/4.%20al-qaddus.mp3"
+  },
+  {
+    "id": 5,
+    "arabic": "ٱلسَّلَامُ",
+    "transliteration": "As-Salam",
+    "english": "The Source of Peace",
+    "urdu": "سلامتی دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/5.%20as-salam.mp3"
+  },
+  {
+    "id": 6,
+    "arabic": "ٱلْمُؤْمِنُ",
+    "transliteration": "Al-Mu’min",
+    "english": "The Giver of Security",
+    "urdu": "امن دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/6.%20al-mumin.mp3"
+  },
+  {
+    "id": 7,
+    "arabic": "ٱلْمُهَيْمِنُ",
+    "transliteration": "Al-Muhaymin",
+    "english": "The Protector",
+    "urdu": "نگہبان",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/7.%20al-muhaymin.mp3"
+  },
+  {
+    "id": 8,
+    "arabic": "ٱلْعَزِيزُ",
+    "transliteration": "Al-Aziz",
+    "english": "The Almighty",
+    "urdu": "غالب",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/8.%20al-aziz.mp3"
+  },
+  {
+    "id": 9,
+    "arabic": "ٱلْجَبَّارُ",
+    "transliteration": "Al-Jabbar",
+    "english": "The Compeller",
+    "urdu": "زبردست",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/9.%20al-jabbar.mp3"
+  },
+  {
+    "id": 10,
+    "arabic": "ٱلْمُتَكَبِّرُ",
+    "transliteration": "Al-Mutakabbir",
+    "english": "The Supreme",
+    "urdu": "بزرگی والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/10.%20al-mutakabbir.mp3"
+  },
+
+  {
+    "id": 11,
+    "arabic": "ٱلْخَالِقُ",
+    "transliteration": "Al-Khaliq",
+    "english": "The Creator",
+    "urdu": "پیدا کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/11.%20al-khaliq.mp3"
+  },
+  {
+    "id": 12,
+    "arabic": "ٱلْبَارِئُ",
+    "transliteration": "Al-Bari",
+    "english": "The Evolver",
+    "urdu": "عدم سے وجود میں لانے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/12.%20al-bari.mp3"
+  },
+  {
+    "id": 13,
+    "arabic": "ٱلْمُصَوِّرُ",
+    "transliteration": "Al-Musawwir",
+    "english": "The Fashioner",
+    "urdu": "صورت بنانے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/13.%20al-musawwir.mp3"
+  },
+  {
+    "id": 14,
+    "arabic": "ٱلْغَفَّارُ",
+    "transliteration": "Al-Ghaffar",
+    "english": "The Constant Forgiver",
+    "urdu": "بخشنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/14.%20al-ghaffar.mp3"
+  },
+  {
+    "id": 15,
+    "arabic": "ٱلْقَهَّارُ",
+    "transliteration": "Al-Qahhar",
+    "english": "The All-Subduer",
+    "urdu": "سب پر غالب",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/15.%20al-qahhar.mp3"
+  },
+  {
+    "id": 16,
+    "arabic": "ٱلْوَهَّابُ",
+    "transliteration": "Al-Wahhab",
+    "english": "The Bestower",
+    "urdu": "عطا کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/16.%20al-wahhab.mp3"
+  },
+  {
+    "id": 17,
+    "arabic": "ٱلرَّزَّاقُ",
+    "transliteration": "Ar-Razzaq",
+    "english": "The Provider",
+    "urdu": "رزق دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/17.%20ar-razzaq.mp3"
+  },
+  {
+    "id": 18,
+    "arabic": "ٱلْفَتَّاحُ",
+    "transliteration": "Al-Fattah",
+    "english": "The Opener",
+    "urdu": "کھولنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/18.%20al-fattah.mp3"
+  },
+  {
+    "id": 19,
+    "arabic": "ٱلْعَلِيمُ",
+    "transliteration": "Al-Aleem",
+    "english": "The All-Knowing",
+    "urdu": "سب کچھ جاننے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/19.%20al-alim.mp3"
+  },
+  {
+    "id": 20,
+    "arabic": "ٱلْقَابِضُ",
+    "transliteration": "Al-Qabid",
+    "english": "The Withholder",
+    "urdu": "روکنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/20.%20al-qabid.mp3"
+  },
+
+  {
+    "id": 21,
+    "arabic": "ٱلْبَاسِطُ",
+    "transliteration": "Al-Basit",
+    "english": "The Extender",
+    "urdu": "کشادگی دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/21.%20al-basit.mp3"
+  },
+  {
+    "id": 22,
+    "arabic": "ٱلْخَافِضُ",
+    "transliteration": "Al-Khafid",
+    "english": "The Reducer",
+    "urdu": "پست کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/22.%20al-khafid.mp3"
+  },
+  {
+    "id": 23,
+    "arabic": "ٱلرَّافِعُ",
+    "transliteration": "Ar-Rafi",
+    "english": "The Exalter",
+    "urdu": "بلند کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/23.%20ar-rafi.mp3"
+  },
+  {
+    "id": 24,
+    "arabic": "ٱلْمُعِزُّ",
+    "transliteration": "Al-Mu’izz",
+    "english": "The Honourer",
+    "urdu": "عزت دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/24.%20al-muizz.mp3"
+  },
+  {
+    "id": 25,
+    "arabic": "ٱلْمُذِلُّ",
+    "transliteration": "Al-Mudhill",
+    "english": "The Dishonourer",
+    "urdu": "ذلت دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/25.%20al-mudhill.mp3"
+  },
+  {
+    "id": 26,
+    "arabic": "ٱلسَّمِيعُ",
+    "transliteration": "As-Samee",
+    "english": "The All-Hearing",
+    "urdu": "سب کچھ سننے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/26.%20as-sami.mp3"
+  },
+  {
+    "id": 27,
+    "arabic": "ٱلْبَصِيرُ",
+    "transliteration": "Al-Baseer",
+    "english": "The All-Seeing",
+    "urdu": "سب کچھ دیکھنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/27.%20al-basir.mp3"
+  },
+  {
+    "id": 28,
+    "arabic": "ٱلْحَكَمُ",
+    "transliteration": "Al-Hakam",
+    "english": "The Judge",
+    "urdu": "فیصلہ کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/28.%20al-hakam.mp3"
+  },
+  {
+    "id": 29,
+    "arabic": "ٱلْعَدْلُ",
+    "transliteration": "Al-Adl",
+    "english": "The Just",
+    "urdu": "انصاف کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/29.%20al-adl.mp3"
+  },
+  {
+    "id": 30,
+    "arabic": "ٱللَّطِيفُ",
+    "transliteration": "Al-Lateef",
+    "english": "The Subtle One",
+    "urdu": "باریک بین",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/30.%20al-latif.mp3"
+  },
+  {
+    "id": 31,
+    "arabic": "ٱلْخَبِيرُ",
+    "transliteration": "Al-Khabeer",
+    "english": "The All-Aware",
+    "urdu": "باخبر",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/31.%20al-khabir.mp3"
+  },
+  {
+    "id": 32,
+    "arabic": "ٱلْحَلِيمُ",
+    "transliteration": "Al-Haleem",
+    "english": "The Most Forbearing",
+    "urdu": "بردبار",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/32.%20al-halim.mp3"
+  },
+  {
+    "id": 33,
+    "arabic": "ٱلْعَظِيمُ",
+    "transliteration": "Al-Azeem",
+    "english": "The Magnificent",
+    "urdu": "عظمت والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/33.%20al-azeem.mp3"
+  },
+  {
+    "id": 34,
+    "arabic": "ٱلْغَفُورُ",
+    "transliteration": "Al-Ghafoor",
+    "english": "The Most Forgiving",
+    "urdu": "بخشنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/34.%20al-ghafur.mp3"
+  },
+  {
+    "id": 35,
+    "arabic": "ٱلشَّكُورُ",
+    "transliteration": "Ash-Shakoor",
+    "english": "The Most Appreciative",
+    "urdu": "قدر دان",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/35.%20ash-shakur.mp3"
+  },
+  {
+    "id": 36,
+    "arabic": "ٱلْعَلِيُّ",
+    "transliteration": "Al-Aliyy",
+    "english": "The Most High",
+    "urdu": "بلند و بالا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/36.%20al-ali.mp3"
+  },
+  {
+    "id": 37,
+    "arabic": "ٱلْكَبِيرُ",
+    "transliteration": "Al-Kabeer",
+    "english": "The Most Great",
+    "urdu": "بزرگ",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/37.%20al-kabir.mp3"
+  },
+  {
+    "id": 38,
+    "arabic": "ٱلْحَفِيظُ",
+    "transliteration": "Al-Hafeez",
+    "english": "The Preserver",
+    "urdu": "محافظ",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/38.%20al-hafiz.mp3"
+  },
+  {
+    "id": 39,
+    "arabic": "ٱلْمُقِيتُ",
+    "transliteration": "Al-Muqeet",
+    "english": "The Sustainer",
+    "urdu": "روزی پہنچانے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/39.%20al-muqit.mp3"
+  },
+  {
+    "id": 40,
+    "arabic": "ٱلْحسِيبُ",
+    "transliteration": "Al-Haseeb",
+    "english": "The Reckoner",
+    "urdu": "حساب لینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/40.%20al-hasib.mp3"
+  },
+
+  {
+    "id": 41,
+    "arabic": "ٱلْجَلِيلُ",
+    "transliteration": "Al-Jaleel",
+    "english": "The Majestic",
+    "urdu": "جلال والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/41.%20al-jalil.mp3"
+  },
+  {
+    "id": 42,
+    "arabic": "ٱلْكَرِيمُ",
+    "transliteration": "Al-Kareem",
+    "english": "The Most Generous",
+    "urdu": "کرم کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/42.%20al-karim.mp3"
+  },
+  {
+    "id": 43,
+    "arabic": "ٱلرَّقِيبُ",
+    "transliteration": "Ar-Raqeeb",
+    "english": "The Watchful",
+    "urdu": "نگران",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/43.%20ar-raqib.mp3"
+  },
+  {
+    "id": 44,
+    "arabic": "ٱلْمُجِيبُ",
+    "transliteration": "Al-Mujeeb",
+    "english": "The Responsive One",
+    "urdu": "دعائیں قبول کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/44.%20al-mujib.mp3"
+  },
+  {
+    "id": 45,
+    "arabic": "ٱلْوَاسِعُ",
+    "transliteration": "Al-Waasi",
+    "english": "The All-Encompassing",
+    "urdu": "وسعت والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/45.%20al-wasi.mp3"
+  },
+  {
+    "id": 46,
+    "arabic": "ٱلْحَكِيمُ",
+    "transliteration": "Al-Hakeem",
+    "english": "The Most Wise",
+    "urdu": "حکمت والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/46.%20al-hakim.mp3"
+  },
+  {
+    "id": 47,
+    "arabic": "ٱلْوَدُودُ",
+    "transliteration": "Al-Wadud",
+    "english": "The Most Loving",
+    "urdu": "محبت کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/47.%20al-wadud.mp3"
+  },
+  {
+    "id": 48,
+    "arabic": "ٱلْمَجِيدُ",
+    "transliteration": "Al-Majeed",
+    "english": "The Most Glorious",
+    "urdu": "بزرگی والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/48.%20al-majid.mp3"
+  },
+  {
+    "id": 49,
+    "arabic": "ٱلْبَاعِثُ",
+    "transliteration": "Al-Ba'ith",
+    "english": "The Resurrector",
+    "urdu": "زندہ کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/49.%20al-baith.mp3"
+  },
+  {
+    "id": 50,
+    "arabic": "ٱلشَّهِيدُ",
+    "transliteration": "Ash-Shaheed",
+    "english": "The Witness",
+    "urdu": "گواہ",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/50.%20ash-shahid.mp3"
+  },
+
+  {
+    "id": 51,
+    "arabic": "ٱلْحَقُّ",
+    "transliteration": "Al-Haqq",
+    "english": "The Truth",
+    "urdu": "برحق",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/51.%20al-haqq.mp3"
+  },
+  {
+    "id": 52,
+    "arabic": "ٱلْوَكِيلُ",
+    "transliteration": "Al-Wakeel",
+    "english": "The Trustee",
+    "urdu": "کارساز",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/52.%20al-wakeel.mp3"
+  },
+  {
+    "id": 53,
+    "arabic": "ٱلْقَوِيُّ",
+    "transliteration": "Al-Qawiyy",
+    "english": "The Most Strong",
+    "urdu": "طاقتور",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/53.%20al-qawiyy.mp3"
+  },
+  {
+    "id": 54,
+    "arabic": "ٱلْمَتِينُ",
+    "transliteration": "Al-Mateen",
+    "english": "The Firm One",
+    "urdu": "مضبوط",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/54.%20al-matin.mp3"
+  },
+  {
+    "id": 55,
+    "arabic": "ٱلْوَلِيُّ",
+    "transliteration": "Al-Waliyy",
+    "english": "The Protecting Ally",
+    "urdu": "مددگار",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/55.%20al-waliyy.mp3"
+  },
+  {
+    "id": 56,
+    "arabic": "ٱلْحَمِيدُ",
+    "transliteration": "Al-Hameed",
+    "english": "The Praiseworthy",
+    "urdu": "تعریف کے لائق",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/56.%20al-hamid.mp3"
+  },
+  {
+    "id": 57,
+    "arabic": "ٱلْمُحْصِي",
+    "transliteration": "Al-Muhsi",
+    "english": "The Accounter",
+    "urdu": "شمار کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/57.%20al-muhsi.mp3"
+  },
+  {
+    "id": 58,
+    "arabic": "ٱلْمُبْدِئُ",
+    "transliteration": "Al-Mubdi",
+    "english": "The Originator",
+    "urdu": "پہلی بار پیدا کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/58.%20al-mubdi.mp3"
+  },
+  {
+    "id": 59,
+    "arabic": "ٱلْمُعِيدُ",
+    "transliteration": "Al-Mu'eed",
+    "english": "The Restorer",
+    "urdu": "دوبارہ پیدا کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/59.%20al-muid.mp3"
+  },
+  {
+    "id": 60,
+    "arabic": "ٱلْمُحْيِي",
+    "transliteration": "Al-Muhyi",
+    "english": "The Giver of Life",
+    "urdu": "زندگی دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/60.%20al-muhyi.mp3"
+  },
+
+  {
+    "id": 61,
+    "arabic": "ٱلْمُمِيتُ",
+    "transliteration": "Al-Mumeet",
+    "english": "The Creator of Death",
+    "urdu": "موت دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/61.%20al-mumit.mp3"
+  },
+  {
+    "id": 62,
+    "arabic": "ٱلْحَيُّ",
+    "transliteration": "Al-Hayy",
+    "english": "The Ever-Living",
+    "urdu": "ہمیشہ زندہ",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/62.%20al-hayy.mp3"
+  },
+  {
+    "id": 63,
+    "arabic": "ٱلْقَيُّومُ",
+    "transliteration": "Al-Qayyum",
+    "english": "The Sustainer",
+    "urdu": "قائم رکھنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/63.%20al-qayyum.mp3"
+  },
+  {
+    "id": 64,
+    "arabic": "ٱلْوَاجِدُ",
+    "transliteration": "Al-Waajid",
+    "english": "The Finder",
+    "urdu": "پانے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/64.%20al-wajid.mp3"
+  },
+  {
+    "id": 65,
+    "arabic": "ٱلْمَاجِدُ",
+    "transliteration": "Al-Maajid",
+    "english": "The Noble",
+    "urdu": "بزرگ",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/65.%20al-majid.mp3"
+  },
+  {
+    "id": 66,
+    "arabic": "ٱلْوَاحِدُ",
+    "transliteration": "Al-Wahid",
+    "english": "The One",
+    "urdu": "ایک",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/66.%20al-wahid.mp3"
+  },
+  {
+    "id": 67,
+    "arabic": "ٱلْأَحَدُ",
+    "transliteration": "Al-Ahad",
+    "english": "The Unique",
+    "urdu": "یگانہ",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/67.%20al-ahad.mp3"
+  },
+  {
+    "id": 68,
+    "arabic": "ٱلصَّمَدُ",
+    "transliteration": "As-Samad",
+    "english": "The Eternal",
+    "urdu": "بے نیاز",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/68.%20as-samad.mp3"
+  },
+  {
+    "id": 69,
+    "arabic": "ٱلْقَادِرُ",
+    "transliteration": "Al-Qadir",
+    "english": "The Capable",
+    "urdu": "قدرت والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/69.%20al-qadir.mp3"
+  },
+  {
+    "id": 70,
+    "arabic": "ٱلْمُقْتَدِرُ",
+    "transliteration": "Al-Muqtadir",
+    "english": "The Powerful",
+    "urdu": "زبردست قدرت والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/70.%20al-muqtadir.mp3"
+  },
+
+  {
+    "id": 71,
+    "arabic": "ٱلْمُقَدِّمُ",
+    "transliteration": "Al-Muqaddim",
+    "english": "The Expediter",
+    "urdu": "آگے کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/71.%20al-muqaddim.mp3"
+  },
+  {
+    "id": 72,
+    "arabic": "ٱلْمُؤَخِّرُ",
+    "transliteration": "Al-Mu’akhkhir",
+    "english": "The Delayer",
+    "urdu": "پیچھے کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/72.%20al-muakhkhir.mp3"
+  },
+  {
+    "id": 73,
+    "arabic": "ٱلْأَوَّلُ",
+    "transliteration": "Al-Awwal",
+    "english": "The First",
+    "urdu": "سب سے پہلے",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/73.%20al-awwal.mp3"
+  },
+  {
+    "id": 74,
+    "arabic": "ٱلْآخِرُ",
+    "transliteration": "Al-Akhir",
+    "english": "The Last",
+    "urdu": "سب کے بعد",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/74.%20al-akhir.mp3"
+  },
+  {
+    "id": 75,
+    "arabic": "ٱلظَّاهِرُ",
+    "transliteration": "Az-Zaahir",
+    "english": "The Manifest",
+    "urdu": "ظاہر",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/75.%20az-zahir.mp3"
+  },
+  {
+    "id": 76,
+    "arabic": "ٱلْبَاطِنُ",
+    "transliteration": "Al-Baatin",
+    "english": "The Hidden",
+    "urdu": "پوشیدہ",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/76.%20al-batin.mp3"
+  },
+  {
+    "id": 77,
+    "arabic": "ٱلْوَالِي",
+    "transliteration": "Al-Waali",
+    "english": "The Governor",
+    "urdu": "حکمران",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/77.%20al-wali.mp3"
+  },
+  {
+    "id": 78,
+    "arabic": "ٱلْمُتَعَالِي",
+    "transliteration": "Al-Muta'ali",
+    "english": "The Most Exalted",
+    "urdu": "بلند و بالا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/78.%20al-muta-ali.mp3"
+  },
+  {
+    "id": 79,
+    "arabic": "ٱلْبَرُّ",
+    "transliteration": "Al-Barr",
+    "english": "The Source of Goodness",
+    "urdu": "نیکی کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/79.%20al-barr.mp3"
+  },
+  {
+    "id": 80,
+    "arabic": "ٱلتَّوَّابُ",
+    "transliteration": "At-Tawwab",
+    "english": "The Acceptor of Repentance",
+    "urdu": "توبہ قبول کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/80.%20at-tawwab.mp3"
+  },
+
+  {
+    "id": 81,
+    "arabic": "ٱلْمُنْتَقِمُ",
+    "transliteration": "Al-Muntaqim",
+    "english": "The Avenger",
+    "urdu": "بدلہ لینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/81.%20al-muntaqim.mp3"
+  },
+  {
+    "id": 82,
+    "arabic": "ٱلْعَفُوُّ",
+    "transliteration": "Al-Afuw",
+    "english": "The Pardoner",
+    "urdu": "درگزر کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/82.%20al-afuw.mp3"
+  },
+  {
+    "id": 83,
+    "arabic": "ٱلرَّؤُوفُ",
+    "transliteration": "Ar-Ra’oof",
+    "english": "The Most Kind",
+    "urdu": "نہایت مہربان",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/83.%20ar-rauf.mp3"
+  },
+  {
+    "id": 84,
+    "arabic": "مَالِكُ ٱلْمُلْكِ",
+    "transliteration": "Malik-ul-Mulk",
+    "english": "Owner of Sovereignty",
+    "urdu": "بادشاہی کا مالک",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/84.%20malikul%20mulk.mp3"
+  },
+  {
+    "id": 85,
+    "arabic": "ذُو ٱلْجَلَالِ وَٱلْإِكْرَامِ",
+    "transliteration": "Dhul-Jalali wal-Ikram",
+    "english": "Lord of Majesty and Honor",
+    "urdu": "جلال اور اکرام والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/85.%20dhul-jalali-wal-ikram.mp3"
+  },
+  {
+    "id": 86,
+    "arabic": "ٱلْمُقْسِطُ",
+    "transliteration": "Al-Muqsit",
+    "english": "The Just One",
+    "urdu": "انصاف کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/86.%20al-muqsit.mp3"
+  },
+  {
+    "id": 87,
+    "arabic": "ٱلْجَامِعُ",
+    "transliteration": "Al-Jaami",
+    "english": "The Gatherer",
+    "urdu": "جمع کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/87.%20al-jami.mp3"
+  },
+  {
+    "id": 88,
+    "arabic": "ٱلْغَنِيُّ",
+    "transliteration": "Al-Ghaniyy",
+    "english": "The Self-Sufficient",
+    "urdu": "بے نیاز",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/88.%20al-ghaniyy.mp3"
+  },
+  {
+    "id": 89,
+    "arabic": "ٱلْمُغْنِي",
+    "transliteration": "Al-Mughni",
+    "english": "The Enricher",
+    "urdu": "مالدار کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/89.%20al-mughni.mp3"
+  },
+  {
+    "id": 90,
+    "arabic": "ٱلْمَانِعُ",
+    "transliteration": "Al-Mani",
+    "english": "The Preventer",
+    "urdu": "روکنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/90.%20al-mani.mp3"
+  },
+
+  {
+    "id": 91,
+    "arabic": "ٱلضَّارُ",
+    "transliteration": "Ad-Darr",
+    "english": "The Distresser",
+    "urdu": "نقصان پہنچانے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/91.%20ad-darr.mp3"
+  },
+  {
+    "id": 92,
+    "arabic": "ٱلنَّافِعُ",
+    "transliteration": "An-Nafi",
+    "english": "The Benefactor",
+    "urdu": "نفع دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/92.%20an-nafi.mp3"
+  },
+  {
+    "id": 93,
+    "arabic": "ٱلنُّورُ",
+    "transliteration": "An-Noor",
+    "english": "The Light",
+    "urdu": "نور",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/93.%20an-noor.mp3"
+  },
+  {
+    "id": 94,
+    "arabic": "ٱلْهَادِي",
+    "transliteration": "Al-Hadi",
+    "english": "The Guide",
+    "urdu": "ہدایت دینے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/94.%20al-hadi.mp3"
+  },
+  {
+    "id": 95,
+    "arabic": "ٱلْبَدِيعُ",
+    "transliteration": "Al-Badee",
+    "english": "The Originator",
+    "urdu": "انوکھا پیدا کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/95.%20al-badi.mp3"
+  },
+  {
+    "id": 96,
+    "arabic": "ٱلْبَاقِي",
+    "transliteration": "Al-Baqi",
+    "english": "The Everlasting",
+    "urdu": "ہمیشہ باقی رہنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/96.%20al-baqi.mp3"
+  },
+  {
+    "id": 97,
+    "arabic": "ٱلْوَارِثُ",
+    "transliteration": "Al-Warith",
+    "english": "The Inheritor",
+    "urdu": "وارث",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/97.%20al-warith.mp3"
+  },
+  {
+    "id": 98,
+    "arabic": "ٱلرَّشِيدُ",
+    "transliteration": "Ar-Rasheed",
+    "english": "The Guide to the Right Path",
+    "urdu": "راہ دکھانے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/98.%20ar-rashid.mp3"
+  },
+  {
+    "id": 99,
+    "arabic": "ٱلصَّبُورُ",
+    "transliteration": "As-Saboor",
+    "english": "The Most Patient",
+    "urdu": "بہت صبر کرنے والا",
+    "audio": "https://quranaudio.myislam.org/audio/99%20names%20of%20Allah/audio/99.%20as-sabur.mp3"
+  }
+]

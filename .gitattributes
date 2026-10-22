@@ -1,0 +1,2 @@
+# The legacy snapshot is byte-exact: no line-ending conversion on any platform (its manifest holds the SHA-256 of each file).
+legacy/** -text
