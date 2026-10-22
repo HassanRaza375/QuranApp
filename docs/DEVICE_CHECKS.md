@@ -94,7 +94,15 @@ Use the **Surah listing** Play buttons (and the reader's "Play surah"). Surah 1 
 | A14 | Airplane mode, then press Play on a surah you have not played | The mini player shows "Couldn’t play. Audio needs a connection unless it was downloaded." and a **Try again** button; no endless spinner | |
 | A15 | Slow connection (Chrome Android: DevTools or a weak signal) while playing | "Buffering…" appears and goes away; Pause still works | |
 | A16 | Mini player and sheet at 375, dark, with the error showing (A14) | The error text wraps onto two lines and Try again is reachable; the sheet scrolls and every control is easy to hit | |
-| A17 | Per page, Asma-ul-Husna, and a Story's Listen button | Each Play is visible, disabled, and says "Playing single ayahs arrives soon" | |
+| A17 | Reader: press **Play ayah N** on an ayah, then another ayah; open the sheet and press Next and Previous | Each ayah plays by the chosen reciter; the row being recited is highlighted; the mini player says "Al-Baqara 2:5"; Next/Previous move one ayah | |
+| A18 | Per page: **Play page** on a page of ten or more ayahs; listen to the joins between ayahs | The ayahs follow one another; write whether there is an audible gap or clipping at the joins (the app adds no pause) and whether the next ayah starts at once | |
+| A19 | **Bismillah check:** on two reciters, play the first ayah of a surah other than Al-Fatiha (for example 2:1 and 112:1) | Write whether the recording includes the Bismillah before the ayah. The app does not claim either way | |
+| A20 | Per page: a page that crosses into the next surah (any two-surah page, for example the page holding the end of Al-Baqara and the start of Aal-i-Imraan) | The queue plays into the next surah's first ayah; write whether that recording has the Bismillah (A19) | |
+| A21 | While a page queue plays, turn on **Follow audio** in the sheet and scroll away | The playing ayah comes back into view when the ayah changes, and not otherwise. With Reduce motion on in Settings the switch is off and cannot be turned on | |
+| A22 | Put the phone in airplane mode mid-queue | The current ayah may finish; the next one stops with "Couldn’t play ayah N:M..." plus **Try again** and **Skip this ayah**; Skip moves on once the network is back; nothing is skipped by itself | |
+| A23 | Play a page queue, force-close the browser, reopen | The mini player shows "Page N" paused ("Paused at ..."); nothing plays until you press Play; Play goes on from that ayah | |
+| A24 | **Offline per-ayah audio (proven only in desktop Chromium):** play an ayah or a page once online, then airplane mode and play the same ayah again, then one never played | The one played before plays again; the one never played fails with the message. Write the browser; the app makes no offline claim | |
+| A25 | Asma-ul-Husna: open a name, press **Play** (try names 1, 12 and 99), then names **53, 93 and 97** | Names 1, 12 and 99 play their recording through the mini player (title = the name, line "Asma-ul-Husna"); 53, 93 and 97 say "No recording for this name" and play nothing | |
 
 ## Phase 5: Prayer times and Qibla
 

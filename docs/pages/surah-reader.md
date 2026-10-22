@@ -15,7 +15,7 @@ Read a surah: the Arabic with a translation, the tafsir of any ayah, and the too
 - One `h1`: the surah's Arabic name. Below it "Surah n · N ayahs · Mecca (or Madina)".
 - A bar: **Play surah**, **Translation** (Off, English, Urdu, Bengali, Arabic (Alt)), **Tafsir** (the default source: Ibn Kathir, Maarif Ul Quran, Tazkirul Quran; the menu says "No Ja’fari tafsir is available from this app’s data provider."), **Reciter**. Menus are popovers on desktop and bottom sheets on mobile. Then **Mark as read**.
 - The bismillah (surahs 2 to 114 except 9), then the ayahs, then Previous and next surah.
-- **An ayah:** the Arabic with a gold verse marker, the translation (unless Off), and a tools row: **Tafsir** on the left; **Save**, **Pin**, **Share** on the right. Verse layout in Settings decides whether the translation comes first.
+- **An ayah:** the Arabic with a gold verse marker, the translation (unless Off), and a tools row: **Tafsir** on the left; **Play**, **Save**, **Pin**, **Share** on the right (Phase 4C: **Play ayah N / Pause ayah N** plays that one ayah through the player; the row being recited has `aria-current` and a soft accent ground with a brand-coloured left edge; nothing is highlighted while a whole surah plays, because that file has no per-ayah timing). Verse layout in Settings decides whether the translation comes first.
 - **Tafsir panel** (under the ayah): the three sources as buttons (the chosen one is pressed), the group note when the source gives one, the text, the source name, and the Ja'fari line.
 - The mini player (global) appears once something has been played.
 

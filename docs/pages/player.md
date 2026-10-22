@@ -1,7 +1,7 @@
 # Page: the player (mini player and player sheet)
 
 - Where: the persistent mini player (every page) and the player sheet it opens. No route of its own.
-- Phase: 4B (the whole-surah player). 3 built play and pause; 4C adds per-ayah audio.
+- Phase: 4B (the whole-surah player), 4C (a single ayah, queues, clips). Phase 3 built play and pause.
 - Prototype section: the player overlay (`d-ov` / `m-ov`, `playerHTML`) and the mini player strip.
 - Offline level: none claimed. Streamed audio needs a connection unless it was downloaded (Downloads, Phase 11). The page's own controls, the saved place and the preferences work offline.
 - Indexable: not a page.
@@ -41,6 +41,27 @@ Nothing ever starts on page load, after a reload, or when a resume record exists
 
 Where the browser has it: metadata (surah, reciter, album "Quran App"), the playback state, and the actions Play, Pause, Seek to, Back 10 s, Forward 10 s, Previous track and Next track (removed at surah 1 and 114); the lock-screen scrubber gets the position about once a second. Tested with a stub and, in Chromium, on the real `navigator.mediaSession` (metadata and state). Whether a phone's lock screen shows them is a device check.
 
+## What can play (Phase 4C)
+
+One thing plays at a time, through the one audio element and the one store. Starting anything replaces what was going.
+
+| Kind | Started from | The file | Previous / Next | Repeat | Saved place |
+| --- | --- | --- | --- | --- | --- |
+| **Surah** | the listing, the reader's Play surah, the mini player | the full-surah file (as 4B) | previous / next surah | yes ("Repeat this recitation") | `quran:audio-resume:v1` (legacy shape, unchanged) |
+| **Ayah** | the reader's **Play ayah N** | the url the per-ayah endpoint gives for that ayah and reciter | previous / next ayah of the same surah | yes ("Repeat this ayah") | none |
+| **Queue** | **Play page** (Per page), **Listen to this chapter** (Stories) | one ayah's file at a time, in order | previous / next ayah in the queue | none (a queue plays through once) | `quran:audio-queue:v1` (new) |
+| **Clip** | the Asma-ul-Husna name sheet | the name's own recording | none | none | none |
+
+- **Titles:** the mini player and sheet show "Al-Baqara" (surah), "Al-Baqara 2:255" (ayah), "Page 49" or the chapter's title (queue), the name (clip). The line under it is "Recited by <reciter>", or for a queue "Al-Baqara 2:6 · ayah 3 of 13", or "Asma-ul-Husna" for a clip. Media Session: the title is the ayah's reference (or the surah or name), the artist the reciter, the album "Quran App" or the queue's title.
+- **Highlight:** the ayah being recited (alone or in a queue) is highlighted where it is shown (the reader's row, the Per-page frame's text, the Stories chapter's ayah) with `aria-current="true"`. Nothing is highlighted while a whole surah plays.
+- **Follow audio** (sheet, ayahs and queues only): "Keep the playing ayah in view", **off by default**, stored in the new additive key `quran:player-prefs:v1` (`{ followAyah }`); when on, the playing ayah is brought into view (instant, no focus change) only if it is not already fully visible and only when the ayah changes. **It is never on while Reduce motion is on** (the switch is off and disabled with a note).
+- **A queue's advance:** the next ayah starts the moment one ends (no pause between files: the recordings carry their own silence, and a device check decides whether that is right); exactly **one ayah ahead** is fetched (not on a Save-Data connection), through the existing audio cache rule; it **stops after its last ayah** (it never carries on into another page or chapter) and its place goes back to the first ayah.
+- **A failed ayah:** asked for once more automatically (the endpoint is asked again), then the queue **stops on it** with "Couldn’t play ayah 2:7. Audio needs a connection unless it was downloaded.", **Try again** and (in a queue) **Skip this ayah**. It is never skipped silently. A single ayah has Try again only.
+- **The queue's saved place:** `quran:audio-queue:v1` = `{ v: 1, kind: "page" | "story", ref: { page } | { storyId, chapter }, index, reciter, position, savedAt }`. Written every 5 seconds while playing, on pause, on `pagehide`, reset to the first ayah at the end. The list of ayahs is never stored: it is rebuilt from the data on resume. After a reload the mini player shows the **last thing started**, paused: starting a surah removes the queue's record; starting a queue leaves the surah's record alone and the queue wins on restore. A record that cannot be rebuilt (a bad page, a gone story) is ignored and the surah's record is used. The legacy app ignores the new key.
+- **Reciter switch:** a surah restarts from the beginning; an ayah plays again by the new reciter; a queue plays the current ayah again by the new reciter and carries on. The note above the chips says which, before it happens. A clip has no reciter.
+- **No autoplay anywhere:** every kind starts only from a press. A queue moves on only because the user started it.
+- **Offline:** unchanged claim: none. In a desktop Chromium test with the real service worker and real files, a small per-ayah file that was played or preloaded once played again offline (seeking unreliable for a preloaded one); not proven on iPhone, Android or Firefox, so the app says nothing about it.
+
 ## States
 
 | State | What shows |
@@ -55,4 +76,4 @@ Where the browser has it: metadata (surah, reciter, album "Quran App"), the play
 
 ## Tests
 
-`tests/audioState.test.ts` (13), `tests/audioEngine.test.ts` (33, the state machine with a fake element and the Media Session), `tests/audioLegacy.test.ts` (5, the legacy code beside this one), the existing `tests/player.test.ts` (7, still passing against the new store) and `e2e/player.spec.ts` (32). See `docs/phases/phase-04b-player.md`.
+`tests/audioState.test.ts`, `tests/audioEngine.test.ts` (the state machine with a fake element and the Media Session), `tests/audioQueue.test.ts` (an ayah, a queue, a clip, 4C), `tests/audioLegacy.test.ts` (the legacy code beside this one), `tests/player.test.ts`, `e2e/player.spec.ts`, `e2e/ayahaudio.spec.ts` and `e2e/queue.spec.ts` (4C). See `docs/phases/phase-04b-player.md` and `docs/phases/phase-04c-ayah-audio.md`.

@@ -16,7 +16,7 @@ Read one of the Qur'an's 21 narratives a chapter at a time, with the Qur'an text
 - The header: the Arabic title (text), the title (the one `h1`), alternate titles, chips (the story type, the legacy narrative status, "N chapters"), the **Order** line where the data supports it, the **"Arranged for study"** notice where it applies, and one line: "Chapter summaries are written for this app; the Qur'an text is the source."
 - A **Continue banner** ("Continue where you left off: Chapter 3") when you open the story without a chapter and have progress; Continue and Dismiss.
 - A **progress rail** (only for stories with more than one chapter): numbered buttons, the read chapters ticked, the current one marked; each button is named ("Chapter 3: <title>, read").
-- **A chapter:** the eyebrow "Chapter n of N", the title (focus moves here when the chapter changes), "Surah 12:21–35 · 15 ayahs", the **summary** labelled "Summary (written for this app)", a visible **Listen to this chapter** button that is `aria-disabled` with the visible reason "Playing single ayahs arrives soon", the **Qur'an text**, **Also told in / Compare tellings** (story level), and Previous and Next (the last Next reads "Finish the story").
+- **A chapter:** the eyebrow "Chapter n of N", the title (focus moves here when the chapter changes), "Surah 12:21–35 · 15 ayahs", the **summary** labelled "Summary (written for this app)", a **Listen to this chapter** button (Phase 4C; it becomes **Pause** while it plays) that plays the whole chapter's passages in order, ayah by ayah, as a queue (the page shows the first eight ayahs until "Show all", the queue plays all of them; the playing ayah is highlighted with `aria-current` where it is shown); stops after the chapter's last ayah; the saved place is `quran:audio-queue:v1` by story id and chapter number, the **Qur'an text**, **Also told in / Compare tellings** (story level), and Previous and Next (the last Next reads "Finish the story").
 - **The end page:** "The end of the story", the story's **Outcome**, **What the Qur'an stresses** (the story's lessons with the legacy basis label and linked references), **Continue with** (the related stories), Back to Stories, **Start again** (clears this story's progress, with Undo) and Back to the last chapter.
 - **In this story:** chips for the people, peoples and places the story names (each opens a sheet) and the events that name it (inert).
 - **Notes on this story:** a collapsed section with the data's sources (type chip) and status notes.
@@ -55,7 +55,7 @@ A person opens a sheet (Arabic name as text, name, category, short description) 
 | Not saved, offline | "This surah isn’t saved on this device yet. Connect once to read it." and Retry; the rest of the page works |
 | One chapter | No rail; "1 chapter"; Next reads "Finish the story" |
 | Unknown id | "Story not found" and a link back |
-| Listen | Visible, disabled, with its reason |
+| Listen | Plays the chapter as a queue; Pause while playing; a failed ayah stops it with Try again and Skip |
 
 ## Images
 
