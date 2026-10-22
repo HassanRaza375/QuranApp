@@ -11,6 +11,9 @@
 @import "tw-animate-css";
 @import "shadcn-vue/tailwind.css";
 
+/* The vendored legacy snapshot holds data and logic, no markup of ours: keep Tailwind from scanning it for class names. */
+@source not "../../../legacy";
+
 @custom-variant dark (&:is(.dark *));
 
 /* The legacy Qur'an script font (Amiri Quran), copied from the legacy app's assets. */

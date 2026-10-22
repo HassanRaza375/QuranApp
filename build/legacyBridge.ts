@@ -1,8 +1,8 @@
-// Lets the revamp import pure legacy code (data, utils) without copying it.
-//   import { ... } from "@legacy/utils/commandsSearch"
+// Lets the revamp import pure legacy code (data, utils) from the vendored snapshot in ./legacy (see legacy/README.md).
+//   import { ... } from "@legacy/utils/commandsSearch"      // = legacy/app/utils/commandsSearch
 // Legacy files import their own data with the Nuxt alias `~/data/...` (no file extension). Inside the revamp, `~` is
-// the revamp's own app folder, so a legacy file's `~/utils/x` would point at `revamp-quran/app/utils/x`, which does
-// not exist. This plugin sends such imports, made by files that live in the legacy app, to the legacy folder.
+// the revamp's own app folder, so a legacy file's `~/utils/x` would point at `<repo>/app/utils/x`, which does
+// not exist. This plugin sends such imports, made by files that live in the legacy snapshot, to the snapshot.
 // Revamp code is unaffected.
 //
 // Two forms reach the plugin: `~/utils/x` as written (Vitest), and `<revamp>/app/utils/x` after Vite's alias step has
@@ -13,7 +13,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
 
-export const LEGACY_APP = path.resolve(fileURLToPath(new URL("../../app", import.meta.url)));
+/** The vendored legacy snapshot (`legacy/`) and its `app/` folder, which the `@legacy` alias points at. Both are inside this repo. */
+export const LEGACY_ROOT = path.resolve(fileURLToPath(new URL("../legacy", import.meta.url)));
+export const LEGACY_APP = path.join(LEGACY_ROOT, "app");
 export const REVAMP_APP = path.resolve(fileURLToPath(new URL("../app", import.meta.url)));
 
 const slash = (p: string) => p.replace(/\\/g, "/");

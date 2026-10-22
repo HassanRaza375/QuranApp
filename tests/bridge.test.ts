@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { LEGACY_APP } from "../build/legacyBridge";
+import { LEGACY_APP, LEGACY_ROOT } from "../build/legacyBridge";
 import { PUBLIC_META, injectPublicMeta } from "../app/lib/publicMeta";
 import { NAV, NAV_FOOTER } from "../app/lib/nav";
 
@@ -22,8 +22,10 @@ describe("legacy bridge", () => {
     expect(surahs).toHaveLength(114);
   });
 
-  it("points at the legacy app folder", () => {
-    expect(fs.existsSync(path.join(LEGACY_APP, "pages", "index.vue"))).toBe(true);
+  it("points at the vendored snapshot inside this repo", () => {
+    expect(path.relative(path.resolve(__dirname, ".."), LEGACY_APP).replaceAll("\\", "/")).toBe("legacy/app");
+    expect(fs.existsSync(path.join(LEGACY_APP, "utils", "prayerFiqh.js"))).toBe(true);
+    expect(fs.existsSync(path.join(LEGACY_ROOT, "manifest.json"))).toBe(true);
   });
 });
 
@@ -48,21 +50,8 @@ describe("prerendered public pages", () => {
 });
 
 describe("navigation uses the legacy routes", () => {
-  const pagesDir = path.join(LEGACY_APP, "pages");
-  const legacyRoutes = (() => {
-    const out: string[] = [];
-    const walk = (dir: string, prefix: string) => {
-      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-        if (e.isDirectory()) walk(path.join(dir, e.name), `${prefix}/${e.name}`);
-        else if (e.name.endsWith(".vue")) {
-          const name = e.name.replace(/\.vue$/, "");
-          out.push(name === "index" ? prefix || "/" : `${prefix}/${name}`);
-        }
-      }
-    };
-    walk(pagesDir, "");
-    return new Set(out);
-  })();
+  // legacy/routes.json is derived from the legacy `app/pages` folder by scripts/sync-legacy.mjs (index.vue is the folder route)
+  const legacyRoutes = new Set((JSON.parse(fs.readFileSync(path.join(LEGACY_ROOT, "routes.json"), "utf8")) as { routes: string[] }).routes);
 
   it("every nav link is an existing legacy route, unchanged", () => {
     const links = [...NAV.flatMap((g) => g.items), ...NAV_FOOTER].map((i) => i.to);

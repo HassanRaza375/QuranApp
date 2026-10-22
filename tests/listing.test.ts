@@ -1,7 +1,7 @@
 // The filter box (Arabic marks, accents, numbers), the sort orders, the last-read marker and audio-URL resolution.
 import { describe, expect, it } from "vitest";
-import legacy from "../../app/assets/data/surah.json";
-import reciters from "../../app/assets/data/reciters.json";
+import legacy from "@legacy/assets/data/surah.json";
+import reciters from "@legacy/assets/data/reciters.json";
 import { SURAH_ROWS } from "../app/data/quranMeta.generated";
 import { juzMatches, normalize, parsePage, surahMatches } from "../app/lib/listingSearch";
 import { filterPlace, sortName, sortSurahs } from "../app/lib/listingSort";

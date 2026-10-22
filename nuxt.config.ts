@@ -1,6 +1,6 @@
 import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
-import { legacyBridge, LEGACY_APP } from "./build/legacyBridge";
+import { legacyBridge, LEGACY_APP, LEGACY_ROOT } from "./build/legacyBridge";
 import { NO_FLASH_SCRIPT } from "./app/lib/noFlashScript";
 import { injectPublicMeta } from "./app/lib/publicMeta";
 
@@ -18,11 +18,12 @@ export default defineNuxtConfig({
   css: ["~/assets/css/tailwind.css"],
   shadcn: { prefix: "", componentDir: "@/components/ui" },
 
-  // Pure legacy code (data JSON/TS, utils) is imported from the legacy app, not copied: `@legacy/utils/...`.
+  // Pure legacy code (data JSON/TS, utils) is imported from the vendored snapshot in ./legacy (read-only, see legacy/README.md):
+  // `@legacy/utils/...` is `legacy/app/utils/...`. The dev server may serve it; nothing outside this repo is allowed.
   alias: { "@legacy": LEGACY_APP },
   vite: {
     plugins: [tailwindcss(), legacyBridge()],
-    server: { fs: { allow: [fileURLToPath(new URL("..", import.meta.url))] } },
+    server: { fs: { allow: [fileURLToPath(new URL(".", import.meta.url)), LEGACY_ROOT] } },
   },
 
   // Icons are Lucide, bundled into the app: nothing is fetched from api.iconify.design at runtime (offline rule).

@@ -235,7 +235,7 @@ test.describe("Follow audio", () => {
 });
 
 test.describe("an Asma-ul-Husna name's recording", () => {
-  const names = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), "../app/assets/data/names.json"), "utf8")) as Array<{ id: number; transliteration: string; audio: string }>;
+  const names = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), "legacy/app/assets/data/names.json"), "utf8")) as Array<{ id: number; transliteration: string; audio: string }>;
   const nameOf = (id: number) => names.find((n) => n.id === id)!;
 
   test("Play in a name's sheet plays that name's own recording through the player (no reciter, no queue, nothing saved); a second press pauses", async ({ page }) => {

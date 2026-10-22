@@ -4,7 +4,7 @@
 //   node scripts/gen-quran-meta.mjs
 //
 // Source: GET https://api.alquran.cloud/v1/meta (an API the app already uses), `juzs.references`, `pages.references`.
-// Surah rows come from the legacy data file (app/assets/data/surah.json) so they are the same words the rest of the app
+// Surah rows come from the legacy data file (legacy/app/assets/data/surah.json) so they are the same words the rest of the app
 // shows. The script FAILS (writes nothing) when the upstream disagrees with the legacy data, so a changed upstream is
 // noticed instead of silently followed. It stores numbers and the legacy names only: no Qur'an text.
 // Never hand-edit the generated file; re-run this script.
@@ -13,7 +13,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const legacy = JSON.parse(fs.readFileSync(path.resolve(here, "../../app/assets/data/surah.json"), "utf8"));
+const legacy = JSON.parse(fs.readFileSync(path.resolve(here, "../legacy/app/assets/data/surah.json"), "utf8"));
 const BASE = process.env.QURAN_API_BASE2 || "https://api.alquran.cloud/v1";
 
 const res = await fetch(`${BASE}/meta`);

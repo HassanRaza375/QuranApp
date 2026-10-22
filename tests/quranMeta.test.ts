@@ -1,6 +1,6 @@
 // The generated juz/page tables and the lookups built on them. The fixture is a recorded GET /v1/meta response.
 import { describe, expect, it } from "vitest";
-import legacy from "../../app/assets/data/surah.json";
+import legacy from "@legacy/assets/data/surah.json";
 import { JUZ_STARTS, PAGE_STARTS, SURAH_ROWS } from "../app/data/quranMeta.generated";
 import { absolute, AYAH_COUNTS, isAyah, JUZ, juzOfAyah, pageOfAyah, pageStart, TOTAL_JUZ, TOTAL_PAGES } from "../app/lib/quranMeta";
 import meta from "./fixtures/alquran-meta.json";

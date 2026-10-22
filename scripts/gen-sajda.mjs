@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE = path.resolve(here, "../tests/fixtures/alquran-sajda.json");
 const OUT = path.resolve(here, "../app/data/sajda.generated.ts");
-const legacy = JSON.parse(fs.readFileSync(path.resolve(here, "../../app/assets/data/surah.json"), "utf8"));
+const legacy = JSON.parse(fs.readFileSync(path.resolve(here, "../legacy/app/assets/data/surah.json"), "utf8"));
 const counts = legacy.map((s) => s.totalAyah);
 
 if (process.argv.includes("--live")) {

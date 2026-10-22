@@ -2,7 +2,8 @@
 import withNuxt from "./.nuxt/eslint.config.mjs";
 
 export default withNuxt(
-  { ignores: ["components/ui/**", "app/components/ui/**", ".output/**", "playwright-report/**", "test-results/**"] },
+  // legacy/** is the read-only snapshot of the legacy app (legacy/README.md): not our code to lint or reformat.
+  { ignores: ["components/ui/**", "app/components/ui/**", ".output/**", "playwright-report/**", "test-results/**", "legacy/**"] },
   {
     rules: {
       // Prettier-style formatting is not enforced; correctness rules are.

@@ -7,7 +7,7 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const SOURCE = path.resolve(here, "../../../app/composables/useTasbeeh.ts");
+const SOURCE = path.resolve(here, "../../legacy/app/composables/useTasbeeh.ts");
 const require = createRequire(path.resolve(here, "../../package.json"));
 
 /** `storage` is `{ get(key, default), set(key, value) }` (the JSON-safe wrapper the legacy `$storage` plugin is). */

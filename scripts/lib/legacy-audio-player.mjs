@@ -7,7 +7,7 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const SOURCE = path.resolve(here, "../../../app/composables/useAudioPlayer.ts");
+const SOURCE = path.resolve(here, "../../legacy/app/composables/useAudioPlayer.ts");
 const require = createRequire(path.resolve(here, "../../package.json"));
 
 export async function loadLegacyAudioPlayer(storage) {

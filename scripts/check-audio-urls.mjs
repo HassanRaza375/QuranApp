@@ -10,8 +10,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const surahs = JSON.parse(fs.readFileSync(path.resolve(here, "../../app/assets/data/surah.json"), "utf8"));
-const reciters = JSON.parse(fs.readFileSync(path.resolve(here, "../../app/assets/data/reciters.json"), "utf8"));
+const surahs = JSON.parse(fs.readFileSync(path.resolve(here, "../legacy/app/assets/data/surah.json"), "utf8"));
+const reciters = JSON.parse(fs.readFileSync(path.resolve(here, "../legacy/app/assets/data/reciters.json"), "utf8"));
 const names = new Map(reciters.map((r) => [r.id, r.reciter]));
 
 const jobs = [];

@@ -5,14 +5,14 @@
 //   node scripts/gen-ayah-lengths.mjs
 //
 // Source: the same upstream the app reads (quranapi.pages.dev, field `arabic1`). The script fails if any surah's
-// ayah count differs from the legacy data file (app/assets/data/surah.json), so a changed upstream is noticed.
+// ayah count differs from the legacy data file (legacy/app/assets/data/surah.json), so a changed upstream is noticed.
 // Never hand-edit the generated file; re-run this script.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const legacy = JSON.parse(fs.readFileSync(path.resolve(here, "../../app/assets/data/surah.json"), "utf8"));
+const legacy = JSON.parse(fs.readFileSync(path.resolve(here, "../legacy/app/assets/data/surah.json"), "utf8"));
 const BASE = process.env.QURAN_API_BASE || "https://quranapi.pages.dev/api";
 
 const lengths = [];

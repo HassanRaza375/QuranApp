@@ -1,8 +1,9 @@
-// Cutover rehearsal: a browser that already has the LEGACY service worker (the repo's built `dist/`) loads the
-// rebuilt app from the same origin. The new sw.js must replace the old one (same file name and scope), keep the
+// Cutover rehearsal: a browser that already has the LEGACY service worker (the vendored legacy/dist/sw.js, see legacy/README.md)
+// loads the rebuilt app from the same origin. The new sw.js must replace the old one (same file name and scope), keep the
 // runtime caches, and the "update available" toast (registerType "prompt") must appear and work.
 import fs from "node:fs";
 import http from "node:http";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AddressInfo } from "node:net";
@@ -11,12 +12,32 @@ import { localDateKey } from "../app/lib/dates";
 import { ayahEntry, seed } from "./mocks";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const LEGACY_DIST = path.resolve(HERE, "../../dist");
+const LEGACY_SW_DIR = path.resolve(HERE, "../legacy/dist");
 const REVAMP_PUBLIC = path.resolve(HERE, "../.output/public");
+let LEGACY_DIST = ""; // the stand-in legacy site, built per run by buildLegacyDist()
 const TYPES: Record<string, string> = {
   ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png",
   ".ico": "image/x-icon", ".webmanifest": "application/manifest+json", ".woff2": "font/woff2", ".woff": "font/woff", ".ttf": "font/ttf", ".svg": "image/svg+xml",
 };
+
+// The legacy site, rebuilt from the vendored worker: the real sw.js and Workbox runtime, plus an empty placeholder for every file the worker
+// precaches (it only fetches and stores them, so their contents do not matter to the swap). The legacy app's own build is not in this repo.
+function buildLegacyDist(): string {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "legacy-dist-"));
+  const sw = fs.readFileSync(path.join(LEGACY_SW_DIR, "sw.js"), "utf8");
+  fs.writeFileSync(path.join(dir, "sw.js"), sw);
+  const workbox = /["']\.\/(workbox-[\w-]+)["']/.exec(sw)?.[1];
+  if (!workbox) throw new Error("the vendored legacy sw.js does not import a workbox runtime");
+  fs.copyFileSync(path.join(LEGACY_SW_DIR, `${workbox}.js`), path.join(dir, `${workbox}.js`));
+  const precached = [...sw.matchAll(/\{url:"([^"]+)",revision:/g)].map((m) => m[1]!);
+  expect(precached.length).toBeGreaterThan(100);
+  for (const rel of precached) {
+    const file = path.join(dir, rel);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, rel.endsWith(".webmanifest") ? "{}" : "");
+  }
+  return dir;
+}
 
 // A tiny static server whose root can be switched, like a deployment being replaced.
 function createSite(initialRoot: string) {
@@ -47,10 +68,11 @@ function createSite(initialRoot: string) {
   };
 }
 
-test.skip(!fs.existsSync(LEGACY_DIST) || !fs.existsSync(REVAMP_PUBLIC), "needs the legacy dist/ and a revamp build");
+test.skip(!fs.existsSync(REVAMP_PUBLIC), "needs a revamp build (npm run build)");
 
 test("the new service worker replaces the legacy one, keeps runtime caches, and the update toast works", async ({ page, context }) => {
   await seed(context, { "ayah-of-day": ayahEntry(localDateKey(new Date())) }); // Home shows an ayah; no real API call
+  LEGACY_DIST = buildLegacyDist();
   const site = createSite(LEGACY_DIST);
   const origin = await site.listen();
   try {
@@ -119,5 +141,6 @@ test("the new service worker replaces the legacy one, keeps runtime caches, and 
     await expect(page.getByRole("heading", { name: "Home", level: 1 })).toBeAttached();
   } finally {
     site.close();
+    fs.rmSync(LEGACY_DIST, { recursive: true, force: true });
   }
 });
