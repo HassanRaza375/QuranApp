@@ -2,106 +2,15 @@
 // metadata, speed, repeat, auto-next to 114, previous/next, reciter switch from 0, resume (saved every 5 s, on pause, at the end), honest
 // errors (failed, blocked, timed out, never an endless spinner), retry, and the Media Session wiring.
 import { describe, expect, it } from "vitest";
-import { AudioEngine, type AudioLike, type EngineDeps, type Snapshot } from "../app/lib/audioEngine";
-import { LOAD_TIMEOUT_MS, PLAY_ERROR, SAVE_EVERY_MS, TIMEOUT_ERROR, BLOCKED_NOTE, type ResumeRecord, type RestoredTrack } from "../app/lib/audioState";
+import type { Snapshot } from "../app/lib/audioEngine";
+import { FakeEl, setup } from "./audioFakes";
+import { LOAD_TIMEOUT_MS, PLAY_ERROR, SAVE_EVERY_MS, TIMEOUT_ERROR, BLOCKED_NOTE } from "../app/lib/audioState";
 import { bindMediaSession, type MediaSessionLike } from "../app/lib/mediaSession";
 import { RECITER_NAMES } from "../app/lib/surahAudio";
 
 const R0 = RECITER_NAMES[0]!;
 const R1 = RECITER_NAMES[1]!;
 
-class FakeEl implements AudioLike {
-  private _src = "";
-  get src() {
-    return this._src;
-  }
-  set src(v: string) {
-    this._src = v;
-    this.currentTime = 0; // a real element starts a new file at 0
-  }
-  preload = "";
-  playbackRate = 1;
-  currentTime = 0;
-  duration = NaN;
-  paused = true;
-  ended = false;
-  plays = 0;
-  playError: string | null = null;
-  private h: Record<string, (() => void)[]> = {};
-  addEventListener(n: string, f: () => void) {
-    (this.h[n] ??= []).push(f);
-  }
-  emit(n: string) {
-    (this.h[n] ?? []).forEach((f) => f());
-  }
-  async play() {
-    this.plays++;
-    if (this.playError) {
-      const e = new Error(this.playError);
-      e.name = this.playError;
-      throw e;
-    }
-    this.paused = false;
-    this.ended = false;
-    this.emit("playing");
-  }
-  pause() {
-    this.paused = true;
-    this.emit("pause");
-  }
-  // test helpers: what a browser does
-  meta(duration: number) {
-    this.duration = duration;
-    this.emit("loadedmetadata");
-  }
-  tick(t: number) {
-    this.currentTime = t;
-    this.emit("timeupdate");
-  }
-  end() {
-    this.ended = true;
-    this.paused = true;
-    this.currentTime = this.duration;
-    this.emit("pause");
-    this.emit("ended");
-  }
-}
-
-function setup(opts: Partial<EngineDeps> & { resume?: RestoredTrack | null; autoAdvance?: boolean } = {}) {
-  const { resume, autoAdvance, ...over } = opts;
-  const els: FakeEl[] = [];
-  const writes: ResumeRecord[] = [];
-  const timers: { fn: () => void; ms: number; kind: "i" | "t"; id: number; live: boolean }[] = [];
-  let repeat = false;
-  const state = { autoAdvance: autoAdvance ?? false, rate: 1, resolveGate: null as Promise<void> | null };
-  const snaps: Snapshot[] = [];
-  const deps: EngineDeps = {
-    create: () => {
-      const e = new FakeEl();
-      els.push(e);
-      return e;
-    },
-    resolve: async (s, r) => {
-      if (state.resolveGate) await state.resolveGate;
-      return r === "Nobody" ? null : `https://audio.test/${r.replace(/\W+/g, "-")}/${s}.mp3`;
-    },
-    surahTitle: (n) => `Surah ${n}`,
-    readResume: () => resume ?? null,
-    writeResume: (r) => void writes.push(JSON.parse(JSON.stringify(r))),
-    readRepeat: () => repeat,
-    writeRepeat: (on) => void (repeat = on),
-    autoAdvance: () => state.autoAdvance,
-    rate: () => state.rate,
-    setInterval: (fn, ms) => (timers.push({ fn, ms, kind: "i", id: timers.length, live: true }), timers.length - 1),
-    clearInterval: (h) => void (timers[h as number]!.live = false),
-    setTimeout: (fn, ms) => (timers.push({ fn, ms, kind: "t", id: timers.length, live: true }), timers.length - 1),
-    clearTimeout: (h) => void (timers[h as number]!.live = false),
-    ...over,
-  };
-  const e = new AudioEngine(deps, (s) => snaps.push(s));
-  const fire = (kind: "i" | "t", ms?: number) => timers.filter((t) => t.live && t.kind === kind && (ms === undefined || t.ms === ms)).forEach((t) => (t.fn(), kind === "t" && (t.live = false)));
-  return { e, els, writes, timers, state, snaps, fire, el: () => els[els.length - 1]! };
-}
 const T = { surahNo: 2, title: "Al-Baqara", reciter: R0 };
 
 describe("nothing plays by itself", () => {
@@ -339,7 +248,7 @@ describe("honest errors, never a spinner that does not end", () => {
     const s = setup();
     await s.e.playSurah(T);
     s.el().emit("error");
-    expect(s.e.snapshot.error).toEqual({ kind: "failed", message: PLAY_ERROR });
+    expect(s.e.snapshot.error).toEqual({ kind: "failed", message: PLAY_ERROR, canSkip: false });
     const t = setup();
     t.e.restore();
     await t.e.playSurah(T);
@@ -352,7 +261,7 @@ describe("honest errors, never a spinner that does not end", () => {
     await s.e.playSurah(T);
     s.el().playError = "NotAllowedError";
     await s.e.retry();
-    expect(s.e.snapshot.error).toEqual({ kind: "blocked", message: BLOCKED_NOTE });
+    expect(s.e.snapshot.error).toEqual({ kind: "blocked", message: BLOCKED_NOTE, canSkip: false });
   });
   it("a load that never produces metadata times out into an error with Try again", async () => {
     const s = setup();
@@ -428,7 +337,7 @@ describe("Media Session", () => {
     const ctl = { play: () => calls.push("play"), pause: () => calls.push("pause"), seekTo: (t: number) => calls.push(`seekto ${t}`), skip: (d: number) => calls.push(`skip ${d}`), next: () => calls.push("next"), previous: () => calls.push("previous") };
     return { ms, handlers, Meta, calls, bind: () => bindMediaSession(ms, Meta, ctl) };
   }
-  const snap = (over: Partial<Snapshot> = {}): Snapshot => ({ track: { surahNo: 2, title: "Al-Baqara", reciter: R0 }, status: "playing", error: null, position: 10, duration: 600, repeat: false, seekable: true, canPrevious: true, canNext: true, ...over });
+  const snap = (over: Partial<Snapshot> = {}): Snapshot => ({ track: { kind: "surah", surahNo: 2, ayah: 0, title: "Al-Baqara", reciter: R0, queue: null, clip: null }, view: { title: "Al-Baqara", line: `Recited by ${R0}`, reciterLine: `Recited by ${R0}`, mediaTitle: "Al-Baqara", artist: R0, album: "Quran App" }, status: "playing", error: null, position: 10, duration: 600, repeat: false, seekable: true, canPrevious: true, canNext: true, ...over });
 
   it("sets the surah and the reciter as the metadata, and the state", () => {
     const m = stub();
@@ -438,7 +347,7 @@ describe("Media Session", () => {
     expect(m.ms.playbackState).toBe("playing");
     b.sync(snap({ status: "paused" }), 1);
     expect(m.ms.playbackState).toBe("paused");
-    b.sync(snap({ track: null, status: "idle" }), 1);
+    b.sync(snap({ track: null, view: null, status: "idle" }), 1);
     expect(m.ms.playbackState).toBe("none");
     expect(m.ms.metadata).toBeNull();
   });
@@ -458,10 +367,10 @@ describe("Media Session", () => {
   it("previous and next are removed where there is no previous or next surah", () => {
     const m = stub();
     const b = m.bind();
-    b.sync(snap({ track: { surahNo: 1, title: "Al-Faatiha", reciter: R0 }, canPrevious: false }), 1);
+    b.sync(snap({ canPrevious: false }), 1);
     expect(m.handlers.previoustrack).toBeNull();
     expect(typeof m.handlers.nexttrack).toBe("function");
-    b.sync(snap({ track: { surahNo: 114, title: "An-Nas", reciter: R0 }, canNext: false }), 1);
+    b.sync(snap({ canNext: false }), 1);
     expect(m.handlers.nexttrack).toBeNull();
   });
   it("the position is reported at most once a second and only when the length is known", () => {

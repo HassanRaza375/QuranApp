@@ -41,10 +41,11 @@ export function bindMediaSession(ms: MediaSessionLike | undefined, Metadata: (ne
   return {
     sync(s: Snapshot, rate: number): void {
       const t = s.track;
-      const key = t ? `${t.surahNo}|${t.reciter}` : "";
+      const v = s.view;
+      const key = t && v ? `${v.mediaTitle}|${v.artist}|${v.album}` : "";
       if (key !== shown) {
         shown = key;
-        ms.metadata = t && Metadata ? new Metadata({ title: t.title, artist: t.reciter, album: "Quran App" }) : null;
+        ms.metadata = t && v && Metadata ? new Metadata({ title: v.mediaTitle, artist: v.artist, album: v.album }) : null;
       }
       ms.playbackState = !t ? "none" : s.status === "playing" || s.status === "buffering" || s.status === "loading" ? "playing" : "paused";
       if (s.canPrevious !== prevOn) {

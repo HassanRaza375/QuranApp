@@ -1,9 +1,11 @@
 <script setup lang="ts">
 // The player sheet (prototype player overlay): now playing, a real slider with a spoken value, previous / back 10 / play / forward 10 / next,
-// speed, reciter (with its warning BEFORE it happens), repeat, auto-next, the resume line, and Save audio (disabled until Downloads).
+// speed, reciter (with its warning BEFORE it happens), repeat, auto-next, the resume line, "Follow audio" and Save audio (disabled until
+// Downloads). 4C: what it shows follows the kind: a surah (previous and next SURAH, repeat, auto-next), an ayah (previous and next AYAH,
+// repeat this ayah), a queue (ayah by ayah, "ayah 3 of 13", no repeat, Skip on a failed ayah) and a clip (no reciter, no repeat).
 // A bottom sheet on a phone, a side panel on desktop. Space toggles play when focus is not on another control. See docs/pages/player.md.
 import { useMediaQuery } from "@vueuse/core";
-import { clock, isCustomSpeed, RECITER_RESTART_NOTE, RESUME_LABEL, SAVE_AUDIO_REASON, spokenPosition, SPEEDS } from "~/lib/audioState";
+import { FOLLOW_DESC, FOLLOW_LABEL, FOLLOW_REDUCED_NOTE, RESUME_LABEL, SAVE_AUDIO_REASON, SKIP_AYAH, SPEEDS, clock, followOn, isCustomSpeed, reciterNote, spokenPosition } from "~/lib/audioState";
 import { RECITER_NAMES } from "~/lib/surahAudio";
 
 const player = usePlayerStore();
@@ -11,8 +13,22 @@ const prefs = usePreferencesStore();
 const isDesktop = useMediaQuery("(min-width: 768px)");
 const open = computed({ get: () => player.sheetOpen, set: (v) => (v ? player.openSheet() : player.closeSheet()) });
 const s = computed(() => player.snap);
+const view = computed(() => player.view);
+const kind = computed(() => s.value.track?.kind ?? "surah");
 const busy = computed(() => player.playing || player.loading);
 const rate = computed(() => prefs.prefs.playbackRate);
+const reduced = ref(false);
+onMounted(() => (reduced.value = document.documentElement.dataset.reducedMotion === "true"));
+watch(open, (v) => v && (reduced.value = document.documentElement.dataset.reducedMotion === "true"));
+
+// the words follow what is playing
+const unit = computed(() => (kind.value === "surah" ? "surah" : "ayah"));
+const showRepeat = computed(() => kind.value === "surah" || kind.value === "ayah");
+const repeatLabel = computed(() => (kind.value === "ayah" ? "Repeat this ayah" : "Repeat this recitation"));
+const showAuto = computed(() => kind.value === "surah");
+const showReciter = computed(() => kind.value !== "clip");
+const showFollow = computed(() => kind.value === "ayah" || kind.value === "queue");
+const followChecked = computed(() => followOn(player.playerPrefs, reduced.value));
 
 // the slider shows the finger's place while dragging, and the player's place otherwise
 const dragging = ref<number | null>(null);
@@ -56,16 +72,20 @@ function onKey(e: KeyboardEvent) {
 <template>
   <Sheet v-model:open="open">
     <SheetContent :side="isDesktop ? 'right' : 'bottom'" class="max-h-[92vh] overflow-y-auto p-5 md:max-h-none md:w-[420px] md:max-w-none" data-testid="player-sheet" @keydown="onKey">
-      <template v-if="player.nowPlaying">
+      <template v-if="view">
         <SheetHeader class="p-0 pr-10">
-          <SheetTitle class="text-[20px]" data-testid="player-title">{{ player.nowPlaying.title }}</SheetTitle>
-          <SheetDescription class="text-[13px] text-ink-2" data-testid="player-sub">{{ player.nowPlaying.subtitle }}</SheetDescription>
+          <SheetTitle class="text-[20px]" data-testid="player-title">{{ view.title }}</SheetTitle>
+          <SheetDescription class="text-[13px] text-ink-2" data-testid="player-sub">{{ view.reciterLine }}</SheetDescription>
         </SheetHeader>
+        <p v-if="kind === 'queue'" class="text-[13px] text-ink-2" data-testid="player-queue-line">{{ view.line }}</p>
 
         <p class="text-[13px]" :class="player.error ? 'text-destructive' : 'text-ink-2'" role="status" aria-live="polite" data-testid="player-status">{{ status }}</p>
-        <Button v-if="s.status === 'error'" variant="outline" class="min-h-11 self-start md:min-h-9" data-testid="player-retry" @click="player.retry()">Try again</Button>
+        <div v-if="s.status === 'error'" class="flex flex-wrap gap-2">
+          <Button variant="outline" class="min-h-11 md:min-h-9" data-testid="player-retry" @click="player.retry()">Try again</Button>
+          <Button v-if="s.error?.canSkip" variant="outline" class="min-h-11 md:min-h-9" data-testid="player-skip" @click="player.skipAyah()">{{ SKIP_AYAH }}</Button>
+        </div>
         <Button v-if="s.status === 'restored'" variant="outline" class="min-h-11 justify-start gap-2 self-stretch text-left md:min-h-9" data-testid="resume-line" @click="player.toggle()">
-          <Icon name="lucide:history" size="16" />{{ RESUME_LABEL }} · {{ player.nowPlaying.title }} · {{ clock(s.position) }}
+          <Icon name="lucide:history" size="16" />{{ RESUME_LABEL }} · {{ view.title }}{{ kind === "queue" ? ` · ${view.line.split(" · ").pop()}` : "" }} · {{ clock(s.position) }}
         </Button>
 
         <div>
@@ -87,11 +107,11 @@ function onKey(e: KeyboardEvent) {
         </div>
 
         <div class="flex items-center justify-center gap-2" role="group" aria-label="Playback">
-          <Button variant="ghost" size="icon" class="size-11 rounded-full" :aria-disabled="!s.canPrevious" aria-label="Previous surah" data-testid="player-prev" @click="s.canPrevious && player.previous()"><Icon name="lucide:skip-back" size="20" /></Button>
+          <Button variant="ghost" size="icon" class="size-11 rounded-full" :aria-disabled="!s.canPrevious" :aria-label="`Previous ${unit}`" data-testid="player-prev" @click="s.canPrevious && player.previous()"><Icon name="lucide:skip-back" size="20" /></Button>
           <Button variant="ghost" size="icon" class="size-11 rounded-full" :aria-disabled="!s.seekable" aria-label="Back 10 seconds" data-testid="player-back" @click="player.skipBack()"><Icon name="lucide:rotate-ccw" size="20" /></Button>
           <Button size="icon" class="size-14 rounded-full" :aria-label="busy ? 'Pause' : 'Play'" data-testid="player-toggle" @click="player.toggle()"><Icon :name="busy ? 'lucide:pause' : 'lucide:play'" size="24" /></Button>
           <Button variant="ghost" size="icon" class="size-11 rounded-full" :aria-disabled="!s.seekable" aria-label="Forward 10 seconds" data-testid="player-forward" @click="player.skipForward()"><Icon name="lucide:rotate-cw" size="20" /></Button>
-          <Button variant="ghost" size="icon" class="size-11 rounded-full" :aria-disabled="!s.canNext" aria-label="Next surah" data-testid="player-next" @click="s.canNext && player.next()"><Icon name="lucide:skip-forward" size="20" /></Button>
+          <Button variant="ghost" size="icon" class="size-11 rounded-full" :aria-disabled="!s.canNext" :aria-label="`Next ${unit}`" data-testid="player-next" @click="s.canNext && player.next()"><Icon name="lucide:skip-forward" size="20" /></Button>
         </div>
 
         <section aria-labelledby="speed-h">
@@ -102,17 +122,21 @@ function onKey(e: KeyboardEvent) {
           </div>
         </section>
 
-        <section aria-labelledby="reciter-h">
+        <section v-if="showReciter && s.track" aria-labelledby="reciter-h">
           <h3 id="reciter-h" class="mb-1 text-[12px] font-medium uppercase tracking-wide text-ink-2">Reciter</h3>
-          <p class="mb-2 text-[12.5px] text-ink-2" data-testid="reciter-note">{{ RECITER_RESTART_NOTE }}</p>
+          <p class="mb-2 text-[12.5px] text-ink-2" data-testid="reciter-note">{{ reciterNote(kind) }}</p>
           <div class="flex flex-wrap gap-2" role="group" aria-labelledby="reciter-h">
-            <Button v-for="n in RECITER_NAMES" :key="n" variant="outline" class="min-h-11 rounded-full md:min-h-9" :class="player.nowPlaying.reciter === n ? 'border-brand text-brand' : ''" :aria-pressed="player.nowPlaying.reciter === n" data-testid="reciter-chip" @click="onReciter(n)">{{ n }}</Button>
+            <Button v-for="n in RECITER_NAMES" :key="n" variant="outline" class="min-h-11 rounded-full md:min-h-9" :class="s.track.reciter === n ? 'border-brand text-brand' : ''" :aria-pressed="s.track.reciter === n" data-testid="reciter-chip" @click="onReciter(n)">{{ n }}</Button>
           </div>
         </section>
 
         <section class="space-y-1" aria-label="Playback options">
-          <label class="flex min-h-11 items-center justify-between gap-3 text-[14px]"><span id="repeat-l">Repeat this recitation</span><Switch :model-value="s.repeat" aria-labelledby="repeat-l" data-testid="player-repeat" @update:model-value="(v) => player.setRepeat(!!v)" /></label>
-          <label class="flex min-h-11 items-center justify-between gap-3 text-[14px]"><span id="auto-l">Play the next surah automatically<small class="block text-[12px] text-ink-2">Same setting as in Settings</small></span><Switch :model-value="prefs.prefs.autoplay" aria-labelledby="auto-l" data-testid="player-auto" @update:model-value="(v) => onAuto(!!v)" /></label>
+          <label v-if="showRepeat" class="flex min-h-11 items-center justify-between gap-3 text-[14px]"><span id="repeat-l">{{ repeatLabel }}</span><Switch :model-value="s.repeat" aria-labelledby="repeat-l" data-testid="player-repeat" @update:model-value="(v) => player.setRepeat(!!v)" /></label>
+          <label v-if="showAuto" class="flex min-h-11 items-center justify-between gap-3 text-[14px]"><span id="auto-l">Play the next surah automatically<small class="block text-[12px] text-ink-2">Same setting as in Settings</small></span><Switch :model-value="prefs.prefs.autoplay" aria-labelledby="auto-l" data-testid="player-auto" @update:model-value="(v) => onAuto(!!v)" /></label>
+          <label v-if="showFollow" class="flex min-h-11 items-center justify-between gap-3 text-[14px]">
+            <span id="follow-l">{{ FOLLOW_LABEL }}<small class="block text-[12px] text-ink-2">{{ FOLLOW_DESC }}</small><small v-if="reduced" class="block text-[12px] text-ink-2" data-testid="follow-note">{{ FOLLOW_REDUCED_NOTE }}</small></span>
+            <Switch :model-value="followChecked" :disabled="reduced" aria-labelledby="follow-l" data-testid="player-follow" @update:model-value="(v) => player.setFollow(!!v)" />
+          </label>
         </section>
 
         <div>

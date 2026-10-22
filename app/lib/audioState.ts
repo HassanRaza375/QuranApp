@@ -2,7 +2,7 @@
 // the words of ours. Pure. `quran:audio-prefs:v1` = { playbackRate, repeatOne, autoAdvance } and `quran:audio-resume:v1` = { url, position,
 // nowPlaying: { type, surahNo, title, subtitle } } exactly as the legacy composable writes them (tests/audioLegacy.test.ts runs the legacy
 // code beside this one). Additions are only extra fields: `nowPlaying.reciter`.
-import { getJSON, setJSON } from "./storage";
+import { getJSON, remove, setJSON } from "./storage";
 import { DEFAULT_RECITER, RECITER_NAMES } from "./surahAudio";
 
 export const AUDIO_PREFS_KEY = "quran:audio-prefs:v1";
@@ -100,4 +100,62 @@ export function spokenTime(sec: number): string {
 /** "1 minute 20 seconds of 6 minutes". */
 export const spokenPosition = (pos: number, dur: number): string => `${spokenTime(pos)} of ${spokenTime(dur)}`;
 
-export { BLOCKED_NOTE, PLAY_ERROR, PLAY_SOON, RECITER_RESTART_NOTE, RESUME_LABEL, SAVE_AUDIO_REASON, TIMEOUT_ERROR } from "./audioText";
+export { BLOCKED_NOTE, FOLLOW_DESC, FOLLOW_LABEL, FOLLOW_REDUCED_NOTE, NO_RECORDING, PLAY_ERROR, RECITER_RESTART_NOTE, RESUME_LABEL, SAVE_AUDIO_REASON, SKIP_AYAH, reciterNote, TIMEOUT_ERROR, ayahFailedMessage } from "./audioText";
+
+// ---- the queue's saved place (Phase 4C): a NEW additive key, so the legacy `quran:audio-resume:v1` stays exactly as it is
+
+export const AUDIO_QUEUE_KEY = "quran:audio-queue:v1";
+/** Which queue: a page of the page reader, or a chapter of a story. The list of ayahs is never stored: it is rebuilt from the data. */
+export type QueueRef = { page: number } | { storyId: string; chapter: number };
+export interface QueueRecord {
+  v: 1;
+  kind: "page" | "story";
+  ref: QueueRef;
+  /** which ayah of the queue */
+  index: number;
+  reciter: string;
+  position: number;
+  savedAt: number;
+}
+export interface RestoredQueue {
+  kind: "page" | "story";
+  ref: QueueRef;
+  index: number;
+  reciter: string;
+  position: number;
+}
+/** A saved queue, or null for anything damaged (never an error). The reciter must be a known name, else the default. */
+export function restoredQueue(raw: unknown): RestoredQueue | null {
+  if (!isObject(raw) || raw.v !== 1 || (raw.kind !== "page" && raw.kind !== "story") || !isObject(raw.ref)) return null;
+  const ref = raw.ref;
+  const index = typeof raw.index === "number" && Number.isInteger(raw.index) && raw.index >= 0 ? raw.index : -1;
+  if (index < 0) return null;
+  let r: QueueRef;
+  if (raw.kind === "page") {
+    if (typeof ref.page !== "number" || !Number.isInteger(ref.page) || ref.page < 1 || ref.page > 604) return null;
+    r = { page: ref.page };
+  } else {
+    if (typeof ref.storyId !== "string" || !ref.storyId || typeof ref.chapter !== "number" || !Number.isInteger(ref.chapter) || ref.chapter < 0) return null;
+    r = { storyId: ref.storyId, chapter: ref.chapter };
+  }
+  const reciter = typeof raw.reciter === "string" && RECITER_NAMES.includes(raw.reciter) ? raw.reciter : DEFAULT_RECITER;
+  const position = typeof raw.position === "number" && Number.isFinite(raw.position) && raw.position > 0 ? Math.floor(raw.position) : 0;
+  return { kind: raw.kind, ref: r, index, reciter, position };
+}
+export const readQueueRecord = (): RestoredQueue | null => restoredQueue(getJSON<unknown>(AUDIO_QUEUE_KEY, null));
+export const writeQueueRecord = (rec: QueueRecord): void => void setJSON(AUDIO_QUEUE_KEY, { ...rec, position: Math.max(0, rec.position) });
+export const clearQueueRecord = (): void => void remove(AUDIO_QUEUE_KEY);
+
+// ---- the player's own switches (additive): "Follow audio"
+
+export const PLAYER_PREFS_KEY = "quran:player-prefs:v1";
+export interface PlayerPrefs {
+  followAyah?: boolean;
+}
+export function readPlayerPrefs(): PlayerPrefs {
+  const v = getJSON<unknown>(PLAYER_PREFS_KEY, {});
+  return isObject(v) ? v : {};
+}
+export const setFollowAyah = (on: boolean): void => void setJSON(PLAYER_PREFS_KEY, { ...readPlayerPrefs(), followAyah: on });
+/** "Follow audio" is on only when the user turned it on AND Reduce motion is off. */
+export const followOn = (p: PlayerPrefs, reducedMotion: boolean): boolean => p.followAyah === true && !reducedMotion;

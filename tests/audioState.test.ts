@@ -91,10 +91,12 @@ describe("quran:audio-resume:v1", () => {
 
 describe("words of ours", () => {
   it("make no offline-play claim; the error keeps its meaning", () => {
-    for (const s of [A.PLAY_ERROR, A.TIMEOUT_ERROR, A.BLOCKED_NOTE, A.SAVE_AUDIO_REASON, A.RECITER_RESTART_NOTE, A.RESUME_LABEL]) expect(s).not.toMatch(/plays? offline|works offline|available offline/i);
+    for (const s of [A.PLAY_ERROR, A.TIMEOUT_ERROR, A.BLOCKED_NOTE, A.SAVE_AUDIO_REASON, A.RECITER_RESTART_NOTE, A.RESUME_LABEL, A.SKIP_AYAH, A.FOLLOW_DESC]) expect(s).not.toMatch(/plays? offline|works offline|available offline/i);
     expect(A.PLAY_ERROR).toBe("Couldn’t play. Audio needs a connection unless it was downloaded.");
     expect(A.RECITER_RESTART_NOTE).toBe("Switching reciter restarts this surah.");
-    expect(A.PLAY_SOON).toBe("Playing single ayahs arrives soon");
+    expect(A.ayahFailedMessage(2, 6)).toBe("Couldn’t play ayah 2:6. Audio needs a connection unless it was downloaded.");
+    expect(A.NO_RECORDING).toBe("No recording for this name");
+    expect(A.FOLLOW_LABEL).toBe("Follow audio");
   });
   it("no page or component still says 'Coming with the player'", () => {
     const root = path.resolve(__dirname, "../app");
@@ -109,11 +111,17 @@ describe("words of ours", () => {
     walk(root);
     expect(hits).toEqual([]);
   });
-  it("every disabled Play control uses the one shared reason", () => {
+  it("no page still says the 4B placeholder reasons (the four Play controls are real now, or have their own reason)", () => {
     const root = path.resolve(__dirname, "../app");
-    for (const f of ["components/asma/NameSheet.vue", "components/stories/StoryReader.vue", "pages/per-page-read.vue"]) {
-      const src = fs.readFileSync(path.join(root, f), "utf8");
-      expect(src, f).toMatch(/PLAY_SOON|PLAY_REASON/);
-    }
+    const hits: string[] = [];
+    const walk = (d: string) => {
+      for (const f of fs.readdirSync(d, { withFileTypes: true })) {
+        const p = path.join(d, f.name);
+        if (f.isDirectory()) walk(p);
+        else if (/\.(vue|ts)$/.test(f.name) && /Playing single ayahs arrives soon|Coming with the player/.test(fs.readFileSync(p, "utf8"))) hits.push(path.relative(root, p));
+      }
+    };
+    walk(root);
+    expect(hits).toEqual([]);
   });
 });
