@@ -239,7 +239,7 @@ export const stubAudio = (context: BrowserContext) =>
       stall: boolean;
       duration: number;
       tick(t: number): void;
-      end(): void;
+      end(): void | Promise<void>;
       emit(name: string): void;
     };
     const w = window as unknown as { __audio: Hooks; Audio: unknown };
@@ -306,7 +306,11 @@ export const stubAudio = (context: BrowserContext) =>
         last().currentTime = t;
         last().emit("timeupdate");
       },
-      end: () => {
+      // A real element cannot end before it has started. The player starts a file after an asynchronous lookup, so a test that sends "ended"
+      // right after pressing Play used to race it (under load the first file was skipped and the queue ended up one ayah ahead: the cause
+      // of the old queue.spec.ts flakiness). Wait, for up to 3 s, until the file is actually playing; after that behave as before.
+      end: async () => {
+        for (let waited = 0; waited < 3000 && !(els.length && !last().paused); waited += 10) await new Promise((r) => setTimeout(r, 10));
         const e = last();
         e.ended = true;
         e.paused = true;
