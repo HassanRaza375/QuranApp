@@ -352,6 +352,34 @@ test.describe("without a service worker", () => {
     await ctx.close();
   });
 
+  test("keyboard only: open the sheet, filter, tick, Download, then Remove and Undo; Escape closes the sheet and focus returns to the button that opened it", async ({ page }) => {
+    await open(page);
+    await page.getByTestId("dl-add").focus();
+    await page.keyboard.press("Enter");
+    await expect(page.getByTestId("dl-sheet")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByTestId("dl-sheet")).toHaveCount(0);
+    await expect(page.getByTestId("dl-add")).toBeFocused();
+    await page.keyboard.press("Enter");
+    await page.getByTestId("dl-filter").focus();
+    await page.keyboard.type("ikhlas");
+    await page.keyboard.press("Tab"); // Tafsir
+    await page.keyboard.press("Tab"); // Audio
+    await page.keyboard.press("Tab"); // the first (only) checkbox
+    await expect(page.getByTestId("dl-check-112")).toBeFocused();
+    await page.keyboard.press("Space");
+    await expect(page.getByTestId("dl-sum")).toContainText("1 selected");
+    await page.getByTestId("dl-start").focus();
+    await page.keyboard.press("Enter");
+    await expect(row(page, 112).getByTestId("dl-part-audio")).toBeVisible();
+    await row(page, 112).getByTestId("dl-remove").focus();
+    await page.keyboard.press("Enter");
+    await expect(row(page, 112)).toHaveCount(0);
+    await page.getByRole("button", { name: "Undo" }).focus();
+    await page.keyboard.press("Enter");
+    await expect(row(page, 112)).toBeVisible();
+  });
+
   test("375 px: a populated page has no sideways scroll, the controls are 44 px high, and the sheet works", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 800 });
     await open(page);

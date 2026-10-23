@@ -84,8 +84,10 @@ function play(name: string) {
     <template v-if="info">
       <div class="flex items-start gap-3">
         <div class="min-w-0 flex-1">
-          <h1 class="font-serif text-[26px] font-medium" data-testid="sa-title">{{ info.name }}</h1>
-          <p class="ar mt-1 !text-[26px] !leading-[2]" lang="ar" dir="rtl">{{ info.arLong }}</p>
+          <div class="flex flex-wrap items-baseline gap-x-4">
+            <h1 class="font-serif text-[26px] font-medium" data-testid="sa-title">{{ info.name }}</h1>
+            <span class="ar !text-[24px] !leading-[1.9]" lang="ar" dir="rtl">{{ info.arLong }}</span>
+          </div>
           <p class="text-[14px] text-ink-2">{{ info.en }} · {{ info.ayahs }} ayahs · {{ info.place }} · Surah {{ info.n }}</p>
         </div>
         <Button variant="outline" class="min-h-11 gap-2 md:min-h-9" :aria-pressed="bookmarked" :aria-label="bookmarked ? 'Remove from saved' : 'Save this page'" data-testid="sa-bookmark" @click="toggleBookmark">

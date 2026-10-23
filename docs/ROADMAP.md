@@ -4,7 +4,7 @@ Kept in step with `STATUS_2026-10-22.md` and `PROGRESS.md` (which wins if they d
 
 ## Built (verified in automated tests; real-device checks pending)
 
-Shell, Home, Settings, Search, Surah listing (Surah, Juz, Page), Surah reader, Prayer & Qibla, Library, Prophets & People (directory, timeline, person), Story reader and Stories directory, Ramadan (Today, Timetable, Events), Per page, Tasbeeh, Sajda, Asma-ul-Husna, and the player (whole surah, per ayah, queues).
+Shell, Home, Settings, Search, Downloads (and Surah audios), Surah listing (Surah, Juz, Page), Surah reader, Prayer & Qibla, Library, Prophets & People (directory, timeline, person), Story reader and Stories directory, Ramadan (Today, Timetable, Events), Per page, Tasbeeh, Sajda, Asma-ul-Husna, and the player (whole surah, per ayah, queues).
 
 ## Prototyped (2026-10-22), to build
 
@@ -13,7 +13,7 @@ Two prototypes are agreed: `design/prototype-remaining-pages.html` and `design/p
 | Phase | Page | Routes | Notes |
 | --- | --- | --- | --- |
 | 10 | Search | `/search` | **Built, awaiting review** (`phases/phase-10-search.md`): ayahs, surahs, people, stories, notes; every legacy filter behind one Filters control; history stays `string[]`. Ayah search is online only (level C) with a designed offline state |
-| 11 | Downloads and offline manager | `/downloads` | **Plan written, awaiting approval** (`phases/phase-11-downloads-plan.md`). Audio files go up to 120.6 MB (four are Git LFS files); real offline audio is Cache Storage with range requests (spiked, section 4 of the plan); the player's "Save audio" stays disabled until this ships. Wi-Fi-only preference (`quran:download-prefs:v1`). **Also decide `/surah-audios/[id]` here** |
+| 11 | Downloads and offline manager | `/downloads`, `/surah-audios/[id]` | **Built, awaiting review** (`phases/phase-11-downloads.md`): text, opt-in tafsir and one reciter's audio per surah, the whole-Qur'an text, a queue with offline and Wi-Fi waits, saved audio played through the service worker; `/surah-audios/[id]` rebuilt small. Device checks still open: offline seek, reopen offline, Al-Baqarah, iPhone Safari, the 7-day Safari check |
 | 12 | Knowledge modules | `/peoples`, `/places`, `/themes`, `/duas`, `/events`, `/signs`, `/commands`, each with `/[id]` (14 routes) | Reuse the Phase 7A layouts. Place and event chips in stories are inert until these exist; add "Referenced by" then. The themes, duas and signs data is not vendored yet. Search gains these groups here |
 | 13 | Daily Fiqh (Wajibat) | `/fiqh`, `/fiqh/choose-marja`, `/fiqh/glossary`, `/fiqh/[category]`, `/fiqh/[category]/[topic]` | Ja'fari only for now; marja' choice already stored (`quran:fiqh-prefs:v1`). Use the legacy category and topic ids, not the prototype's. Search gains this group here |
 | 14 | Hifz | `/hifz`, `/hifz/session`, a surah page | New simple mode (`design/prototype-hifz.html`); word-slip grading, new key `quran:hifz-words:v1`, legacy engine rules and data kept. Grading: 0 slips and no hints is `good`, any slip is `again`, `easy` only from an optional "This was easy" button. Read along highlights the whole ayah (no word timings exist). See `DECISIONS.md` |
@@ -25,7 +25,6 @@ Two prototypes are agreed: `design/prototype-remaining-pages.html` and `design/p
 | --- | --- | --- |
 | About, Sitemap, Surah videos | `/about`, `/sitemap`, `/surah-vedios` | Keep routes unchanged. Apply the design system; no prototype yet |
 | Poets | `/poets`, `/poets/[slug]` | Behind the "Literary modules" setting. Deferred |
-| Surah audios | `/surah-audios/[id]` | Open. Recommendation in the Phase 11 plan: rebuild small (reciter rows with Play and Download); your decision 1 |
 
 Decided: `/juz/[id]` redirects to the reader at the juz's first ayah (`DECISIONS.md`).
 

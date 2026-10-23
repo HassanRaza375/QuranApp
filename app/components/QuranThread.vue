@@ -15,7 +15,7 @@ const last = SURAH_ROWS[SURAH_ROWS.length - 1]!.name;
   <div>
     <svg :viewBox="`0 0 ${TOTAL_AYAHS_IN_QURAN} 22`" preserveAspectRatio="none" role="img" :aria-label="label" class="block h-[22px] w-full" data-testid="thread">
       <rect x="0" y="6" :width="TOTAL_AYAHS_IN_QURAN" height="10" rx="5" class="fill-sunken" />
-      <rect v-for="(f, i) in fills ?? []" :key="`f${i}`" :x="f[0] - 1" y="6" :width="f[1] - f[0] + 1" height="10" class="fill-brand" fill-opacity="0.55" data-testid="thread-fill" />
+      <rect v-for="(f, i) in fills ?? []" :key="`f${i}`" :x="f[0] - 1" y="6" :width="Math.max(f[1] - f[0] + 1, 14)" height="10" class="fill-brand" fill-opacity="0.55" data-testid="thread-fill" />
       <line v-for="p in juzLines" :key="`j${p}`" :x1="p" :x2="p" y1="4" y2="18" class="stroke-border" stroke-width="1" vector-effect="non-scaling-stroke" />
       <line v-for="(p, i) in marks ?? []" :key="`m${i}`" :x1="p - 1" :x2="p - 1" y1="2" y2="20" class="stroke-brand" stroke-width="2" vector-effect="non-scaling-stroke" data-testid="thread-mark" />
     </svg>
