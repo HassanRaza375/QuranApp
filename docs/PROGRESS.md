@@ -22,7 +22,7 @@ Repository: this project is its own repo (it began as the `revamp-quran/` folder
 | 9A | Per-page reader | **Done, awaiting review** (2026-10-21) | [phase-09a-per-page](phases/phase-09a-per-page.md), [plan](phases/phase-09-plan.md) | [per-page-read](pages/per-page-read.md) |
 | 9B | Tasbeeh, Sajda, Asma-ul-Husna | **Done, awaiting review** (2026-10-21) | [phase-09b-asma-sajda-tasbeeh](phases/phase-09b-asma-sajda-tasbeeh.md), [plan](phases/phase-09b-plan.md) | [asma-ul-husna](pages/asma-ul-husna.md), [sajda](pages/sajda.md), [tasbeeh](pages/tasbeeh.md) |
 | 10 | Search | **Done, awaiting review** (2026-10-22; verify: 722 unit tests pass, 535 of 539 browser tests pass, the 4 failures are timing-sensitive audio-queue and per-page tests outside Search, see the phase doc; real-device checks X1 to X6 are yours) | [phase-10-search](phases/phase-10-search.md), [plan](phases/phase-10-search-plan.md) | [search](pages/search.md) |
-| 11 | Downloads and offline manager | **Plan written 2026-10-22, awaiting approval; not started** | [plan](phases/phase-11-downloads-plan.md) | |
+| 11 | Downloads and offline manager | **Plan approved 2026-10-23. Slice 1 built (saved-audio service-worker route, download engine with validation, a first `/downloads`), waiting for your real-phone test (DEVICE_CHECKS D1 to D9); the rest is not built** | [plan](phases/phase-11-downloads-plan.md) | |
 | 12 | Knowledge modules | Prototype agreed 2026-10-22 for 14 of 16 routes (not `/poets`, `/poets/[slug]`); not started | | |
 | 13 | Daily Fiqh (Wajibat) | Prototype agreed 2026-10-22; not started | | |
 | 14 | Hifz | New simple-mode prototype agreed 2026-10-22 (`design/prototype-hifz.html`, `DECISIONS.md`); not started | | |

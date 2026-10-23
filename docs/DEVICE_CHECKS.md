@@ -184,6 +184,22 @@ Use the **Surah listing** Play buttons (and the reader's "Play surah"). Surah 1 
 
 ---
 
+## Phase 11: Downloads (**first slice: do before the rest is built**)
+
+Open the Vercel preview of branch `phase-11-downloads` on the phone. Use **Wi-Fi** for the download. The smallest file is Al-Ikhlaas (about 0.4 MB, the page's default); a good real test is Yaseen (about 17 MB) or Al-Mulk (about 7 MB).
+
+| # | What | Expect | You saw |
+| --- | --- | --- | --- |
+| D1 | Open **Downloads**. The line under the title | "Reciter: <your reciter> · Change in Settings". On iPhone in Safari (not the Home Screen app) one note about adding the app to the Home Screen | |
+| D2 | Pick **Al-Ikhlaas**, press **Download** | A progress bar, then the surah appears under **On this device** with its size. "Offline playback is ready." appears at the bottom (if it says it needs one more page load, reload once) | |
+| D3 | Pick a bigger surah (Yaseen or Al-Mulk) and download it | Same; the percentage and "MB of MB" move. Note how long it took and on which network | |
+| D4 | Turn on **airplane mode** (or turn off Wi-Fi and mobile data), then press **Play** on a saved surah | It plays, from the first second. Seek with the slider in the player sheet: it jumps and keeps playing. Note which browser | |
+| D5 | Still offline: close the app completely, open it again, go to Downloads, press Play | The saved surah is still listed and still plays | |
+| D6 | Still offline: press Play on a surah that is **not** saved (the Surah list) | "Couldn't play. Audio needs a connection unless it was downloaded." with Try again; no endless spinner | |
+| D7 | Back online: press **Remove** on a saved surah, then **Undo** within a few seconds | It comes back. Remove again and wait: it is gone and the size under Settings > Data goes down | |
+| D8 | Download the **largest** you are willing to (Al-Baqarah is 90 to 121 MB; only on Wi-Fi) and play it offline, seek near the end | It plays and seeks, or tell me exactly what happened (the page reloaded, the audio stopped, the browser said low memory) | |
+| D9 | iPhone only: after a day or more, open the app and look at Downloads | The saved surahs are still there. (Safari may clear a site's data after a week without a visit unless the app is on the Home Screen.) | |
+
 ## Manual review (not on a device)
 
 These need your judgement, not a phone. Details are in `docs/CONTENT_TO_VERIFY.md`.

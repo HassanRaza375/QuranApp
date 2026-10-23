@@ -11,6 +11,7 @@ import { AUDIO_QUEUE_KEY, PLAY_ERROR, clearQueueRecord, readAudioPrefs, readPlay
 import { bindMediaSession, type MediaSessionLike } from "~/lib/mediaSession";
 import { AYAH_COUNTS } from "~/lib/quranMeta";
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
+import { unmarked, withSavedCopy } from "~/lib/savedAudio";
 import { resolveSurahAudio } from "~/lib/surahAudio";
 import { VerseService } from "~/services/verse.service";
 import { usePreferencesStore } from "./preferences";
@@ -39,7 +40,12 @@ export const usePlayerStore = defineStore("player", () => {
   const engine = new AudioEngine(
     {
       create: () => new Audio() as unknown as AudioLike,
-      resolve: resolveSurahAudio,
+      // a surah saved by Downloads is asked for with the offline marker (answered from the device); anything else is the plain url
+      resolve: async (n, reciter) => {
+        const url = await resolveSurahAudio(n, reciter);
+        return url ? withSavedCopy(url) : url;
+      },
+      unmarked,
       resolveAyah,
       preload: (url) => void fetch(url).then((r) => r.arrayBuffer()).catch(() => undefined),
       saveData: () => (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true,
