@@ -2,7 +2,7 @@
 
 - Branch: `phase-11-downloads`
 - Date: 2026-10-23
-- Status: **Built, awaiting your review.** Verify: not a clean full pass (three runs, one different failure each, see Result). **Real-device checks still open** (offline seek, reopen offline, Al-Baqarah, iPhone Safari, the 7-day Safari check; `docs/DEVICE_CHECKS.md`, section Phase 11)
+- Status: **Built, awaiting your review.** Full verify clean on Node 22 (see Result). **Real-device checks still open** (offline seek, reopen offline, Al-Baqarah, iPhone Safari, the 7-day Safari check; `docs/DEVICE_CHECKS.md`, section Phase 11)
 
 ## Goal
 
@@ -66,15 +66,28 @@ Page and saved list: level A. Saved text, tafsir and audio: level B. Adding: lev
 
 ### Result
 
-`npm run verify` was run **three times** on 2026-10-23 (Node 24.22.1; build, lint, 780 unit tests and the dev smoke passed every time). **None of the three full runs was completely clean; each had one browser failure, and the last full run is not a clean pass.**
+**Clean run, 2026-10-23: `npm run verify` on Node v22.23.4 (the version in `.nvmrc`), commit `c05b817`, 19:01 to 19:22, exit 0.**
 
-| Run | Browser tests | The one failure |
+| Step | Result |
+| --- | --- |
+| `npm run build` | passed |
+| `npx eslint .` | clean |
+| `npm test` | **780 passed** in 45 files |
+| `npm run test:dev` (dev smoke) | passed |
+| `npm run test:e2e` | **565 passed, 0 failed** |
+
+It took several full runs to get here. The earlier ones (Node 24, then Node 22) each failed on one or two tests, and every one had a cause:
+
+| Run | Failure | Cause and fix |
 | --- | --- | --- |
-| 1 (16:45) | 563 passed, 1 failed | `settings.spec.ts:568`: a **real regression of mine**. Starting the app opened `quran-revamp-db` even when nothing was saved, which re-created the database just after Clear all data deleted it. Fixed (the reader's store is opened only when the saved list has entries) with a unit test |
-| 2 (17:06) | 563 passed, 1 failed | `search.spec.ts:88` (a click on a surah result did not navigate in 5 s). **Cause not found.** It passed 15 of 15 on its own, and in the run before and after; not touched by this phase |
-| 3 (17:27) | 563 passed, 1 failed | `downloads.spec.ts:355`, **my new keyboard test**: it moved on while the Add sheet was still animating out and holding focus. The test now waits for the sheet to be gone; 25 of 25 passed under heavy CPU load |
+| 1 | `settings.spec.ts:568` | **App bug of mine:** starting the app opened `quran-revamp-db` with nothing saved, re-creating the database that Clear all data had just deleted. The store is now opened only when the saved list has entries (unit test added) |
+| 2 | `search.spec.ts:88` | **App bug (Phase 10 code):** the 400 ms timer that writes `?q=` into the URL called `router.replace` while the navigation to the clicked result was still loading, which cancelled it. A history log shows the click on `/surah/1` at 649 ms and `replaceState('/search?q=fatiha')` at 858 ms. It was **not** a list re-render (the rows have stable keys). Fixed in `useSearchPage.ts` (no URL write once a navigation away has started); a deterministic regression test delays the reader's scripts by 1.2 s and failed before the fix |
+| 3 | `downloads.spec.ts:355` | My new keyboard test moved on while the Add sheet was animating out; it now waits for the sheet to go (25 of 25 under load) |
+| 4 (Node 22) | `downloads.spec.ts:250`, `queue.spec.ts:227` | Test races: the legacy-adoption test seeded its list before the cache held the chapter, and the queue test ticked and fired `pagehide` before the first file had started (the same race as `end()`). The test doubles are fixed (`tick()` waits for a loaded file); 40 of 40 under heavy load |
 
-After the last fix I rebuilt and re-ran the five spec files this phase touches (downloads, search, settings, queue, player): **167 of 167 passed**. I did not run a fourth full verify. Earlier in the phase: the audio-queue flakiness (`queue.spec.ts:78` and `:95`) was a race in the test double, fixed and 40 of 40 under load; the full run of 2026-10-23 on the first slice had 547 of 547.
+Earlier, `queue.spec.ts:78` and `:95` were the same kind of race in `end()` (fixed, 40 of 40 under load). The two Per page failures from Phase 10 (`perpage.spec.ts:345`, `:376`) have not been seen again and their cause was not found.
+
+**Vercel:** the preview of `5356224` deployed (GitHub commit status "Deployment has completed", 2026-10-23 13:04 UTC). `docs/DEPLOY.md` says the Vercel project's Node setting is 22.x, matching `.nvmrc` and `engines`; I cannot read the project's actual setting from here.
 
 ## Differences from the prototype
 
