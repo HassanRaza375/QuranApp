@@ -332,3 +332,22 @@ describe("when the list of recordings cannot be loaded", () => {
     expect(h.calls.chapter).toEqual([]);
   });
 });
+
+describe("the reader's store", () => {
+  it("is not opened at all while nothing was saved on purpose (opening it would re-create a database Clear all data deleted)", async () => {
+    const h = harness();
+    let opened = 0;
+    h.m["deps"].device.chapterKeys = async () => {
+      opened++;
+      return [];
+    };
+    h.m["deps"].device.tafsirKeys = async () => {
+      opened++;
+      return [];
+    };
+    h.cache.store.set(app(1, 36), new Response("x")); // audio left by Clear all data
+    await h.m.refresh();
+    expect(opened).toBe(0);
+    expect(h.m.rows()).toHaveLength(1);
+  });
+});

@@ -125,6 +125,14 @@ export class DownloadManager {
       this.saved = []; // Cache Storage unavailable (private mode): nothing can be saved, nothing is claimed
     }
     try {
+      // The reader's store is opened only when something was saved on purpose. With an empty list there is nothing to compare, and opening it would
+      // re-create the database that Clear all data has just deleted.
+      if (!this.manifest.length) {
+        this.chapters = new Set();
+        this.tafsirCount = new Map();
+        this.changed();
+        return;
+      }
       this.chapters = new Set(await this.deps.device.chapterKeys());
       const counts = new Map<number, number>();
       for (const k of await this.deps.device.tafsirKeys()) {
