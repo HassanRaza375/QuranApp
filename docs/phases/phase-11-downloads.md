@@ -2,7 +2,7 @@
 
 - Branch: `phase-11-downloads`
 - Date: 2026-10-23
-- Status: **Built, awaiting your review.** Verify result below. **Real-device checks still open** (offline seek, reopen offline, Al-Baqarah, iPhone Safari, the 7-day Safari check; `docs/DEVICE_CHECKS.md`, section Phase 11)
+- Status: **Built, awaiting your review.** Verify: not a clean full pass (three runs, one different failure each, see Result). **Real-device checks still open** (offline seek, reopen offline, Al-Baqarah, iPhone Safari, the 7-day Safari check; `docs/DEVICE_CHECKS.md`, section Phase 11)
 
 ## Goal
 
@@ -58,7 +58,7 @@ Page and saved list: level A. Saved text, tafsir and audio: level B. Adding: lev
 ## Verification
 
 - [x] Unit tests for every pure piece and the queue; the legacy composable run against our list in both directions
-- [x] 25 browser tests on the production build (audio hosts and text mocked; real APIs and the redirecting URL blocked)
+- [x] 25 browser tests for Downloads on the production build (audio hosts and text mocked; real APIs and the redirecting URL blocked)
 - [x] 1280, 375 and 390 px, light and dark (20 images); empty and first-run states; the keyboard-only path is a test
 - [x] Offline tested in the browser and on one phone (see above)
 - [x] Compared against the prototype; differences in `docs/design/downloads-compare/README.md`
@@ -66,7 +66,15 @@ Page and saved list: level A. Saved text, tafsir and audio: level B. Adding: lev
 
 ### Result
 
-RESULT_PLACEHOLDER
+`npm run verify` was run **three times** on 2026-10-23 (Node 24.22.1; build, lint, 780 unit tests and the dev smoke passed every time). **None of the three full runs was completely clean; each had one browser failure, and the last full run is not a clean pass.**
+
+| Run | Browser tests | The one failure |
+| --- | --- | --- |
+| 1 (16:45) | 563 passed, 1 failed | `settings.spec.ts:568`: a **real regression of mine**. Starting the app opened `quran-revamp-db` even when nothing was saved, which re-created the database just after Clear all data deleted it. Fixed (the reader's store is opened only when the saved list has entries) with a unit test |
+| 2 (17:06) | 563 passed, 1 failed | `search.spec.ts:88` (a click on a surah result did not navigate in 5 s). **Cause not found.** It passed 15 of 15 on its own, and in the run before and after; not touched by this phase |
+| 3 (17:27) | 563 passed, 1 failed | `downloads.spec.ts:355`, **my new keyboard test**: it moved on while the Add sheet was still animating out and holding focus. The test now waits for the sheet to be gone; 25 of 25 passed under heavy CPU load |
+
+After the last fix I rebuilt and re-ran the five spec files this phase touches (downloads, search, settings, queue, player): **167 of 167 passed**. I did not run a fourth full verify. Earlier in the phase: the audio-queue flakiness (`queue.spec.ts:78` and `:95`) was a race in the test double, fixed and 40 of 40 under load; the full run of 2026-10-23 on the first slice had 547 of 547.
 
 ## Differences from the prototype
 

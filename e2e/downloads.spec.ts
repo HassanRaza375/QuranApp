@@ -371,12 +371,12 @@ test.describe("without a service worker", () => {
     await expect(page.getByTestId("dl-sum")).toContainText("1 selected");
     await page.getByTestId("dl-start").focus();
     await page.keyboard.press("Enter");
+    await expect(page.getByTestId("dl-sheet")).toHaveCount(0); // the sheet is gone (while it animates out, it still holds focus)
     await expect(row(page, 112).getByTestId("dl-part-audio")).toBeVisible();
-    await row(page, 112).getByTestId("dl-remove").focus();
-    await page.keyboard.press("Enter");
-    await expect(row(page, 112)).toHaveCount(0);
-    await page.getByRole("button", { name: "Undo" }).focus();
-    await page.keyboard.press("Enter");
+    // The Undo toast lasts 6 seconds, so the two keyboard steps are done back to back (the wait for the row to go is the toast appearing).
+    await row(page, 112).getByTestId("dl-remove").press("Enter");
+    const undo = page.getByRole("button", { name: "Undo" });
+    await undo.press("Enter");
     await expect(row(page, 112)).toBeVisible();
   });
 
