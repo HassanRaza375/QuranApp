@@ -100,7 +100,7 @@ export function spokenTime(sec: number): string {
 /** "1 minute 20 seconds of 6 minutes". */
 export const spokenPosition = (pos: number, dur: number): string => `${spokenTime(pos)} of ${spokenTime(dur)}`;
 
-export { BLOCKED_NOTE, FOLLOW_DESC, FOLLOW_LABEL, FOLLOW_REDUCED_NOTE, NO_RECORDING, PLAY_ERROR, RECITER_RESTART_NOTE, RESUME_LABEL, SAVE_AUDIO_REASON, SKIP_AYAH, reciterNote, TIMEOUT_ERROR, ayahFailedMessage } from "./audioText";
+export { BLOCKED_NOTE, FOLLOW_DESC, FOLLOW_LABEL, FOLLOW_REDUCED_NOTE, NO_RECORDING, PLAY_ERROR, RECITER_RESTART_NOTE, RESUME_LABEL, SKIP_AYAH, reciterNote, TIMEOUT_ERROR, ayahFailedMessage } from "./audioText";
 
 // ---- the queue's saved place (Phase 4C): a NEW additive key, so the legacy `quran:audio-resume:v1` stays exactly as it is
 

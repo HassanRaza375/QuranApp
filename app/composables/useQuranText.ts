@@ -6,7 +6,8 @@ import { loadChapter, loadTafsir, type Loaded, type TextDeps } from "~/lib/quran
 import { ChaptersService } from "~/services/chapters.service";
 import { TafsirService } from "~/services/tafsir.service";
 
-const deps: TextDeps = {
+/** The reader's cache and services, also used by Downloads (which must not go through the per-visit memo below: it has to write to the store itself). */
+export const textDeps: TextDeps = {
   readChapter: (n) => getCached(CHAPTERS, n),
   writeChapter: (n, c) => putCached(CHAPTERS, n, c),
   fetchChapter: (n) => ChaptersService.getChapterByNumber(n),
@@ -30,6 +31,6 @@ const shared = <K, V>(map: Map<K, Promise<V>>, key: K, make: () => Promise<V>): 
 };
 
 export const useQuranText = () => ({
-  getChapter: (n: number) => shared(chapters, n, () => loadChapter(n, deps)),
-  getTafsir: (surah: number, ayah: number) => shared(tafsirs, `${surah}_${ayah}`, () => loadTafsir(surah, ayah, deps)),
+  getChapter: (n: number) => shared(chapters, n, () => loadChapter(n, textDeps)),
+  getTafsir: (surah: number, ayah: number) => shared(tafsirs, `${surah}_${ayah}`, () => loadTafsir(surah, ayah, textDeps)),
 });

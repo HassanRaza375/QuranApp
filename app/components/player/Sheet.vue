@@ -5,10 +5,12 @@
 // repeat this ayah), a queue (ayah by ayah, "ayah 3 of 13", no repeat, Skip on a failed ayah) and a clip (no reciter, no repeat).
 // A bottom sheet on a phone, a side panel on desktop. Space toggles play when focus is not on another control. See docs/pages/player.md.
 import { useMediaQuery } from "@vueuse/core";
-import { FOLLOW_DESC, FOLLOW_LABEL, FOLLOW_REDUCED_NOTE, RESUME_LABEL, SAVE_AUDIO_REASON, SKIP_AYAH, SPEEDS, clock, followOn, isCustomSpeed, reciterNote, spokenPosition } from "~/lib/audioState";
+import { expectedBytes, formatBytes, RECITER_IDS } from "~/lib/downloadPlan";
+import { FOLLOW_DESC, FOLLOW_LABEL, FOLLOW_REDUCED_NOTE, RESUME_LABEL, SKIP_AYAH, SPEEDS, clock, followOn, isCustomSpeed, reciterNote, spokenPosition } from "~/lib/audioState";
 import { RECITER_NAMES } from "~/lib/surahAudio";
 
 const player = usePlayerStore();
+const downloads = useDownloadsStore();
 const prefs = usePreferencesStore();
 const isDesktop = useMediaQuery("(min-width: 768px)");
 const open = computed({ get: () => player.sheetOpen, set: (v) => (v ? player.openSheet() : player.closeSheet()) });
@@ -58,6 +60,15 @@ const onReciter = (name: string) => {
   void player.switchReciter(name);
 };
 const onAuto = (v: boolean) => prefs.set("autoplay", v);
+
+// Save audio: the whole recitation that is playing (surah kind only), by the reciter that is playing, to listen to with no connection
+const saveId = computed(() => (s.value.track?.kind === "surah" ? (RECITER_IDS[s.value.track.reciter] ?? null) : null));
+const saveSurah = computed(() => s.value.track?.surahNo ?? 0);
+const saved = computed(() => !!saveId.value && downloads.isAudioSaved(saveSurah.value, saveId.value));
+const saveJob = computed(() => (saveId.value ? downloads.audioJob(saveSurah.value, saveId.value) : undefined));
+const saveBytes = computed(() => (saveId.value ? expectedBytes(saveId.value, saveSurah.value) : null));
+const savePct = computed(() => (saveJob.value?.expected ? Math.min(100, Math.floor((saveJob.value.audioDone / saveJob.value.expected) * 100)) : 0));
+watch(open, (v) => v && void downloads.start());
 
 // Space plays or pauses when focus is on the sheet itself or the slider (not on a button, switch or link, which keep their own Space)
 function onKey(e: KeyboardEvent) {
@@ -139,9 +150,23 @@ function onKey(e: KeyboardEvent) {
           </label>
         </section>
 
-        <div>
-          <Button variant="outline" class="min-h-11 gap-2 md:min-h-9" aria-disabled="true" aria-describedby="save-why" data-testid="player-save" @click.prevent><Icon name="lucide:download" size="16" />Save audio to device</Button>
-          <p id="save-why" class="mt-1 text-[12px] text-ink-2" data-testid="save-why">{{ SAVE_AUDIO_REASON }}</p>
+        <div v-if="saveId" data-testid="player-save-wrap">
+          <div v-if="saved" class="flex items-center gap-2 text-[14px]" data-testid="player-saved"><Icon name="lucide:check" size="16" />Saved on this device</div>
+          <div v-else-if="saveJob" class="flex items-center gap-2">
+            <span class="flex-1 text-[14px]" role="status" data-testid="player-save-state">
+              <template v-if="saveJob.status === 'failed'">Failed · {{ saveJob.message }}</template>
+              <template v-else-if="saveJob.status === 'offline'">Waiting for a connection</template>
+              <template v-else-if="saveJob.status === 'wifi'">Waiting for Wi-Fi</template>
+              <template v-else-if="saveJob.status === 'space'">{{ saveJob.message }}</template>
+              <template v-else-if="saveJob.status === 'downloading'">Saving {{ savePct }}%</template>
+              <template v-else>Waiting…</template>
+            </span>
+            <Button v-if="saveJob.status === 'failed'" variant="outline" class="min-h-11 md:min-h-9" data-testid="player-save-retry" @click="downloads.retry(saveJob.id)">Retry</Button>
+            <Button v-else-if="saveJob.status === 'space'" variant="outline" class="min-h-11 md:min-h-9" data-testid="player-save-proceed" @click="downloads.proceed(saveJob.id)">Download anyway</Button>
+            <Button variant="ghost" class="min-h-11 md:min-h-9" aria-label="Cancel saving" data-testid="player-save-cancel" @click="downloads.cancel(saveJob.id)"><Icon name="lucide:x" size="16" /></Button>
+          </div>
+          <Button v-else variant="outline" class="min-h-11 gap-2 md:min-h-9" data-testid="player-save" @click="downloads.addAudio(saveSurah, s.track!.reciter)"><Icon name="lucide:download" size="16" />Save audio to listen offline{{ saveBytes ? ' · ' + formatBytes(saveBytes) : '' }}</Button>
+          <p class="mt-1 text-[12px] text-ink-2" data-testid="save-note">A saved surah plays the whole recitation with no connection. <NuxtLink to="/downloads" class="underline" @click="player.closeSheet()">Manage downloads</NuxtLink></p>
         </div>
       </template>
     </SheetContent>

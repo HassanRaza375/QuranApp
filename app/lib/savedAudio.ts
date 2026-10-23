@@ -14,7 +14,9 @@ export const browserSavedEnv = (): SavedEnv => ({
   controlled: () => typeof navigator !== "undefined" && !!navigator.serviceWorker?.controller,
   has: async (url) => {
     if (typeof caches === "undefined") return false;
-    return !!(await (await caches.open(DOWNLOADS_AUDIO_CACHE)).match(url));
+    if (!(await caches.has(DOWNLOADS_AUDIO_CACHE))) return false; // asking never creates the cache
+    const hit = await (await caches.open(DOWNLOADS_AUDIO_CACHE)).match(url);
+    return !!hit && hit.type !== "opaque"; // a copy saved by the legacy app is opaque: it cannot be played from the device
   },
 });
 

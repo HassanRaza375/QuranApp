@@ -134,18 +134,17 @@ test.describe("the mini player and the sheet", () => {
     expect((await A(page)).srcs[0]).toMatch(/\/2\/18\.mp3$/);
   });
 
-  test("Save audio is a visible, real button with aria-disabled and its reason; no offline claim anywhere in the sheet", async ({ page }) => {
+  test("Save audio is a real, enabled button for a surah (with the size); it says what a saved surah covers, and does nothing until pressed", async ({ page }) => {
     await openListing(page);
     await start(page, 1);
     await openSheet(page);
     const save = page.getByTestId("player-save");
     expect(await save.evaluate((el) => el.tagName)).toBe("BUTTON");
-    await expect(save).toHaveAttribute("aria-disabled", "true");
-    await expect(save).toHaveAccessibleDescription("Saving audio arrives with Downloads");
-    await save.click({ force: true });
-    expect((await A(page)).srcs).toHaveLength(1); // nothing was requested
-    const text = (await page.getByTestId("player-sheet").textContent())!;
-    expect(text).not.toMatch(/plays? offline|works offline|available offline/i);
+    await expect(save).toBeEnabled();
+    await expect(save).not.toHaveAttribute("aria-disabled", "true");
+    await expect(save).toContainText("Save audio to listen offline · ");
+    await expect(page.getByTestId("save-note")).toContainText("plays the whole recitation");
+    expect((await A(page)).srcs).toHaveLength(1); // nothing was requested by showing it
   });
 });
 

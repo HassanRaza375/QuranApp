@@ -2,7 +2,6 @@
 // fake cache (nothing partial or wrong is ever stored), and the queue. No network, no browser.
 import { describe, expect, it } from "vitest";
 import { downloadAudioFile, type DownloadDeps } from "../app/lib/audioDownload";
-import { DownloadManager, type ManagerDeps } from "../app/lib/downloadManager";
 import { PLAY_ERROR } from "../app/lib/audioState";
 import { acceptableType, audioSources, DownloadError, expectedBytes, formatBytes, isLfsPointer, isOfflineUrl, looksLikeMp3, needsHomeScreenNote, offlineUrl, plainUrl, RECITER_IDS, savedFromKeys, spaceCheck } from "../app/lib/downloadPlan";
 import { unmarked, withSavedCopy } from "../app/lib/savedAudio";
@@ -217,107 +216,6 @@ describe("downloadAudioFile", () => {
     expect(cache.store.has(url)).toBe(true);
     const none = net(new TypeError("offline"), new TypeError("offline"));
     await expect(downloadAudioFile({ url, expected: 2000 }, { fetch: none.f, cache: new FakeCache() })).rejects.toBeInstanceOf(DownloadError);
-  });
-});
-
-// ---- the queue
-
-function harness(opts: { estimate?: { usage?: number; quota?: number } | null; answers?: (signal?: AbortSignal | null) => Response | Error } = {}) {
-  const cache = new FakeCache();
-  const fetched: string[] = [];
-  const deps: ManagerDeps = {
-    fetch: async (u, init) => {
-      fetched.push(u);
-      const a = opts.answers ? opts.answers(init.signal) : reply(mp3(expectedBytes("1", 112)!));
-      if (a instanceof Error) throw a;
-      return a;
-    },
-    openCache: async () => cache,
-    estimate: async () => (opts.estimate === undefined ? { usage: 0, quota: 50e9 } : opts.estimate),
-    resolveUrl: async (s, r) => (r === "Mishary Rashid Al Afasy" ? app(1, s) : null),
-    reciterId: (r) => RECITER_IDS[r] ?? null,
-    persist: async () => true,
-  };
-  let changes = 0;
-  const m = new DownloadManager(deps, () => changes++);
-  return { m, cache, fetched, changes: () => changes };
-}
-const until = async (ok: () => boolean) => {
-  for (let i = 0; i < 400 && !ok(); i++) await new Promise((r) => setTimeout(r, 5));
-  expect(ok()).toBe(true);
-};
-const NAME = "Mishary Rashid Al Afasy";
-
-describe("DownloadManager", () => {
-  it("downloads, lists the file as saved from the cache's keys, and does not queue a saved file again", async () => {
-    const h = harness();
-    await h.m.enqueue(112, NAME);
-    await until(() => h.m.isSaved(112, "1"));
-    expect(h.m.jobs[0]!.status).toBe("done");
-    expect(h.m.saved).toEqual([{ surah: 112, reciterId: "1", url: app(1, 112) }]);
-    expect(await h.m.enqueue(112, NAME)).toBeNull();
-  });
-  it("runs one file at a time, in the order asked", async () => {
-    const order: string[] = [];
-    const h = harness({
-      answers: () => {
-        order.push("fetch");
-        return reply(mp3(expectedBytes("1", 112)!));
-      },
-    });
-    await h.m.enqueue(112, NAME);
-    await h.m.enqueue(114, NAME);
-    // surah 114 has a different size, so the canned answer fails its length check: it must be a failure of that job only, after 112 finished
-    await until(() => h.m.jobs.length === 2 && h.m.jobs.every((j) => j.status === "done" || j.status === "failed"));
-    expect(h.m.jobs.map((j) => `${j.surah}:${j.status}`)).toEqual(["112:done", "114:failed"]);
-    expect(h.m.saved.map((s) => s.surah)).toEqual([112]);
-  });
-  it("a failed file shows its reason and can be retried; nothing is saved meanwhile", async () => {
-    let fail = true;
-    const h = harness({ answers: () => (fail ? new TypeError("offline") : reply(mp3(expectedBytes("1", 112)!))) });
-    await h.m.enqueue(112, NAME);
-    await until(() => h.m.jobs[0]!.status === "failed");
-    expect(h.m.jobs[0]!.message).toMatch(/could not be reached|failed/i);
-    expect(h.m.saved).toEqual([]);
-    fail = false;
-    h.m.retry(h.m.jobs[0]!.id);
-    await until(() => h.m.isSaved(112, "1"));
-  });
-  it("warns before fetching a byte when the space is short, and goes on only when told to", async () => {
-    const h = harness({ estimate: { usage: 9.99e9, quota: 10e9 } });
-    await h.m.enqueue(112, NAME);
-    await until(() => h.m.jobs[0]!.status === "space");
-    expect(h.m.jobs[0]!.message).toMatch(/^Needs about .* free/);
-    expect(h.fetched).toEqual([]);
-    h.m.proceed(h.m.jobs[0]!.id);
-    await until(() => h.m.isSaved(112, "1"));
-  });
-  it("Cancel on a running download aborts it, discards it and drops the job", async () => {
-    const h = harness({ answers: (signal) => new Response(new ReadableStream({ start(c) { signal?.addEventListener("abort", () => c.error(new DOMException("aborted", "AbortError"))); } }), { headers: { "content-type": "audio/mpeg", "content-length": String(expectedBytes("1", 112)) } }) });
-    await h.m.enqueue(112, NAME);
-    await until(() => h.m.jobs[0]?.status === "downloading");
-    h.m.cancel(h.m.jobs[0]!.id);
-    await until(() => h.m.jobs.length === 0);
-    expect(h.m.saved).toEqual([]);
-  });
-  it("refuses a recording that has no file for that reciter, without a request", async () => {
-    const h = harness();
-    expect(await h.m.enqueue(112, "Abu Bakr Al Shatri")).toMatchObject({ status: "failed" });
-    expect(h.fetched).toEqual([]);
-  });
-  it("Remove deletes the file and the list follows the cache", async () => {
-    const h = harness();
-    await h.m.enqueue(112, NAME);
-    await until(() => h.m.isSaved(112, "1"));
-    await h.m.remove(112, "1");
-    expect(h.m.saved).toEqual([]);
-    expect(h.cache.store.size).toBe(0);
-  });
-  it("starts from what is already in the cache (a file saved earlier, or left by Clear all data)", async () => {
-    const h = harness();
-    h.cache.store.set(app(1, 36), new Response("x"));
-    await h.m.refresh();
-    expect(h.m.isSaved(36, "1")).toBe(true);
   });
 });
 

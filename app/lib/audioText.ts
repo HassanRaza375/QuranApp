@@ -12,7 +12,6 @@ export const FOLLOW_DESC = "Keep the playing ayah in view";
 export const FOLLOW_REDUCED_NOTE = "Off while Reduce motion is on in Settings.";
 /** The Asma-ul-Husna names whose recording does not exist at the audio source today. */
 export const NO_RECORDING = "No recording for this name";
-export const SAVE_AUDIO_REASON = "Saving audio arrives with Downloads";
 export const RECITER_RESTART_NOTE = "Switching reciter restarts this surah.";
 export const RESUME_LABEL = "Resume where you stopped";
 /** The note above the reciter chips, before anything happens: what a switch does for the thing that is playing. */

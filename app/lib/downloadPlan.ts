@@ -53,6 +53,10 @@ export function expectedBytes(reciterId: ReciterId, surah: number): number | nul
   return Number.isInteger(n) && n! > 0 ? n! : null;
 }
 
+/** Averages measured on the real service (2026-10-22): the text of a surah is about 1.1 KB per ayah; one ayah's tafsir (all three authors) about 10.7 KB. Used only for "about" figures before a download starts. */
+export const TEXT_BYTES_PER_AYAH = 1060;
+export const TAFSIR_BYTES_PER_AYAH = 10700;
+
 /** "115 MB", "840 KB", "1.7 GB": decimal units, as Settings shows storage. */
 export function formatBytes(n: number): string {
   if (n >= 1e9) return `${(n / 1e9).toFixed(n >= 1e10 ? 0 : 1)} GB`;
@@ -99,6 +103,8 @@ export interface SavedAudio {
   surah: number;
   reciterId: ReciterId;
   url: string;
+  /** An opaque copy (the legacy app saved audio with a no-cors request): its bytes cannot be read, so it cannot be played from the device. */
+  opaque?: boolean;
 }
 const KEY = /\/Data\/(\d+)\/(\d+)\.mp3$/;
 /** What is saved, read from the cache's own keys (the truth), not from a list that could disagree with it. */
