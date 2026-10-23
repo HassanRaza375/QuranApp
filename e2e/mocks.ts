@@ -238,7 +238,7 @@ export const stubAudio = (context: BrowserContext) =>
       /** play() resolves but the file never starts (a stalled load) */
       stall: boolean;
       duration: number;
-      tick(t: number): void;
+      tick(t: number): void | Promise<void>;
       end(): void | Promise<void>;
       emit(name: string): void;
     };
@@ -302,7 +302,9 @@ export const stubAudio = (context: BrowserContext) =>
       playError: null,
       stall: false,
       duration: 3600,
-      tick: (t) => {
+      // Like end(): a file that has not been loaded yet cannot play (the player loads it after an asynchronous lookup), so wait, up to 3 s, until one is.
+      tick: async (t) => {
+        for (let waited = 0; waited < 3000 && !(els.length && last().src); waited += 10) await new Promise((r) => setTimeout(r, 10));
         last().currentTime = t;
         last().emit("timeupdate");
       },

@@ -247,13 +247,18 @@ test.describe("without a service worker", () => {
     await expect.poll(() => text.chapters).toEqual([112]);
   });
 
-  test("a legacy download is adopted from the service worker's cache with no network: the text shows as saved, the rest as 'Not saved'", async ({ page, context }) => {
-    await seed(context, { "quran:downloads:v1": JSON.stringify([{ surahNo: 112, surahName: "x", totalAyah: 4, hasTafsir: true, reciterKey: null, reciterName: null, audioUrl: null, sizeBytesEstimate: 5, downloadedAt: 1 }]) });
+  test("a legacy download is adopted from the service worker's cache with no network: the text shows as saved, the rest as 'Not saved'", async ({ page }) => {
+    // The legacy app's cached chapter is there BEFORE the new app first runs, and its list is too: put them in this order (the list last, so the
+    // app's idle start-up on this first page has nothing to adopt yet and cannot mark the entry as checked before the cache holds the chapter).
     await page.goto("/");
-    await page.evaluate(async (chapter) => {
-      const c = await caches.open("quran-api-cache");
-      await c.put("https://quranapi.pages.dev/api/112.json", new Response(JSON.stringify(chapter), { headers: { "content-type": "application/json" } }));
-    }, fakeChapter(112));
+    await page.evaluate(
+      async ([chapter, list]) => {
+        const c = await caches.open("quran-api-cache");
+        await c.put("https://quranapi.pages.dev/api/112.json", new Response(JSON.stringify(chapter), { headers: { "content-type": "application/json" } }));
+        localStorage.setItem("quran:downloads:v1", list as string);
+      },
+      [fakeChapter(112), JSON.stringify([{ surahNo: 112, surahName: "x", totalAyah: 4, hasTafsir: true, reciterKey: null, reciterName: null, audioUrl: null, sizeBytesEstimate: 5, downloadedAt: 1 }])] as const,
+    );
     await page.goto("/downloads");
     await expect(row(page, 112).locator('span[data-testid="dl-part-text"]')).toHaveCount(1);
     await expect(row(page, 112).getByTestId("dl-part-text")).not.toContainText("Not saved");
