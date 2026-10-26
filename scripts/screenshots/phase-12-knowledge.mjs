@@ -25,7 +25,7 @@ const ONLY = process.argv[2];
 const browser = await chromium.launch();
 const SIZE = { desktop: { width: 1280, height: 900 }, mobile: { width: 375, height: 812 } };
 
-async function revamp(device, theme, { seeds = {}, textMode = "ok" } = {}) {
+async function revamp(device, theme, { seeds = {}, textMode = "ok", translit = "ok", real = false } = {}) {
   const ctx = await browser.newContext({ viewport: SIZE[device], hasTouch: device !== "desktop", serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB" });
   await ctx.addInitScript(({ theme, seeds }) => {
     if (!sessionStorage.getItem("__s")) {
@@ -34,6 +34,15 @@ async function revamp(device, theme, { seeds = {}, textMode = "ok" } = {}) {
       for (const [k, v] of Object.entries(seeds)) localStorage.setItem(k, v);
     }
   }, { theme, seeds });
+  if (real) return { ctx, page: await ctx.newPage() }; // the real reader text and the real transliteration: nothing is answered here
+  await ctx.route(/https:\/\/api\.alquran\.cloud\/v1\/ayah\/\d+:\d+\/en\.transliteration/, (route) => {
+    if (translit === "network") return route.abort("internetdisconnected");
+    if (translit === "http500") return route.fulfill({ status: 500, body: "{}" });
+    const ref = /ayah\/(\d+:\d+)\//.exec(route.request().url())[1];
+    const body = ref === "2:127" ? fs.readFileSync(ROOT + "/tests/fixtures/alquran-translit-2-127.json", "utf8") : JSON.stringify({ code: 200, status: "OK", data: { text: `TEST TRANSLITERATION ${ref}` } });
+    return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body });
+  });
+  await ctx.route(/https:\/\/api\.alquran\.cloud\/v1\/search\//, (route) => route.fulfill({ status: 404, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: fs.readFileSync(ROOT + "/tests/fixtures/alquran-search-none.json", "utf8") }));
   await ctx.route(/https:\/\/quranapi\.pages\.dev\/api\/\d+\.json/, (route) => {
     if (textMode === "network") return route.abort("internetdisconnected");
     return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify(chapter(+/api\/(\d+)\.json/.exec(route.request().url())[1])) });
@@ -142,8 +151,135 @@ const STEPS = {
     await shot(page, "person-referenced-by-desktop");
     await ctx.close();
   },
+
+  // ---- stage 2: the other six modules. [module, the prototype's sample id, our id of the same thing]
+  async modules() {
+    const MODS = [["places", "makkah", "makkah"], ["themes", "mercy", "mercy"], ["duas", "yunus", "yunusindarkness"], ["events", "badr", "battlebadr"], ["signs", "staff", "musastaff"], ["commands", "salah", "prayercommand"]];
+    for (const [mod, protoId, id] of MODS) {
+      for (const [device, theme] of [["desktop", "light"], ["mobile", "dark"]]) {
+        const { ctx, page } = await revamp(device, theme);
+        await page.goto(`${BASE}/${mod}`);
+        await page.getByTestId("k-grid").waitFor();
+        await settle(page);
+        await compose(await protoShot(device, theme, `#/k/${mod}`), await page.screenshot({ type: "jpeg", quality: 78 }), `${OUT}/pair-${mod}-list-${device}-${theme}.jpg`, "list");
+        await ctx.close();
+      }
+      for (const [device, theme] of [["desktop", "light"], ["mobile", "dark"], ["desktop", "dark"]]) {
+        const { ctx, page } = await revamp(device, theme);
+        await page.goto(`${BASE}/${mod}/${id}`);
+        await page.getByTestId("k-name").waitFor();
+        await page.getByTestId("k-passage-text").first().waitFor();
+        if (mod === "duas") await page.getByTestId("k-translit-line").first().waitFor();
+        await settle(page);
+        await compose(await protoShot(device, theme, `#/k/${mod}/${protoId}`), await page.screenshot({ type: "jpeg", quality: 78 }), `${OUT}/pair-${mod}-detail-${device}-${theme}.jpg`, "detail");
+        if (device === "desktop" && theme === "light") await shot(page, `detail-full-${mod}-desktop-light`, true);
+        if (device === "mobile") await shot(page, `detail-full-${mod}-mobile-dark`, true);
+        await ctx.close();
+      }
+    }
+  },
+  async states2() {
+    const goto = async (page, path, ready) => { await page.goto(BASE + path); await page.getByTestId(ready).first().waitFor(); await settle(page); };
+    let { ctx, page } = await revamp("desktop", "light");
+    await goto(page, "/duas/adamrepentance", "k-translit-line");
+    await page.getByTestId("k-translit").scrollIntoViewIfNeeded();
+    await settle(page, 300);
+    await shot(page, "state-dua-transliteration-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("mobile", "light", { translit: "http500" }));
+    await goto(page, "/duas/adamrepentance", "k-translit-line");
+    await page.getByTestId("k-translit").scrollIntoViewIfNeeded();
+    await settle(page, 300);
+    await shot(page, "state-dua-transliteration-failed-mobile");
+    await ctx.close();
+    ({ ctx, page } = await revamp("mobile", "dark"));
+    await goto(page, "/duas/adamrepentance", "k-translit-line");
+    await ctx.setOffline(true);
+    await page.evaluate(() => document.querySelector("#__nuxt").__vue_app__.config.globalProperties.$router.push("/duas/nuhclosingprayer"));
+    await page.getByTestId("k-translit-offline").waitFor();
+    await page.getByTestId("k-translit").scrollIntoViewIfNeeded();
+    await settle(page, 300);
+    await shot(page, "state-dua-transliteration-offline-mobile-dark");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light"));
+    await goto(page, "/duas/yunusindarkness", "k-partial");
+    await page.getByTestId("k-partial").scrollIntoViewIfNeeded();
+    await settle(page, 300);
+    await shot(page, "state-dua-partial-ayah-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light"));
+    await goto(page, "/events/iblisrefusal", "k-section-chronology");
+    await page.getByTestId("k-section-chronology").scrollIntoViewIfNeeded();
+    await settle(page, 300);
+    await shot(page, "state-event-chronology-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("mobile", "light"));
+    await goto(page, "/events/siegeconfederates", "k-basis");
+    await shot(page, "state-basis-tag-event-mobile");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light"));
+    await goto(page, "/signs", "k-grid");
+    await page.getByRole("button", { name: /^All$|Kind/ }).first().click();
+    await settle(page, 400);
+    await shot(page, "state-signs-kind-menu-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("mobile", "light"));
+    await goto(page, "/commands?q=zzzz", "k-empty");
+    await shot(page, "state-empty-commands-mobile");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light"));
+    await page.goto(BASE + "/search");
+    await page.getByTestId("search-input").fill("repentance");
+    await page.getByTestId("group-duas").waitFor();
+    await settle(page, 600);
+    await shot(page, "search-groups-desktop");
+    await page.locator('[data-testid="scope-chip"][data-scope="knowledge"]').click();
+    await settle(page, 400);
+    await shot(page, "search-knowledge-chip-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("mobile", "dark"));
+    await page.goto(BASE + "/search");
+    await page.getByTestId("search-input").fill("musa");
+    await page.getByTestId("search-page").getByTestId("group-knowledge").waitFor();
+    await settle(page, 600);
+    await shot(page, "search-groups-mobile-dark");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light", { seeds: { "quran:bookmarks:v1": JSON.stringify(["community:ad", "place:makkah", "theme:mercy", "dua:adamrepentance", "event:battlebadr", "sign:musastaff", "command:prayercommand"]) } }));
+    await page.goto(BASE + "/bookmarks");
+    await page.waitForSelector("text=Signs & Miracles", { timeout: 15000 });
+    await settle(page, 600);
+    await shot(page, "library-seven-kinds-desktop", true);
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light"));
+    await goto(page, "/stories/yusufstory", "in-story");
+    await page.getByTestId("in-story").scrollIntoViewIfNeeded();
+    await settle(page, 300);
+    await shot(page, "story-entity-chips-desktop");
+    await ctx.close();
+  },
+
+  // ---- the same pages with the REAL reader text (quranapi.pages.dev) and the REAL transliteration (api.alquran.cloud): nothing is mocked, so this needs the internet
+  async real() {
+    for (const [device, theme, path, ready] of [
+      ["desktop", "light", "/duas/adamrepentance", "k-translit-line"],
+      ["desktop", "light", "/peoples/ad", "k-passage-text"],
+      ["desktop", "light", "/places/makkah", "k-passage-text"],
+      ["desktop", "light", "/events/battlebadr", "k-passage-text"],
+      ["mobile", "dark", "/duas/yunusindarkness", "k-translit-line"],
+      ["mobile", "light", "/signs/seasplitting", "k-passage-text"],
+    ]) {
+      const { ctx, page } = await revamp(device, theme, { real: true });
+      await page.goto(BASE + path);
+      await page.getByTestId("k-name").waitFor();
+      await page.getByTestId(ready).first().waitFor({ timeout: 30000 });
+      await page.getByTestId("k-passage-text").first().waitFor({ timeout: 30000 });
+      await settle(page, 1200);
+      await shot(page, `real-${path.slice(1).replace("/", "-")}-${device}-${theme}`, true);
+      await ctx.close();
+    }
+  },
 };
-for (const [name, fn] of Object.entries(STEPS)) if (!ONLY || ONLY === name) await fn();
+for (const [name, fn] of Object.entries(STEPS)) if (ONLY ? ONLY === name : name !== "real") await fn(); // "real" needs the internet: run it by name
 await browser.close();
 server.kill();
 console.log("done:", fs.readdirSync(OUT).length, "files in", OUT);

@@ -162,10 +162,10 @@ test.describe("the detail page", () => {
     await expect(page.getByTestId("mini-title")).toHaveText("'Ad");
   });
 
-  test("Connected (what this entry's own data names) and Referenced by (only another entry's data names this one); a link opens only where the page exists", async ({ page }) => {
+  test("Connected (what this entry's own data names) and Referenced by (only another entry's data names this one); every link opens its page", async ({ page }) => {
     await openDetail(page, "ad");
     await expect(page.getByTestId("k-connected-persons").getByTestId("k-link")).toHaveAttribute("href", "/persons/hud");
-    await expect(page.getByTestId("k-connected-places").getByTestId("k-link-plain").first()).toBeVisible(); // Places are not built yet: plain text
+    await expect(page.getByTestId("k-connected-places").getByTestId("k-link").first()).toHaveAttribute("href", /^\/places\//); // every module has its page now
     await expect(page.getByTestId("k-referenced-section")).toContainText("Entries whose own data names 'Ad. 'Ad’s data does not name them back.");
     await expect(page.getByTestId("k-referenced-themes")).toContainText("Arrogance");
     await expect(page.getByTestId("k-referenced-events")).toContainText("Destruction of 'Ad");

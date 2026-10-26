@@ -27,8 +27,8 @@ export const MODULES: Record<KnowledgeModuleId, ModuleInfo> = {
 };
 export const MODULE_ORDER: KnowledgeModuleId[] = ["peoples", "places", "themes", "duas", "events", "signs", "commands"];
 
-/** Which modules have their pages built. Flipped one by one as the pages ship; until then a link to one is plain text. */
-export const KNOWLEDGE_READY: Record<KnowledgeModuleId, boolean> = { peoples: true, places: false, themes: false, duas: false, events: false, signs: false, commands: false };
+/** Which modules have their pages built (all seven since Phase 12). A module that is not ready is never linked: its names are plain text. */
+export const KNOWLEDGE_READY: Record<KnowledgeModuleId, boolean> = { peoples: true, places: true, themes: true, duas: true, events: true, signs: true, commands: true };
 
 export const GRAPH_LABELS: Record<GraphModule, string> = {
   persons: "People",

@@ -1,6 +1,6 @@
-// The groups of Search that need no network: Surahs, People, Stories and Notes. Each group is one provider (query in, hits out), kept in a
-// registry, so Phases 12 and 13 add Duas, the knowledge modules and Daily Fiqh by registering theirs when their pages exist (a result
-// must never open "This page is not rebuilt yet"). Pure; everything shown comes from the app's own data tables.
+// The groups of Search that need no network: Surahs, People, Stories, Duas, the Knowledge base and Notes. Each group is one provider (query in, hits out),
+// kept in a registry; Phase 12 registered Duas and the Knowledge base (loaded after the page opens: `loadKnowledgeGroups`), and Phase 13 adds Daily Fiqh
+// the same way (a result must never open "This page is not rebuilt yet"). Pure; everything shown comes from the app's own data tables.
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { surahMatches } from "./listingSearch";
 import { categoryLabel, displayName, PEOPLE, searchPeople } from "./people";
@@ -139,8 +139,18 @@ const notes: LocalProvider = {
   },
 };
 
-/** Phases 12 and 13 push their providers here; the order is the order the groups appear in. */
+/** The order is the order the groups appear in. Duas and the Knowledge base are inserted before Notes by `loadKnowledgeGroups`; Phase 13 adds Daily Fiqh the same way. */
 export const PROVIDERS: LocalProvider[] = [surahs, people, stories, notes];
+
+let knowledgeLoaded = false;
+/** Registers the Duas and Knowledge base groups (their data is a separate chunk, so this is asked for once the Search page is open). Safe to call twice. */
+export async function loadKnowledgeGroups(): Promise<void> {
+  if (knowledgeLoaded) return;
+  const { KNOWLEDGE_SEARCH_PROVIDERS } = await import("./knowledge/searchProviders");
+  if (knowledgeLoaded) return;
+  knowledgeLoaded = true;
+  PROVIDERS.splice(PROVIDERS.indexOf(notes), 0, ...KNOWLEDGE_SEARCH_PROVIDERS);
+}
 
 export interface LocalGroup {
   group: LocalGroupId;

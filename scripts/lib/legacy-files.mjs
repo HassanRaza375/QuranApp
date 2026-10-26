@@ -24,7 +24,18 @@ export const TRACKED_FILES = [
   "app/data/wajibat/types.ts", // type-only imports of the three above
   // pure utils
   "app/utils/commandsSearch.ts",
-  // the other six *Search.ts and the *Validate.ts files are in the legacy repo; each is added here when its module's page is built (Phase 12, stage 2)
+  // Phase 12: each knowledge module's search util and validator (the validators run in tests/knowledge.test.ts)
+  "app/utils/commandsValidate.ts",
+  "app/utils/duasSearch.ts",
+  "app/utils/duasValidate.ts",
+  "app/utils/eventsSearch.ts",
+  "app/utils/eventsValidate.ts",
+  "app/utils/placesSearch.ts",
+  "app/utils/placesValidate.ts",
+  "app/utils/signsSearch.ts",
+  "app/utils/signsValidate.ts",
+  "app/utils/themesSearch.ts",
+  "app/utils/themesValidate.ts",
   "app/utils/graphIndex.ts", // Phase 12: the cross-module graph ("Connected", "Referenced by")
   "app/utils/peoplesSearch.ts",
   "app/utils/peoplesValidate.ts",

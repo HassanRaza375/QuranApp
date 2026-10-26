@@ -411,8 +411,8 @@ describe("what each key is (real data only)", () => {
     expect(d("mystery:x").title).toBe("mystery: x");
   });
   it("only the readers that exist today are 'open today'", () => {
-    // audio: /surah-audios/[id] was rebuilt in Phase 11 (this line used to say false); the knowledge kinds open once their module's pages exist (Phase 12)
-    expect(OPENS_TODAY).toMatchObject({ ayah: true, surah: true, sajda: true, juz: true, page: true, person: true, story: true, name: true, fiqh: false, audio: true, community: true, place: false, theme: false, dua: false, event: false, sign: false, command: false });
+    // audio: /surah-audios/[id] was rebuilt in Phase 11 (this line used to say false); all seven knowledge kinds open (Phase 12)
+    expect(OPENS_TODAY).toMatchObject({ ayah: true, surah: true, sajda: true, juz: true, page: true, person: true, story: true, name: true, fiqh: false, audio: true, community: true, place: true, theme: true, dua: true, event: true, sign: true, command: true });
   });
   it("the seven legacy knowledge keys (community:, place:, theme:, dua:, event:, sign:, command:) become typed rows with the module as detail and the entry's name from the data", () => {
     expect(d("community:ad")).toMatchObject({ type: "community", title: "'Ad", detail: "Peoples & Nations", arabicName: "from the data", href: "/peoples/ad" });

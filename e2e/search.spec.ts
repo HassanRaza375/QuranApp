@@ -42,11 +42,11 @@ async function open(page: Page, url = "/search") {
 }
 
 test.describe("the first view", () => {
-  test("one h1, the box has focus on desktop, six type chips, the legacy suggestions, no request is made", async ({ page }) => {
+  test("one h1, the box has focus on desktop, eight type chips, the legacy suggestions, no request is made", async ({ page }) => {
     await open(page);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Search");
     await expect(input(page)).toBeFocused();
-    await expect(page.getByTestId("scope-chip")).toHaveText(["All", "Ayahs", "Surahs", "People", "Stories", "Notes"]);
+    await expect(page.getByTestId("scope-chip")).toHaveText(["All", "Ayahs", "Surahs", "People", "Stories", "Duas", "Knowledge base", "Notes"]);
     await expect(chip(page, "all")).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByTestId("suggested-chip")).toHaveText(["patience", "mercy", "forgiveness", "gratitude", "prayer", "fasting", "charity", "guidance"]);
     await expect(page.getByTestId("history-empty")).toHaveText("Your searches appear here, on this device only.");

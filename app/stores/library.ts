@@ -43,7 +43,9 @@ export const useLibraryStore = defineStore("library", () => {
       loadedKinds.add(kind);
       const adapter = await adapterFor(module).catch(() => null);
       if (!adapter) continue;
-      add({ entry: (m, id) => (m === module ? (adapter.get(id) ? { name: adapter.get(id)!.name, arabic: adapter.get(id)!.arabic } : null) : providers.value.entry(m, id)) });
+      // the previous lookup is taken now, once: reading `providers.value.entry` inside the new one would call itself without end as soon as two modules are loaded
+      const previous = providers.value.entry;
+      add({ entry: (m, id) => (m === module ? (adapter.get(id) ? { name: adapter.get(id)!.name, arabic: adapter.get(id)!.arabic } : null) : previous(m, id)) });
     }
     if (kinds.has("person") && !loadedKinds.has("person")) {
       loadedKinds.add("person");

@@ -114,8 +114,12 @@ function playAll() {
 
       <div v-if="entry.passages.length" class="mt-8" data-testid="k-passages">
         <h2 class="text-[17px] font-medium">The ayahs</h2>
+        <p v-if="entry.dua?.partialAyah" class="mt-2 rounded-[10px] border border-dashed px-3 py-2.5 text-[13.5px] text-ink-2" data-testid="k-partial">
+          The full ayah is shown. <template v-if="entry.dua.segmentNote">{{ entry.dua.segmentNote }}</template><template v-else>It holds more than the dua’s own words.</template>
+        </p>
         <ul class="mt-1"><KnowledgePassage v-for="p in entry.passages" :key="p.id" :passage="p" /></ul>
       </div>
+      <KnowledgeTransliteration v-if="entry.dua && entry.passages[0]" :passage="entry.passages[0]" />
       <div v-if="entry.also.length" class="mt-8" data-testid="k-also">
         <h2 class="text-[17px] font-medium">Also occurs at</h2>
         <ul class="mt-1"><KnowledgePassage v-for="p in entry.also" :key="p.id" :passage="p" /></ul>

@@ -79,6 +79,14 @@ Every decision made while designing and building the revamp, with the reason. Ph
 - **Legacy downloads at cutover:** the list keeps its legacy shape (a parity test runs the legacy composable); legacy text and tafsir are adopted from the service worker's cache with no network; legacy audio is opaque and cannot play, so it is shown as "saved by the older app" and Download again replaces it. **Clear all data keeps downloaded audio** (the page lists it again) and removes saved text and tafsir (the Settings wording says so).
 - **Wi-Fi only** stays off by default (the shipped Settings default) and applies to audio only, where the browser reports the connection type.
 
+**Phase 12, Knowledge modules (plan approved 2026-10-26; built 2026-10-26).** Plan: `docs/phases/phase-12-knowledge-plan.md`; result: `docs/phases/phase-12-knowledge.md`.
+- **One shared list and one shared detail** over seven adapters (`lib/knowledge/`); the legacy datasets, search utils, validators and graph engine are vendored and used as they are.
+- **Basis labels are the legacy's own words per module**, shown only when an entry is not "the Qur'an states it". The UI never says "verified" or "reviewed". The data's `statusNotes` are working notes and are not shown; app-written plain-words drafts of the 36 that carry a caveat are in `CONTENT_TO_VERIFY.md` and wait for approval.
+- **A dua's Arabic is the reader's cached text**, never a data file; **its transliteration is live** from `api.alquran.cloud` (`en.transliteration`), online only, nothing stored, never generated, with an offline note.
+- **"Connected" is what an entry's own data names; "Referenced by" is what only another entry's data names**, in those words (the legacy graph's rule that a derived link is never shown as stated).
+- **Passages over six ayahs are collapsed**; the module title for Events is "Events in the Qur’an" (the Ramadan page has Events).
+- **Library:** the seven legacy bookmark kinds (`community:`, `place:`, `theme:`, `dua:`, `event:`, `sign:`, `command:`) open their pages. **Search:** a Duas group and a Knowledge base group, registered after the page opens. **Play all** is a new additive queue kind `knowledge`.
+
 ## 4. Deliberate content gaps
 
 Ja'fari Laylat al-Qadr nights (19, 21, 23); the Sunni versus Ja'fari compare table and iftar/suhoor explanations; the Arabic of hadith duas; "After prayer" dhikr sequences; Arabic prayer names; revelation order; Juz names; translator and tafsir-school attribution; per-tradition event wording. Each becomes a data file once wording and a source are supplied.

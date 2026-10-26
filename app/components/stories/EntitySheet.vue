@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// A person, people-group or place named by the story, from the data only. A person opens their page (live since 7A) and a people-group its page
-// (Phase 12); a place has no page until its module ships, so the sheet says so and offers no link. No images.
+// A person, people-group or place named by the story, from the data only. Each opens its own page (people since 7A; peoples and places, Phase 12). No images.
 import { useMediaQuery } from "@vueuse/core";
 import type { Entity } from "~/lib/stories";
 
@@ -22,7 +21,6 @@ const model = computed({ get: () => props.entity !== null, set: (v) => !v && emi
         <ul v-if="entity.chips.length" class="flex flex-wrap gap-1.5"><li v-for="c in entity.chips" :key="c" class="rounded-full border px-2.5 py-0.5 text-[12px] capitalize" data-testid="entity-chip-text">{{ c }}</li></ul>
         <p class="text-[14.5px] leading-relaxed" data-testid="entity-description">{{ entity.description }}</p>
         <Button v-if="entity.href" as-child class="min-h-11 md:min-h-9"><NuxtLink :to="entity.href" data-testid="entity-open" @click="emit('close')">Open page</NuxtLink></Button>
-        <p v-else class="text-[13px] text-ink-2" data-testid="entity-later">Its own page arrives in a later phase.</p>
       </template>
     </SheetContent>
   </Sheet>

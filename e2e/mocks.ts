@@ -461,3 +461,25 @@ export async function mockSearch(context: BrowserContext, mode: SearchMock["mode
   });
   return state;
 }
+
+// ---- Phase 12: a dua's transliteration (api.alquran.cloud /ayah/<s>:<a>/en.transliteration). 2:127 is the REAL recorded answer (tests/fixtures); any other ayah
+// gets the same shape with an obviously fake text, so a page can only show what the service returned.
+
+export interface TransliterationMock {
+  /** every request, as "surah:ayah" */
+  calls: string[];
+  mode: "ok" | "http500" | "network";
+}
+export async function mockTransliteration(context: BrowserContext, mode: TransliterationMock["mode"] = "ok"): Promise<TransliterationMock> {
+  const state: TransliterationMock = { calls: [], mode };
+  await context.route(/https:\/\/api\.alquran\.cloud\/v1\/ayah\/\d+:\d+\/en\.transliteration/, (route: Route) => {
+    const ref = /ayah\/(\d+:\d+)\//.exec(route.request().url())![1]!;
+    state.calls.push(ref);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    const headers = { "access-control-allow-origin": "*" };
+    if (ref === "2:127") return route.fulfill({ status: 200, contentType: "application/json", headers, body: fixture("alquran-translit-2-127.json") });
+    return route.fulfill({ status: 200, contentType: "application/json", headers, body: JSON.stringify({ code: 200, status: "OK", data: { text: `Test transliteration ${ref}` } }) });
+  });
+  return state;
+}

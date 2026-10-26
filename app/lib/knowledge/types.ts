@@ -48,6 +48,8 @@ export interface KEntry {
   /** The data's `statusNotes` are the legacy author's working notes (they mention code, phases and search strings), so they are NOT part of the entry the pages
    * show; they stay in the data and go on the review list. The basis label above is the only claim a page makes about how an entry is grounded. */
   sources: KSource[];
+  /** Duas only: the passage is a whole ayah (or range) that holds more than the dua, in the data's own words about which part is the dua */
+  dua?: { partialAyah: boolean; segmentNote: string | null };
 }
 
 export interface KFilter {

@@ -133,3 +133,7 @@ Lists open on the first tab (Peoples) at `/peoples`, tabs link between modules; 
 ## 10. Not part of Phase 12
 
 Poets and the "Literary modules" setting; Daily Fiqh (13); Hifz (14); Goals and Calendar (15); a knowledge-graph visualisation; editing or adding entries; any new religious content; offline saving of the knowledge data as a separate download (the data is bundled, and the ayah text follows the reader's cache and Downloads).
+
+## Stage 2 (built 2026-10-26)
+
+Approved after the stage-1 checkpoint: developer notes stay hidden and reader-facing drafts go to `CONTENT_TO_VERIFY.md` (app-written, not shown); passages over six ayahs collapsed, the module questions, "Events in the Qur’an" and the Library audio-notice fix approved. Built: Places, Themes, Duas, Events, Signs, Commands, the Search groups, the story and person links. What was built, the verify result and the open issues: `phase-12-knowledge.md`.

@@ -94,7 +94,7 @@ describe("the module registry", () => {
     expect(hrefFor("stories", "x")).toBe("/stories/x");
     expect(KNOWLEDGE_READY.peoples).toBe(true);
     expect(hrefFor("peoples", "ad")).toBe("/peoples/ad");
-    for (const m of ["places", "themes", "duas", "events", "signs", "commands"] as const) if (!KNOWLEDGE_READY[m]) expect(hrefFor(m, "x")).toBeNull();
+    for (const m of MODULE_ORDER) expect(hrefFor(m, "x")).toBe(`${MODULES[m].route}/x`);
   });
 });
 
@@ -159,8 +159,8 @@ describe("Connected and Referenced by (the legacy graph)", () => {
     // an entry is never in both lists
     const keys = (gs: typeof connected) => new Set(gs.flatMap((g) => g.items.map((i) => `${i.module}:${i.id}`)));
     for (const k of keys(referencedBy)) expect(keys(connected).has(k)).toBe(false);
-    // links to pages that do not exist yet carry no href
-    for (const i of all) if (i.module !== "persons" && i.module !== "stories" && i.module !== "peoples") expect(i.href).toBeNull();
+    // every module has its page now: each link goes to it
+    for (const i of all) expect(i.href).toBe(`/${i.module}/${i.id}`);
   });
 });
 
