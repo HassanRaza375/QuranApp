@@ -110,7 +110,7 @@ export interface EngineDeps {
   writeQueue(r: QueueRecord): void;
   clearQueue(): void;
   /** rebuilds a saved queue from the data (the list is never stored) */
-  buildQueue(kind: "page" | "story", ref: RestoredQueue["ref"]): Promise<BuiltQueue | null>;
+  buildQueue(kind: RestoredQueue["kind"], ref: RestoredQueue["ref"]): Promise<BuiltQueue | null>;
   readRepeat(): boolean;
   writeRepeat(on: boolean): void;
   autoAdvance(): boolean;
@@ -133,7 +133,7 @@ export class AudioEngine {
   private loaded: Track | null = null; // what the element's src currently is
   private saveTimer: unknown = null;
   private loadTimer: unknown = null;
-  private queue: { id: string; label: string; items: AyahRef[]; index: number; kind: "page" | "story"; ref: RestoredQueue["ref"] } | null = null;
+  private queue: { id: string; label: string; items: AyahRef[]; index: number; kind: RestoredQueue["kind"]; ref: RestoredQueue["ref"] } | null = null;
   private retried = new Set<string>();
   private preloaded = new Set<string>();
   private snap: Snapshot = { track: null, view: null, status: "idle", error: null, position: 0, duration: 0, repeat: false, seekable: false, canPrevious: false, canNext: false };
@@ -407,7 +407,7 @@ export class AudioEngine {
   }
 
   /** Play a queue of ayahs from `startIndex` (a page or a story chapter). It plays on through the list and stops after the last ayah. */
-  async playQueue(q: { id: string; label: string; items: AyahRef[]; reciter: string; kind: "page" | "story"; ref: RestoredQueue["ref"]; startIndex?: number; startAt?: number }): Promise<void> {
+  async playQueue(q: { id: string; label: string; items: AyahRef[]; reciter: string; kind: RestoredQueue["kind"]; ref: RestoredQueue["ref"]; startIndex?: number; startAt?: number }): Promise<void> {
     if (!q.items.length) return;
     const index = Math.min(Math.max(0, q.startIndex ?? 0), q.items.length - 1);
     this.queue = { id: q.id, label: q.label, items: q.items, index, kind: q.kind, ref: q.ref };

@@ -276,7 +276,7 @@ function openEntity(e: Entity) {
         </li>
         <li v-for="e in entities.events" :key="`event-${e.id}`"><span class="inline-flex min-h-8 items-center rounded-full border border-dashed px-3 text-[13px] text-ink-2" title="Events arrive in a later phase" data-testid="event-chip">Event · {{ e.name }}</span></li>
       </ul>
-      <p v-if="entities.events.length" class="mt-1 text-[12px] text-ink-2" data-testid="events-note">Events arrive in a later phase. Place and people-group pages arrive then too.</p>
+      <p v-if="entities.events.length" class="mt-1 text-[12px] text-ink-2" data-testid="events-note">Events arrive in a later phase. Place pages arrive then too.</p>
     </section>
 
     <section v-if="story.statusNotes?.length || story.sources?.length" class="mt-6" data-testid="story-notes">

@@ -2,7 +2,10 @@
 // one pure operation from lib/library.ts, and writes back. It also re-reads when another tab or the reader changes a key (the
 // `storage` event) and when this tab becomes visible again. Nothing here throws: a blocked storage shows one message.
 import { defineStore } from "pinia";
-import { describeItem, NO_PROVIDERS, type Item, type ItemType, type Providers } from "~/lib/libraryItems";
+import { adapterFor } from "~/lib/knowledge";
+import { KNOWLEDGE_READY } from "~/lib/knowledge/modules";
+import type { KnowledgeModuleId } from "~/lib/knowledge/types";
+import { describeItem, KIND_MODULE, NO_PROVIDERS, type Item, type ItemType, type KnowledgeKind, type Providers } from "~/lib/libraryItems";
 import * as L from "~/lib/library";
 import { LIBRARY_KEY, OLD_FAVOURITES_KEY, readLibrary, writeLibrary } from "~/lib/libraryStorage";
 import { ADDED_AT_KEY, BOOKMARKS_KEY } from "~/lib/bookmarks";
@@ -34,6 +37,14 @@ export const useLibraryStore = defineStore("library", () => {
     const kinds = new Set(lib.value.bookmarks.concat(Object.keys(lib.value.itemMeta)).map((k) => k.split(":")[0]!));
     // each kind is merged into the current providers as soon as it has loaded (calls can overlap, so never keep a stale copy)
     const add = (patch: Partial<Providers>) => (providers.value = { ...providers.value, ...patch });
+    // the knowledge kinds (Phase 12): each module's entries are loaded only if one of its kinds is saved, and only for modules whose pages exist
+    for (const [kind, module] of Object.entries(KIND_MODULE) as [KnowledgeKind, KnowledgeModuleId][]) {
+      if (!kinds.has(kind) || loadedKinds.has(kind) || !KNOWLEDGE_READY[module]) continue;
+      loadedKinds.add(kind);
+      const adapter = await adapterFor(module).catch(() => null);
+      if (!adapter) continue;
+      add({ entry: (m, id) => (m === module ? (adapter.get(id) ? { name: adapter.get(id)!.name, arabic: adapter.get(id)!.arabic } : null) : providers.value.entry(m, id)) });
+    }
     if (kinds.has("person") && !loadedKinds.has("person")) {
       loadedKinds.add("person");
       const { QURAN_PERSONS } = await import("@legacy/data/quranPersons");

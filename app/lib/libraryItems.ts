@@ -4,11 +4,16 @@
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { type LibraryState, metaOf } from "./library";
 import { normalize } from "./listingSearch";
+import { hrefFor, KNOWLEDGE_READY, MODULES } from "./knowledge/modules";
+import type { KnowledgeModuleId } from "./knowledge/types";
 import { JUZ, pageStart } from "./quranMeta";
 import { typeset } from "./asma";
 import { juzHref, pageHref, READERS_READY, surahHref } from "./readerLinks";
 
-export type ItemType = "ayah" | "surah" | "juz" | "page" | "person" | "story" | "name" | "sajda" | "fiqh" | "audio" | "unknown";
+/** The seven knowledge kinds keep the legacy bookmark keys: community:ad, place:makkah, theme:tawhid, dua:..., event:..., sign:..., command:... */
+export type KnowledgeKind = "community" | "place" | "theme" | "dua" | "event" | "sign" | "command";
+export const KIND_MODULE: Record<KnowledgeKind, KnowledgeModuleId> = { community: "peoples", place: "places", theme: "themes", dua: "duas", event: "events", sign: "signs", command: "commands" };
+export type ItemType = "ayah" | "surah" | "juz" | "page" | "person" | "story" | "name" | "sajda" | "fiqh" | "audio" | KnowledgeKind | "unknown";
 
 export const TYPE_LABEL: Record<ItemType, string> = {
   ayah: "Ayah",
@@ -21,6 +26,13 @@ export const TYPE_LABEL: Record<ItemType, string> = {
   sajda: "Sajda verse",
   fiqh: "Fiqh topic",
   audio: "Reciters",
+  community: "People or nation",
+  place: "Place",
+  theme: "Theme",
+  dua: "Dua",
+  event: "Event",
+  sign: "Sign",
+  command: "Command",
   unknown: "Saved item",
 };
 export const TYPE_PLURAL: Record<ItemType, string> = {
@@ -34,11 +46,18 @@ export const TYPE_PLURAL: Record<ItemType, string> = {
   sajda: "Sajda verses",
   fiqh: "Fiqh topics",
   audio: "Reciters pages",
+  community: "Peoples & Nations",
+  place: "Places",
+  theme: "Themes",
+  dua: "Duas",
+  event: "Events",
+  sign: "Signs",
+  command: "Commands",
   unknown: "Other",
 };
 /** The common types come first in the Show menu; the rarer ones are grouped under "More types". */
 export const COMMON_TYPES: ItemType[] = ["ayah", "surah", "juz", "person", "story"];
-export const RARE_TYPES: ItemType[] = ["page", "name", "sajda", "fiqh", "audio", "unknown"];
+export const RARE_TYPES: ItemType[] = ["page", "name", "sajda", "fiqh", "audio", "community", "place", "theme", "dua", "event", "sign", "command", "unknown"];
 export const TYPE_ORDER: ItemType[] = [...COMMON_TYPES, ...RARE_TYPES];
 
 /** Which types open a page that exists in the revamp today. The others link to the "not rebuilt yet" page and the Library says so. */
@@ -52,7 +71,14 @@ export const OPENS_TODAY: Record<ItemType, boolean> = {
   story: true, // Phase 7B
   name: true, // Phase 9B
   fiqh: false, // Phase 13
-  audio: false, // Phase 15
+  audio: true, // Phase 11
+  community: KNOWLEDGE_READY.peoples, // Phase 12, module by module
+  place: KNOWLEDGE_READY.places,
+  theme: KNOWLEDGE_READY.themes,
+  dua: KNOWLEDGE_READY.duas,
+  event: KNOWLEDGE_READY.events,
+  sign: KNOWLEDGE_READY.signs,
+  command: KNOWLEDGE_READY.commands,
   unknown: false,
 };
 export const PENDING_PHASE: Partial<Record<ItemType, string>> = { person: "People", story: "Stories", fiqh: "Daily Fiqh", audio: "Reciters" };
@@ -62,8 +88,10 @@ export interface Providers {
   fiqhTopic(id: string): { title: string; category: string; categoryId: string; arabicTerm?: string } | null;
   name(id: string): { transliteration: string; english: string; arabic?: string } | null;
   story(id: string): { title: string } | null;
+  /** a knowledge entry (Phase 12): its name and its Arabic name, from the module's data */
+  entry(module: KnowledgeModuleId, id: string): { name: string; arabic?: string } | null;
 }
-export const NO_PROVIDERS: Providers = { person: () => null, fiqhTopic: () => null, name: () => null, story: () => null };
+export const NO_PROVIDERS: Providers = { person: () => null, fiqhTopic: () => null, name: () => null, story: () => null, entry: () => null };
 
 export interface Item {
   key: string;
@@ -116,6 +144,18 @@ export function describeItem(key: string, p: Providers = NO_PROVIDERS): Item {
       const n = num(a);
       if (!SURAH_ROWS[n - 1]) return readable;
       return { key, type: "audio", title: surahName(n), detail: "Reciters", ord: TAIL * 6 + n, href: `/surah-audios/${n}` };
+    }
+    case "community":
+    case "place":
+    case "theme":
+    case "dua":
+    case "event":
+    case "sign":
+    case "command": {
+      const module = KIND_MODULE[kind];
+      if (!a) return readable;
+      const x = p.entry(module, a);
+      return { key, type: kind, title: x ? x.name : `${TYPE_LABEL[kind]}: ${a}`, detail: MODULES[module].title, arabicName: x?.arabic, ord: TAIL * 7, href: hrefFor(module, a) ?? `${MODULES[module].route}/${a}` };
     }
     case "person": {
       const x = a ? p.person(a) : null;

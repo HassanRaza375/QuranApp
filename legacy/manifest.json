@@ -3,7 +3,7 @@
   "commit": "7120b6cd6301ed267085b130052d767f95b2c15a",
   "branch": "revamp-design-logic",
   "committedAt": "2026-10-22T12:33:44+05:00",
-  "syncedAt": "2026-10-23",
+  "syncedAt": "2026-10-26",
   "files": {
     "app/assets/data/names.json": {
       "bytes": 26727,
@@ -50,6 +50,11 @@
       "sha256": "73a14af0a3b107de635b3d728931ee051d3d5a15eb958ded2418cb90aff45a46",
       "source": "git"
     },
+    "app/data/quranDuas.ts": {
+      "bytes": 40059,
+      "sha256": "2f8abf2bc261f53db391eb677ac8e5780433f644687db0949e6887899903bd9f",
+      "source": "git"
+    },
     "app/data/quranEvents.ts": {
       "bytes": 39902,
       "sha256": "735feb3fabd72a28625888c8c493f5209a2c56976189ae6309ed6ca6f18fc773",
@@ -70,9 +75,19 @@
       "sha256": "10c8dd3fb4074e27a0f6aa78e0c3e7ec94b95450297411bd43bd3fe7996f86e3",
       "source": "git"
     },
+    "app/data/quranSigns.ts": {
+      "bytes": 19327,
+      "sha256": "26b0e117c6788744b9eca230e16bc11e66bb0317a6ad15978982ea8963c2f717",
+      "source": "git"
+    },
     "app/data/quranStories.ts": {
       "bytes": 67399,
       "sha256": "d4737b6aa6390c874c8fd435658a31a7408d291572ad71fec284327a34b94709",
+      "source": "git"
+    },
+    "app/data/quranThemes.ts": {
+      "bytes": 61733,
+      "sha256": "0e93b26372cf60c3a4513c2aff26989862dfaf6b7b1eb78a1a003b68990b7666",
       "source": "git"
     },
     "app/data/wajibat/categories.ts": {
@@ -100,9 +115,24 @@
       "sha256": "644de8e37767fd296d117c45de1025c0dc062cd487a807d325c444afb26577c3",
       "source": "git"
     },
+    "app/utils/graphIndex.ts": {
+      "bytes": 21009,
+      "sha256": "8cc961adc5e545a6fe3cede511d70fc284a26ec7b024862ddf2b5093a5327358",
+      "source": "git"
+    },
     "app/utils/islamicEvents.js": {
       "bytes": 7843,
       "sha256": "d1f5ec28e3579e5db8000505ca1eebdb00370df59192f2f3532688c0cc2a9628",
+      "source": "git"
+    },
+    "app/utils/peoplesSearch.ts": {
+      "bytes": 5084,
+      "sha256": "9a9bd4674d6907ca224c5f944e3efe85e056b8d8aa910a5b7d459a78a7e0c3fa",
+      "source": "git"
+    },
+    "app/utils/peoplesValidate.ts": {
+      "bytes": 5048,
+      "sha256": "4f62cbfec94d2739ce9c28b4862f74e03b20d8cae2d0fa2b34559987fb41f558",
       "source": "git"
     },
     "app/utils/personsChronology.ts": {

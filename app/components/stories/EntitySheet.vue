@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// A person, people-group or place named by the story, from the data only. A person opens their page (live since 7A); places and
-// people-groups have no page until Phase 12, so the sheet says so and offers no link. No images.
+// A person, people-group or place named by the story, from the data only. A person opens their page (live since 7A) and a people-group its page
+// (Phase 12); a place has no page until its module ships, so the sheet says so and offers no link. No images.
 import { useMediaQuery } from "@vueuse/core";
 import type { Entity } from "~/lib/stories";
 

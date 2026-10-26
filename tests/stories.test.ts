@@ -139,12 +139,14 @@ describe("the entities come from the data", () => {
     const missing = STORIES.flatMap((s) => unresolvedIds(s).map((m) => `${s.id}:${m}`));
     expect(missing).toEqual([]);
   });
-  it("people link to their page (7A); places, peoples and events have no link until Phase 12", () => {
+  it("people link to their page (7A) and peoples to theirs (Phase 12); places and events have no link until their pages exist", () => {
     const e = entitiesOf(S("yusufstory"));
     expect(e.people.length).toBeGreaterThan(0);
     expect(e.people.every((p) => p.href === `/persons/${p.id}`)).toBe(true);
     const all = STORIES.map(entitiesOf);
-    expect(all.flatMap((x) => [...x.communities, ...x.places, ...x.events]).every((x) => x.href === null)).toBe(true);
+    expect(all.flatMap((x) => x.communities).every((x) => x.href === `/peoples/${x.id}`)).toBe(true);
+    expect(all.flatMap((x) => x.communities).length).toBeGreaterThan(0);
+    expect(all.flatMap((x) => [...x.places, ...x.events]).every((x) => x.href === null)).toBe(true);
     expect(all.flatMap((x) => x.places).length).toBeGreaterThan(0);
   });
 });

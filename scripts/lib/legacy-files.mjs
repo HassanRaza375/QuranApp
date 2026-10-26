@@ -14,6 +14,9 @@ export const TRACKED_FILES = [
   "app/data/quranPeoples.ts",
   "app/data/quranPersons.ts",
   "app/data/quranPlaces.ts",
+  "app/data/quranSigns.ts", // Phase 12
+  "app/data/quranThemes.ts", // Phase 12
+  "app/data/quranDuas.ts", // Phase 12
   "app/data/quranStories.ts",
   "app/data/wajibat/categories.ts",
   "app/data/wajibat/marja.ts",
@@ -21,6 +24,10 @@ export const TRACKED_FILES = [
   "app/data/wajibat/types.ts", // type-only imports of the three above
   // pure utils
   "app/utils/commandsSearch.ts",
+  // the other six *Search.ts and the *Validate.ts files are in the legacy repo; each is added here when its module's page is built (Phase 12, stage 2)
+  "app/utils/graphIndex.ts", // Phase 12: the cross-module graph ("Connected", "Referenced by")
+  "app/utils/peoplesSearch.ts",
+  "app/utils/peoplesValidate.ts",
   "app/utils/islamicEvents.js",
   "app/utils/personStudy.ts",
   "app/utils/personsChronology.ts",

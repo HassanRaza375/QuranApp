@@ -5,6 +5,7 @@ import { pageSegments } from "./pageReader";
 
 export const pageQueueId = (page: number): string => `page:${page}`;
 export const storyQueueId = (storyId: string, chapter: number): string => `story:${storyId}:${chapter}`;
+export const knowledgeQueueId = (module: string, id: string): string => `knowledge:${module}:${id}`;
 
 /** Passages `{ surahNumber, ayahStart, ayahEnd }` in order, as single ayahs. */
 export function flattenPassages(passages: ReadonlyArray<{ surahNumber: number; ayahStart: number; ayahEnd: number }>): AyahRef[] {

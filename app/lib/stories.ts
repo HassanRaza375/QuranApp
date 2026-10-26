@@ -7,6 +7,7 @@ import { QURAN_PLACES } from "@legacy/data/quranPlaces";
 import { QURAN_STORIES, type QuranLesson, type QuranStory } from "@legacy/data/quranStories";
 import { filterByPersonId, filterByStoryType, searchStories, STORY_TYPE_FILTERS, type StoryTypeFilter } from "@legacy/utils/storiesSearch";
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
+import { hrefFor } from "./knowledge/modules";
 import { personById, displayName, NARRATIVE_LABELS } from "./people";
 
 export type { QuranLesson, QuranStory, StoryTypeFilter };
@@ -184,7 +185,7 @@ export interface Entity {
   /** a short line from the data: the category, the type, or the identification basis in the legacy words */
   chips: string[];
   description: string;
-  /** a link only where the page exists (people since 7A); places, peoples and events arrive in Phase 12 */
+  /** a link only where the page exists (people since 7A, peoples since 12); the other knowledge modules as their pages ship */
   href: string | null;
 }
 const PLACE_TYPE = (t: string) => t.replace(/_/g, " ");
@@ -195,13 +196,13 @@ export function entitiesOf(s: QuranStory) {
   });
   const communities: Entity[] = (s.communityIds ?? []).flatMap((id) => {
     const c = QURAN_COMMUNITIES.find((x) => x.id === id);
-    return c ? [{ kind: "community" as const, id, name: c.name, arabicName: c.arabicName, chips: [c.communityType.replace(/_/g, " "), IDENTIFICATION_LABELS[c.identificationBasis] ?? c.identificationBasis], description: c.shortDescription, href: null }] : [];
+    return c ? [{ kind: "community" as const, id, name: c.name, arabicName: c.arabicName, chips: [c.communityType.replace(/_/g, " "), IDENTIFICATION_LABELS[c.identificationBasis] ?? c.identificationBasis], description: c.shortDescription, href: hrefFor("peoples", id) }] : [];
   });
   const places: Entity[] = (s.placeIds ?? []).flatMap((id) => {
     const p = QURAN_PLACES.find((x) => x.id === id);
-    return p ? [{ kind: "place" as const, id, name: p.name, arabicName: p.arabicName, chips: [PLACE_TYPE(p.placeType), IDENTIFICATION_LABELS[p.identificationBasis] ?? p.identificationBasis], description: p.shortDescription, href: null }] : [];
+    return p ? [{ kind: "place" as const, id, name: p.name, arabicName: p.arabicName, chips: [PLACE_TYPE(p.placeType), IDENTIFICATION_LABELS[p.identificationBasis] ?? p.identificationBasis], description: p.shortDescription, href: hrefFor("places", id) }] : [];
   });
-  const events: Entity[] = QURAN_EVENTS.filter((e) => e.storyIds?.includes(s.id)).map((e) => ({ kind: "event" as const, id: e.id, name: e.title, arabicName: null, chips: [], description: e.description, href: null }));
+  const events: Entity[] = QURAN_EVENTS.filter((e) => e.storyIds?.includes(s.id)).map((e) => ({ kind: "event" as const, id: e.id, name: e.title, arabicName: null, chips: [], description: e.description, href: hrefFor("events", e.id) }));
   return { people, communities, places, events };
 }
 /** Ids a story names that the data does not resolve (reported by a test; the page shows only what resolves). */
