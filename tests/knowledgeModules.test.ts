@@ -17,6 +17,7 @@ import { validateSignDataset } from "@legacy/utils/signsValidate";
 import { validateThemeDataset } from "@legacy/utils/themesValidate";
 import { SURAH_ROWS } from "../app/data/quranMeta.generated";
 import { adapterFor } from "../app/lib/knowledge";
+import { SUMMARY_OVERRIDES } from "../app/lib/knowledge/commands";
 import { hrefFor, KNOWLEDGE_READY, MODULE_ORDER, MODULES } from "../app/lib/knowledge/modules";
 
 const DATASETS: Record<string, { id: string }[]> = { peoples: QURAN_COMMUNITIES, places: QURAN_PLACES, themes: QURAN_THEMES, duas: QURAN_DUAS, events: QURAN_EVENTS, signs: QURAN_SIGNS, commands: QURAN_COMMANDS };
@@ -116,6 +117,15 @@ describe("what is particular to a module", () => {
     const commands = await adapterFor("commands");
     expect(commands.entries.every((c) => c.sections[0]?.id === "audience")).toBe(true);
     expect(commands.filters.map((f) => f.value)).toEqual(["all", "command", "prohibition"]);
+  });
+
+  it("Commands: the Riba and Theft summaries are the app-written lines that attribute to the Qur'an text and send application to fiqh; no other summary changes", async () => {
+    const a = await adapterFor("commands");
+    expect(a.get("ribaprohibition")!.summary).toBe("The Qur'an forbids riba (2:275).");
+    expect(a.get("theftprohibition")!.summary).toBe("The Qur'an addresses theft (5:38). Its conditions and application are matters of fiqh; see Daily Fiqh or a scholar.");
+    for (const c of QURAN_COMMANDS) if (!(c.id in SUMMARY_OVERRIDES)) expect(a.get(c.id)!.summary, c.id).toBe(c.description);
+    expect(Object.keys(SUMMARY_OVERRIDES).sort()).toEqual(["ribaprohibition", "theftprohibition"]);
+    expect(JSON.stringify(a.get("theftprohibition")) + JSON.stringify(a.get("ribaprohibition"))).not.toMatch(/punish|penalt|hadd|cut off/i);
   });
 
   it("Themes: the definition is the summary and the paragraph is the detail; Places keep their direct mentions", async () => {
