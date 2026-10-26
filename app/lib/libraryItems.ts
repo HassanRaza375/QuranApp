@@ -81,7 +81,7 @@ export const OPENS_TODAY: Record<ItemType, boolean> = {
   command: KNOWLEDGE_READY.commands,
   unknown: false,
 };
-export const PENDING_PHASE: Partial<Record<ItemType, string>> = { person: "People", story: "Stories", fiqh: "Daily Fiqh", audio: "Reciters" };
+export const PENDING_PHASE: Partial<Record<ItemType, string>> = { person: "People", story: "Stories", fiqh: "Daily Fiqh", audio: "Reciters", community: "Peoples & Nations", place: "Places", theme: "Themes", dua: "Duas", event: "Events", sign: "Signs", command: "Commands" };
 
 export interface Providers {
   person(id: string): { name: string; honorific?: string; arabicName?: string } | null;

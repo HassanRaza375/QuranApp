@@ -107,7 +107,7 @@ const empty = computed(() => {
     <p class="mt-1 max-w-2xl text-[15px] text-ink-2" data-testid="k-lede">{{ info.question }} <span v-if="total">{{ total }} entries, each anchored to the ayahs that mention it.</span></p>
 
     <div class="mt-5 space-y-3">
-      <Input v-model="f.q" type="search" autocomplete="off" placeholder="Filter by name, Arabic, theme, or an ayah such as 7:65" :aria-label="`Filter ${info.title.toLowerCase()}`" class="!h-11 md:!h-9" data-testid="k-filter" />
+      <Input v-model="f.q" type="search" autocomplete="off" placeholder="Name, Arabic, theme or ayah (7:65)" :aria-label="`Filter ${info.title.toLowerCase()}`" class="!h-11 md:!h-9" data-testid="k-filter" />
       <div class="grid grid-cols-2 gap-2 md:flex md:flex-wrap md:items-center [&>div>button]:w-full [&>div>button]:justify-between md:[&>div>button]:w-auto">
         <div v-if="typeOptions.length" class="min-w-0"><ResponsiveMenu :model-value="f.t" :options="typeOptions" label="Kind" @update:model-value="(v) => (f.t = v)" /></div>
         <Button variant="outline" class="min-h-11 gap-2 md:min-h-8" :aria-pressed="f.saved" :class="f.saved ? 'border-brand text-brand' : ''" data-testid="k-saved" @click="f.saved = !f.saved"><Icon name="lucide:star" size="16" />Saved</Button>

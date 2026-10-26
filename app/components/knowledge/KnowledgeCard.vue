@@ -21,7 +21,7 @@ const to = computed(() => `${MODULES[props.entry.module].route}/${props.entry.id
       <span class="mt-2 flex flex-wrap items-center gap-1.5 text-[12.5px] text-ink-2">
         <span class="rounded-full border px-2 py-0.5 text-[11.5px]" data-testid="k-type">{{ entry.typeLabel }}</span>
         <span v-if="entry.basisLabel" class="rounded-full border border-dashed px-2 py-0.5 text-[11.5px]" data-testid="k-basis">{{ entry.basisLabel }}</span>
-        <span class="tabular-nums" data-testid="k-count">{{ marks.length }} {{ marks.length === 1 ? "ayah" : "ayahs" }} in {{ surahs }} {{ surahs === 1 ? "surah" : "surahs" }}</span>
+        <span class="tabular-nums" data-testid="k-ayahs">{{ marks.length }} {{ marks.length === 1 ? "ayah" : "ayahs" }} in {{ surahs }} {{ surahs === 1 ? "surah" : "surahs" }}</span>
       </span>
     </NuxtLink>
     <div v-if="marks.length" class="mt-3"><QuranThread :marks="marks" :label="`Where ${entry.name} appears in the Qur’an`" /></div>

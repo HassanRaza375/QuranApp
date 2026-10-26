@@ -28,7 +28,6 @@ export function peoplesEntry(c: QuranCommunity): KEntry {
     passages: orderedPassages(c.relatedPassages),
     also: [],
     sections,
-    notes: c.statusNotes ?? [],
     sources: sourcesOf(c.sources),
   };
 }

@@ -45,7 +45,8 @@ export interface KEntry {
   /** the same thing, elsewhere ("Also occurs at") */
   also: KPassage[];
   sections: KSection[];
-  notes: string[];
+  /** The data's `statusNotes` are the legacy author's working notes (they mention code, phases and search strings), so they are NOT part of the entry the pages
+   * show; they stay in the data and go on the review list. The basis label above is the only claim a page makes about how an entry is grounded. */
   sources: KSource[];
 }
 

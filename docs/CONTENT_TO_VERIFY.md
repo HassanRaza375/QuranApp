@@ -216,6 +216,35 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] "Play all" and "Listen" would use the existing queue and the user's reciter; the prototype does not say what a dua's "Listen" plays.
 - [ ] Wording of ours: "Where it appears", "N ayahs in N surahs", "The ayahs", "Connected", "Referenced by", "Translation loads from the reader's cache.", "No <module> match “…”".
 
+### Review list: every entry whose basis is not "the Qur'an states it" (Phase 12, from the real data)
+
+The pages show the legacy's own basis label on each of these and nothing else about how sure the entry is (no "verified", no "reviewed"). Please read each one. The data's own `verificationStatus` is the legacy author's label, not an outside review, so **all 182 entries** are on this list in the sense that none has been read by a scholar; the table is the subset whose basis the data itself marks as weaker.
+
+| Module | Id | Name | Basis in the data | Note |
+| --- | --- | --- | --- | --- |
+| Peoples | `sabbathbreakers` | The Sabbath-Breakers | quran_context | shown with the label "Identified through Qur'anic context" |
+| Places | `iram` | Iram | disputed | label shown; also has a source that is not the Qur'an (drawn dashed) |
+| Places | `alkahf` | The Cave (Al-Kahf) | quran_context | label shown |
+| Places | `thesea` | The Sea (of the Crossing) | quran_context | label shown |
+| Themes | `creation` | Creation (Al-Khalq) | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Themes | `generosity` | Generosity | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Themes | `wealth` | Wealth | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Themes | `leadership` | Leadership and Authority | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Themes | `community` | Community, Brotherhood, and Peace | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Duas | `adamrepentance` | Adam's Prayer of Repentance | quran_narrative | a prayer reported in a narrative |
+| Duas | `yunusindarkness` | The Dua of Yunus | quran_narrative | a prayer reported in a narrative |
+| Duas | `muhammadentryexitprayer` | Prayer for a Sound Entrance and Exit | quran_instruction | a prayer the Qur'an instructs, not one it reports |
+| Duas | `muhammadknowledgeprayer` | Prayer for Increase in Knowledge | quran_instruction | a prayer the Qur'an instructs, not one it reports |
+| Duas | `muhammadrefugeprayer` | Prayer for Refuge from the Devils' Incitements | quran_instruction | a prayer the Qur'an instructs, not one it reports |
+| Duas | `muhammadmercyprayer` | Prayer for Forgiveness and Mercy | quran_instruction | a prayer the Qur'an instructs, not one it reports |
+| Duas | `rabbanasteadfastprayer` | The Warriors' Prayer for Steadfastness | quran_narrative | a prayer reported in a narrative |
+| Events | `siegeconfederates` | The Siege of the Confederates | quran_context | label shown |
+
+17 rows. Signs and Commands have none (all 14 and all 18 are "explicit").
+
+- [ ] **The data's `statusNotes` are not shown.** They are the legacy author's working notes (they mention code, phases and search strings, for example "Phase 3 migration ... `relatedPlaceIds`" and "a manually-verified anchor set"), not text for readers. 27 on Peoples, 19 on Places, 22 on Themes, 8 on Duas, 12 on Events, 11 on Signs, 11 on Commands. Some carry real caveats (for example that Zakah's recipients are named but no nisab is given); if any should reach readers, they need rewriting in plain words first.
+- [ ] **Wording of ours (Phase 12, so far):** the module titles and questions on `lib/knowledge/modules.ts` ("Which communities?", "Where?", "What does it teach?", and our own "What was asked?", "What happened?", "What was shown?", "What is commanded?"), "Events in the Qur’an" (so it is not confused with the Ramadan page's Events), "N entries, each anchored to the ayahs that mention it.", the filter placeholder, "Nothing matches “…”", "Nothing here points at 7:65", "Nothing saved yet. Open an entry and tap Save.", "Where it appears", "The ayahs", "Show the N ayahs", "Loading the text…", "This text isn’t on your device yet. Connect to load it.", "Couldn’t load this text.", "Connected" / "Named in this entry’s own data.", "Referenced by" / "Entries whose own data names X. X’s data does not name them back.", "No such entry", the Library's type names ("People or nation", "Place", "Theme", "Dua", "Event", "Sign", "Command").
+
 ## Daily Fiqh (Phase 13)
 
 - [ ] **Structure against the real data (checked).** The legacy data has 9 categories and 67 topics, in six categories (5 Foundations, 8 Taharat, 20 Salat, 13 Sawm, 14 Khums, 7 Zakat); Hajj, Other furu' and Daily life have none yet. The prototype's category ids differ for four (`taharah`, `salah`, `furu`, `daily` against `taharat`, `salat`, `otherfuru`, `dailylife`), some Arabic terms differ (Foundations: "الأصول" against "المقدمات"), and its topic counts differ for four categories (Taharah 9 against 8, Salah 14 against 20, Khums 11 against 14, Zakat 10 against 7). Of its 34 sample topics, 13 have an id that exists in the legacy data and 21 do not. The routes `/fiqh/[category]/[topic]` use the legacy ids.

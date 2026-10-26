@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // One entry (prototype `pgKDetail`, with the legacy sections kept): name, Arabic, summary, the kind, a basis tag only when the Qur'an does not state it outright,
 // Save and Play all; where it appears (the thread and the direct mentions); the passages with their ayahs; the module's own sections; Connected and
-// Referenced by (the legacy graph, derived links worded as derived); the data's notes and its sources. No word on this page says "verified" or "reviewed":
-// the basis label is the whole claim.
+// Referenced by (the legacy graph, derived links worded as derived); and its sources. No word on this page says "verified" or "reviewed", and the data's
+// working notes are not shown: the basis label is the whole claim.
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { addBookmark, bookmarkAddedAt, hasBookmark, removeBookmark } from "~/lib/bookmarks";
 import { adapterFor } from "~/lib/knowledge";
@@ -86,13 +86,13 @@ function playAll() {
 
     <template v-if="entry">
       <div class="text-[13px] text-ink-2"><NuxtLink :to="info.route" class="underline" data-testid="k-back">{{ info.title }}</NuxtLink></div>
-      <div class="mt-2 flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
+      <div class="mt-2 flex flex-col-reverse gap-x-6 gap-y-1 md:flex-row md:items-start md:justify-between">
         <div class="min-w-0 flex-1">
           <h1 class="font-serif text-[28px] font-medium md:text-[34px]" data-testid="k-name">{{ entry.name }}</h1>
           <p v-if="entry.alternateNames.length" class="text-[13px] text-ink-2" data-testid="k-alt">Also: {{ entry.alternateNames.join(", ") }}</p>
           <p class="mt-2 max-w-xl text-[15.5px] text-ink-2" data-testid="k-summary">{{ entry.summary }}</p>
         </div>
-        <p class="ar !text-[34px] !leading-[1.8]" lang="ar" dir="rtl" data-testid="k-arabic">{{ entry.arabic }}</p>
+        <p class="ar !text-[34px] !leading-[1.8] max-md:!text-left" lang="ar" dir="rtl" data-testid="k-arabic">{{ entry.arabic }}</p>
       </div>
       <div class="mt-3 flex flex-wrap items-center gap-2">
         <span class="rounded-full border px-2.5 py-0.5 text-[12.5px]" data-testid="k-type">{{ entry.typeLabel }}</span>
@@ -143,10 +143,9 @@ function playAll() {
         <div class="mt-2"><KnowledgeLinkGroups :groups="links.referencedBy" testid="k-referenced" /></div>
       </section>
 
-      <section v-if="entry.notes.length || entry.sources.length" class="mt-8" data-testid="k-notes">
-        <h2 class="text-[17px] font-medium">Notes and sources</h2>
-        <ul v-if="entry.notes.length" class="mt-2 list-disc space-y-1.5 pl-5 text-[14px]" data-testid="k-status-notes"><li v-for="(n, i) in entry.notes" :key="i">{{ n }}</li></ul>
-        <ul v-if="entry.sources.length" class="mt-3 space-y-2" data-testid="k-sources">
+      <section v-if="entry.sources.length" class="mt-8" data-testid="k-notes">
+        <h2 class="text-[17px] font-medium">Sources</h2>
+        <ul class="mt-3 space-y-2" data-testid="k-sources">
           <li v-for="(s, i) in entry.sources" :key="i" class="text-[14px]"><span class="mr-2 rounded-full border px-2 py-0.5 text-[12px]" :class="s.quran ? '' : 'border-dashed'">{{ s.label }}</span>{{ s.citation }}</li>
         </ul>
       </section>
