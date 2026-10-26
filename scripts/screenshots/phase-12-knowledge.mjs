@@ -258,6 +258,34 @@ const STEPS = {
     await ctx.close();
   },
 
+  // ---- the review fixes: the tab strip (smooth scroll, a fade at the edge that goes on, the current tab in view) and the Kind menu inside the content
+  async fixes() {
+    const open = async (page, path) => { await page.goto(BASE + path); await page.getByTestId("k-grid").waitFor(); await settle(page, 900); };
+    for (const [device, theme, path, name] of [
+      ["desktop", "light", "/peoples", "fix-tabs-1280-peoples-light"],
+      ["desktop", "light", "/commands", "fix-tabs-1280-commands-light"],
+      ["desktop", "dark", "/events", "fix-tabs-1280-events-dark"],
+      ["mobile", "light", "/events", "fix-tabs-390-events-light"],
+      ["mobile", "dark", "/commands", "fix-tabs-390-commands-dark"],
+      ["mobile", "light", "/peoples", "fix-tabs-390-peoples-light"],
+    ]) {
+      const { ctx, page } = await revamp(device, theme);
+      if (device === "mobile") await page.setViewportSize({ width: 390, height: 844 });
+      await open(page, path);
+      await page.screenshot({ path: `${OUT}/${name}.jpg`, type: "jpeg", quality: 80, clip: { x: 0, y: 0, width: device === "mobile" ? 390 : 1280, height: 420 } });
+      await ctx.close();
+    }
+    for (const [w, h, name] of [[1280, 900, "fix-kindmenu-1280-signs"], [1920, 1000, "fix-kindmenu-1920-events"]]) {
+      const { ctx, page } = await revamp("desktop", "light");
+      await page.setViewportSize({ width: w, height: h });
+      await open(page, name.endsWith("signs") ? "/signs" : "/events");
+      await page.getByRole("button", { name: /^All$|Kind/ }).first().click();
+      await settle(page, 400);
+      await shot(page, name);
+      await ctx.close();
+    }
+  },
+
   // ---- the same pages with the REAL reader text (quranapi.pages.dev) and the REAL transliteration (api.alquran.cloud): nothing is mocked, so this needs the internet
   async real() {
     for (const [device, theme, path, ready] of [

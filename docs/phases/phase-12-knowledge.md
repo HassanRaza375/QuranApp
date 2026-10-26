@@ -65,6 +65,13 @@ Rebuild the seven knowledge modules of the legacy app as one shared list page an
 
 **Verify result:** **clean, one run, Node 22.23.4 (`.nvmrc`), 2026-10-26, exit 0:** `npm run verify` = build, `eslint .`, **805 unit tests in 47 files**, the dev smoke, and **627 browser tests, all passed, none skipped or retried (18.2 min)**. It was run after the last code change (the Search page description); only documentation, screenshots and the notes in `CONTENT_TO_VERIFY.md` changed after it began. Before it: the knowledge, stories, search, library and people specs (123) and the new module spec (47) had passed on their own, which is where the Library bug was found.
 
+## Review fixes (2026-10-26, after acceptance)
+
+- **Kind popover:** `ResponsiveMenu` takes an `align` prop (default `end`, so no other menu changes); the knowledge list uses `start`, so the menu opens under the button and stays inside the content area at 1280 and 1920 px.
+- **Tab strip:** smooth sideways scroll (`scroll-behavior: smooth`, off under reduced motion), a fade at the edge that has more tabs, and the current tab centred on arrival (placed again while the icons and fonts settle). `e2e/knowledgeModules.spec.ts` has four tests for it (1280 and 390 px, the menu at 1280 and 1920 px); screenshots `fix-*.jpg` in `docs/design/knowledge-compare/`.
+- **Caveat drafts** rewritten under your rule (only what the Qur'an text states or does not state; never a ruling or a penalty; a pointer to Daily Fiqh or a scholar for rulings): 35 kept or reworded, 1 cut (`ahlalkitab`); the status column says what changed in each. They are still hidden. Two summaries that are the data's own sentences (Theft, Riba) state a penalty or a prohibition and are on the pages today: a question for you in `CONTENT_TO_VERIFY.md`.
+- Checked with the knowledge, library and stories browser specs (not a full verify).
+
 ## Differences from the prototype
 
 In `docs/design/knowledge-compare/README.md` (both stages).
@@ -79,7 +86,7 @@ None of the prototype's placeholders were copied: every name, Arabic string, sum
 2. **The 36 caveat drafts** wait for your approval (and wording), and so does whether they appear at all.
 3. **The Referenced-by sentence** ("Entries whose own data names X. X’s data does not name them back.") is ours; read it once.
 4. **A bug the new tests found in my own stage 1:** the Library's lookup for knowledge entries called itself without end as soon as two modules had loaded (a Library with a saved entry of two kinds went blank, a stack overflow in the console). Fixed (`app/stores/library.ts`, the previous lookup is captured once); `e2e/knowledgeModules.spec.ts` ("the Library") covers all seven kinds together.
-5. The kind popover opens aligned to the button's right edge and overlaps the sidebar edge on a wide desktop (shared `ResponsiveMenu`).
+5. ~~The kind popover overlapped the sidebar edge on a wide desktop~~ and ~~the tab strip was cut at 1280 px~~: both fixed after review (see "Review fixes").
 6. Search with 8 chips wraps to three rows on a phone.
 7. Open device checks stay in `docs/DEVICE_CHECKS.md` (Phase 11's).
 

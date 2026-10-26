@@ -11,7 +11,7 @@ export interface MenuOption {
   heading?: string;
 }
 
-const props = defineProps<{ modelValue: string | null; options: MenuOption[]; label: string; title?: string; icon?: string; hint?: string; wide?: boolean }>();
+const props = defineProps<{ modelValue: string | null; options: MenuOption[]; label: string; title?: string; icon?: string; hint?: string; wide?: boolean; align?: "start" | "end" }>();
 const emit = defineEmits<{ "update:modelValue": [value: string] }>();
 
 const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -35,7 +35,7 @@ const pick = (v: string) => {
         </Button>
       </slot>
     </DropdownMenuTrigger>
-    <DropdownMenuContent align="end" :class="wide ? 'min-w-64' : 'min-w-44'">
+    <DropdownMenuContent :align="align ?? 'end'" :class="wide ? 'min-w-64' : 'min-w-44'">
       <DropdownMenuRadioGroup :model-value="modelValue ?? ''" @update:model-value="(v) => pick(String(v))">
         <template v-for="o in options" :key="o.value">
           <div v-if="o.heading" class="px-2 pb-1 pt-2 text-[11.5px] font-medium uppercase tracking-wide text-ink-2" role="presentation" data-testid="menu-heading">{{ o.heading }}</div>

@@ -247,54 +247,56 @@ The pages show the legacy's own basis label on each of these and nothing else ab
 
 ### Draft reader-facing caveats (Phase 12: app-written, NOT shown anywhere yet)
 
-The data's `statusNotes` are the legacy author's working notes and are not shown (see above). Of the 110 notes, most are bookkeeping (why two candidates were merged, which file a link lives in, how the search was done). **36** carry something a reader may need to know. Below is a plain-words rewrite of each, **app-written**: the wording is ours, the claim is the note's. None is in the UI. If you approve some, they would appear as a short "Worth knowing" line under the entry's summary, labelled **Source note**, with the entry's own basis tag kept as it is. Nothing here adds a fact the note did not already contain; please read each against the note named in the last column (`statusNotes` of that entry, in the order they appear in the data file).
+The data's `statusNotes` are the legacy author's working notes and are not shown (see above). Of the 110 notes, most are bookkeeping (why two candidates were merged, which file a link lives in, how the search was done). **36** carry something a reader may need to know. Each is rewritten below in plain words, **app-written**: the wording is ours, the claim is the note's. None is in the UI. If you approve some, they would appear as a short "Worth knowing" line under the entry's summary, labelled **Source note**, with the entry's own basis tag kept as it is.
 
-Wording to approve or change, line by line:
+**The rule these drafts follow (2026-10-26):** a caveat describes only what the Qur'an text states or does not state. It never states a ruling or a penalty, and for anything that is a ruling it points to **Daily Fiqh** (Phase 13) or the reader's own scholar. It makes no claim about what scholars hold, what tradition says, or what is "near-universal": where a note did, that sentence is dropped. "Reworded" means the first draft broke the rule in some sentence and that sentence was changed or removed; "cut" means nothing was left to say once it was removed.
 
-| Entry | Draft (app-written) | From |
+| Entry | Draft (app-written) | Status |
 | --- | --- | --- |
-| Peoples · `ad` | The Qur'an does not say where 'Ad lived today; it names Al-Ahqaf as where they were warned (46:21), and this page does not go beyond that. | 2nd note |
-| Peoples · `thamud` | Thamud is named in the Qur'an. Linking them to Al-Hijr (15:80, "the companions of Al-Hijr") is read from context and tradition: that ayah does not itself say "Thamud". | 1st note |
-| Peoples · `madyan` | Madyan is both a people and a place in the Qur'an, and this entry covers both. Whether Madyan and the Companions of the Thicket (Al-Aykah) are the same community is a question scholars differ on; this page does not decide it. | 2nd and 3rd notes |
-| Peoples · `ashabalaykah` | The Qur'an does not say that the Companions of the Thicket are the people of Madyan. Both were sent the same prophet, Shu'ayb, with similar warnings. Some scholars hold they are one community named two ways, others two related communities. This page does not choose. | 1st note |
-| Peoples · `saba` | The Qur'an does not date the flood of the dam or tie it to a named ruler. Naming it the Ma'rib Dam is a later historical link, not something these ayahs say. | 2nd note |
-| Peoples · `peopleofthetown` | The Qur'an names neither the town nor the three messengers. Later tradition has suggested places (for example Antioch); this page does not treat them as established. | 1st note |
-| Peoples · `sabbathbreakers` | 7:163-166 does not name this community or say they were Israelites. That link comes from the ayahs just before (7:160-162), which speak of Bani Isra'il. | 1st note |
-| Peoples · `peopleofyunus` | The Qur'an does not name this town. "Nineveh" is the traditional identification, not part of the ayahs. | 1st note |
-| Peoples · `ahlalkitab` | "People of the Book" is a group defined by having received scripture, not by one ethnicity or land. In history it has mainly meant Jewish and Christian communities. | 1st note |
-| Places · `madinah` | The Qur'an also says "the city" (al-madinah) for several unnamed towns in other stories (for example in Yusuf, the People of the Cave, Musa and Ya-Sin). This entry lists only the ayahs that are about Madinah, the Prophet's own city. | 1st note |
-| Places · `mountjudi` | The Qur'an names the mountain but not where it is. Suggestions such as a mountain near the Turkey-Iraq border are later proposals. | 1st note |
-| Places · `alhijr` | Al-Hijr is named in the Qur'an (15:80). Linking it to Thamud is read from context and tradition; the ayah does not say so. | 1st note |
-| Places · `alahqaf` | The Qur'an names the region, not its place on today's map. Southern Arabia (parts of modern Oman or Yemen) is the usual suggestion, and it is a later identification. | 1st note |
-| Places · `iram` | The Qur'an does not settle whether "Iram" is the proper name of 'Ad's city, a descriptive title for 'Ad, or something else. This page shows the ayah's wording and does not decide. | 1st note |
-| Places · `almasjidalaqsa` | The Qur'an does not use the word "Jerusalem". Identifying the farthest mosque with Jerusalem is a traditional identification, held almost universally and supported by early hadith; it is not stated in the ayah itself. | 1st note |
-| Places · `theholyland` | The Qur'an does not give this land's borders or a city within it. It is often taken to mean the region around Al-Masjid al-Aqsa and Jerusalem, but the Qur'an does not equate the two, so they are separate entries here. | 1st note |
-| Places · `alkahf` | "The cave" is a common noun, not a place name. Caves proposed for it (for example near Amman) are traditional suggestions, and none is treated as established. | 1st note |
-| Places · `thesea` | "The sea" is a general word the Qur'an uses in many stories. Calling this one the Red Sea (or the Gulf of Suez or Aqaba) is a traditional or modern identification, not something the ayahs name. | 2nd note |
-| Duas · `adamrepentance` | The ayah is in the dual ("they both said"): Adam's wife joins the prayer. The Qur'an does not name her, so the entry is listed under Adam. | 1st note |
-| Duas · `ibrahimwisdomprayer` | In this prayer Ibrahim asks forgiveness for his father. The Qur'an later says (9:113-114) that he withdrew it once it was clear his father was an enemy of Allah. This entry gives the prayer as it was made, not its later withdrawal. | 1st note |
-| Duas · `musaprayeragainstfiraun` | 10:89 says the prayer was answered and speaks to both Musa and Harun ("your supplication"), though only Musa's words are quoted. It is traditionally understood that Harun said "Ameen". The entry is listed under Musa, as the words quoted are his. | 1st note |
-| Duas · `yunusindarkness` | These words contain no direct request. They are counted as a dua because the ayah says "he called out" (21:87), and by long-standing convention. | 1st note |
-| Events · `ibrahimmigration` | The Qur'an states the migration (29:26) but gives no route, starting point or destination. | 1st note |
-| Events · `sacrificetrial` | 37:99-113 does not say which son was to be sacrificed. This page does not name him. | 1st note |
-| Events · `isaascension` | The Qur'an says Isa was not killed or crucified but raised up. It does not give the timing of what follows, and scholars have long discussed it. This page does not take a side. | 1st note |
-| Events · `siegeconfederates` | The Qur'an never uses the word "trench". Calling this siege "the Battle of the Trench" and describing the digging are traditional (seerah) details. The siege itself comes from the surah's own account and its name, "the Confederates". | 1st note |
-| Events · `pledgeunderthetree` | The Qur'an describes the pledge "under the tree" (48:18). The name Hudaybiyyah and the treaty around it come from tradition and are not stated in the ayah. | 1st note |
-| Commands · `zakahcommand` | 9:60 names who may receive zakah. No nisab, percentage or other calculation is given here; those are matters for your own scholar. | 1st note |
-| Commands · `hajjcommand` | Only the Qur'an's statement that Hajj is owed, by "whoever is able to find a way there", is given. The rites and the detailed conditions are not described here. | 1st note |
-| Commands · `ribaprohibition` | The kinds of riba, and rulings on modern financial products, came later in jurisprudence and are not in these ayahs. | 1st note |
-| Commands · `theftprohibition` | 5:38 states the punishment for theft rather than the words "do not steal". That theft is forbidden is certain; the ayah's form is a prescribed ruling. No conditions or thresholds are given here. | 1st note |
-| Commands · `murderprohibition` | 5:32 is addressed to the Children of Israel. The Qur'an presents it as stating a principle for everyone ("whoever kills a soul…"); it is not, in its own grammar, addressed to all people. | 1st note |
-| Commands · `justicecommand` | This one ayah (16:90) joins commands (justice, excellence, giving to relatives) with prohibitions (indecency, wrongdoing, oppression). The prohibitions are not listed as a separate entry. | 1st note |
-| Commands · `repentancecommand` | The command to turn in repentance is the last clause of 24:31, an ayah mainly about modesty for believing women. It is cited only for that clause. | 1st note |
-| Commands · `shirkprohibition` | 6:151 is a list ayah ("Come, let me recite what your Lord has forbidden you"). It is cited here for its opening clause on shirk; the rest of the list includes other prohibitions that have their own entries. | 1st note |
-| Commands · `backbitingprohibition` | The backbiting clause is the end of 49:12, which begins with a separate instruction against suspicion and spying. | 1st note |
+| Peoples · `ad` | The Qur'an does not say where 'Ad lived today. It names Al-Ahqaf as where they were warned (46:21), and this page goes no further. | kept |
+| Peoples · `thamud` | Thamud is named in the Qur'an. 15:80 ("the companions of Al-Hijr") does not itself say "Thamud"; linking the two is read from the surrounding text. | reworded (dropped "tradition") |
+| Peoples · `madyan` | Madyan is both a people and a place in the Qur'an, and this entry covers both. The Qur'an does not say whether Madyan and the Companions of the Thicket (Al-Aykah) are the same community; Shu'ayb is sent to both. This page does not decide. | reworded (dropped "scholars differ") |
+| Peoples · `ashabalaykah` | The Qur'an does not say that the Companions of the Thicket are the people of Madyan. Both are addressed by Shu'ayb with similar warnings, under two different names. This page does not decide whether they are one community or two. | reworded (dropped "exegetes are divided") |
+| Peoples · `saba` | The Qur'an does not date the flood of the dam or tie it to a named ruler. Naming a particular dam is not something these ayahs say. | reworded (dropped "a later historical link") |
+| Peoples · `peopleofthetown` | The Qur'an names neither the town nor the three messengers. Names given to them elsewhere are not part of the text and are not treated as established here. | reworded (dropped the example place) |
+| Peoples · `sabbathbreakers` | 7:163-166 does not name this community or say they were Israelites. That link comes from the ayahs just before (7:160-162), which speak of Bani Isra'il. | kept |
+| Peoples · `peopleofyunus` | The Qur'an does not name this town. A name for it is not part of the ayahs. | reworded (dropped "Nineveh", "traditional") |
+| Peoples · `ahlalkitab` | | **cut**: once the claim about who the term "mainly meant" is removed, nothing is left that the Qur'an text states or does not state |
+| Places · `madinah` | The Qur'an also says "the city" (al-madinah) for several unnamed towns in other stories (for example in Yusuf, the People of the Cave, Musa and Ya-Sin). This entry lists only the ayahs that are about Madinah, the Prophet's own city. | kept |
+| Places · `mountjudi` | The Qur'an names the mountain but does not say where it is. | reworded (dropped the suggested region) |
+| Places · `alhijr` | Al-Hijr is named in the Qur'an (15:80). The ayah does not link it to Thamud; that link is read from the surrounding text. | reworded (dropped "tradition") |
+| Places · `alahqaf` | The Qur'an names the region but gives no present-day location. | reworded (dropped the suggested region) |
+| Places · `iram` | The Qur'an does not say whether "Iram" is the proper name of 'Ad's city, a descriptive title for 'Ad, or something else. This page shows the ayah's wording and does not decide. | kept |
+| Places · `almasjidalaqsa` | The Qur'an does not use the word "Jerusalem". Reading "the farthest mosque" as Jerusalem is an identification made outside the ayah; the ayah itself does not state it. | reworded (dropped "near-universal" and the hadith claim) |
+| Places · `theholyland` | The Qur'an does not give this land's borders or name a city within it, and does not equate it with Al-Masjid al-Aqsa or Jerusalem, so they are separate entries here. | reworded (dropped "often taken to mean") |
+| Places · `alkahf` | "The cave" is a common noun in the Qur'an, not a place name, and the ayahs give no location for it. | reworded (dropped the example site) |
+| Places · `thesea` | "The sea" is a general word the Qur'an uses in many stories. The ayahs do not say which sea this is. | reworded (dropped "Red Sea" and the gulfs) |
+| Duas · `adamrepentance` | The ayah is in the dual ("they both said"): Adam's wife joins the prayer. The Qur'an does not name her, so the entry is listed under Adam. | kept |
+| Duas · `ibrahimwisdomprayer` | In this prayer Ibrahim asks forgiveness for his father. 9:113-114 later says he withdrew it once it was clear his father was an enemy of Allah. This entry gives the prayer as it was made, not its later withdrawal. | kept |
+| Duas · `musaprayeragainstfiraun` | 10:89 says the prayer was answered and speaks to both Musa and Harun ("your supplication"), though only Musa's words are quoted. The entry is listed under Musa, whose words are quoted. | reworded (dropped the "Ameen" tradition) |
+| Duas · `yunusindarkness` | These words contain no direct request. The ayah says he "called out" (21:87), and the entry is counted as a dua on that wording. | reworded (dropped "long-standing convention" and the hadith) |
+| Events · `ibrahimmigration` | The Qur'an states the migration (29:26) but gives no route, starting point or destination. | kept |
+| Events · `sacrificetrial` | 37:99-113 does not say which son was to be sacrificed. This page does not name him. | kept |
+| Events · `isaascension` | 4:157-158 says Isa was not killed or crucified but raised up. It does not give the timing of what follows, and this page does not add one. | reworded (dropped "scholars have long discussed it") |
+| Events · `siegeconfederates` | The Qur'an never uses the word "trench". The name "Battle of the Trench" and the digging of a trench come from outside the text. The siege itself is from the surah's own account and its name, "the Confederates". | reworded (dropped "seerah") |
+| Events · `pledgeunderthetree` | The Qur'an describes the pledge "under the tree" (48:18). The name Hudaybiyyah and the treaty around it are not in the ayah. | reworded (dropped "tradition") |
+| Commands · `zakahcommand` | 2:110 speaks of giving zakah, and 9:60 names who zakah may go to. These ayahs give no threshold or percentage. For how zakah is worked out, see Daily Fiqh or ask your scholar. | reworded (dropped "commands"; added the pointer; no figures) |
+| Commands · `hajjcommand` | 3:97 speaks of the pilgrimage to the House in relation to whoever is able to make the journey. The ayah does not describe the rites or the detailed conditions. For these, see Daily Fiqh or ask your scholar. | reworded (no statement of the obligation; added the pointer) |
+| Commands · `ribaprohibition` | 2:275 speaks of riba and of trade. The ayah does not list kinds of riba or speak of modern financial products. For what applies today, see Daily Fiqh or ask your scholar. | reworded (dropped "later jurisprudence" and the restated prohibition; added the pointer) |
+| Commands · `theftprohibition` | 5:38 is worded as a prescribed measure on theft, not as a plain "do not steal". The ayah gives no conditions or thresholds. For how it applies, see Daily Fiqh or ask your scholar. | reworded (the penalty is not stated; added the pointer) |
+| Commands · `murderprohibition` | The prohibition here is 17:33. Its parallel at 5:32 is addressed to the Children of Israel, and the Qur'an presents it as a principle that reaches everyone ("whoever kills a soul…"); it is not, in its own grammar, addressed to all people. | reworded (names 17:33, the entry's own ayah) |
+| Commands · `justicecommand` | 16:90 joins commands (justice, excellence, giving to relatives) with prohibitions (indecency, wrongdoing, oppression) in one ayah. The prohibitions are not listed as a separate entry. | kept |
+| Commands · `repentancecommand` | The command to turn in repentance is the last clause of 24:31, an ayah mainly about modesty for believing women. It is cited only for that clause. | kept |
+| Commands · `shirkprohibition` | 6:151 is a list ayah ("Come, let me recite what your Lord has forbidden you"). It is cited here for its opening clause on shirk; the rest of the list includes other prohibitions that have their own entries. | kept |
+| Commands · `backbitingprohibition` | The backbiting clause is the end of 49:12, which begins with a separate instruction against suspicion and spying. | kept |
+
+**Two things outside the drafts** that the same rule raises: the summaries of Commands `theftprohibition` and `ribaprohibition` are the data's own sentences, and they do state a penalty and a prohibition ("The Qur'an prescribes a punishment for the man or woman who steals…"; "Allah has permitted trade and forbidden riba"). They are on the pages today because the summary is the data's. Say whether you want those two summaries kept as the data has them, or replaced by a plain line pointing to Daily Fiqh.
 
 **Questions for you:**
 
-- [ ] Show any of these? If yes: as a "Worth knowing" line under the summary, or only inside a collapsed "Notes" row? (Recommended: a line, labelled **Source note**, because they are caveats a reader should not have to open.)
-- [ ] Wording changes. In particular the ones that touch a ruling (Zakah, Hajj, Riba, Theft, Murder) say "your own scholar" or add nothing; tell me if you want even that line left out.
-- [ ] The two "Madinah is also the generic word 'the city'" and "Jerusalem" lines are the most likely to be read as a position. They restate the note and add nothing; say if you want them softer.
+- [ ] Show any of these? If yes: as a "Worth knowing" line under the summary, or only inside a collapsed "Notes" row? (Recommended: a line, labelled **Source note**.)
+- [ ] The two summaries above.
+- [ ] Wording changes, line by line. The four that now point to Daily Fiqh (zakah, hajj, riba, theft) assume Phase 13 ships that page; until then the pointer would read "ask your scholar" only.
 - [ ] The remaining 74 notes stay hidden (bookkeeping: merges, file links, search method). Tell me if you want to see the list first.
 
 ## Daily Fiqh (Phase 13)

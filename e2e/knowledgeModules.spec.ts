@@ -346,3 +346,54 @@ test.describe("on a phone", () => {
     expect(await noOverflow(page)).toBeLessThanOrEqual(0);
   });
 });
+
+test.describe("the tab strip and the kind menu stay inside the content", () => {
+  const box = async (page: Page, testid: string) => (await page.getByTestId(testid).boundingBox())!;
+
+  test("1280 px: the strip fades at the edge that goes on, and the current tab is brought into view", async ({ page }) => {
+    await openList(page, "peoples");
+    const strip = page.getByTestId("knowledge-tabs");
+    await expect(strip).toHaveAttribute("data-more-right", "true");
+    await expect(strip).not.toHaveAttribute("data-more-left", /.*/);
+    await openList(page, "commands");
+    await expect(strip).toHaveAttribute("data-more-left", "true");
+    await expect.poll(async () => {
+      const s = await box(page, "knowledge-tabs");
+      const t = await box(page, "ktab-commands");
+      return t.x >= s.x - 1 && t.x + t.width <= s.x + s.width + 1;
+    }, { message: "the current tab is inside the strip" }).toBe(true);
+    expect(await page.evaluate(() => getComputedStyle(document.querySelector('[data-testid="knowledge-tabs"]')!).scrollBehavior)).toBe("smooth");
+  });
+
+  test("390 px: the same, with the current tab in view", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openList(page, "events");
+    await expect.poll(async () => {
+      const s = await box(page, "knowledge-tabs");
+      const t = await box(page, "ktab-events");
+      return t.x >= s.x - 1 && t.x + t.width <= s.x + s.width + 1;
+    }, { message: "the current tab is inside the strip" }).toBe(true);
+    expect(await noOverflow(page)).toBeLessThanOrEqual(0);
+  });
+
+  test("1280 px: the Kind menu opens inside the content area, not over the sidebar", async ({ page }) => {
+    await openList(page, "signs");
+    await page.getByRole("button", { name: /^All$|Kind/ }).first().click();
+    const menu = page.getByRole("menu");
+    await expect(menu).toBeVisible();
+    const m = (await menu.boundingBox())!;
+    const main = (await page.locator("main#main").boundingBox())!;
+    expect(m.x).toBeGreaterThanOrEqual(main.x - 1);
+    expect(m.x + m.width).toBeLessThanOrEqual(main.x + main.width + 1);
+  });
+
+  test("a wider desktop (1920 px) too", async ({ page }) => {
+    await page.setViewportSize({ width: 1920, height: 1000 });
+    await openList(page, "events");
+    await page.getByRole("button", { name: /^All$|Kind/ }).first().click();
+    const m = (await page.getByRole("menu").boundingBox())!;
+    const main = (await page.locator("main#main").boundingBox())!;
+    expect(m.x).toBeGreaterThanOrEqual(main.x - 1);
+    expect(m.x + m.width).toBeLessThanOrEqual(main.x + main.width + 1);
+  });
+});
