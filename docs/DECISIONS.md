@@ -87,6 +87,12 @@ Every decision made while designing and building the revamp, with the reason. Ph
 - **Passages over six ayahs are collapsed**; the module title for Events is "Events in the Qur’an" (the Ramadan page has Events).
 - **Library:** the seven legacy bookmark kinds (`community:`, `place:`, `theme:`, `dua:`, `event:`, `sign:`, `command:`) open their pages. **Search:** a Duas group and a Knowledge base group, registered after the page opens. **Play all** is a new additive queue kind `knowledge`.
 
+**Phase 13, Daily Fiqh (plan approved 2026-10-26; 13a built 2026-10-26).** Plan: `docs/phases/phase-13-daily-fiqh-plan.md`; result: `docs/phases/phase-13-daily-fiqh.md`. Your answers to the plan:
+- **Needs-human rows held** (57 Khamenei rulings behind "Refer to his risala"); **the three test fixtures are vendored** and the verbatim tests run here; **Khamenei is built but Phase 13 is not accepted until your browser spot check of 30 entries passes, and if any entry differs his module is held** (`docs/phases/phase-13-khamenei-spot-check.md`).
+- **A missing ruling says "Not added yet for <marja'>. Refer to his risala."** and never shows another marja's text. **English withheld on 100 Khamenei rulings is a pointer line with no substitute text** (no Urdu either). **"Both" shows each language with its own source line** and never implies the two translate each other.
+- Offline is level B (cache on open, plus Save all for offline, nothing added to the install-time precache); a Daily Fiqh group in Search; the legacy language choice (English, Urdu, Both) with Urdu only from the marja's own Urdu book; the legacy topic and category ids and the 94-term glossary; the four helpers are built in 13b and stay hidden until every path is signed off.
+- The Phase 12 summaries of Riba and Theft (Commands) are app-written lines that attribute to the Qur'an text with the reference and send application to fiqh.
+
 ## 4. Deliberate content gaps
 
 Ja'fari Laylat al-Qadr nights (19, 21, 23); the Sunni versus Ja'fari compare table and iftar/suhoor explanations; the Arabic of hadith duas; "After prayer" dhikr sequences; Arabic prayer names; revelation order; Juz names; translator and tafsir-school attribution; per-tradition event wording. Each becomes a data file once wording and a source are supplied.

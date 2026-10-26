@@ -42,11 +42,11 @@ async function open(page: Page, url = "/search") {
 }
 
 test.describe("the first view", () => {
-  test("one h1, the box has focus on desktop, eight type chips, the legacy suggestions, no request is made", async ({ page }) => {
+  test("one h1, the box has focus on desktop, nine type chips, the legacy suggestions, no request is made", async ({ page }) => {
     await open(page);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Search");
     await expect(input(page)).toBeFocused();
-    await expect(page.getByTestId("scope-chip")).toHaveText(["All", "Ayahs", "Surahs", "People", "Stories", "Duas", "Knowledge base", "Notes"]);
+    await expect(page.getByTestId("scope-chip")).toHaveText(["All", "Ayahs", "Surahs", "People", "Stories", "Duas", "Knowledge base", "Daily Fiqh", "Notes"]);
     await expect(chip(page, "all")).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByTestId("suggested-chip")).toHaveText(["patience", "mercy", "forgiveness", "gratitude", "prayer", "fasting", "charity", "guidance"]);
     await expect(page.getByTestId("history-empty")).toHaveText("Your searches appear here, on this device only.");
@@ -61,6 +61,30 @@ test.describe("the first view", () => {
     await expect(input(page)).toHaveValue("mercy");
     await expect(page.getByTestId("ayah-row").first()).toBeVisible();
     expect(api.calls).toEqual(["mercy|all|en.pickthall"]);
+  });
+});
+
+test.describe("a URL write that is still landing", () => {
+  test("a chip chosen while the address for the typed text is still being written is kept (the older address no longer overwrites it)", async ({ page }) => {
+    await open(page);
+    // make the router slow: the write for the typed text lands about a second after it was asked for
+    await page.evaluate(() => {
+      const r = (document.querySelector("#__nuxt") as unknown as { __vue_app__: { config: { globalProperties: { $router: { replace(...a: unknown[]): Promise<unknown> } } } } }).__vue_app__.config.globalProperties.$router;
+      const replace = r.replace.bind(r);
+      r.replace = async (...a: unknown[]) => {
+        await new Promise((res) => setTimeout(res, 900));
+        return replace(...a);
+      };
+    });
+    await input(page).fill("yusuf");
+    await page.waitForTimeout(550); // the first write has been asked for (400 ms) and is waiting
+    await chip(page, "surahs").click();
+    // the chip must stay chosen the whole time, including when the older write lands (before the fix it flicked back to All for a moment)
+    for (let i = 0; i < 24; i++) {
+      await expect(chip(page, "surahs"), `at ${i * 100} ms`).toHaveAttribute("aria-pressed", "true", { timeout: 200 });
+      await page.waitForTimeout(100);
+    }
+    await expect(page).toHaveURL(/t=surahs/);
   });
 });
 
@@ -559,9 +583,14 @@ test.describe("quality", () => {
     await open(page);
     await input(page).fill("mercy");
     await expect(page.getByTestId("ayah-row").first()).toBeVisible();
+    await input(page).fill("");
     await page.getByTestId("filters-open").click();
+    // The Urdu edition is chosen with the box empty and then searched with text the recorded answers cover. (This used to keep "mercy" and switch the edition: the recorded
+    // Urdu answer for it is "nothing found", a 404 that Chromium logs, and whether the next keystroke cancelled the request first was a race that failed under load.)
     await page.getByTestId("filters-sheet").getByRole("radio", { name: "Urdu" }).click();
     await page.getByTestId("filters-done").click();
+    await input(page).fill(RAHMAT_TEXT);
+    await expect(page.getByTestId("ayah-row").first()).toBeVisible();
     await input(page).fill("y"); // device groups only: a text search the upstream answers with 404 ("nothing found") is logged by Chromium as a failed load, which a page cannot silence
     await chip(page, "people").click();
     await push(page, "/stories");

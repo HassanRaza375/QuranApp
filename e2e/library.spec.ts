@@ -110,9 +110,8 @@ test.describe("a legacy library", () => {
     await expect(row(page, "ayah:2:255").getByTestId("row-open")).toHaveAttribute("href", "/surah/2#ayah-255");
     await expect(row(page, "juz:30").getByTestId("row-open")).toHaveAttribute("href", "/surah/78#ayah-1");
     await expect(row(page, "person:adam").getByTestId("row-open")).toHaveAttribute("href", "/persons/adam");
-    const notice = await page.getByTestId("pending-notice").textContent();
-    expect(notice).toContain("Daily Fiqh");
-    expect(notice).not.toContain("Reciters"); // /surah-audios/[id] was rebuilt in Phase 11, so audio items open a real page
+    await expect(page.getByTestId("pending-notice")).toHaveCount(0); // every kind opens a real page now (audio since Phase 11, Daily Fiqh since Phase 13): nothing is pending
+    await expect(row(page, "fiqh:taqlid").getByTestId("row-open")).toHaveAttribute("href", "/fiqh/foundations/taqlid");
     await expect(row(page, "audio:36").getByTestId("row-open")).toHaveAttribute("href", "/surah-audios/36");
     await assertLegacyLoads(page);
   });

@@ -65,6 +65,8 @@ export interface Preferences {
   notifications: NotifyConfig;
   /** the Daily Fiqh marja' (separate from the calculation method); null = not chosen */
   marjaId: string | null;
+  /** the language Daily Fiqh rulings are read in (the legacy `lang` field of the same record): English, Urdu or both */
+  fiqhLang: "en" | "ur" | "both";
 }
 
 export const DEFAULTS: Preferences = {
@@ -87,6 +89,7 @@ export const DEFAULTS: Preferences = {
   verseLayout: "ar",
   notifications: DEFAULT_NOTIFY,
   marjaId: null,
+  fiqhLang: "en",
 };
 
 const isOneOf = <T extends string>(list: readonly T[], v: unknown): v is T => typeof v === "string" && (list as readonly string[]).includes(v);
@@ -211,6 +214,13 @@ export const DESCRIPTORS: Descriptors = {
     },
     write: (v) => void mergeJSON(KEYS.marja, { marjaId: v && MARJA_IDS.includes(v) ? v : null, updatedAt: Date.now() }),
   },
+  fiqhLang: {
+    read: () => {
+      const l = objectOf(KEYS.marja).lang;
+      return l === "ur" || l === "both" ? l : "en";
+    },
+    write: (v) => void mergeJSON(KEYS.marja, { lang: v === "ur" || v === "both" ? v : "en", updatedAt: Date.now() }),
+  },
 };
 
 /**
@@ -251,7 +261,7 @@ export function preferencesForKey(storageKey: string | null): (keyof Preferences
     [KEYS.wifiOnly]: ["wifiOnly"],
     [KEYS.verseLayout]: ["verseLayout"],
     [KEYS.notifications]: ["notifications"],
-    [KEYS.marja]: ["marjaId"],
+    [KEYS.marja]: ["marjaId", "fiqhLang"],
   };
   return map[storageKey] ?? [];
 }

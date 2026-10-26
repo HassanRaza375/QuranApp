@@ -210,6 +210,13 @@ Open the Vercel preview of branch `phase-11-downloads` on the phone. Use **Wi-Fi
 | D15 | In the player sheet press **Save audio to listen offline** | Progress, then "Saved on this device" | |
 | D16 | Firefox (only if you use it): D2 and D4 | Works, or "This browser can't keep files…" | |
 
+## Phase 13: Daily Fiqh
+
+- **K1 (Khamenei against leader.ir, on a computer with a browser):** the 30 entries of `docs/phases/phase-13-khamenei-spot-check.md`. **Phase 13 is not accepted until this passes; any difference holds his module.**
+- **F1 (installed phone, offline):** open Daily Fiqh online, choose a marja', open Taqlid and one Salat topic; switch to airplane mode and reload both: the rulings show. Open a category you did not open: it says it is not on the device with Try again. Back online, Save all for offline, then offline again: every topic opens.
+- **F2 (a phone that never opened Daily Fiqh):** offline, open `/fiqh` in a new tab: a plain "Daily Fiqh isn't on this device yet" page, not a blank one.
+- **F3 (Urdu on a phone):** choose Urdu and Both on a Sistani topic: the Nastaliq text reads well at 375 px and nothing is cut off.
+
 ## Manual review (not on a device)
 
 These need your judgement, not a phone. Details are in `docs/CONTENT_TO_VERIFY.md`.

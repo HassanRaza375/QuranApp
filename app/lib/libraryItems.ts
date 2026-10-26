@@ -70,7 +70,7 @@ export const OPENS_TODAY: Record<ItemType, boolean> = {
   person: true, // Phase 7A
   story: true, // Phase 7B
   name: true, // Phase 9B
-  fiqh: false, // Phase 13
+  fiqh: true, // Phase 13
   audio: true, // Phase 11
   community: KNOWLEDGE_READY.peoples, // Phase 12, module by module
   place: KNOWLEDGE_READY.places,
@@ -81,7 +81,7 @@ export const OPENS_TODAY: Record<ItemType, boolean> = {
   command: KNOWLEDGE_READY.commands,
   unknown: false,
 };
-export const PENDING_PHASE: Partial<Record<ItemType, string>> = { person: "People", story: "Stories", fiqh: "Daily Fiqh", audio: "Reciters", community: "Peoples & Nations", place: "Places", theme: "Themes", dua: "Duas", event: "Events", sign: "Signs", command: "Commands" };
+export const PENDING_PHASE: Partial<Record<ItemType, string>> = { person: "People", story: "Stories", audio: "Reciters", community: "Peoples & Nations", place: "Places", theme: "Themes", dua: "Duas", event: "Events", sign: "Signs", command: "Commands" };
 
 export interface Providers {
   person(id: string): { name: string; honorific?: string; arabicName?: string } | null;
