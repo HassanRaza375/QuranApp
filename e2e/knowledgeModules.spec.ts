@@ -223,6 +223,16 @@ test.describe("Places, Themes, Signs and Commands", () => {
     await openDetail(page, "commands", "prayercommand");
     await expect(page.getByTestId("k-section-audience")).toContainText("believers");
   });
+
+  test("Riba and Theft show the app-written lines that attribute to the Qur'an text and send application to fiqh", async ({ page }) => {
+    await openDetail(page, "commands", "ribaprohibition");
+    await expect(page.getByTestId("k-summary")).toHaveText("The Qur'an forbids riba (2:275).");
+    await openDetail(page, "commands", "theftprohibition");
+    await expect(page.getByTestId("k-summary")).toHaveText("The Qur'an addresses theft (5:38). Its conditions and application are matters of fiqh; see Daily Fiqh or a scholar.");
+    expect(await page.locator("body").innerText()).not.toMatch(/punishment|prescribes a/i);
+    await openList(page, "commands");
+    await expect(card(page, "theftprohibition")).toContainText("Daily Fiqh or a scholar");
+  });
 });
 
 test.describe("links between modules", () => {

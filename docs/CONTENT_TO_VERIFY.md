@@ -290,12 +290,11 @@ The data's `statusNotes` are the legacy author's working notes and are not shown
 | Commands · `shirkprohibition` | 6:151 is a list ayah ("Come, let me recite what your Lord has forbidden you"). It is cited here for its opening clause on shirk; the rest of the list includes other prohibitions that have their own entries. | kept |
 | Commands · `backbitingprohibition` | The backbiting clause is the end of 49:12, which begins with a separate instruction against suspicion and spying. | kept |
 
-**Two things outside the drafts** that the same rule raises: the summaries of Commands `theftprohibition` and `ribaprohibition` are the data's own sentences, and they do state a penalty and a prohibition ("The Qur'an prescribes a punishment for the man or woman who steals…"; "Allah has permitted trade and forbidden riba"). They are on the pages today because the summary is the data's. Say whether you want those two summaries kept as the data has them, or replaced by a plain line pointing to Daily Fiqh.
+**Two summaries replaced (decided 2026-10-26, done):** the data's own sentences for Commands `theftprohibition` and `ribaprohibition` state a penalty and a prohibition as plain facts. The pages now show app-written lines that attribute to the Qur'an text, with the reference: Riba, "The Qur'an forbids riba (2:275)."; Theft, "The Qur'an addresses theft (5:38). Its conditions and application are matters of fiqh; see Daily Fiqh or a scholar." (`SUMMARY_OVERRIDES` in `lib/knowledge/commands.ts`; a test pins them and that no other summary changes). The data is untouched. Please read the two lines once.
 
 **Questions for you:**
 
 - [ ] Show any of these? If yes: as a "Worth knowing" line under the summary, or only inside a collapsed "Notes" row? (Recommended: a line, labelled **Source note**.)
-- [ ] The two summaries above.
 - [ ] Wording changes, line by line. The four that now point to Daily Fiqh (zakah, hajj, riba, theft) assume Phase 13 ships that page; until then the pointer would read "ask your scholar" only.
 - [ ] The remaining 74 notes stay hidden (bookkeeping: merges, file links, search method). Tell me if you want to see the list first.
 

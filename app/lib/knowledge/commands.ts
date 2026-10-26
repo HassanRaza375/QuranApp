@@ -10,6 +10,12 @@ const BASIS: Record<string, string> = {
   derived_ruling: "Derived legal ruling",
   scholarly_interpretation: "Scholarly interpretation",
 };
+/** Two summaries are app-written in place of the data's sentences, which state a penalty and a prohibition as plain facts. They attribute the statement to the Qur'an text, give the
+ * reference, and send anything about application to Daily Fiqh or a scholar (your decision, 2026-10-26; listed in docs/CONTENT_TO_VERIFY.md). */
+export const SUMMARY_OVERRIDES: Record<string, string> = {
+  ribaprohibition: "The Qur'an forbids riba (2:275).",
+  theftprohibition: "The Qur'an addresses theft (5:38). Its conditions and application are matters of fiqh; see Daily Fiqh or a scholar.",
+};
 const typeLabel = (v: string) => COMMAND_TYPE_FILTERS.find((f) => f.value === v)?.label ?? v;
 
 export function commandsEntry(c: QuranCommand): KEntry {
@@ -21,7 +27,7 @@ export function commandsEntry(c: QuranCommand): KEntry {
     name: c.title,
     arabic: c.arabicTitle,
     alternateNames: [],
-    summary: c.description,
+    summary: SUMMARY_OVERRIDES[c.id] ?? c.description,
     typeValue: c.type,
     typeLabel: typeLabel(c.type),
     basisLabel: c.sourceBasis === "quran_explicit" ? null : (BASIS[c.sourceBasis] ?? c.sourceBasis),
