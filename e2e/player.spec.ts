@@ -407,9 +407,10 @@ test.describe("errors never leave a spinner", () => {
     await openListing(page);
     await hook(page, "fail", true);
     await page.getByTestId("surah-row-1").getByTestId("row-play").click();
-    const msg = (await page.getByTestId("mini-status").textContent())!;
-    expect(msg).toMatch(/needs a connection/);
-    expect(msg).not.toMatch(/offline/i);
+    // The status first reads "Loading…" and then the failure: wait for it (the assertion retries) instead of reading it once.
+    const status = page.getByTestId("mini-status");
+    await expect(status).toHaveText(/needs a connection/);
+    await expect(status).not.toHaveText(/offline/i);
   });
 });
 
