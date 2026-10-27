@@ -2,7 +2,7 @@
 
 - Branch: `phase-13-daily-fiqh` (off `phase-12-knowledge`)
 - Date: 2026-10-26 (13a), 2026-10-27 (13b)
-- Status: **13a and 13b built, awaiting your review (second stop).** Not accepted: **Khamenei's module is on hold until your browser spot check of 30 entries passes** (`docs/phases/phase-13-khamenei-spot-check.md`); no result has been received. The helpers' sign-off has not started and waits for the same result. The helpers are built and **hidden** (none of their 262 paths is signed off).
+- Status: **13a and 13b built, full verify clean (third run, b42b129), awaiting your review (second stop).** Not accepted: **Khamenei's module is on hold until your browser spot check of 30 entries passes** (`docs/phases/phase-13-khamenei-spot-check.md`); no result has been received. The helpers' sign-off has not started and waits for the same result. The helpers are built and **hidden** (none of their 262 paths is signed off).
 - Plan: `docs/phases/phase-13-daily-fiqh-plan.md` (approved 2026-10-26 with your ten answers, listed below)
 
 ## Goal
@@ -75,7 +75,7 @@ Rebuild `/fiqh` on the legacy data exactly as the legacy decided what a reader m
 - [x] `npx eslint .` clean; unit tests: 49 files, 835 passed (13 new: all 262 helper paths walked, every "I'm not sure" ends at a pointer, 150 helper quotes verbatim in the marja's own entry, the 20 pointer quotes pinned, the 11 procedures, the 3 pointer steps, the 2 recitations, notes free of working references, the build guard).
 - [x] `e2e/fiqh.spec.ts` 13b tests (8) pass on the production build; `e2e-helpers/helpers.spec.ts` (7) passes on the development server with the flag on (1.5 min).
 - [x] 1280 and 375 px, light and dark, empty and loaded states: 16 images, all looked at (`fiqh-compare/README.md`).
-- [ ] **Full `npm run verify` after 13b: two runs, neither clean.** Run 1 (a0e7d95) failed at the unit step; run 2 (the timeout fix) passed the unit step and failed 2 of 676 browser tests. See "Verify result after 13b" below.
+- [x] **Full `npm run verify` after 13b: clean on the third run** (b42b129, exit 0). Runs 1 and 2 were not clean; all three are recorded under "Verify result after 13b" below.
 - [ ] Keyboard and screen-reader pass: not done (real radios, buttons and links).
 - [ ] **Khamenei text against leader.ir: yours to run**, and the helpers' sign-off waits for it.
 
@@ -119,6 +119,11 @@ What I know and do not know: run alone straight afterwards, the same test file p
 - `e2e/knowledgeModules.spec.ts:239` has no custom timeout: the 5 s is Playwright's default `expect` timeout, so there was nothing to change to "the suite default", and I left the test as it is. The page does not take more than 5 s: the whole test (two navigations) runs in 2.1 to 3.7 s. The failure was the assertion after the click on the first "Connected" link of `/themes/tawhid` (a full page load, then a click, then `k-name`) taking over 5 s on a loaded machine. I changed nothing there because I cannot show a cause beyond load.
 - **Both specs, 10 runs each (`--repeat-each=10`): 20 of 20 passed**, in 55 s, on the existing production build, while the machine was at 77 to 100% CPU.
 - **Run 3 of `npm run verify` was NOT started.** Asked to start it on a quiet machine, I measured the CPU first: **93 to 100%** with none of my processes running (no node process, nothing on ports 3001, 3011 to 3013), and **Chrome (46 processes), XAMPP (xampp-control) and Wallpaper Engine were still running** (VS Code is the largest user of CPU time). `CLAUDE.md` says to check the CPU is idle before a verify; a 30-minute run in that state would only add another load-dependent result. Needed: those programs closed and the CPU under about 10% (it should be checked by Task Manager, not assumed).
+
+**Run 3 (b42b129, Node 22.23.4, 2026-10-27 18:50 to 19:13, 23.5 min): CLEAN, exit 0.** `npm run verify` = build (2 min 9 s), `eslint .`, **835 unit tests in 49 files, all passed**, the dev smoke (200, rendered, no errors), **676 browser tests, all passed (18.9 min, one worker, no retries)**, and **`npm run test:helpers`: 7 of 7 passed (52 s)**, so the helper tests have now run inside a verify. Tree clean, no change between the commit and the run.
+- **The machine was not perfectly idle:** CPU samples before the start were 52, 12, 18, 12, 52 and 35% (about 30%); Chrome (18 processes), VS Code (14), XAMPP and Wallpaper Engine still showed in the process list, against "closed". The run did not suffer for it (the browser suite took 18.9 min, faster than the 20.7 of the 13a run), but this is **not** a measurement on a machine under 10%.
+- **The record of the three runs after 13b:** run 1 (a0e7d95): 1 unit test timed out at 5 s under load (fixed: its own 30 s limit; it takes 0.4 s on a quiet machine). Run 2 (e5d1ef2): 2 of 676 browser tests failed (a status read once in `player.spec.ts`, fixed to a retrying assertion; a 5 s default wait in `knowledgeModules.spec.ts` that passed 10 of 10 alone, left unchanged). Run 3: nothing failed. The knowledge test was not changed, so it has now passed once in a full run and 10 of 10 alone, and I still cannot show why it failed in run 2 beyond load.
+- Not covered by any run: the keyboard and screen-reader pass, the device checks, and your Khamenei spot check.
 
 ## Differences from the prototype
 
