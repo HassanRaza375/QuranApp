@@ -75,7 +75,7 @@ Rebuild `/fiqh` on the legacy data exactly as the legacy decided what a reader m
 - [x] `npx eslint .` clean; unit tests: 49 files, 835 passed (13 new: all 262 helper paths walked, every "I'm not sure" ends at a pointer, 150 helper quotes verbatim in the marja's own entry, the 20 pointer quotes pinned, the 11 procedures, the 3 pointer steps, the 2 recitations, notes free of working references, the build guard).
 - [x] `e2e/fiqh.spec.ts` 13b tests (8) pass on the production build; `e2e-helpers/helpers.spec.ts` (7) passes on the development server with the flag on (1.5 min).
 - [x] 1280 and 375 px, light and dark, empty and loaded states: 16 images, all looked at (`fiqh-compare/README.md`).
-- [ ] Full `npm run verify` after 13b: not yet run (see the foot of this file when it is).
+- [ ] **Full `npm run verify` on a0e7d95 (Node 22.23.4, started 2026-10-27 16:53) FAILED at the unit step (exit 1); the dev smoke and the browser suites did not run.** See "Verify result after 13b" below.
 - [ ] Keyboard and screen-reader pass: not done (real radios, buttons and links).
 - [ ] **Khamenei text against leader.ir: yours to run**, and the helpers' sign-off waits for it.
 
@@ -102,6 +102,10 @@ Rebuild `/fiqh` on the legacy data exactly as the legacy decided what a reader m
 **Verify result: clean, one run, Node 22.23.4 (`.nvmrc`), 2026-10-27, exit 0, 20.7 min:** `npm run verify` = build, `eslint .`, **822 unit tests in 48 files**, the dev smoke, and **668 browser tests, all passed** (one worker, no retries, both now pinned in `playwright.config.ts`; the CPU was about 50% from other programs when it started, so it was not a perfectly idle machine, but it ran in 20.7 minutes against 22.1 for the first run).
 
 **The three earlier runs on 2026-10-26 were not clean** and are kept here for the record: run 1 (22.1 min) failed 2 Search tests, both real timing bugs (a search sent twice for an opened `?q=` link; a test racing a 404), fixed, with `e2e/search.spec.ts` passing 252 of 252 over six repeats; runs 2 and 3 (28.6 and 26.9 min, with other programs at 63 to 96% CPU) failed 3 and 2 different tests (Settings, Stories, the reader), all timeouts or ordering checks, each passing alone straight afterwards. Nothing in those specs or the code they test changed between the runs. Why the worker count is pinned: `CLAUDE.md`, "Working rules".
+
+**Verify result after 13b: NOT clean.** `npm run verify` on a0e7d95 stopped at the unit tests: 834 of 835 passed, 1 failed, 48 of 49 files passed (build and eslint had passed). The failing test is `tests/legacySnapshot.test.ts` > "holds no file that nothing uses: every legacy/app file is imported by the code, read by path, or imported by another legacy file": **"Test timed out in 5000ms"**, not an assertion failure. Because the unit step failed, the dev smoke, the 668-test browser suite and `test:helpers` did not run in this verify, so nothing is recorded for them from it (their earlier targeted runs are above).
+
+What I know and do not know: run alone straight afterwards, the same test file passes 3 of 3 times in about 0.8 s (the test itself about 0.4 s). In the verify it ran with 48 other files in parallel (whole step 18.7 s), and the machine was not idle when it started: the CPU reading was 100% at the launch moment (Chrome, XAMPP and Wallpaper Engine were running). That points to a load-induced timeout, but I have not shown it: I did not reproduce the failure, and the test scans every file under `app`, `build`, `e2e`, `scripts`, `tests` and the config files, which 13b grew (new components, `e2e-helpers` is not scanned). No code was changed after this failure. Decision for you: rerun on a really idle machine (close Chrome and the other programs first), or raise this test's timeout, which I have not done.
 
 ## Differences from the prototype
 
