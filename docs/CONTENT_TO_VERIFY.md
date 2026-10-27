@@ -324,6 +324,15 @@ The structure, the maraji', the rulings, the glossary and the counts above are n
 - [ ] The **needs-human hold** (57 Khamenei rulings, 66 rows) is your decision; it is in `app/lib/fiqh/holds.ts`, derived from the vendored fixture.
 - [ ] The Overview and the topic summaries are the legacy's **app-written** text (labelled "Written by the app, not a ruling"); they were not reviewed by a scholar either.
 
+### Daily Fiqh, 13b: the wording of ours in guided steps, the live panel and the helpers (Phase 13, 2026-10-27)
+
+What is ours, and needs your reading (the quoted rulings, the recitations and the helpers' questions and answers are the legacy data, not ours):
+
+- [ ] **Guided steps:** "Step titles are written by the app. The text under each title is quoted from the ruling it cites." and "Written by the app: …" before a step's note (the legacy author's reason for marking a step wajib; the note itself is the data's). A step whose ruling may not be shown uses the pointer sentences above. No guide: "Not added yet for <X>. Refer to his risala. The rulings above still apply."
+- [ ] **Recitation:** the source note under a recitation is the data's (through `readerNote`); the transliteration is the data's.
+- [ ] **Live panel:** "Today's prayer times", "Today's dawn and maghrib", "Open Prayer Times to load today's times for your location.", "From the app's Prayer Times feature (AlAdhan). The rulings below set out when each prayer may be performed.", "From the app's Prayer Times feature (AlAdhan), shown as they are. The rulings below say when the fast begins and ends; this panel does not decide it. Your fasts are logged in the Ramadan page, not here.", and the Sunni note "These times use your current calculation method (Sunni). For Ja'fari times, switch the method in Settings."
+- [ ] **Helpers (hidden):** "Find your answer", "Your answers so far", "According to <X>, in his own words (shown exactly as published; the app does not paraphrase or translate it):", "Where to look: <book>, <location>. Open it on the official website or ask <X>'s office through his official website.", "<X> · Not scholar-reviewed. This helper only points to his published text; if your situation is unusual, ask him or his office." The questions, options and the "You said you are not sure …" sentence are the legacy's. **20 answers of Khamenei's helpers (doubts 19, wudu 1) show the pointer here because their rulings may not be shown; the sign-off reviewer must know that.**
+
 ## Reading goals (Phase 15)
 
 - [ ] The sample goal (812 of 6,236 ayahs read, started 1 Oct 2026, finish 7 Feb 2027), the seven days of counts, "Ramadan khatmah 1447, Completed · Mar 2026" and "5 pages a day, Paused" are all samples. The build reads the reader's `dailyLog` and the legacy goal keys.

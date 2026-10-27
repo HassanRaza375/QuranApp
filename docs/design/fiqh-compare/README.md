@@ -26,3 +26,18 @@ Made by `scripts/screenshots/phase-13-fiqh.mjs` against the production build. **
 | "Not scholar-reviewed. A study aid. Follow your own marja'…" as one banner | The legacy's two pieces: the label at the top, the study-aid line at the foot | The legacy's own words |
 | The prototype's glossary of 14 terms, with its own definitions | 94 terms, each with the book it is defined in | The legacy glossary is sourced; the prototype's was ours |
 | Guided steps, helper, live times on the topic | Not in 13a | Stage 13b |
+
+## Phase 13b: guided steps, recitations, the live panel, the helpers
+
+Made by `node scripts/screenshots/phase-13-fiqh.mjs guided` (production build; the live times are the real AlAdhan answer for Lahore) and `... helpers` (the development server on port 3013 with the flag on, because a production build hides the helpers). The prototype has no guided steps, recitations, live panel or helper, so there are no pairs: these are the revamp alone, checked against the rules in `docs/phases/phase-13-daily-fiqh.md`.
+
+| Image | What |
+| --- | --- |
+| `guided-step-sistani-desktop.jpg`, `guided-step2-sistani-desktop.jpg`, `guided-step-sistani-mobile-dark.jpg` | the wuḍūʾ guide, one step at a time: the app-written title, the quoted ruling with book and number, "Written by the app: …" under the step |
+| `guided-recitation-step-sistani-desktop.jpg`, `ruling-recitation-sistani.jpg` | a recitation beside the step and the ruling that carry it, from its own source (the official Urdu edition), with the transliteration |
+| `guided-step-pointer-khamenei.jpg` | a Khamenei prayer step whose English is withheld: the pointer, no quote, no Urdu in its place |
+| `state-no-guide-khamenei-desktop.jpg` | no guide for the topic: "Not added yet for Khamenei. Refer to his risala. The rulings above still apply." |
+| `live-panel-nothing-loaded-desktop.jpg`, `live-panel-times-desktop.jpg`, `live-panel-times-mobile-dark.jpg`, `live-panel-sawm-desktop.jpg` | the panel before Prayer Times has loaded (no request is made) and after (the feature's own times), and the fasting-times version |
+| `helper-start-…`, `helper-question-…` (desktop, and mobile dark), `helper-answer-sistani-desktop.jpg`, `helper-not-sure-pointer-sistani-desktop.jpg`, `helper-answer-pointer-khamenei-desktop.jpg` | the helper (dev flag only): start, one question, an answer in his own words with the matching phrase marked, "I'm not sure" ending at a pointer, and an answer that quotes a held Khamenei ruling showing the pointer |
+
+**Looked at one by one:** all 16 images. Found and fixed after looking: in the fasting-times panel the label "Dawn (Ṣubḥ / Fajr)" wrapped onto two lines and pushed its time below the Maghrib time (the times now align at the foot of each cell). Not a defect: the badge "Level A · checked against the official text" under each quoted step is the 13a source line, unchanged. **Not looked at:** the helpers on a phone beyond the question screen; the live panel on a phone in light.

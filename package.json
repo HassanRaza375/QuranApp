@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "verify": "npm run build && npm run lint && npm test && npm run test:dev && npm run test:e2e",
+    "test:helpers": "playwright test --config playwright.helpers.config.ts",
+    "verify": "npm run build && npm run lint && npm test && npm run test:dev && npm run test:e2e && npm run test:helpers",
     "test:dev": "node scripts/dev-smoke.mjs"
   },
   "dependencies": {

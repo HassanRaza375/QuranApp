@@ -79,6 +79,7 @@ export const TRACKED_FILES = [
   "app/utils/renderTafsirMarkdown.js",
   "app/utils/storiesSearch.ts",
   // Phase 13: the Daily Fiqh display words, search, coverage, the helper sign-off rule, and the checkers the tests run
+  "app/utils/wajibatBuildGuard.ts", // 13b: a production build fails if the show-unreviewed-helpers flag is on (called by nuxt.config.ts)
   "app/utils/wajibatCoverage.ts",
   "app/utils/wajibatLabels.ts",
   "app/utils/wajibatMismatch.ts",

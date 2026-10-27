@@ -6,7 +6,7 @@ import { URDU_EDITION_LAG_NOTICE } from "@legacy/utils/wajibatLabels";
 import { basisBadge, hukmBadge } from "~/lib/fiqh/badges";
 import { getRecitationById, getRulingById } from "~/lib/fiqh/data";
 import { ANSWER_UR, QUESTION_UR, URDU } from "~/lib/fiqh/ui";
-import { MARJA_SHORT, viewOf, type FiqhLang, type PointerReason } from "~/lib/fiqh/visibility";
+import { MARJA_SHORT, viewOf, type FiqhLang } from "~/lib/fiqh/visibility";
 
 const props = defineProps<{ ruling: Ruling; marja: Marja; lang: FiqhLang }>();
 const view = computed(() => viewOf(props.ruling, props.marja.id, props.lang, props.marja.status === "pending-sources"));
@@ -15,11 +15,6 @@ const seeAlso = computed(() => (view.value.kind === "missing" && view.value.seeA
 // only the chosen marja's own recitations (the same rule as for rulings)
 const recitations = computed(() => (props.ruling.recitationIds ?? []).map((id) => getRecitationById(id)).filter((r) => r && r.marjaId === props.marja.id));
 
-const POINTER_TEXT: Record<PointerReason, string> = {
-  held: "This ruling is held for review: an automated comparison found a difference between its versions that the Persian original did not settle, so it is not shown until a person has checked it.",
-  "english-differs": "The official English edition of this ruling differs from the Persian original, so it is not shown. The app does not translate rulings itself.",
-  "check-pending": "This ruling is held for review: its English and Urdu versions differ in a number or a negation, and there is no Persian original to settle it, so it is not shown until a person has checked it.",
-};
 </script>
 
 <template>
@@ -38,13 +33,7 @@ const POINTER_TEXT: Record<PointerReason, string> = {
     </template>
 
     <!-- held, withheld or on hold: a pointer and no text, in any language -->
-    <div v-else-if="view.kind === 'pointer'" class="mt-2 rounded-[10px] border border-dashed px-3.5 py-3 text-[13.5px]" role="note" data-testid="ruling-pointer" :data-reason="view.reason">
-      <p class="flex items-center gap-1.5 font-medium"><Icon name="lucide:book-open" size="15" />Refer to his risala</p>
-      <p class="mt-1 text-ink-2">{{ POINTER_TEXT[view.reason] }}</p>
-      <p class="mt-1.5">Please read it in {{ marja.name.en }}’s own book: <em>{{ view.source.title }}</em>, {{ view.source.reference }}
-        <a :href="view.source.url" target="_blank" rel="noopener noreferrer" class="ml-1 underline" :aria-label="`Open ${view.source.title}, ${view.source.reference} on the official website (opens in a new tab)`">official text</a>
-      </p>
-    </div>
+    <FiqhPointer v-else-if="view.kind === 'pointer'" class="mt-2" :reason="view.reason" :source="view.source" :marja="marja" />
 
     <template v-else>
       <div class="mt-2 flex flex-wrap gap-1.5" data-testid="ruling-badges">
@@ -67,12 +56,7 @@ const POINTER_TEXT: Record<PointerReason, string> = {
       </div>
 
       <!-- recitation: shown beside the ruling, from its own source, never spliced into the ruling's text -->
-      <div v-for="r in recitations" :key="r!.id" class="mt-3 border-l-2 pl-3.5" data-testid="ruling-recitation">
-        <p class="ar text-right" lang="ar" dir="rtl">{{ r!.arabic }}</p>
-        <p v-if="r!.transliteration" class="mt-1 text-[13.5px] text-ink-2">{{ r!.transliteration }}</p>
-        <FiqhSourceLine :source="r!.source" :marja-name="marja.name.en" verification="A" urdu />
-        <p v-if="r!.note" class="mt-1 text-[12.5px] text-ink-2">{{ r!.note }}</p>
-      </div>
+      <FiqhRecitation v-for="r in recitations" :key="r!.id" :recitation="r!" :marja="marja" />
 
       <!-- Urdu: the marja's own Urdu book, with its own source line -->
       <div v-if="view.urdu" class="mt-3 border-l-2 pl-3.5" :class="view.english ? 'mt-4' : ''" data-testid="ruling-ur">

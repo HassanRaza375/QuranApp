@@ -1,8 +1,8 @@
-# Phase 13: Daily Fiqh (Wajibat), stage 13a
+# Phase 13: Daily Fiqh (Wajibat), stages 13a and 13b
 
 - Branch: `phase-13-daily-fiqh` (off `phase-12-knowledge`)
-- Date: 2026-10-26
-- Status: **13a built, awaiting your review (first stop).** Not accepted: **Khamenei's module is on hold until your browser spot check of 30 entries passes** (`docs/phases/phase-13-khamenei-spot-check.md`). 13b (guided steps, recitations, the live panel, the helpers behind the sign-off flag) is not started.
+- Date: 2026-10-26 (13a), 2026-10-27 (13b)
+- Status: **13a and 13b built, awaiting your review (second stop).** Not accepted: **Khamenei's module is on hold until your browser spot check of 30 entries passes** (`docs/phases/phase-13-khamenei-spot-check.md`); no result has been received. The helpers' sign-off has not started and waits for the same result. The helpers are built and **hidden** (none of their 262 paths is signed off).
 - Plan: `docs/phases/phase-13-daily-fiqh-plan.md` (approved 2026-10-26 with your ten answers, listed below)
 
 ## Goal
@@ -14,7 +14,7 @@ Rebuild `/fiqh` on the legacy data exactly as the legacy decided what a reader m
 - Pages and components built: the five legacy routes (`/fiqh`, `/fiqh/choose-marja`, `/fiqh/glossary`, `/fiqh/[category]`, `/fiqh/[category]/[topic]`), each a one-line route over a component in `app/components/fiqh/`; `app/lib/fiqh/`; `app/composables/useFiqh.ts`; the Library `fiqh` kind opens; a **Daily Fiqh** group and chip in Search.
 - Prototype section: `prototype-remaining-pages.html`, `#/fiqh`, `#/fiqh/choose-marja`, `#/fiqh/<category>`, `#/fiqh/<category>/<topic>`, `#/fiqh/glossary`.
 - Legacy code reused: all of `app/data/wajibat/` (31 files), `utils/wajibat{Search,Labels,Validate,Review,Mismatch,Coverage}.ts` and `wajibatMismatchWords.json`, and three test fixtures, vendored by `scripts/sync-legacy.mjs` and never edited. `legacy/app/data/wajibat/runtime.ts` is used as the loader.
-- Not in 13a: guided steps (11 procedures), recitations (2), the live-times panel, the four decision helpers, docs for those, and "Save all" is in (it is part of offline) but the Downloads page does not list Daily Fiqh.
+- Not in 13a (built in 13b, below): guided steps (11 procedures), recitations (2), the live-times panel, the four decision helpers. "Save all" is in (it is part of offline) but the Downloads page does not list Daily Fiqh.
 
 ## What was built
 
@@ -48,9 +48,40 @@ Rebuild `/fiqh` on the legacy data exactly as the legacy decided what a reader m
 - Changed: `nuxt.config.ts` (chunking, precache exclusion, the cache rule), `app/lib/preferences.ts`, `app/lib/libraryItems.ts`, `app/lib/searchLocal.ts`, `app/lib/searchQuery.ts`, `app/composables/useSearchPage.ts`, `app/components/search/SearchPage.vue`, tests and specs that pinned the old state (`tests/preferences.test.ts`, `tests/settingsLogic.test.ts`, `tests/library.test.ts`, `e2e/library.spec.ts`, `e2e/search.spec.ts`), `scripts/lib/legacy-files.mjs`.
 - Changes to `legacy/` (only by the sync script): the files above; nothing edited.
 
+## Stage 13b: what was built (2026-10-27)
+
+- **Guided procedures (`FiqhProcedure`, `FiqhStep`).** The 11 procedures (wuḏūʾ, ghusl 2, tayammum 2, the guided prayers 6) appear under "Step by step" on the topic that carries them, for the chosen marja' only. One step at a time (Next, Previous, "Show all steps" and back), with a counter. Each step shows the app-written title, then the passage quoted from the ruling it cites with that ruling's book and number (`FiqhSourceLine`), and, where the data has one, the app's note under "Written by the app: …". The procedure says "Step titles are written by the app. The text under each title is quoted from the ruling it cites." A step whose ruling may not be shown (held, English withheld, on our hold list) shows the **same pointer as a ruling card** and none of its text, with no Urdu substitute: exactly 3 Khamenei steps (`maghribkhamenei:s19`, `zuhrkhamenei:s19`, `zuhrkhamenei:s26`, all English-differs), pinned by `tests/fiqhGuided.test.ts`. A marja' with no guide for a topic: "Not added yet for X. Refer to his risala. The rulings above still apply."
+- **Recitations (`FiqhRecitation`).** The 2 recitations (the dhikr of ruku' and of sujud) are Sistani's, taken from his official Urdu edition; each is shown beside the ruling and the step that carry it, with its transliteration, its own source line and its note (through `readerNote`). Khamenei's followers see none.
+- **Live panel (`FiqhLivePanel`).** On the prayer-times, fasting-times and qibla topics: the Prayer Times feature's own times as it has loaded them (`usePrayerTimes().today`), shown as they are, with the Sunni note when the setting is Sunni, and links to Prayer Times, the Ramadan log and the Qibla tool. **It makes no request itself**; if Prayer Times has not loaded, it says "Open Prayer Times to load today's times for your location." It does not decide anything the rulings below decide.
+- **Helpers (`FiqhHelper`, `FiqhHelperQuote`, `lib/fiqh/helperWalk.ts`): built, hidden.** One question per screen, a real radio group, "I'm not sure" on every question (it always ends at a pointer to his risala with where to look), Back and Start over, the answer in his own words with the phrase that states it marked and "Open the full ruling on this page". Every helper says "Not scholar-reviewed". Visibility is the legacy's `isHelperVisible(tree, TREE_REVIEWS, devFlag)`: with 0 of 262 paths approved they appear only when `NUXT_PUBLIC_WAJIBAT_SHOW_UNREVIEWED_HELPERS=true` on the development server. **A production build fails if that flag is on** (the legacy guard `wajibatBuildGuard.ts`, now vendored, is called from `nuxt.config.ts`; tested in all common spellings and on Vercel).
+- **A quote that may not be shown shows the pointer (`lib/fiqh/quoteView.ts`).** Helpers and steps use one function, so they follow the same rules as a ruling card. **For the sign-off reviewer: 20 helper quotes now show the pointer instead of text (Khamenei doubts 19, Khamenei wudu 1), so the legacy's review pack for those 20 answers does not match what a reader here sees.** The Sistani helpers are unchanged.
+
+### Stage 13b decisions
+
+| Decision | Alternatives considered | Reason |
+| --- | --- | --- |
+| Steps and helper answers go through one pure function (`quoteView`) that reuses `viewOf` and `pointerReason` | Re-check inside each component | One place decides what may be shown, tested over every step and every answer |
+| The live panel reads what Prayer Times already loaded and never fetches | Fetch in the panel | Your rule: no third-party fetch from components; the panel cannot cause a request on an unrelated page |
+| The helpers are tested on a development server with the flag (`npm run test:helpers`, port 3013); the production suite tests only the hidden state | Add a way to show them in production | A production build must not be able to show them; the legacy guard fails the build if the flag is on |
+| Step notes are labelled "Written by the app: …" | Show them as the ruling's words | They are the legacy author's reasons for marking a step wajib, not a marja's words |
+
+### Stage 13b files
+
+- Added: `app/components/fiqh/{FiqhPointer,FiqhRecitation,FiqhProcedure,FiqhStep,FiqhLivePanel,FiqhHelper,FiqhHelperQuote}.vue`, `app/lib/fiqh/{quoteView,helperWalk}.ts`, `tests/fiqhGuided.test.ts`, `e2e-helpers/helpers.spec.ts`, `playwright.helpers.config.ts`, `legacy/app/utils/wajibatBuildGuard.ts` (synced), 16 images in `docs/design/fiqh-compare/`.
+- Changed: `FiqhRulingCard.vue` (uses `FiqhPointer`, `FiqhRecitation`), `FiqhTopic.vue`, `FiqhLivePanel.vue` (cell alignment, after the screenshots), `nuxt.config.ts` (the guard, `wajibatShowUnreviewedHelpers: false`), `package.json` (`test:helpers`; `verify` ends with it), `scripts/lib/legacy-files.mjs`, `e2e/fiqh.spec.ts` (8 tests), `scripts/screenshots/phase-13-fiqh.mjs`.
+
+### Stage 13b verification
+
+- [x] `npx eslint .` clean; unit tests: 49 files, 835 passed (13 new: all 262 helper paths walked, every "I'm not sure" ends at a pointer, 150 helper quotes verbatim in the marja's own entry, the 20 pointer quotes pinned, the 11 procedures, the 3 pointer steps, the 2 recitations, notes free of working references, the build guard).
+- [x] `e2e/fiqh.spec.ts` 13b tests (8) pass on the production build; `e2e-helpers/helpers.spec.ts` (7) passes on the development server with the flag on (1.5 min).
+- [x] 1280 and 375 px, light and dark, empty and loaded states: 16 images, all looked at (`fiqh-compare/README.md`).
+- [ ] Full `npm run verify` after 13b: not yet run (see the foot of this file when it is).
+- [ ] Keyboard and screen-reader pass: not done (real radios, buttons and links).
+- [ ] **Khamenei text against leader.ir: yours to run**, and the helpers' sign-off waits for it.
+
 ## Data and storage
 
-- Services: none (no request is made by Daily Fiqh; the Qur'anic basis uses the reader's text path).
+- Services: none (no request is made by Daily Fiqh, the live panel included; the Qur'anic basis uses the reader's text path).
 - Storage keys: `quran:fiqh-prefs:v1` (read and written, `marjaId` and `lang`, other fields kept), `quran:bookmarks:v1` (`fiqh:<topic>`). Cache Storage: `wajibat-data-cache` (the legacy's name). No IndexedDB, no new key.
 - Migrations: none.
 
@@ -86,4 +117,4 @@ The prototype's samples (its categories, 34 topics, ruling slots, counts, glossa
 
 ## Next phase needs
 
-13b: procedures (the guided steps; a step that quotes a held ruling must show the pointer, not the quote), recitations, the live panel for three topics, the helpers behind `isHelperVisible` and the production build guard, and the remaining docs.
+Your Khamenei spot-check result (30 entries; any difference holds his module), then the helpers' sign-off (a person going through `treeReviews.json`, with the review pack and the 20-quote note above). Phase 14 is not started.

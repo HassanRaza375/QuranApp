@@ -3,7 +3,7 @@
 // "Not added yet for <marja'>. Refer to his risala."; nothing is fetched (the data is bundled and chunked); Settings and these pages share one record.
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { loadAndControl } from "./helpers";
-import { forbidRealApis, freezeClock, mockQuranText, readStorage, seed } from "./mocks";
+import { forbidRealApis, freezeClock, LAHORE_LEGACY, mockAladhan, mockQuranText, readStorage, seed } from "./mocks";
 
 test.use({ serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB", viewport: { width: 1280, height: 900 } });
 
@@ -409,5 +409,122 @@ test.describe("offline (level B): the data is saved when a category is opened, o
     await tab.goto("/fiqh");
     await expect(tab.getByTestId("fiqh-unavailable")).toContainText("Daily Fiqh isn’t on this device yet");
     await expect(tab.getByRole("button", { name: "Try again" })).toBeVisible();
+  });
+});
+
+test.describe("13b: guided steps, recitations, the live panel, and the helpers that stay hidden", () => {
+  const push = (page: Page, to: string) =>
+    page.evaluate((p) => (document.querySelector("#__nuxt") as unknown as { __vue_app__: { config: { globalProperties: { $router: { push(p: string): void } } } } }).__vue_app__.config.globalProperties.$router.push(p), to);
+
+  test("a guided procedure shows one step at a time with the ruling it quotes, its book and number; Next, Previous and Show all steps work; the titles say they are written by the app", async ({ page, context }) => {
+    await follow(context, "sistani");
+    await openTopic(page, "taharat", "wudu");
+    const proc = page.locator('[data-testid="fiqh-procedure"][data-procedure="wudusistani"]');
+    await expect(proc).toContainText("Step titles are written by the app");
+    await expect(proc.getByTestId("step-counter")).toHaveText("Step 1 of 7");
+    await expect(proc.getByTestId("step-quote")).toContainText("It is not necessary for one to actually utter the intention");
+    await expect(proc.getByTestId("fiqh-source")).toContainText("Islamic Laws");
+    await expect(proc.getByTestId("step-prev")).toBeDisabled();
+    await proc.getByTestId("step-next").click();
+    await expect(proc.getByTestId("step-counter")).toHaveText("Step 2 of 7");
+    await proc.getByTestId("step-prev").click();
+    await expect(proc.getByTestId("step-counter")).toHaveText("Step 1 of 7");
+    await proc.getByTestId("step-all").click();
+    await expect(proc.getByTestId("fiqh-step")).toHaveCount(7);
+    await proc.getByTestId("step-one").click();
+    await expect(proc.getByTestId("step-counter")).toBeVisible();
+    expect(await proc.innerText()).not.toMatch(/decision P\d|rule R\d|\(P\d+\)/);
+  });
+
+  test("a marja with no guide for the topic says Not added yet; Khamenei has his own tayammum guide; another marja's steps are never shown", async ({ page, context }) => {
+    await follow(context, "khamenei");
+    await openTopic(page, "taharat", "wudu");
+    await expect(page.getByTestId("fiqh-steps-none")).toContainText("Not added yet for Khamenei. Refer to his risala.");
+    await expect(page.getByTestId("fiqh-procedure")).toHaveCount(0);
+    await openTopic(page, "taharat", "tayammum");
+    await expect(page.locator('[data-testid="fiqh-procedure"]')).toHaveCount(1);
+    await expect(page.locator('[data-testid="fiqh-procedure"]')).toHaveAttribute("data-procedure", "tayammumkhamenei");
+    await follow(context, "makarem");
+    await openTopic(page, "taharat", "wudu");
+    await expect(page.getByTestId("fiqh-steps-none")).toContainText("Not added yet for Makarem Shirazi. Refer to his risala.");
+  });
+
+  test("a step that quotes a ruling whose English is withheld shows the pointer, not the quote, and no Urdu in its place", async ({ page, context }) => {
+    await follow(context, "khamenei");
+    await openTopic(page, "salat", "guidedprayers");
+    const proc = page.locator('[data-testid="fiqh-procedure"][data-procedure="zuhrkhamenei"]');
+    await proc.getByTestId("step-all").click();
+    const step = proc.locator('[data-testid="fiqh-step"][data-step="s19"]');
+    await expect(step.getByTestId("ruling-pointer")).toHaveAttribute("data-reason", "english-differs");
+    await expect(step.getByTestId("step-quote")).toHaveCount(0);
+    await expect(proc.locator('[data-testid="fiqh-step"][data-step="s1"]').getByTestId("step-quote")).toBeVisible(); // the others are quoted
+  });
+
+  test("a recitation is shown beside the ruling and the step that carry it, from its own source, for his followers only", async ({ page, context }) => {
+    await follow(context, "sistani");
+    await openTopic(page, "salat", "rukusujud");
+    const dhikr = ruling(page, "rukudhikr");
+    await expect(dhikr.getByTestId("ruling-recitation")).toBeVisible();
+    await expect(dhikr.getByTestId("ruling-recitation").getByTestId("fiqh-source")).toBeVisible();
+    expect(await dhikr.getByTestId("ruling-recitation").locator(".ar").innerText()).toMatch(/\S/);
+    await openTopic(page, "salat", "guidedprayers");
+    const proc = page.locator('[data-testid="fiqh-procedure"][data-procedure="fajrsistani"]');
+    await proc.getByTestId("step-all").click();
+    await expect(proc.getByTestId("ruling-recitation")).toHaveCount(4);
+    await follow(context, "khamenei");
+    await openTopic(page, "salat", "rukusujud");
+    await expect(page.getByTestId("ruling-recitation")).toHaveCount(0);
+  });
+
+  test("the four helpers are hidden in a production build: no 'Find your answer', for any marja, on either topic", async ({ page, context }) => {
+    for (const marja of ["sistani", "khamenei", "makarem"]) {
+      await follow(context, marja);
+      for (const [category, topic] of [["taharat", "wudu"], ["salat", "doubts"]] as const) {
+        await openTopic(page, category, topic);
+        await expect(page.getByTestId("fiqh-helpers"), `${marja} ${topic}`).toHaveCount(0);
+        await expect(page.getByTestId("fiqh-helper")).toHaveCount(0);
+        await expect(page.getByText("Find your answer")).toHaveCount(0);
+      }
+    }
+  });
+
+  test("the live panel on the prayer-times topic makes no request; it says to open Prayer Times when nothing is loaded, and shows the Prayer Times feature's times as they are once it has loaded them", async ({ page, context }) => {
+    const aladhan = await mockAladhan(context);
+    await seed(context, { last_location: LAHORE_LEGACY, prayerFiqh: "jafari", [PREFS]: JSON.stringify({ marjaId: "sistani", lang: "en", updatedAt: 1 }) });
+    await openTopic(page, "salat", "prayertimes");
+    await expect(page.locator('[data-testid="fiqh-live"][data-tool="prayertimes"]')).toBeVisible();
+    await expect(page.getByTestId("live-none")).toContainText("Open Prayer Times to load today's times for your location.");
+    expect(aladhan.calls).toEqual([]); // the panel asked for nothing
+    await page.goto("/prayerTime");
+    await expect(page.getByTestId("next-card")).toBeVisible();
+    await push(page, "/fiqh/salat/prayertimes");
+    await expect(page.getByTestId("live-times")).toBeVisible();
+    await expect(page.getByTestId("live-times").locator("li")).toHaveCount(7);
+    await expect(page.getByTestId("live-sunni")).toHaveCount(0); // a Ja'fari setting: no note
+  });
+
+  test("on the fasting-times topic the panel shows dawn and maghrib and links to the Ramadan page; on the qibla topic it links to the Qibla tool; a Sunni setting says the times use the Sunni method", async ({ page, context }) => {
+    await mockAladhan(context);
+    await seed(context, { last_location: LAHORE_LEGACY, [PREFS]: JSON.stringify({ marjaId: "sistani", lang: "en", updatedAt: 1 }) });
+    await page.goto("/prayerTime");
+    await expect(page.getByTestId("next-card")).toBeVisible();
+    await push(page, "/fiqh/sawm/sawmtimes");
+    const panel = page.locator('[data-testid="fiqh-live"][data-tool="sawm"]');
+    await expect(panel).toContainText("Today's dawn and maghrib");
+    await expect(panel.getByTestId("live-times").locator("li")).toHaveCount(2);
+    await expect(panel.getByRole("link", { name: "Ramadan fasting log" })).toHaveAttribute("href", "/ramadan");
+    await expect(panel.getByTestId("live-sunni")).toContainText("Sunni");
+    await push(page, "/fiqh/salat/qibla");
+    await expect(page.locator('[data-testid="fiqh-live"][data-tool="qibla"]').getByRole("link", { name: "Qibla tool" })).toHaveAttribute("href", "/qibla-direction");
+  });
+
+  test("375 px: a guided procedure and the live panel fit the screen and their controls are 44 px", async ({ page, context }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await follow(context, "sistani", "both");
+    await openTopic(page, "taharat", "wudu");
+    expect(await noOverflow(page)).toBeLessThanOrEqual(0);
+    for (const id of ["step-next", "step-all"]) expect((await page.getByTestId(id).first().boundingBox())!.height, id).toBeGreaterThanOrEqual(43.5);
+    await openTopic(page, "salat", "prayertimes");
+    expect(await noOverflow(page)).toBeLessThanOrEqual(0);
   });
 });

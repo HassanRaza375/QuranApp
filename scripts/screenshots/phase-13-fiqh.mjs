@@ -158,6 +158,133 @@ const STEPS = {
     await shot(page, "state-women-panel-open-mobile");
     await ctx.close();
   },
+  // ---- 13b: guided procedures, recitations, the live panel (the production build; the live times are the real AlAdhan answer for Lahore)
+  async guided() {
+    const el = async (page, testid, name, nth = 0) => {
+      const e = page.getByTestId(testid).nth(nth);
+      await e.scrollIntoViewIfNeeded();
+      await settle(page, 300);
+      await e.screenshot({ path: `${OUT}/${name}.jpg`, type: "jpeg", quality: 82 });
+    };
+    let { ctx, page } = await revamp("desktop", "light", { marja: "sistani" });
+    await topic(page, "/fiqh/taharat/wudu");
+    await el(page, "fiqh-procedure", "guided-step-sistani-desktop");
+    await page.getByTestId("step-next").first().click();
+    await settle(page, 200);
+    await el(page, "fiqh-procedure", "guided-step2-sistani-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("mobile", "dark", { marja: "sistani", lang: "both" }));
+    await topic(page, "/fiqh/taharat/wudu");
+    await el(page, "fiqh-procedure", "guided-step-sistani-mobile-dark");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light", { marja: "sistani" }));
+    await topic(page, "/fiqh/salat/guidedprayers");
+    const fajr = page.locator('[data-testid="fiqh-procedure"][data-procedure="fajrsistani"]');
+    await fajr.getByTestId("step-all").click();
+    await settle(page, 300);
+    await fajr.locator('[data-testid="ruling-recitation"]').first().scrollIntoViewIfNeeded();
+    await fajr.locator('[data-testid="ruling-recitation"]').first().locator("xpath=../..").screenshot({ path: `${OUT}/guided-recitation-step-sistani-desktop.jpg`, type: "jpeg", quality: 82 });
+    await topic(page, "/fiqh/salat/rukusujud");
+    await ruling(page, "rukudhikr", "ruling-recitation-sistani");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light", { marja: "khamenei" }));
+    await topic(page, "/fiqh/salat/guidedprayers");
+    const zuhr = page.locator('[data-testid="fiqh-procedure"][data-procedure="zuhrkhamenei"]');
+    await zuhr.getByTestId("step-all").click();
+    await settle(page, 300);
+    const s19 = zuhr.locator('[data-testid="fiqh-step"][data-step="s19"]');
+    await s19.scrollIntoViewIfNeeded();
+    await s19.screenshot({ path: `${OUT}/guided-step-pointer-khamenei.jpg`, type: "jpeg", quality: 82 });
+    await topic(page, "/fiqh/taharat/wudu");
+    await page.getByTestId("fiqh-steps").scrollIntoViewIfNeeded();
+    await shot(page, "state-no-guide-khamenei-desktop");
+    await ctx.close();
+
+    // the live panel: nothing loaded, then the Prayer Times feature's own times
+    ({ ctx, page } = await revamp("desktop", "light", { marja: "sistani", seeds: { last_location: JSON.stringify({ lat: 31.5204, lng: 74.3587 }) } }));
+    await topic(page, "/fiqh/salat/prayertimes");
+    await el(page, "fiqh-live", "live-panel-nothing-loaded-desktop");
+    await page.goto(BASE + "/prayerTime");
+    await page.getByTestId("next-card").waitFor({ timeout: 30000 });
+    await page.evaluate(() => document.querySelector("#__nuxt").__vue_app__.config.globalProperties.$router.push("/fiqh/salat/prayertimes"));
+    await page.getByTestId("live-times").waitFor();
+    await settle(page, 400);
+    await el(page, "fiqh-live", "live-panel-times-desktop");
+    await page.evaluate(() => document.querySelector("#__nuxt").__vue_app__.config.globalProperties.$router.push("/fiqh/sawm/sawmtimes"));
+    await page.locator('[data-testid="fiqh-live"][data-tool="sawm"]').waitFor();
+    await settle(page, 400);
+    await el(page, "fiqh-live", "live-panel-sawm-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("mobile", "dark", { marja: "sistani", seeds: { last_location: JSON.stringify({ lat: 31.5204, lng: 74.3587 }) } }));
+    await page.goto(BASE + "/prayerTime");
+    await page.getByTestId("next-card").waitFor({ timeout: 30000 });
+    await page.evaluate(() => document.querySelector("#__nuxt").__vue_app__.config.globalProperties.$router.push("/fiqh/salat/prayertimes"));
+    await page.getByTestId("live-times").waitFor();
+    await settle(page, 400);
+    await el(page, "fiqh-live", "live-panel-times-mobile-dark");
+    await ctx.close();
+  },
+  // ---- the helpers (hidden in production): the development server with the flag on, port 3013
+  async helpers() {
+    const dev = spawn("npx", ["nuxt", "dev", "--port", "3013", "--host", "localhost"], { cwd: ROOT, shell: true, env: { ...process.env, NUXT_PUBLIC_WAJIBAT_SHOW_UNREVIEWED_HELPERS: "true" }, stdio: "ignore" });
+    try {
+      for (let i = 0; i < 90; i++) {
+        try { if ((await fetch("http://localhost:3013/")).ok) break; } catch { /* not up yet */ }
+        await new Promise((r) => setTimeout(r, 2000));
+      }
+      const dev3013 = async (device, theme, marja) => {
+        const ctx = await browser.newContext({ viewport: SIZE[device], hasTouch: device !== "desktop", serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB" });
+        await ctx.addInitScript((all) => { for (const [k, v] of Object.entries(all)) localStorage.setItem(k, v); }, { themeMode: theme, prayerFiqh: "jafari", "quran:fiqh-prefs:v1": JSON.stringify({ marjaId: marja, lang: "en", updatedAt: 1 }) });
+        return { ctx, page: await ctx.newPage() };
+      };
+      const open = async (page, path) => {
+        await page.goto("http://localhost:3013" + path);
+        await page.getByTestId("fiqh-helper").first().waitFor({ timeout: 120000 });
+        await settle(page, 600);
+      };
+      const hshot = async (page, name) => {
+        const h = page.getByTestId("fiqh-helper").first();
+        await h.scrollIntoViewIfNeeded();
+        await h.screenshot({ path: `${OUT}/${name}.jpg`, type: "jpeg", quality: 82 });
+      };
+      const pick = async (page, label) => {
+        await page.getByTestId("helper-question").locator("label", { hasText: label }).first().locator("input").check();
+        await page.getByTestId("helper-next").click();
+        await settle(page, 150);
+      };
+      let { ctx, page } = await dev3013("desktop", "light", "sistani");
+      await open(page, "/fiqh/taharat/wudu");
+      await hshot(page, "helper-start-sistani-desktop");
+      await page.getByTestId("helper-start").click();
+      await hshot(page, "helper-question-sistani-desktop");
+      await pick(page, "I am not sure whether I performed wuḍūʾ at all");
+      await pick(page, "Before the prayer");
+      await hshot(page, "helper-answer-sistani-desktop");
+      await ctx.close();
+      ({ ctx, page } = await dev3013("desktop", "light", "sistani"));
+      await open(page, "/fiqh/taharat/wudu");
+      await page.getByTestId("helper-start").click();
+      await page.getByTestId("helper-notsure").check();
+      await page.getByTestId("helper-next").click();
+      await hshot(page, "helper-not-sure-pointer-sistani-desktop");
+      await ctx.close();
+      ({ ctx, page } = await dev3013("desktop", "light", "khamenei"));
+      await open(page, "/fiqh/taharat/wudu");
+      await page.getByTestId("helper-start").click();
+      await pick(page, "I want to know whether something invalidates wuḍūʾ");
+      await pick(page, "Some fluid came out");
+      await pick(page, "Fluid that came out after istibrāʾ, and I doubt whether it is urine");
+      await hshot(page, "helper-answer-pointer-khamenei-desktop");
+      await ctx.close();
+      ({ ctx, page } = await dev3013("mobile", "dark", "sistani"));
+      await open(page, "/fiqh/taharat/wudu");
+      await page.getByTestId("helper-start").click();
+      await hshot(page, "helper-question-sistani-mobile-dark");
+      await ctx.close();
+    } finally {
+      spawn("taskkill", ["/pid", String(dev.pid), "/T", "/F"], { shell: true, stdio: "ignore" });
+    }
+  },
   async other() {
     let { ctx, page } = await revamp("desktop", "light");
     await page.goto(BASE + "/search");
@@ -180,7 +307,7 @@ const STEPS = {
     await ctx.close();
   },
 };
-for (const [name, fn] of Object.entries(STEPS)) if (!ONLY || ONLY === name) await fn();
+for (const [name, fn] of Object.entries(STEPS)) if (ONLY ? ONLY === name : name !== "helpers") await fn(); // "helpers" starts the development server: run it by name
 await browser.close();
 server.kill();
 console.log("done:", fs.readdirSync(OUT).length, "files in", OUT);

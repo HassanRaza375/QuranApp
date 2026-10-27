@@ -3,8 +3,9 @@
 // the collapsed panels, where to pay (a link to his own site only), related topics, terms and the sources on the page. What each ruling shows is decided by lib/fiqh/visibility.ts.
 import type { Ruling } from "@legacy/data/wajibat/types";
 import { PANEL_META } from "@legacy/utils/wajibatLabels";
+import { isHelperVisible } from "@legacy/utils/wajibatReview";
 import { addBookmark, bookmarkAddedAt, hasBookmark, removeBookmark } from "~/lib/bookmarks";
-import { getCategoryById, getGlossaryTermById, getRulingById, getTopicById, loadCategory } from "~/lib/fiqh/data";
+import { getCategoryById, getDecisionTreeById, getGlossaryTermById, getProcedureById, getRulingById, getTopicById, loadCategory, TREE_REVIEWS } from "~/lib/fiqh/data";
 import { cacheLoadedChunks } from "~/lib/fiqh/offline";
 import { entryOf, MARJA_SHORT, visibleTo } from "~/lib/fiqh/visibility";
 import type { KPassage } from "~/lib/knowledge/types";
@@ -66,6 +67,17 @@ const basis = computed<KPassage[]>(() =>
 const notesFor = (p: KPassage) => (topic.value?.quranicBasisNotes ?? []).filter((n) => n.surahNumber === p.surah && n.ayahNumber >= p.from && n.ayahNumber <= p.to);
 
 // ---------------------------------------------------------------- the rest
+// the chosen marja's guided procedures (never another marja's)
+const procedures = computed(() => (state.value === "ready" && marja.value ? (topic.value?.procedureIds ?? []).map((id) => getProcedureById(id)).filter((x) => !!x && x.marjaId === marja.value!.id) : []));
+// the chosen marja's helpers, only when every one of their paths is signed off, or the development flag is on (it cannot be on in a production build)
+const showUnreviewed = !!useRuntimeConfig().public.wajibatShowUnreviewedHelpers;
+const helpers = computed(() => (state.value === "ready" && marja.value ? (topic.value?.decisionTreeIds ?? []).map((id) => getDecisionTreeById(id)).filter((t) => !!t && t.marjaId === marja.value!.id && isHelperVisible(t, TREE_REVIEWS, showUnreviewed)) : []));
+// a helper's "Open the full ruling" opens the whole list first (the ruling may be past the first ten)
+provide("fiqh-open-ruling", async (id: string) => {
+  showAll.value = true;
+  await nextTick();
+  document.getElementById(id)?.scrollIntoView({ block: "start" });
+});
 const related = computed(() => (topic.value?.relatedTopicIds ?? []).map((id) => getTopicById(id)).filter((t) => !!t));
 const terms = computed(() => (topic.value?.glossaryIds ?? []).map((id) => getGlossaryTermById(id)).filter((g) => !!g));
 const sources = computed(() => {
@@ -130,6 +142,8 @@ function toggleSave() {
     <div class="mt-3"><FiqhNotices review-label /></div>
     <div v-if="marja" class="mt-4 flex flex-col gap-3 md:flex-row md:items-center"><div class="min-w-0 md:flex-1"><FiqhMarjaBar /></div><FiqhLangSwitch class="self-start" /></div>
 
+    <FiqhLivePanel v-if="topic.liveTool" :tool="topic.liveTool" />
+
     <!-- app-written overview: labelled as such, never a ruling -->
     <section class="mt-8" aria-labelledby="fiqh-overview" data-testid="fiqh-overview">
       <h2 id="fiqh-overview" class="text-[17px] font-medium">Overview</h2>
@@ -155,6 +169,11 @@ function toggleSave() {
           </li>
         </template>
       </ul>
+    </section>
+
+    <section v-if="marja && helpers.length" class="mt-8" aria-labelledby="fiqh-helper" data-testid="fiqh-helpers">
+      <h2 id="fiqh-helper" class="text-[17px] font-medium">Find your answer</h2>
+      <FiqhHelper v-for="h in helpers" :key="h!.id" :tree="h!" :marja="marja" />
     </section>
 
     <section class="mt-8" aria-labelledby="fiqh-rulings" data-testid="fiqh-rulings">
@@ -197,6 +216,12 @@ function toggleSave() {
         <p>This app does not collect or hold payments and does not list offices, representatives or bank accounts. For where and how to pay, please see {{ marja.name.en }}'s own official website.</p>
         <a :href="marja.officialSite" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex min-h-11 items-center underline md:min-h-8">{{ marja.officialSite.replace(/^https?:\/\//, "") }}</a>
       </div>
+    </section>
+
+    <section v-if="marja && state === 'ready' && topic.procedureIds?.length" class="mt-8" aria-labelledby="fiqh-steps" data-testid="fiqh-steps">
+      <h2 id="fiqh-steps" class="text-[17px] font-medium">Step by step</h2>
+      <template v-if="procedures.length"><FiqhProcedure v-for="x in procedures" :key="x!.id" :procedure="x!" :marja="marja" /></template>
+      <p v-else class="mt-2 rounded-[10px] border border-dashed px-4 py-3 text-[14px]" data-testid="fiqh-steps-none">Not added yet for {{ MARJA_SHORT[marja.id] }}. Refer to his risala. The rulings above still apply.</p>
     </section>
 
     <section v-if="related.length" class="mt-8" data-testid="fiqh-related">
