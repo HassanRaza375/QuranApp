@@ -4,7 +4,7 @@
 // token with letters and no space between two words. The stored text is not in NFC for 5,748 ayahs, so words are compared after normalising.
 //
 // The letter ranges are written as escapes on purpose: no Arabic script is typed into app/ (CLAUDE.md).
-const LETTER = /[ء-يٱ-ۓ]/;
+const LETTER = new RegExp("[\u0621-\u064A\u0671-\u06D3]");
 
 /** The words of one ayah, as the reader shows them (not normalised: this is what is displayed). */
 export function splitWords(text: string): string[] {
