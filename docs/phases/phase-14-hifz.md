@@ -2,7 +2,7 @@
 
 - Branch: `phase-14-hifz` (from the merged `chore/standalone-repo`)
 - Date: 2026-10-28
-- Status: **Built, full verify pending (see Verification).** Plan approved by the owner on 2026-10-28 ("as recommended", with seven specifics, recorded in `DECISIONS.md`). Waiting for the owner's acceptance; then merge into `chore/standalone-repo` with `--no-ff`, verify the merged head, push.
+- Status: **Built; full verify clean on the third run (see Verification).** Plan approved by the owner on 2026-10-28 ("as recommended", with seven specifics, recorded in `DECISIONS.md`). Waiting for the owner's acceptance; then merge into `chore/standalone-repo` with `--no-ff`, verify the merged head, push.
 
 ## Goal
 
@@ -60,7 +60,16 @@ The seven owner decisions are in `DECISIONS.md` (Phase 14). Choices made while b
 
 ## Verification
 
-(To be filled with the result of the full `npm run verify` on Node 22 before this phase is handed over.)
+**Run 3 (commit 4bb8d6e, Node 22.23.4, 14:42 to 15:02 on 2026-10-28, 24 min): CLEAN, exit 0.** `npm run verify` = build, `eslint .`, **885 unit tests in 51 files, all passed**, the dev smoke (200, rendered, no errors), **715 browser tests, all passed (21.8 min, one worker, no retries)**. Tree clean, no change between the commit and the run. CPU was about 31 to 39% from other programs (VS Code, Chrome, Java) when each run started, so not an idle machine.
+
+How it got there, honestly:
+- **Run 1 failed at the unit stage:** `tests/library.test.ts` (no Arabic script in `app/`) found `lib/hifz/words.ts:7`: the letter ranges had been stored as real Arabic characters. Rewritten as `\u` escapes in a string (76dff12). 884 of 885 had passed.
+- **Run 2 (76dff12): 885 unit passed, 713 of 715 browser passed, two failed:**
+  1. `e2e/foundation.spec.ts` used `/hifz` as its example of an unbuilt route; it is built now. Changed to `/goals` (Phase 15). Caused by this phase.
+  2. `e2e/queue.spec.ts` "plays the page's ayahs in order" read the audio recorder's `srcs` once, right after the button turned to "Pause page", which happens while the first file is still being looked up (the element is asked to play a moment later). It failed 4 times in about 22 solo runs on this branch and **0 of 12 on the merged head before this phase** (3603e43), so I did not write it off as load. I could not find what in this phase moved the timing (nothing in it touches the player or that page). The assertion was a one-shot read of an asynchronous result, so it is now a retrying `expect.poll`, and it passed 15 of 15 solo runs afterwards. **The cause of the changed timing is unproven.**
+- Before the final run I also ran the 32 Hifz browser tests alone (all passed), and checked that the parity tests fail when the engine is deliberately broken (a changed ease step and a changed weak-count limit were both caught; the engine was restored).
+
+Not covered by the verify: a real phone, real audio and a real listener (`DEVICE_CHECKS.md`, Phase 14, H1 to H7); a screen-reader pass; the contrast of the strength colours beyond the unit checks.
 
 ## Differences from the prototype
 
