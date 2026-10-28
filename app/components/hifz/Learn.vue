@@ -1,8 +1,9 @@
 <script setup lang="ts">
 // Learning a new ayah (Phase 14; prototype `learn`): Listen (3 plays), Read along (the whole ayah is lit while it plays: the app has one recording per
 // ayah, so there are no word timings), Fade (hide more words each time), Recite (the review screen). Then, where there is an ayah before it, Join: the
-// ayah before, this one, the two together, and everything from the first ayah of the plan. Joins here are practice, not graded. The grade of the ayah
-// is given when the whole step ends. A resumed step starts again at Listen.
+// ayah before, this one, the two together, and everything from the first ayah of the plan. The ayah is graded when Recite ends (`recited`), so leaving
+// during the joins loses nothing; the join of the ayah before with this one is graded on its own when the joins end (`joined`: said at once, or after a
+// "Not yet"). The other join steps are practice. A resumed step starts at Listen, or at the joins when the ayah was graded already.
 import type { Recitation } from "~/lib/hifz/grading";
 
 const props = defineProps<{
@@ -12,14 +13,19 @@ const props = defineProps<{
   words: string[];
   prev: string[] | null;
   tricky?: Array<{ index: number; word: string }>;
+  /** the ayah was graded already (a resumed step): start at the joins */
+  graded?: boolean;
 }>();
-const emit = defineEmits<{ done: [Recitation] }>();
+const emit = defineEmits<{ done: [Recitation]; recited: [Recitation]; joined: [boolean] }>();
 
 const STAGES = ["Listen", "Read along", "Fade", "Recite"] as const;
-const stage = ref(0);
+const stage = ref(props.graded && props.ayah > props.startAyah ? 4 : 0);
 const fade = ref(0);
 const rec = ref<Recitation | null>(null);
 const joinStep = ref(0);
+/** the join of the ayah before with this one (the third step) was said at the first try */
+const pairAtOnce = ref(true);
+const PAIR_STEP = 2;
 
 const { plays, active, failed, play } = useAyahPlays(
   () => props.surah,
@@ -43,14 +49,20 @@ function onFade(v: number[] | undefined) {
 }
 function recited(r: Recitation) {
   rec.value = r;
-  if (hasJoin.value) stage.value = 4;
-  else emit("done", r);
+  if (hasJoin.value) {
+    emit("recited", r);
+    stage.value = 4;
+  } else emit("done", r);
 }
 function joined() {
   if (joinStep.value + 1 < joinSteps.value.length) joinStep.value++;
-  else emit("done", rec.value!);
+  else emit("joined", pairAtOnce.value);
 }
 const notYet = ref(false);
+function repeat() {
+  notYet.value = true;
+  if (joinStep.value === PAIR_STEP) pairAtOnce.value = false;
+}
 </script>
 
 <template>
@@ -120,7 +132,7 @@ const notYet = ref(false);
       <p class="mt-2 text-center text-[14px] text-ink-2">Recite {{ joinSteps[joinStep]!.includes("+") || joinSteps[joinStep]!.includes("to") ? "ayahs" : "ayah" }} {{ joinSteps[joinStep]!.replace(" + ", " and ") }} from memory, aloud.</p>
       <p v-if="notYet" class="mt-2 text-center text-[13px] text-ink-2" role="status">Take your time. Say it once more.</p>
       <div class="mt-5 flex gap-2.5">
-        <Button variant="outline" class="h-12 min-h-12 flex-1" data-testid="hifz-join-repeat" @click="notYet = true">Not yet, repeat</Button>
+        <Button variant="outline" class="h-12 min-h-12 flex-1" data-testid="hifz-join-repeat" @click="repeat">Not yet, repeat</Button>
         <Button class="h-12 min-h-12 flex-1" data-testid="hifz-join-said" @click="notYet = false; joined()">I said it</Button>
       </div>
     </div>

@@ -303,6 +303,71 @@ describe("sessions", () => {
     expect(again.data.ayahStates).toEqual(d.ayahStates);
   });
 
+  describe("a new ayah and its joins", () => {
+    // Al-Mulk 3 is the new ayah (1 and 2 are started); its joins come after the Recite stage
+    const start = () => {
+      const d = world();
+      const items = S.buildDailyItems(d, TODAY, ids()).filter((i) => i.type === "new" && i.targetId === "mulk").slice(0, 1);
+      return { d, s: S.startSession("daily", items, ["mulk"], "s", 0) };
+    };
+
+    it("the ayah is graded and introduced when Recite ends, and the session stays on it", () => {
+      const { d, s } = start();
+      expect(S.currentItem(s)).toMatchObject({ type: "new", ayahNo: 3 });
+      const r = S.applyGrade(d, s, "good", 0, TODAY);
+      expect(S.currentItem(r.session)).toMatchObject({ ayahNo: 3, result: "good" });
+      expect(r.session.currentIndex).toBe(0);
+      expect(r.session.status).toBe("in-progress");
+      expect(E.getAyahState(r.data, "mulk", 3)).toMatchObject({ reviewCount: 1, recentResults: ["good"] });
+      expect(r.data.targets.find((t) => t.id === "mulk")!.lastPosition).toBe(3);
+      // the join of 2 with 3 exists from the introduction, but nothing has graded it yet
+      expect(E.getTransitionState(r.data, "mulk", 2)!.recentResults).toEqual([]);
+      expect(S.isGraded(S.currentItem(r.session))).toBe(true);
+      expect(S.isGraded(S.currentItem(s))).toBe(false);
+    });
+
+    it("the join from the ayah before is graded on its own: said at once is good, after a Not yet is again and weak", () => {
+      const { d, s } = start();
+      const graded = S.applyGrade(d, s, "good", 0, TODAY);
+      const said = S.finishJoins(graded.data, graded.session, true, TODAY, 9);
+      expect(E.getTransitionState(said.data, "mulk", 2)!.recentResults).toEqual(["good"]);
+      expect(E.getAyahState(said.data, "mulk", 3)!.recentResults).toEqual(["good"]); // the ayah is not graded a second time
+      expect(said.session.status).toBe("completed");
+      const missed = S.finishJoins(graded.data, graded.session, false, TODAY, 9);
+      expect(E.getTransitionState(missed.data, "mulk", 2)).toMatchObject({ recentResults: ["again"], strength: "weak" });
+      expect(E.getAyahState(missed.data, "mulk", 3)!.recentResults).toEqual(["good"]);
+    });
+
+    it("the grade of the ayah counts as slipped in the summary and stays when the joins go well", () => {
+      const { d, s } = start();
+      const graded = S.applyGrade(d, s, "again", 0, TODAY);
+      const done = S.finishJoins(graded.data, graded.session, true, TODAY, 9);
+      expect(S.summary(done.session)).toMatchObject({ practised: 1, slipped: 1, newCount: 1 });
+      // an ayah graded `again` still counts as introduced (the legacy behaviour, kept)
+      expect(done.data.targets.find((t) => t.id === "mulk")!.lastPosition).toBe(3);
+    });
+
+    it("skipping during the joins keeps the grade the ayah already has (it is not marked skipped)", () => {
+      const { d, s } = start();
+      const graded = S.applyGrade(d, s, "good", 0, TODAY);
+      const skipped = S.skipCurrent(graded.data, graded.session, TODAY, 9);
+      expect(skipped.session.items[0]!.result).toBe("good");
+      expect(skipped.data).toBe(graded.data);
+      expect(skipped.session.status).toBe("completed");
+      // an ungraded item is still marked skipped and changes nothing
+      const plain = S.skipCurrent(d, s, TODAY, 9);
+      expect(plain.session.items[0]!.result).toBe("skipped");
+      expect(plain.data).toBe(d);
+    });
+
+    it("gradeCurrent is still apply-and-move-on, for the steps that have no joins", () => {
+      const { d, s } = start();
+      const r = S.gradeCurrent(d, s, "good", 0, TODAY, 9);
+      expect(r.session.status).toBe("completed");
+      expect(E.getAyahState(r.data, "mulk", 3)!.recentResults).toEqual(["good"]);
+    });
+  });
+
   it("a session with an item left is resumable; a completed one and a missing one are not", () => {
     const s = S.startSession("daily", S.buildDailyItems(world(), TODAY, ids()), ["mulk"], "s", 0);
     expect(S.isResumable(s)).toBe(true);

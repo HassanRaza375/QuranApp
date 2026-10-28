@@ -34,7 +34,7 @@ The seven owner decisions are in `DECISIONS.md` (Phase 14). Choices made while b
 | A stored word entry keeps its **text**; a mismatch drops the entry | Store only the index | If the text ever changes under an index, the wrong word must never be shown as tricky |
 | The words store is keyed by **surah and ayah**, not by target | Key by target | Removing a surah and adding it back (or Undo) keeps what you know about your tricky words |
 | **Free practice is in memory only** | Store it like the legacy | Owner decision 5: it records nothing, not even the stored session; starting it also cannot overwrite a session in progress |
-| A new ayah is **graded when the whole step ends** (after the joins) | Grade at the end of Recite | The legacy grades and advances in one call; this keeps a resumed legacy session from grading the same step twice. Cost: leaving during the joins of a new ayah loses that grade (the ayah is offered as new again) |
+| ~~A new ayah is graded when the whole step ends (after the joins)~~ **Changed 2026-10-28 (owner follow-up): graded when Recite ends; the join is graded separately** (see `phase-14-followups.md`) | Grade at the end of Recite | The legacy grades and advances in one call; this keeps a resumed legacy session from grading the same step twice. Cost: leaving during the joins of a new ayah loses that grade (the ayah is offered as new again) |
 | **Both** Recite to someone and the whole-surah check are graded; joins in the check are graded | Recite to someone ungraded | Owner decision 4. The legacy assessment never graded its join items (they carry no ayah number); here they are graded |
 | The session keeps one **extra optional field**, `mode: "check"` | Encode it in `kind` | The legacy runner is generic and keeps unknown fields; a Recite-to-someone session must come back as one |
 | The Done tick is the accent, not gold | Prototype's gold | Design rule: gold is verse-end markers and Hifz mastery only |
@@ -86,7 +86,7 @@ Listed in `docs/pages/hifz.md`: one progress bar instead of segments; the Done t
 - **The sample time is a guess until you have done 10 sessions.** The first estimate is 1.5 s a word plus 10 s an item (a new ayah four times that), the owner's figures; it says "About".
 - **A surah added in the legacy app with a custom pace** (5 or 10 a day) shows as "N a day (set earlier)" and keeps working; the Add sheet only offers 1, 2 and 3.
 - **Two targets for one surah** (the legacy allowed it) open the first on `/hifz/surah/<n>`; Add refuses a second one.
-- **Leaving during the joins of a new ayah** loses that ayah's grade (above).
+- ~~Leaving during the joins of a new ayah loses that ayah's grade.~~ Fixed in the follow-ups (`phase-14-followups.md`): the ayah is saved when Recite ends.
 - The legacy Hifz specification (`Hifz_Module_Specification.md`) is in neither repository: this work follows the legacy code.
 
 ## Next phase needs

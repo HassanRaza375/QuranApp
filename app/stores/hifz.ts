@@ -210,6 +210,27 @@ export const useHifzStore = defineStore("hifz", () => {
     }
     commit(S.gradeCurrent(loadHifz().data, s, grade, hintLevel, today(), now));
   }
+  /** A new ayah's Recite stage is over and joins come next: grade the ayah now (schedule, tricky words, introduction), stay on the step for its joins. */
+  function finishRecite(rec: Recitation, ayahWords: readonly string[]) {
+    const s = session.value;
+    const it = item.value;
+    if (!s || !it) return;
+    if (running.value === "free" || !it.gradedTest) return;
+    const { grade, hintLevel } = gradeFor(rec);
+    const target = targetOf(it.targetId);
+    if (target && it.ayahNo != null) {
+      words.value = recordRecitation(readWords(), ayahKey(target.surahNo, it.ayahNo), ayahWords, rec.slips, today());
+      writeWords(words.value);
+    }
+    const next = S.applyGrade(loadHifz().data, s, grade, hintLevel, today());
+    commit({ data: next.data, session: next.session });
+  }
+  /** The joins of a new ayah are over: the join from the ayah before it is graded on its own, then the session moves on. */
+  function finishJoins(pairSaid: boolean) {
+    const s = session.value;
+    if (!s || !item.value) return;
+    commit(S.finishJoins(loadHifz().data, s, pairSaid, today(), Date.now()));
+  }
   /** A join was said (good) or not (again). */
   function finishJoin(said: boolean) {
     const s = session.value;
@@ -231,6 +252,6 @@ export const useHifzStore = defineStore("hifz", () => {
     surahs, resumable, plan, session, item, targetOf, ayahsIn,
     load, ensureLengths, addSurah, setPace, setStatus, removeSurah, restoreSurah,
     startDaily, startCheck, startFull, startFree, resume, endFree, abandon,
-    beginItem, finishAyah, finishJoin, skip,
+    beginItem, finishAyah, finishRecite, finishJoins, finishJoin, skip,
   };
 });

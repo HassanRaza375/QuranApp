@@ -5,7 +5,7 @@
 // Offline: a surah whose text is not on the device shows a plain message with Try again and Skip, never a blank page. See docs/pages/hifz.md.
 import type { Recitation } from "~/lib/hifz/grading";
 import { surahLabel } from "~/lib/hifz/queue";
-import { currentItem, summary, type SessionItem } from "~/lib/hifz/session";
+import { currentItem, isGraded, summary, type SessionItem } from "~/lib/hifz/session";
 import { ayahKey, trickyIn } from "~/lib/hifz/slips";
 import { splitWords } from "~/lib/hifz/words";
 
@@ -123,6 +123,13 @@ function ayahDone(rec: Recitation) {
   if (!free.value) slippedWords.value.push(...rec.slips.map((i) => l.words[i]).filter((w): w is string => !!w));
   store.finishAyah(rec, l.words);
 }
+/** A new ayah's Recite stage is over: it is graded now, and its joins come next. */
+function recited(rec: Recitation) {
+  const l = loaded.value;
+  if (!l) return;
+  slippedWords.value.push(...rec.slips.map((i) => l.words[i]).filter((w): w is string => !!w));
+  store.finishRecite(rec, l.words);
+}
 function joinDone(said: boolean) {
   store.finishJoin(said);
 }
@@ -174,7 +181,7 @@ const practised = computed(() => (free.value ? (session.value?.items.length ?? 0
 
       <template v-else>
         <HifzJoin v-if="kind === 'join'" :key="item.id" :from="item.fromAyah!" :to="item.toAyah!" :from-words="loaded.fromWords" @said="joinDone" />
-        <HifzLearn v-else-if="kind === 'learn'" :key="item.id" :surah="surahOf(item)!" :ayah="item.ayahNo!" :start-ayah="startAyahOf(item)" :words="loaded.words" :prev="loaded.prev" :tricky="tricky" @done="ayahDone" />
+        <HifzLearn v-else-if="kind === 'learn'" :key="item.id" :surah="surahOf(item)!" :ayah="item.ayahNo!" :start-ayah="startAyahOf(item)" :words="loaded.words" :prev="loaded.prev" :tricky="tricky" :graded="isGraded(item)" @done="ayahDone" @recited="recited" @joined="store.finishJoins" />
         <HifzReview v-else :key="item.id" :words="loaded.words" :prev="loaded.prev" :check="check" :free="free" :tricky="tricky" @done="ayahDone" />
       </template>
     </template>
