@@ -219,6 +219,20 @@ Open the Vercel preview of branch `phase-11-downloads` on the phone. Use **Wi-Fi
 - **F2 (a phone that never opened Daily Fiqh):** offline, open `/fiqh` in a new tab: a plain "Daily Fiqh isn't on this device yet" page, not a blank one.
 - **F3 (Urdu on a phone):** choose Urdu and Both on a Sistani topic: the Nastaliq text reads well at 375 px and nothing is cut off.
 
+## Phase 14: Hifz
+
+Hifz is built and tested in a desktop browser with synthetic text and a recorded audio element. These need a real device and a real voice.
+
+| # | Check | Pass when |
+| --- | --- | --- |
+| H1 | **A phone, in your hand.** Add a surah, press Start, recite an ayah aloud, tap a word, Reveal all, mark a slip, Done, Continue | Every control is easy to hit with a thumb; the words are readable at your usual Arabic size; nothing is cut off; the keyboard does not cover a button |
+| H2 | **Listen and Read along with real audio** (online, then with the surah downloaded and the connection off) | A play counts only when it reaches the end; three plays give "Next: read along"; the whole ayah is lit while it plays and not after; offline and not downloaded, the step says audio needs a connection and can be skipped |
+| H3 | **Recite to someone** with a real listener | Nothing is hidden; the note says to hand over the phone; the listener can tap a word once to mark a slip and again to clear it |
+| H4 | **A real week.** Use it for several days | The plan is the size you expect; a word you slip on, on two days, shows up before its ayah; "About N minutes" gets close to the real time after 10 sessions |
+| H5 | **iPhone Safari**: the Add sheet and Practise sheet as bottom sheets; the select for the surah | The sheet is not taller than the screen; the select opens; Add works with the keyboard up |
+| H6 | **An installed app, offline**: open Hifz and a session with the connection off, for a surah you have read | The plan and the session work; a surah you have not read shows the message and Try again |
+| H7 | **Your legacy Hifz data** (if you used the legacy app): open Hifz on the revamp | Your surahs, counts and strengths are there; nothing looks reset; going back to the legacy app still shows your progress |
+
 ## Manual review (not on a device)
 
 These need your judgement, not a phone. Details are in `docs/CONTENT_TO_VERIFY.md`.

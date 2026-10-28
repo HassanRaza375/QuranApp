@@ -63,8 +63,8 @@ const notYet = ref(false);
 
     <!-- 1. Listen -->
     <div v-if="stage === 0">
-      <div class="min-h-[150px] py-2"><HifzWords :words="words" /></div>
-      <div class="my-2 flex items-center justify-center gap-4">
+      <div class="min-h-[150px] py-3"><HifzWords :words="words" /></div>
+      <div class="mb-2 mt-5 flex items-center justify-center gap-4">
         <button type="button" class="grid size-16 place-items-center rounded-full bg-primary text-primary-foreground" :aria-label="active ? 'Pause' : 'Play'" data-testid="hifz-play" @click="play">
           <Icon :name="active ? 'lucide:pause' : 'lucide:play'" size="24" />
         </button>
@@ -81,8 +81,8 @@ const notYet = ref(false);
 
     <!-- 2. Read along: the whole ayah is lit while it plays -->
     <div v-else-if="stage === 1">
-      <div class="min-h-[150px] py-2"><HifzWords :words="words" :lit="active" /></div>
-      <p class="text-center text-[14px] text-ink-2">Read aloud with the reciter. The ayah is lit while it plays.</p>
+      <div class="min-h-[150px] py-3"><HifzWords :words="words" :lit="active" /></div>
+      <p class="mt-3 text-center text-[14px] text-ink-2">Read aloud with the reciter. The ayah is lit while it plays.</p>
       <div class="my-3 flex justify-center">
         <button type="button" class="grid size-16 place-items-center rounded-full bg-primary text-primary-foreground" :aria-label="active ? 'Pause' : 'Play and read along'" data-testid="hifz-play" @click="play">
           <Icon :name="active ? 'lucide:pause' : 'lucide:play'" size="24" />
@@ -94,8 +94,8 @@ const notYet = ref(false);
 
     <!-- 3. Fade -->
     <div v-else-if="stage === 2">
-      <div class="min-h-[150px] py-2"><HifzWords :words="words" :hidden="hiddenWords" /></div>
-      <p class="text-center text-[14px] text-ink-2">Recite it each time, hiding a few more words.</p>
+      <div class="min-h-[150px] py-3"><HifzWords :words="words" :hidden="hiddenWords" /></div>
+      <p class="mt-3 text-center text-[14px] text-ink-2">Recite it each time, hiding a few more words.</p>
       <div class="mx-auto mt-3 flex max-w-sm items-center gap-3">
         <span class="text-[13px] text-ink-2">Show all</span>
         <Slider class="min-h-11 flex-1" :model-value="[fade]" :min="0" :max="100" :step="25" thumb-label="How much to hide" :thumb-value-text="`${fade} percent hidden`" @update:model-value="onFade" />

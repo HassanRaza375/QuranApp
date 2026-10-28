@@ -22,7 +22,7 @@ const label = (i: number) => (isHidden(i) ? `Word ${i + 1}, hidden. Reveal it (c
       <button
         v-if="interactive"
         type="button"
-        class="min-h-11 rounded-md px-[.12em] align-middle"
+        class="inline-block min-h-11 rounded-md px-[.12em] align-middle leading-[1.55]"
         :class="[isHidden(i) ? 'bg-sunken' : '', isSlip(i) ? 'bg-weak/15 text-weak' : '']"
         :aria-label="label(i)"
         :aria-pressed="isSlip(i)"
@@ -32,7 +32,7 @@ const label = (i: number) => (isHidden(i) ? `Word ${i + 1}, hidden. Reveal it (c
       >
         <span :class="isHidden(i) ? 'invisible' : ''">{{ w }}</span>
       </button>
-      <span v-else class="rounded-md px-[.12em]" :class="isHidden(i) ? 'bg-sunken' : ''" :data-state="isHidden(i) ? 'hidden' : 'shown'">
+      <span v-else class="inline-block rounded-md px-[.12em] align-middle leading-[1.55]" :class="isHidden(i) ? 'bg-sunken' : ''" :data-state="isHidden(i) ? 'hidden' : 'shown'">
         <span :class="isHidden(i) ? 'invisible' : ''" :aria-hidden="isHidden(i) ? 'true' : undefined">{{ w }}</span>
       </span>
       {{ " " }}

@@ -76,10 +76,10 @@ const grade = computed(() => gradeFor(rec.value).grade);
       <span v-for="t in tricky" :key="t.index" class="ar !text-[20px] !leading-[1.6] rounded-md bg-weak/15 px-2 text-weak" dir="rtl" lang="ar">{{ t.word }}</span>
     </p>
 
-    <div class="mt-3 min-h-[150px] py-2">
+    <div class="mt-3 min-h-[150px] py-3">
       <HifzWords :words="words" :hidden="hidden" :slips="slips" :interactive="!finished" @pick="pick" />
     </div>
-    <p v-if="!finished" class="mt-1 text-center text-[14px] text-ink-2" data-testid="hifz-say">{{ say }}</p>
+    <p v-if="!finished" class="mt-3 text-center text-[14px] text-ink-2" data-testid="hifz-say">{{ say }}</p>
 
     <div v-if="!finished" class="mt-5 flex gap-2.5">
       <template v-if="!allShown">

@@ -5,7 +5,7 @@ defineProps<{ practised: number; needAnother: number; slipped: string[]; free?: 
 
 <template>
   <div class="pt-10 text-center" data-testid="hifz-done">
-    <span class="mx-auto grid size-14 place-items-center rounded-full border-[1.5px] border-gold text-gold"><Icon name="lucide:check" size="24" /></span>
+    <span class="mx-auto grid size-14 place-items-center rounded-full border-[1.5px] border-brand text-brand"><Icon name="lucide:check" size="24" /></span>
     <h1 class="mt-5 font-serif text-[28px] font-medium">{{ title ?? "Done for today" }}</h1>
     <p class="mx-auto mt-2 max-w-[44ch] text-[15px] text-ink-2" data-testid="hifz-done-summary">
       {{ practised }} {{ practised === 1 ? "step" : "steps" }} practised<template v-if="free">. Free practice doesn’t change your schedule.</template><template v-else-if="needAnother">, {{ needAnother }} to try again. {{ needAnother === 1 ? "That one comes" : "Those come" }} back tomorrow.</template><template v-else>, no slips.</template>

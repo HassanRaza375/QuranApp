@@ -63,7 +63,9 @@ What the legacy app (its own repo; `legacy/` here holds only the files this proj
 | `quran:bookmarks:added-at:v1` | JSON map key to timestamp | `useBookmarks` |
 | `quran:library:v1` | JSON `{collections[], itemMeta{key: {note, tags, collectionIds, updatedAt}}}` | `useLibrary` |
 | `quran:reading-progress:v1`, `quran:reading-goals:v1` | JSON | progress, goals |
-| `quran:hifz:v2` (reads `quran:hifz:v1` once to migrate), `quran:hifz-session:v1` | JSON | Hifz |
+| `quran:hifz:v2` (reads `quran:hifz:v1` once to migrate), `quran:hifz-session:v1` | JSON | Hifz (Phase 14 reads and writes both in the legacy shape and keeps unknown fields; the session may carry one optional extra field, `mode: "check"`) |
+| `quran:hifz-words:v1` | JSON `{v:1, ayahs:{"<surah>:<ayah>":{"<wordIndex>":{word, slipDays[], cleanDays[], last}}}}` | **new, revamp only** (Phase 14): the words slipped on. The legacy app ignores it |
+| `quran:hifz-timing:v1` | JSON `{v:1, sessions, secs[]}` | **new, revamp only** (Phase 14): finished daily sessions and the last 60 seconds-per-item, for the time estimate |
 | `quran:ramadan:v1`, `quran:reminders:v1`, `quran:tasbeeh:v1` | JSON | Ramadan, reminders, Tasbeeh |
 | `quran:persons-study:v1`, `quran:search-history:v1` | JSON | persons study, search |
 | `quran:downloads:v1` | JSON manifest of downloaded surahs | `useDownloads` |
