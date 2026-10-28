@@ -1,12 +1,12 @@
 <script setup lang="ts">
-// Search (Phase 10). One box over ayahs (online), surahs, people, stories and your notes. The behaviour is in useSearchPage; this is the
+// Search (Phase 10). One box over ayahs (online), surahs, people, stories, duas, the knowledge base and your notes. The behaviour is in useSearchPage; this is the
 // screen. Ayah text, translations and edition names come from the upstream's answer; everything else from the app's own data tables.
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { MAX_SHOWN } from "~/lib/ayahSearch";
 import { editionById, editionLabel, isRtlGroup } from "~/lib/searchEditions";
 import { activeFilterCount, type Scope } from "~/lib/searchQuery";
 
-useSeoMeta({ title: "Search · Quran App", description: "Search the Qur’an’s ayahs, surahs, people, stories and your own notes.", robots: "noindex, follow" });
+useSeoMeta({ title: "Search · Quran App", description: "Search the Qur’an’s ayahs, surahs, people, stories, duas, the knowledge base and your own notes.", robots: "noindex, follow" });
 
 const SUGGESTED = ["patience", "mercy", "forgiveness", "gratitude", "prayer", "fasting", "charity", "guidance"]; // the legacy page's suggestions
 const search = useSearchPage();
@@ -31,7 +31,7 @@ const filterSummary = computed(() => {
   return parts.join(" · ");
 });
 
-const LOCAL_ICON: Record<string, string> = { surahs: "lucide:list", people: "lucide:users", stories: "lucide:scroll-text", notes: "lucide:notebook-pen" };
+const LOCAL_ICON: Record<string, string> = { surahs: "lucide:list", people: "lucide:users", stories: "lucide:scroll-text", duas: "lucide:hand-heart", knowledge: "lucide:library", notes: "lucide:notebook-pen" };
 const countOf = (id: string) => localGroups.value.find((g) => g.group === id)?.hits.length ?? 0;
 const ayahCount = computed(() => (ayah.phase === "ok" && ayah.forQuery === query.value ? view.value.total : null));
 const chips = computed(() => {
@@ -41,6 +41,8 @@ const chips = computed(() => {
     { value: "surahs", label: "Surahs", n: withCounts ? countOf("surahs") : null },
     { value: "people", label: "People", n: withCounts ? countOf("people") : null },
     { value: "stories", label: "Stories", n: withCounts ? countOf("stories") : null },
+    { value: "duas", label: "Duas", n: withCounts ? countOf("duas") : null },
+    { value: "knowledge", label: "Knowledge base", n: withCounts ? countOf("knowledge") : null },
     { value: "notes", label: "Notes", n: withCounts ? countOf("notes") : null },
   ];
   const known = items.map((i) => i.n).filter((n): n is number => n != null);
@@ -71,7 +73,7 @@ const announce = computed(() => {
 <template>
   <section class="mx-auto max-w-3xl" data-testid="search-page">
     <h1 class="font-serif text-[28px] font-medium">Search</h1>
-    <p class="mt-1 text-[14px] text-ink-2">Ayahs, surahs, people, stories and your notes. Marks and spelling variants are ignored.</p>
+    <p class="mt-1 text-[14px] text-ink-2">Ayahs, surahs, people, stories, duas, the knowledge base and your notes. Marks and spelling variants are ignored.</p>
 
     <div class="mt-4 flex gap-2">
       <div class="relative min-w-0 flex-1">

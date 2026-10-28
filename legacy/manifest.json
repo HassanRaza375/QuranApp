@@ -3,7 +3,7 @@
   "commit": "7120b6cd6301ed267085b130052d767f95b2c15a",
   "branch": "revamp-design-logic",
   "committedAt": "2026-10-22T12:33:44+05:00",
-  "syncedAt": "2026-10-23",
+  "syncedAt": "2026-10-26",
   "files": {
     "app/assets/data/names.json": {
       "bytes": 26727,
@@ -50,6 +50,11 @@
       "sha256": "73a14af0a3b107de635b3d728931ee051d3d5a15eb958ded2418cb90aff45a46",
       "source": "git"
     },
+    "app/data/quranDuas.ts": {
+      "bytes": 40059,
+      "sha256": "2f8abf2bc261f53db391eb677ac8e5780433f644687db0949e6887899903bd9f",
+      "source": "git"
+    },
     "app/data/quranEvents.ts": {
       "bytes": 39902,
       "sha256": "735feb3fabd72a28625888c8c493f5209a2c56976189ae6309ed6ca6f18fc773",
@@ -70,9 +75,19 @@
       "sha256": "10c8dd3fb4074e27a0f6aa78e0c3e7ec94b95450297411bd43bd3fe7996f86e3",
       "source": "git"
     },
+    "app/data/quranSigns.ts": {
+      "bytes": 19327,
+      "sha256": "26b0e117c6788744b9eca230e16bc11e66bb0317a6ad15978982ea8963c2f717",
+      "source": "git"
+    },
     "app/data/quranStories.ts": {
       "bytes": 67399,
       "sha256": "d4737b6aa6390c874c8fd435658a31a7408d291572ad71fec284327a34b94709",
+      "source": "git"
+    },
+    "app/data/quranThemes.ts": {
+      "bytes": 61733,
+      "sha256": "0e93b26372cf60c3a4513c2aff26989862dfaf6b7b1eb78a1a003b68990b7666",
       "source": "git"
     },
     "app/data/wajibat/categories.ts": {
@@ -100,9 +115,49 @@
       "sha256": "644de8e37767fd296d117c45de1025c0dc062cd487a807d325c444afb26577c3",
       "source": "git"
     },
+    "app/utils/commandsValidate.ts": {
+      "bytes": 4821,
+      "sha256": "4fd3b3f94394d45d1bb4e8c86e20205cc3f4064cd1a725edc6710c5b1a5bbe23",
+      "source": "git"
+    },
+    "app/utils/duasSearch.ts": {
+      "bytes": 3492,
+      "sha256": "6289afc218d9f3a542f3cb3638bd5ce9f0dfd52dc541a98ca3fe3edc8245c967",
+      "source": "git"
+    },
+    "app/utils/duasValidate.ts": {
+      "bytes": 5259,
+      "sha256": "34de1fa95aa8c01f1a7148710c4a5d32903a92e440e7259e275cd4014d9699f5",
+      "source": "git"
+    },
+    "app/utils/eventsSearch.ts": {
+      "bytes": 3735,
+      "sha256": "00b1636cac767d261c5824a26863f2dc91c648a1dbe12c4ce62af758175b4556",
+      "source": "git"
+    },
+    "app/utils/eventsValidate.ts": {
+      "bytes": 5980,
+      "sha256": "ece5712d7db0e665ac10ae78831348f9d237111567b68bb1dc170b84ad7f741a",
+      "source": "git"
+    },
+    "app/utils/graphIndex.ts": {
+      "bytes": 21009,
+      "sha256": "8cc961adc5e545a6fe3cede511d70fc284a26ec7b024862ddf2b5093a5327358",
+      "source": "git"
+    },
     "app/utils/islamicEvents.js": {
       "bytes": 7843,
       "sha256": "d1f5ec28e3579e5db8000505ca1eebdb00370df59192f2f3532688c0cc2a9628",
+      "source": "git"
+    },
+    "app/utils/peoplesSearch.ts": {
+      "bytes": 5084,
+      "sha256": "9a9bd4674d6907ca224c5f944e3efe85e056b8d8aa910a5b7d459a78a7e0c3fa",
+      "source": "git"
+    },
+    "app/utils/peoplesValidate.ts": {
+      "bytes": 5048,
+      "sha256": "4f62cbfec94d2739ce9c28b4862f74e03b20d8cae2d0fa2b34559987fb41f558",
       "source": "git"
     },
     "app/utils/personsChronology.ts": {
@@ -123,6 +178,16 @@
     "app/utils/personStudy.ts": {
       "bytes": 3277,
       "sha256": "518c35a3fcab7eeb9474e7dfb33bad841ae29dfb2164ac21f6d85295141154bf",
+      "source": "git"
+    },
+    "app/utils/placesSearch.ts": {
+      "bytes": 4198,
+      "sha256": "0e67dc9646ed38901ae9168e5ca7490b2984a3599510baaeaa52836d802d8ea0",
+      "source": "git"
+    },
+    "app/utils/placesValidate.ts": {
+      "bytes": 4245,
+      "sha256": "da45cb0a236719d9fae7afc0c9a1357add0bd15f1e879604bcef6e1a489cb593",
       "source": "git"
     },
     "app/utils/prayerFiqh.js": {
@@ -150,9 +215,29 @@
       "sha256": "93a9e87e398303f4f32caa8995a4bf8e4737c15fb2d1559bd16509d9083c767b",
       "source": "git"
     },
+    "app/utils/signsSearch.ts": {
+      "bytes": 3092,
+      "sha256": "58dab41a8f0a061ba57f2cd20ab4a536517e70670d8850b73ca29c1932ff8767",
+      "source": "git"
+    },
+    "app/utils/signsValidate.ts": {
+      "bytes": 5817,
+      "sha256": "c7a4b159a3bbc23cc36848aad6608f15bb9d825dd6ac0590e7c5211491b09d56",
+      "source": "git"
+    },
     "app/utils/storiesSearch.ts": {
       "bytes": 3703,
       "sha256": "7830b0c3228019206d06f7ce83f7e5c29f63425714e5ce68ff033b0d1135583a",
+      "source": "git"
+    },
+    "app/utils/themesSearch.ts": {
+      "bytes": 2610,
+      "sha256": "8a01c715ce716fa54a9eb7b92418f56238ba7ab7dcc2d4ad2edc8472479bab99",
+      "source": "git"
+    },
+    "app/utils/themesValidate.ts": {
+      "bytes": 4892,
+      "sha256": "179b93d84cf018c10cff6b31e92713d4114a07f3f78867875951c8c910f93e06",
       "source": "git"
     },
     "dist/sw.js": {

@@ -2,8 +2,8 @@
 // The names are the legacy page's: ?q= text, g= edition group, e= edition, s= surah, j= juz, b=1 bookmarked only. t= is new (the type chip).
 import { DEFAULT_EDITION, DEFAULT_GROUP, editionById, isEditionGroup, type EditionGroup } from "./searchEditions";
 
-export type Scope = "all" | "ayahs" | "surahs" | "people" | "stories" | "notes";
-export const SCOPE_VALUES: readonly Scope[] = ["all", "ayahs", "surahs", "people", "stories", "notes"];
+export type Scope = "all" | "ayahs" | "surahs" | "people" | "stories" | "duas" | "knowledge" | "notes";
+export const SCOPE_VALUES: readonly Scope[] = ["all", "ayahs", "surahs", "people", "stories", "duas", "knowledge", "notes"];
 
 export interface SearchState {
   q: string;

@@ -27,6 +27,7 @@ export function useSearchPage() {
   const ayah = reactive<{ phase: AyahPhase; hits: AyahHit[]; forQuery: string }>({ phase: "idle", hits: [], forQuery: "" });
   const history = ref<string[]>([]);
   const local = shallowRef<typeof import("~/lib/searchLocal") | null>(null);
+  const knowledgeTick = ref(0); // the Duas and Knowledge base groups arrive after the first groups: the list is computed again when they do
 
   const searcher = createAyahSearcher((q, signal) => SearchService.search(q, signal), () => typeof navigator === "undefined" || navigator.onLine !== false);
 
@@ -38,7 +39,7 @@ export function useSearchPage() {
       return { key, title: item.title, note: m.note, tags: m.tags, href: item.href };
     }),
   );
-  const localGroups = computed<LocalGroup[]>(() => (local.value && state.q.trim() ? local.value.searchLocal(state.q, { notes: notes.value }) : []));
+  const localGroups = computed<LocalGroup[]>(() => (local.value && knowledgeTick.value >= 0 && state.q.trim() ? local.value.searchLocal(state.q, { notes: notes.value }) : []));
 
   // ---------------------------------------------------------------- the ayah search
   const query = computed(() => state.q.trim());
@@ -191,6 +192,7 @@ export function useSearchPage() {
     window.addEventListener("online", onOnline);
     if (query.value) schedule();
     local.value = await import("~/lib/searchLocal");
+    void local.value.loadKnowledgeGroups().then(() => knowledgeTick.value++).catch((e) => console.debug("knowledge groups of Search not loaded", e));
     if (query.value) void runNow(); // an opened ?q= link searches at once
   });
   onBeforeUnmount(() => {

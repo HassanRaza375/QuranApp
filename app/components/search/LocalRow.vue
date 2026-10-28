@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// One result in the Surahs, People, Stories or Notes group. A note on an item that has no page is shown but not linked.
+// One result in the Surahs, People, Stories, Duas, Knowledge base or Notes group. A note on an item that has no page is shown but not linked.
 import type { LocalHit } from "~/lib/searchLocal";
 
 defineProps<{ hit: LocalHit; query: string }>();

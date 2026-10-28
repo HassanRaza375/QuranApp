@@ -216,6 +216,88 @@ Everything below appears in `prototype.html` as a placeholder or was typed from 
 - [ ] "Play all" and "Listen" would use the existing queue and the user's reciter; the prototype does not say what a dua's "Listen" plays.
 - [ ] Wording of ours: "Where it appears", "N ayahs in N surahs", "The ayahs", "Connected", "Referenced by", "Translation loads from the reader's cache.", "No <module> match “…”".
 
+### Review list: every entry whose basis is not "the Qur'an states it" (Phase 12, from the real data)
+
+The pages show the legacy's own basis label on each of these and nothing else about how sure the entry is (no "verified", no "reviewed"). Please read each one. The data's own `verificationStatus` is the legacy author's label, not an outside review, so **all 182 entries** are on this list in the sense that none has been read by a scholar; the table is the subset whose basis the data itself marks as weaker.
+
+| Module | Id | Name | Basis in the data | Note |
+| --- | --- | --- | --- | --- |
+| Peoples | `sabbathbreakers` | The Sabbath-Breakers | quran_context | shown with the label "Identified through Qur'anic context" |
+| Places | `iram` | Iram | disputed | label shown; also has a source that is not the Qur'an (drawn dashed) |
+| Places | `alkahf` | The Cave (Al-Kahf) | quran_context | label shown |
+| Places | `thesea` | The Sea (of the Crossing) | quran_context | label shown |
+| Themes | `creation` | Creation (Al-Khalq) | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Themes | `generosity` | Generosity | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Themes | `wealth` | Wealth | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Themes | `leadership` | Leadership and Authority | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Themes | `community` | Community, Brotherhood, and Peace | quran_derived_concept | a theme derived from the Qur'an, not named by it |
+| Duas | `adamrepentance` | Adam's Prayer of Repentance | quran_narrative | a prayer reported in a narrative |
+| Duas | `yunusindarkness` | The Dua of Yunus | quran_narrative | a prayer reported in a narrative |
+| Duas | `muhammadentryexitprayer` | Prayer for a Sound Entrance and Exit | quran_instruction | a prayer the Qur'an instructs, not one it reports |
+| Duas | `muhammadknowledgeprayer` | Prayer for Increase in Knowledge | quran_instruction | a prayer the Qur'an instructs, not one it reports |
+| Duas | `muhammadrefugeprayer` | Prayer for Refuge from the Devils' Incitements | quran_instruction | a prayer the Qur'an instructs, not one it reports |
+| Duas | `muhammadmercyprayer` | Prayer for Forgiveness and Mercy | quran_instruction | a prayer the Qur'an instructs, not one it reports |
+| Duas | `rabbanasteadfastprayer` | The Warriors' Prayer for Steadfastness | quran_narrative | a prayer reported in a narrative |
+| Events | `siegeconfederates` | The Siege of the Confederates | quran_context | label shown |
+
+17 rows. Signs and Commands have none (all 14 and all 18 are "explicit").
+
+- [ ] **The data's `statusNotes` are not shown.** They are the legacy author's working notes (they mention code, phases and search strings, for example "Phase 3 migration ... `relatedPlaceIds`" and "a manually-verified anchor set"), not text for readers. 27 on Peoples, 19 on Places, 22 on Themes, 8 on Duas, 12 on Events, 11 on Signs, 11 on Commands. Some carry real caveats (for example that Zakah's recipients are named but no nisab is given); if any should reach readers, they need rewriting in plain words first.
+- [ ] **Wording of ours (Phase 12, so far):** the module titles and questions on `lib/knowledge/modules.ts` ("Which communities?", "Where?", "What does it teach?", and our own "What was asked?", "What happened?", "What was shown?", "What is commanded?"), "Events in the Qur’an" (so it is not confused with the Ramadan page's Events), "N entries, each anchored to the ayahs that mention it.", the filter placeholder, "Nothing matches “…”", "Nothing here points at 7:65", "Nothing saved yet. Open an entry and tap Save.", "Where it appears", "The ayahs", "Show the N ayahs", "Loading the text…", "This text isn’t on your device yet. Connect to load it.", "Couldn’t load this text.", "Connected" / "Named in this entry’s own data.", "Referenced by" / "Entries whose own data names X. X’s data does not name them back.", "No such entry", the Library's type names ("People or nation", "Place", "Theme", "Dua", "Event", "Sign", "Command"). **Stage 2 adds:** "In more detail" (the Themes, Places and Peoples paragraph), "Transliteration", "Loaded live from a transliteration source when you are online. It is not stored in the app.", "Loading the transliteration…", "The transliteration needs a connection, and isn’t kept on your device.", "Show the transliteration of …", "The full ayah is shown." with "It holds more than the dua’s own words." when the data gives no note, the Search groups "Duas" and "Knowledge base", and the Events line "Chronology" (its sentences and "During the lifetime of …", "After: …", "Before: …" are the legacy page's own). The section titles "Context", "Who made it" and "Audience" and every basis label ("Narrative prayer", "Direct Qur'anic supplication", "Qur'an-derived concept", "Established by Qur'anic narrative context", "Inferred principle" …) are the legacy pages' own words.
+
+### Draft reader-facing caveats (Phase 12: app-written, NOT shown anywhere yet)
+
+The data's `statusNotes` are the legacy author's working notes and are not shown (see above). Of the 110 notes, most are bookkeeping (why two candidates were merged, which file a link lives in, how the search was done). **36** carry something a reader may need to know. Each is rewritten below in plain words, **app-written**: the wording is ours, the claim is the note's. None is in the UI. If you approve some, they would appear as a short "Worth knowing" line under the entry's summary, labelled **Source note**, with the entry's own basis tag kept as it is.
+
+**The rule these drafts follow (2026-10-26):** a caveat describes only what the Qur'an text states or does not state. It never states a ruling or a penalty, and for anything that is a ruling it points to **Daily Fiqh** (Phase 13) or the reader's own scholar. It makes no claim about what scholars hold, what tradition says, or what is "near-universal": where a note did, that sentence is dropped. "Reworded" means the first draft broke the rule in some sentence and that sentence was changed or removed; "cut" means nothing was left to say once it was removed.
+
+| Entry | Draft (app-written) | Status |
+| --- | --- | --- |
+| Peoples · `ad` | The Qur'an does not say where 'Ad lived today. It names Al-Ahqaf as where they were warned (46:21), and this page goes no further. | kept |
+| Peoples · `thamud` | Thamud is named in the Qur'an. 15:80 ("the companions of Al-Hijr") does not itself say "Thamud"; linking the two is read from the surrounding text. | reworded (dropped "tradition") |
+| Peoples · `madyan` | Madyan is both a people and a place in the Qur'an, and this entry covers both. The Qur'an does not say whether Madyan and the Companions of the Thicket (Al-Aykah) are the same community; Shu'ayb is sent to both. This page does not decide. | reworded (dropped "scholars differ") |
+| Peoples · `ashabalaykah` | The Qur'an does not say that the Companions of the Thicket are the people of Madyan. Both are addressed by Shu'ayb with similar warnings, under two different names. This page does not decide whether they are one community or two. | reworded (dropped "exegetes are divided") |
+| Peoples · `saba` | The Qur'an does not date the flood of the dam or tie it to a named ruler. Naming a particular dam is not something these ayahs say. | reworded (dropped "a later historical link") |
+| Peoples · `peopleofthetown` | The Qur'an names neither the town nor the three messengers. Names given to them elsewhere are not part of the text and are not treated as established here. | reworded (dropped the example place) |
+| Peoples · `sabbathbreakers` | 7:163-166 does not name this community or say they were Israelites. That link comes from the ayahs just before (7:160-162), which speak of Bani Isra'il. | kept |
+| Peoples · `peopleofyunus` | The Qur'an does not name this town. A name for it is not part of the ayahs. | reworded (dropped "Nineveh", "traditional") |
+| Peoples · `ahlalkitab` | | **cut**: once the claim about who the term "mainly meant" is removed, nothing is left that the Qur'an text states or does not state |
+| Places · `madinah` | The Qur'an also says "the city" (al-madinah) for several unnamed towns in other stories (for example in Yusuf, the People of the Cave, Musa and Ya-Sin). This entry lists only the ayahs that are about Madinah, the Prophet's own city. | kept |
+| Places · `mountjudi` | The Qur'an names the mountain but does not say where it is. | reworded (dropped the suggested region) |
+| Places · `alhijr` | Al-Hijr is named in the Qur'an (15:80). The ayah does not link it to Thamud; that link is read from the surrounding text. | reworded (dropped "tradition") |
+| Places · `alahqaf` | The Qur'an names the region but gives no present-day location. | reworded (dropped the suggested region) |
+| Places · `iram` | The Qur'an does not say whether "Iram" is the proper name of 'Ad's city, a descriptive title for 'Ad, or something else. This page shows the ayah's wording and does not decide. | kept |
+| Places · `almasjidalaqsa` | The Qur'an does not use the word "Jerusalem". Reading "the farthest mosque" as Jerusalem is an identification made outside the ayah; the ayah itself does not state it. | reworded (dropped "near-universal" and the hadith claim) |
+| Places · `theholyland` | The Qur'an does not give this land's borders or name a city within it, and does not equate it with Al-Masjid al-Aqsa or Jerusalem, so they are separate entries here. | reworded (dropped "often taken to mean") |
+| Places · `alkahf` | "The cave" is a common noun in the Qur'an, not a place name, and the ayahs give no location for it. | reworded (dropped the example site) |
+| Places · `thesea` | "The sea" is a general word the Qur'an uses in many stories. The ayahs do not say which sea this is. | reworded (dropped "Red Sea" and the gulfs) |
+| Duas · `adamrepentance` | The ayah is in the dual ("they both said"): Adam's wife joins the prayer. The Qur'an does not name her, so the entry is listed under Adam. | kept |
+| Duas · `ibrahimwisdomprayer` | In this prayer Ibrahim asks forgiveness for his father. 9:113-114 later says he withdrew it once it was clear his father was an enemy of Allah. This entry gives the prayer as it was made, not its later withdrawal. | kept |
+| Duas · `musaprayeragainstfiraun` | 10:89 says the prayer was answered and speaks to both Musa and Harun ("your supplication"), though only Musa's words are quoted. The entry is listed under Musa, whose words are quoted. | reworded (dropped the "Ameen" tradition) |
+| Duas · `yunusindarkness` | These words contain no direct request. The ayah says he "called out" (21:87), and the entry is counted as a dua on that wording. | reworded (dropped "long-standing convention" and the hadith) |
+| Events · `ibrahimmigration` | The Qur'an states the migration (29:26) but gives no route, starting point or destination. | kept |
+| Events · `sacrificetrial` | 37:99-113 does not say which son was to be sacrificed. This page does not name him. | kept |
+| Events · `isaascension` | 4:157-158 says Isa was not killed or crucified but raised up. It does not give the timing of what follows, and this page does not add one. | reworded (dropped "scholars have long discussed it") |
+| Events · `siegeconfederates` | The Qur'an never uses the word "trench". The name "Battle of the Trench" and the digging of a trench come from outside the text. The siege itself is from the surah's own account and its name, "the Confederates". | reworded (dropped "seerah") |
+| Events · `pledgeunderthetree` | The Qur'an describes the pledge "under the tree" (48:18). The name Hudaybiyyah and the treaty around it are not in the ayah. | reworded (dropped "tradition") |
+| Commands · `zakahcommand` | 2:110 speaks of giving zakah, and 9:60 names who zakah may go to. These ayahs give no threshold or percentage. For how zakah is worked out, see Daily Fiqh or ask your scholar. | reworded (dropped "commands"; added the pointer; no figures) |
+| Commands · `hajjcommand` | 3:97 speaks of the pilgrimage to the House in relation to whoever is able to make the journey. The ayah does not describe the rites or the detailed conditions. For these, see Daily Fiqh or ask your scholar. | reworded (no statement of the obligation; added the pointer) |
+| Commands · `ribaprohibition` | 2:275 speaks of riba and of trade. The ayah does not list kinds of riba or speak of modern financial products. For what applies today, see Daily Fiqh or ask your scholar. | reworded (dropped "later jurisprudence" and the restated prohibition; added the pointer) |
+| Commands · `theftprohibition` | 5:38 is worded as a prescribed measure on theft, not as a plain "do not steal". The ayah gives no conditions or thresholds. For how it applies, see Daily Fiqh or ask your scholar. | reworded (the penalty is not stated; added the pointer) |
+| Commands · `murderprohibition` | The prohibition here is 17:33. Its parallel at 5:32 is addressed to the Children of Israel, and the Qur'an presents it as a principle that reaches everyone ("whoever kills a soul…"); it is not, in its own grammar, addressed to all people. | reworded (names 17:33, the entry's own ayah) |
+| Commands · `justicecommand` | 16:90 joins commands (justice, excellence, giving to relatives) with prohibitions (indecency, wrongdoing, oppression) in one ayah. The prohibitions are not listed as a separate entry. | kept |
+| Commands · `repentancecommand` | The command to turn in repentance is the last clause of 24:31, an ayah mainly about modesty for believing women. It is cited only for that clause. | kept |
+| Commands · `shirkprohibition` | 6:151 is a list ayah ("Come, let me recite what your Lord has forbidden you"). It is cited here for its opening clause on shirk; the rest of the list includes other prohibitions that have their own entries. | kept |
+| Commands · `backbitingprohibition` | The backbiting clause is the end of 49:12, which begins with a separate instruction against suspicion and spying. | kept |
+
+**Two summaries replaced (decided 2026-10-26, done):** the data's own sentences for Commands `theftprohibition` and `ribaprohibition` state a penalty and a prohibition as plain facts. The pages now show app-written lines that attribute to the Qur'an text, with the reference: Riba, "The Qur'an forbids riba (2:275)."; Theft, "The Qur'an addresses theft (5:38). Its conditions and application are matters of fiqh; see Daily Fiqh or a scholar." (`SUMMARY_OVERRIDES` in `lib/knowledge/commands.ts`; a test pins them and that no other summary changes). The data is untouched. Please read the two lines once.
+
+**Questions for you:**
+
+- [ ] Show any of these? If yes: as a "Worth knowing" line under the summary, or only inside a collapsed "Notes" row? (Recommended: a line, labelled **Source note**.)
+- [ ] Wording changes, line by line. The four that now point to Daily Fiqh (zakah, hajj, riba, theft) assume Phase 13 ships that page; until then the pointer would read "ask your scholar" only.
+- [ ] The remaining 74 notes stay hidden (bookkeeping: merges, file links, search method). Tell me if you want to see the list first.
+
 ## Daily Fiqh (Phase 13)
 
 - [ ] **Structure against the real data (checked).** The legacy data has 9 categories and 67 topics, in six categories (5 Foundations, 8 Taharat, 20 Salat, 13 Sawm, 14 Khums, 7 Zakat); Hajj, Other furu' and Daily life have none yet. The prototype's category ids differ for four (`taharah`, `salah`, `furu`, `daily` against `taharat`, `salat`, `otherfuru`, `dailylife`), some Arabic terms differ (Foundations: "الأصول" against "المقدمات"), and its topic counts differ for four categories (Taharah 9 against 8, Salah 14 against 20, Khums 11 against 14, Zakat 10 against 7). Of its 34 sample topics, 13 have an id that exists in the legacy data and 21 do not. The routes `/fiqh/[category]/[topic]` use the legacy ids.

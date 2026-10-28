@@ -1,10 +1,22 @@
 <script setup lang="ts">
 // Family & notes: each relationship as a sentence with its source (a dashed border when it is not verified), and the scholarly and
-// traditional notes (sources by type, status notes). Referenced By waits for Phase 12.
+// traditional notes (sources by type, status notes), and (Phase 12) what else is connected to this person and which entries name them: the legacy graph,
+// loaded when the tab opens. Family is shown above, so the "Connected" list leaves out other people.
+import type { LinkGroup } from "~/lib/knowledge/graph";
 import { relationLines, sourceLabel, type QuranPerson } from "~/lib/people";
 
 const props = defineProps<{ person: QuranPerson }>();
 const lines = computed(() => relationLines(props.person));
+const connected = shallowRef<LinkGroup[]>([]);
+const referencedBy = shallowRef<LinkGroup[]>([]);
+async function loadLinks() {
+  const { linksFor } = await import("~/lib/knowledge/graph");
+  const l = linksFor("persons", props.person.id);
+  connected.value = l.connected.filter((g) => g.module !== "persons");
+  referencedBy.value = l.referencedBy;
+}
+onMounted(loadLinks);
+watch(() => props.person.id, loadLinks);
 </script>
 
 <template>
@@ -33,6 +45,17 @@ const lines = computed(() => relationLines(props.person));
         <li v-for="(n, i) in person.statusNotes" :key="i">{{ n }}</li>
       </ul>
       <p v-if="!person.sources?.length && !person.statusNotes?.length" class="mt-2 text-[14px] text-ink-2" data-testid="no-notes">No notes are recorded for this person.</p>
+    </section>
+
+    <section v-if="connected.length" aria-labelledby="connected-h" data-testid="connected-section">
+      <h2 id="connected-h" class="text-[15px] font-medium">Connected</h2>
+      <p class="mt-1 text-[13px] text-ink-2">Named in {{ person.name }}’s own data.</p>
+      <div class="mt-2"><KnowledgeLinkGroups :groups="connected" testid="person-connected" /></div>
+    </section>
+    <section v-if="referencedBy.length" aria-labelledby="refby-h" data-testid="referenced-section">
+      <h2 id="refby-h" class="text-[15px] font-medium">Referenced by</h2>
+      <p class="mt-1 text-[13px] text-ink-2">Entries whose own data names {{ person.name }}. {{ person.name }}’s data does not name them back.</p>
+      <div class="mt-2"><KnowledgeLinkGroups :groups="referencedBy" testid="person-referenced" /></div>
     </section>
   </div>
 </template>

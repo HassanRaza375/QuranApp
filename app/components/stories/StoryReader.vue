@@ -267,16 +267,15 @@ function openEntity(e: Entity) {
       </div>
     </article>
 
-    <!-- who and where: data only; places, peoples and events have no page until Phase 12 -->
+    <!-- who and where: data only; each opens its page (Phase 12) -->
     <section v-if="entities && (entities.people.length || entities.communities.length || entities.places.length || entities.events.length)" class="mt-8" aria-labelledby="in-story-h" data-testid="in-story">
       <h3 id="in-story-h" class="text-[15px] font-medium">In this story</h3>
       <ul class="mt-2 flex flex-wrap gap-2">
         <li v-for="e in [...entities.people, ...entities.communities, ...entities.places]" :key="`${e.kind}-${e.id}`">
           <button type="button" class="inline-flex min-h-11 items-center rounded-full border px-3 text-[13.5px] md:min-h-8" :class="e.kind === 'person' ? '' : 'border-dashed'" :data-kind="e.kind" data-testid="entity-chip" @click="openEntity(e)">{{ e.name }}</button>
         </li>
-        <li v-for="e in entities.events" :key="`event-${e.id}`"><span class="inline-flex min-h-8 items-center rounded-full border border-dashed px-3 text-[13px] text-ink-2" title="Events arrive in a later phase" data-testid="event-chip">Event · {{ e.name }}</span></li>
+        <li v-for="e in entities.events" :key="`event-${e.id}`"><NuxtLink v-if="e.href" :to="e.href" class="inline-flex min-h-11 items-center rounded-full border border-dashed px-3 text-[13.5px] md:min-h-8" data-testid="event-chip">Event · {{ e.name }}</NuxtLink></li>
       </ul>
-      <p v-if="entities.events.length" class="mt-1 text-[12px] text-ink-2" data-testid="events-note">Events arrive in a later phase. Place and people-group pages arrive then too.</p>
     </section>
 
     <section v-if="story.statusNotes?.length || story.sources?.length" class="mt-6" data-testid="story-notes">

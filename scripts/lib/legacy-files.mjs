@@ -14,6 +14,9 @@ export const TRACKED_FILES = [
   "app/data/quranPeoples.ts",
   "app/data/quranPersons.ts",
   "app/data/quranPlaces.ts",
+  "app/data/quranSigns.ts", // Phase 12
+  "app/data/quranThemes.ts", // Phase 12
+  "app/data/quranDuas.ts", // Phase 12
   "app/data/quranStories.ts",
   "app/data/wajibat/categories.ts",
   "app/data/wajibat/marja.ts",
@@ -21,6 +24,21 @@ export const TRACKED_FILES = [
   "app/data/wajibat/types.ts", // type-only imports of the three above
   // pure utils
   "app/utils/commandsSearch.ts",
+  // Phase 12: each knowledge module's search util and validator (the validators run in tests/knowledge.test.ts)
+  "app/utils/commandsValidate.ts",
+  "app/utils/duasSearch.ts",
+  "app/utils/duasValidate.ts",
+  "app/utils/eventsSearch.ts",
+  "app/utils/eventsValidate.ts",
+  "app/utils/placesSearch.ts",
+  "app/utils/placesValidate.ts",
+  "app/utils/signsSearch.ts",
+  "app/utils/signsValidate.ts",
+  "app/utils/themesSearch.ts",
+  "app/utils/themesValidate.ts",
+  "app/utils/graphIndex.ts", // Phase 12: the cross-module graph ("Connected", "Referenced by")
+  "app/utils/peoplesSearch.ts",
+  "app/utils/peoplesValidate.ts",
   "app/utils/islamicEvents.js",
   "app/utils/personStudy.ts",
   "app/utils/personsChronology.ts",

@@ -90,7 +90,7 @@ export const usePlayerStore = defineStore("player", () => {
   }
 
   /** A saved queue, rebuilt from the data (a page from the page starts, a story chapter from its passages). */
-  async function buildQueue(kind: "page" | "story", ref: QueueRef): Promise<BuiltQueue | null> {
+  async function buildQueue(kind: "page" | "story" | "knowledge", ref: QueueRef): Promise<BuiltQueue | null> {
     if (kind === "page" && "page" in ref) return pageQueue(ref.page);
     if (kind === "story" && "storyId" in ref) {
       const [{ QURAN_STORIES }, { chaptersOf }] = await Promise.all([import("@legacy/data/quranStories"), import("~/lib/stories")]);
@@ -98,6 +98,7 @@ export const usePlayerStore = defineStore("player", () => {
       const ch = story ? chaptersOf(story)[ref.chapter] : undefined;
       return story && ch ? storyQueue(story.id, ref.chapter, ch.title, ch.passages) : null;
     }
+    if (kind === "knowledge" && "module" in ref) return (await import("~/lib/knowledge/queue")).knowledgeQueue(ref.module, ref.id);
     return null;
   }
 
@@ -141,7 +142,7 @@ export const usePlayerStore = defineStore("player", () => {
     view: computed(() => snap.value.view),
     playSurah,
     playAyah: (a: { surah: number; ayah: number; reciter: string }) => engine.playAyah(a),
-    playQueue: (q: { id: string; label: string; items: AyahRef[]; reciter: string; kind: "page" | "story"; ref: QueueRef; startIndex?: number }) => engine.playQueue(q),
+    playQueue: (q: { id: string; label: string; items: AyahRef[]; reciter: string; kind: "page" | "story" | "knowledge"; ref: QueueRef; startIndex?: number }) => engine.playQueue(q),
     playClip: (c: { id: string; title: string; subtitle: string; url: string }) => engine.playClip(c),
     skipAyah: () => engine.skipAyah(),
     pause: () => engine.pause(),
