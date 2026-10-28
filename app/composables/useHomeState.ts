@@ -4,6 +4,9 @@ import { goalToday, type GoalToday } from "~/lib/goalToday";
 import { localDateKey } from "~/lib/dates";
 import { latestStudy, readingRow, type ReadingRow } from "~/lib/resume";
 import { latestProgress, newerOf, readAllProgress } from "~/lib/storyProgress";
+import { todayKey } from "~/lib/hifz/engine";
+import { practiceCount } from "~/lib/hifz/queue";
+import { loadHifz } from "~/lib/hifz/store";
 import { getJSON } from "~/lib/storage";
 import { detectUserState, HISTORY_KEYS, type UserState } from "~/lib/userState";
 
@@ -28,6 +31,17 @@ export interface HomeState {
   study: StudyRow | null;
   goal: GoalToday | null;
   hifz: "none" | "has-data";
+  /** how many ayahs are in today's Hifz plan (0 when nothing is due, or no Hifz data) */
+  hifzDue: number;
+}
+
+/** Today's Hifz plan size; a damaged record is 0, never an error on Home. */
+function hifzDue(): number {
+  try {
+    return practiceCount(loadHifz().data, todayKey());
+  } catch {
+    return 0;
+  }
 }
 
 export const useHomeState = () => {
@@ -75,6 +89,7 @@ export const useHomeState = () => {
       study,
       goal: goalToday(read(HISTORY_KEYS.readingGoals), localDateKey(new Date())),
       hifz: user.has.hifz ? "has-data" : "none",
+      hifzDue: user.has.hifz ? hifzDue() : 0,
     };
   }
 

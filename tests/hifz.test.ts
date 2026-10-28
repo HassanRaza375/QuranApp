@@ -4,6 +4,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import * as E from "../app/lib/hifz/engine";
 import { canOfferEasy, gradeFor } from "../app/lib/hifz/grading";
+import { CELL_LABEL, cellsFor, counts, summarize } from "../app/lib/hifz/overview";
 import { ayahList, buildPlan, refsLabel } from "../app/lib/hifz/queue";
 import * as S from "../app/lib/hifz/session";
 import * as W from "../app/lib/hifz/slips";
@@ -344,3 +345,31 @@ describe("the storage wrapper", () => {
     expect(weeksFor(286, 1)).toBe(41);
   });
 });
+
+describe("a surah as cells (the strength strip)", () => {
+  it("one cell per ayah of the plan, by strength, with a weak join marked on the ayah it leads to", () => {
+    let d = world();
+    d = weakJoin(d);
+    const cells = cellsFor(d, d.targets.find((t) => t.id === "ikhlas")!);
+    expect(cells.map((c) => [c.ayah, c.s, c.joinWeak])).toEqual([[1, "learning", false], [2, "learning", false], [3, "learning", true], [4, "learning", false]]);
+    const mulk = cellsFor(d, d.targets.find((t) => t.id === "mulk")!);
+    expect(mulk).toHaveLength(30);
+    expect(counts(mulk)).toMatchObject({ started: 2, none: 28, learning: 2 });
+  });
+  it("a partial plan has cells only for its range, and an ayah without a state is not started", () => {
+    const d = E.createTarget(E.emptyData(), { surahNo: 36, surahName: "x", startAyah: 20, endAyah: 22, dailyNewTarget: 1, dailyTimeGoalMinutes: 15 }, "p", 0).data;
+    expect(cellsFor(d, d.targets[0]!).map((c) => [c.ayah, c.s])).toEqual([[20, "none"], [21, "none"], [22, "none"]]);
+  });
+  it("is read out as a sentence", () => {
+    let d = world();
+    d = E.gradeAyah(E.gradeAyah(d, "ikhlas", 3, "again", 0, "2026-10-02"), "ikhlas", 3, "again", 0, "2026-10-03");
+    d = weakJoin(d);
+    expect(summarize(cellsFor(d, d.targets.find((t) => t.id === "ikhlas")!))).toBe("4 of 4 ayahs started: 3 learning, 1 needs work, 1 join needs work");
+    expect(summarize(cellsFor(d, d.targets.find((t) => t.id === "mulk")!))).toBe("2 of 30 ayahs started: 2 learning");
+    expect(summarize([])).toBe("0 of 0 ayahs started");
+    expect(CELL_LABEL.weak).toBe("Needs work");
+  });
+});
+function weakJoin(d: E.HifzData): E.HifzData {
+  return E.gradeTransition(d, "ikhlas", 2, "again", "2026-10-03");
+}
