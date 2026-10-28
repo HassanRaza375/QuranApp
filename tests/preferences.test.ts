@@ -52,6 +52,7 @@ describe("loading values written by the legacy app", () => {
       verseLayout: "tr",
       notifications: { enabled: true, prayers: { Fajr: true, Dhuhr: false, Asr: true, Maghrib: true, Isha: false }, offset: 15 },
       marjaId: "sistani",
+      fiqhLang: "ur", // the legacy record's `lang`
     } satisfies Preferences);
   });
 
@@ -149,7 +150,7 @@ describe("saving keeps the legacy formats", () => {
       highContrast: true, largeTouchTargets: true, literaryModules: true, hijriAdjust: 2,
       calc: { sunniMethod: 5, jafariMethod: 7, asr: "hanafi" }, wifiOnly: true, verseLayout: "tr",
       notifications: { enabled: true, prayers: { Fajr: false, Dhuhr: true, Asr: true, Maghrib: false, Isha: true }, offset: 30 },
-      marjaId: "sistani",
+      marjaId: "sistani", fiqhLang: "both",
     };
     for (const k of Object.keys(next) as (keyof Preferences)[]) savePreference(k, next[k] as never);
     expect(loadPreferences()).toEqual(next);

@@ -24,6 +24,35 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss(), legacyBridge()],
     server: { fs: { allow: [fileURLToPath(new URL(".", import.meta.url)), LEGACY_ROOT] } },
+    // Daily Fiqh (Phase 13): the ruling data is large (about 2.3 MB raw), so each category is its own chunk, named wajibat-data-<category>, plus a small
+    // "core" (topics, glossary, the one-line ruling index). Named so the PWA config can keep them out of the install-time precache (see pwa.workbox) and
+    // app/lib/fiqh/offline.ts can cache them. `marja`, `types`, `access`, `categories` and `topics` are small and used by Settings, the Library and Search, so they stay in the ordinary chunks (precached).
+    $client: {
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks(id: string) {
+              const p = id.replace(/\\/g, "/");
+              // Vite's dynamic-import helper is used by the entry and by the data chunks; left alone it was placed in the core data chunk, which put that chunk (not in the precache)
+              // into the entry's static imports, and a tab opened offline then showed nothing at all. It gets a chunk of its own.
+              if (p.includes("preload-helper")) return "vite-preload-helper";
+              if (!p.includes("/data/wajibat/")) return;
+              // small and needed outside Daily Fiqh (Settings, the Library, Search): their own ordinary chunk (`fiqh-shared`, precached). Left to the default they were put in the core data chunk. The name must not start with `wajibat-`: the bundler merged a `wajibat-shared` group into the core chunk.
+              if (/\/data\/wajibat\/(marja|types|access|categories|topics)\./.test(p)) return "fiqh-shared";
+              if (/\/(chunks\/foundations|rulings\/foundations)\./.test(p)) return "wajibat-data-foundations";
+              if (/\/(chunks\/taharat|rulings\/taharat|procedures\/taharat|decisionTrees\/taharat)\./.test(p)) return "wajibat-data-taharat";
+              if (/\/(chunks\/salat|rulings\/(salat|salatQa|doubts)|procedures\/salat|recitations|decisionTrees\/salat)\./.test(p)) return "wajibat-data-salat";
+              if (/\/(chunks\/sawm|rulings\/(sawm|sawmQa))\./.test(p)) return "wajibat-data-sawm";
+              if (/\/(chunks\/khums|rulings\/khums)\./.test(p)) return "wajibat-data-khums";
+              if (/\/(chunks\/zakat|rulings\/zakat)\./.test(p)) return "wajibat-data-zakat";
+              return "wajibat-data-core";
+            },
+            // Nuxt's default chunk file name has no [name]; without this the grouping above lands under an anonymous hash and cannot be targeted by name.
+            chunkFileNames: (chunk: { name: string }) => (/^(wajibat-data|fiqh-shared)/.test(chunk.name) ? "_nuxt/[name]-[hash].js" : "_nuxt/[hash].js"),
+          },
+        },
+      },
+    },
   },
 
   // Icons are Lucide, bundled into the app: nothing is fetched from api.iconify.design at runtime (offline rule).
@@ -103,12 +132,20 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+      // Daily Fiqh ruling data (Phase 13) is not part of the install: it is cached when a category is opened or when "Save all for offline" is pressed.
+      globIgnores: ["**/wajibat-data-*.js"],
       // Every navigation falls back to the precached SPA shell, except API routes.
       navigateFallback: "/",
       navigateFallbackDenylist: [/^\/api\//],
       cleanupOutdatedCaches: true,
       clientsClaim: true,
       runtimeCaching: [
+        {
+          // Daily Fiqh data chunks, once cached by app/lib/fiqh/offline.ts (same cache name as the legacy app). Answers from the cache first, so a category read once works offline.
+          urlPattern: ({ url }) => /\/wajibat-data-.*\.js$/.test(url.pathname),
+          handler: "CacheFirst",
+          options: { cacheName: "wajibat-data-cache", expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 }, cacheableResponse: { statuses: [0, 200] } },
+        },
         {
           // Saved surah audio (Phase 11, Downloads). The player asks for `<original url>?offline` ONLY when the file is saved; this answers from
           // `quran-downloads-audio-cache` (keyed by the original URL, hence ignoreSearch) and never reaches the network. `rangeRequests` slices

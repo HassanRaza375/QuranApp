@@ -112,7 +112,7 @@ describe("new and shared preference keys", () => {
   it("every new key feeds the cross-tab map", () => {
     expect(preferencesForKey(KEYS.calc)).toEqual(["calc"]);
     expect(preferencesForKey("prayerSettings")).toEqual(["notifications"]);
-    expect(preferencesForKey("quran:fiqh-prefs:v1")).toEqual(["marjaId"]);
+    expect(preferencesForKey("quran:fiqh-prefs:v1")).toEqual(["marjaId", "fiqhLang"]);
     expect(preferencesForKey("quran:verse-layout:v1")).toEqual(["verseLayout"]);
     expect(preferencesForKey("quran:download-prefs:v1")).toEqual(["wifiOnly"]);
     expect(Object.keys(DESCRIPTORS).length).toBe(Object.keys(loadPreferences()).length);

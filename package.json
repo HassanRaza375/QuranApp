@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:helpers": "playwright test e2e/fiqhHelpers.spec.ts",
     "verify": "npm run build && npm run lint && npm test && npm run test:dev && npm run test:e2e",
     "test:dev": "node scripts/dev-smoke.mjs"
   },

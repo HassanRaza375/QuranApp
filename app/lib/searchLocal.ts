@@ -33,6 +33,8 @@ export interface NoteEntry {
 
 export interface LocalContext {
   notes: readonly NoteEntry[];
+  /** the Daily Fiqh marja' (a ruling that belongs to one marja' only is found by his followers only) */
+  marjaId?: string | null;
 }
 
 export interface LocalProvider {
@@ -139,7 +141,7 @@ const notes: LocalProvider = {
   },
 };
 
-/** The order is the order the groups appear in. Duas and the Knowledge base are inserted before Notes by `loadKnowledgeGroups`; Phase 13 adds Daily Fiqh the same way. */
+/** The order is the order the groups appear in. Duas and the Knowledge base are inserted before Notes by `loadKnowledgeGroups`; Daily Fiqh is inserted the same way by `loadFiqhGroup` (Phase 13). */
 export const PROVIDERS: LocalProvider[] = [surahs, people, stories, notes];
 
 let knowledgeLoaded = false;
@@ -150,6 +152,16 @@ export async function loadKnowledgeGroups(): Promise<void> {
   if (knowledgeLoaded) return;
   knowledgeLoaded = true;
   PROVIDERS.splice(PROVIDERS.indexOf(notes), 0, ...KNOWLEDGE_SEARCH_PROVIDERS);
+}
+
+let fiqhLoaded = false;
+/** Registers the Daily Fiqh group (Phase 13), the same way and for the same reason as the knowledge groups: its index is part of the Daily Fiqh data chunk. Safe to call twice. */
+export async function loadFiqhGroup(): Promise<void> {
+  if (fiqhLoaded) return;
+  const { FIQH_SEARCH_PROVIDERS } = await import("./fiqh/searchProvider");
+  if (fiqhLoaded) return;
+  fiqhLoaded = true;
+  PROVIDERS.splice(PROVIDERS.indexOf(notes), 0, ...FIQH_SEARCH_PROVIDERS);
 }
 
 export interface LocalGroup {

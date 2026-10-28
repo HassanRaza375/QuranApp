@@ -26,6 +26,7 @@ export function useSearchPage() {
   const state = reactive<SearchState>({ ...stateFromQuery(route.query) });
   const ayah = reactive<{ phase: AyahPhase; hits: AyahHit[]; forQuery: string }>({ phase: "idle", hits: [], forQuery: "" });
   const history = ref<string[]>([]);
+  const prefsStore = usePreferencesStore();
   const local = shallowRef<typeof import("~/lib/searchLocal") | null>(null);
   const knowledgeTick = ref(0); // the Duas and Knowledge base groups arrive after the first groups: the list is computed again when they do
 
@@ -39,7 +40,7 @@ export function useSearchPage() {
       return { key, title: item.title, note: m.note, tags: m.tags, href: item.href };
     }),
   );
-  const localGroups = computed<LocalGroup[]>(() => (local.value && knowledgeTick.value >= 0 && state.q.trim() ? local.value.searchLocal(state.q, { notes: notes.value }) : []));
+  const localGroups = computed<LocalGroup[]>(() => (local.value && knowledgeTick.value >= 0 && state.q.trim() ? local.value.searchLocal(state.q, { notes: notes.value, marjaId: prefsStore.prefs.marjaId }) : []));
 
   // ---------------------------------------------------------------- the ayah search
   const query = computed(() => state.q.trim());
@@ -141,12 +142,19 @@ export function useSearchPage() {
   const offAfter = router.afterEach(() => {
     leaving = false;
   });
+  // The URL this page itself has just asked for, until the router reports it. A write that is still landing when the reader changes something else (a chip, a filter) comes back
+  // through the route watcher below as an OLDER state; without this it was read as "Back or Forward" and overwrote the newer choice (found in Phase 13: a chip clicked within about a
+  // second of typing was undone). Only our own echo is skipped; a real navigation to the same address still is read.
+  const echoes = new Set<string>();
   function syncUrl() {
     clearTimeout(urlTimer);
     urlTimer = setTimeout(() => {
       if (leaving) return;
       const next = stateToQuery(state);
-      if (!sameQuery(next, stateToQuery(stateFromQuery(route.query)))) void router.replace({ query: next });
+      if (sameQuery(next, stateToQuery(stateFromQuery(route.query)))) return;
+      const mine = JSON.stringify(next);
+      echoes.add(mine);
+      void router.replace({ query: next }).finally(() => echoes.delete(mine));
     }, DEBOUNCE_MS);
   }
   watch(state, syncUrl);
@@ -158,6 +166,7 @@ export function useSearchPage() {
     () => route.query,
     (q) => {
       const n = stateFromQuery(q);
+      if (echoes.has(JSON.stringify(stateToQuery(n)))) return; // our own write arriving: the state is already newer or equal
       if (!sameQuery(stateToQuery(n), stateToQuery(state))) Object.assign(state, n); // the header's link, Back and Forward
     },
   );
@@ -190,10 +199,13 @@ export function useSearchPage() {
     if (!library.loaded) library.reload();
     void library.ensureProviders();
     window.addEventListener("online", onOnline);
-    if (query.value) schedule();
+    // an opened ?q= link searches at once, before the local groups arrive: the ayah search does not need them. (It used to be armed here and asked for again after the chunk had loaded; on a slow
+    // machine the chunk took longer than the pause and the same search was sent twice.)
+    if (query.value) void runNow();
     local.value = await import("~/lib/searchLocal");
     void local.value.loadKnowledgeGroups().then(() => knowledgeTick.value++).catch((e) => console.debug("knowledge groups of Search not loaded", e));
-    if (query.value) void runNow(); // an opened ?q= link searches at once
+    // the Daily Fiqh data is not part of the install: offline, and never opened online, this group is simply not there
+    void local.value.loadFiqhGroup().then(() => knowledgeTick.value++).catch((e) => console.debug("Daily Fiqh group of Search not loaded", e));
   });
   onBeforeUnmount(() => {
     clearTimeout(debounce);

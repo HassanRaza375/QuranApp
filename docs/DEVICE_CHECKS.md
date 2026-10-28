@@ -17,6 +17,8 @@ Devices to try where a row says so: **iPhone Safari**, **Chrome on Android**, **
 
 Until at least A and C are done, keep new phases small (a bug found late costs more than one found now).
 
+**2026-10-28: the owner reports that Firefox and Safari have been tested.** Marked "owner reports tested" below: A1, A2, A3 (iPhone Safari), A5 (Firefox), D10 (iPhone Safari) and D16 (Firefox). These are the owner's word, not a result pasted back, so the "Results to paste back" block is still empty. **Left open** because they name something other than Safari or Firefox: Chrome on Android (A4, D11), the installed Home Screen app and its timing (S1, N5, D9), the compass (C1 to C8), notifications, Hijri and Ja'fari times, and Daily Fiqh F1 to F3.
+
 ---
 
 ## Phase 0: shell, install, update
@@ -78,11 +80,11 @@ Use the **Surah listing** Play buttons (and the reader's "Play surah"). Surah 1 
 
 | # | Steps | Expected | What I saw |
 | --- | --- | --- | --- |
-| A1 | **iPhone Safari**: play surah 1 with reciter 1, then reciter 2 | Plays. If not, write the exact message under the mini player | |
-| A2 | iPhone Safari: play surah 3 with reciter 1, then reciter 2 | Plays (the large file). If it fails: the exact message, and how long it waited first | |
-| A3 | iPhone Safari: play surah 18 with two reciters | Same as A2 | |
+| A1 | **iPhone Safari**: play surah 1 with reciter 1, then reciter 2 | Plays. If not, write the exact message under the mini player | owner reports tested (2026-10-28) |
+| A2 | iPhone Safari: play surah 3 with reciter 1, then reciter 2 | Plays (the large file). If it fails: the exact message, and how long it waited first | owner reports tested (2026-10-28) |
+| A3 | iPhone Safari: play surah 18 with two reciters | Same as A2 | owner reports tested (2026-10-28) |
 | A4 | **Chrome on Android**: repeat A1 to A3 | Same | |
-| A5 | **Firefox** (only if you use it): repeat A1 to A3 | Same | |
+| A5 | **Firefox** (only if you use it): repeat A1 to A3 | Same | owner reports tested (2026-10-28) |
 | A6 | While a large file plays, open the sheet (tap the title) and drag the position slider to the middle | The sound jumps there without a long wait (the host supports ranges). Write whether it works and how long it took | |
 | A7 | Pause and Play; change speed to 1.5×; Back 10 s and Forward 10 s | Each does what it says; the speed is audible | |
 | A8 | Switch reciter in the sheet | The note "Switching reciter restarts this surah." is shown first; the other reciter plays from the start | |
@@ -202,13 +204,20 @@ Open the Vercel preview of branch `phase-11-downloads` on the phone. Use **Wi-Fi
 | D7 | Online: **Remove** a saved surah, then **Undo** within a few seconds; remove again and wait | It comes back; the second time it is gone and Settings, Data and privacy shows less used | |
 | **D8 (open)** | **Al-Baqarah** (90 to 121 MB, on Wi-Fi): download it, play it offline, seek near the end | It plays and seeks, or say exactly what happened (the page reloaded, the audio stopped, low memory) | **Not tried** |
 | **D9 (open)** | iPhone only: a day or more later, open the app and look at Downloads | The saved surahs are still there (Safari may clear a site's data after a week without a visit unless the app is on the Home Screen: the **7-day Safari check**) | |
-| **D10 (open)** | **iPhone Safari**: repeat D2 to D7 (in the browser tab, then from the Home Screen) | Each works, or say which step fails and the message | |
+| **D10 (open)** | **iPhone Safari**: repeat D2 to D7 (in the browser tab, then from the Home Screen) | Each works, or say which step fails and the message | owner reports tested (2026-10-28) |
 | D11 | Android Chrome: Settings, Audio, turn on **Download on Wi-Fi only**; on **mobile data** add a surah with audio | The text is saved; the audio says "Waiting for Wi-Fi"; join Wi-Fi and it starts by itself | |
 | D12 | Add a surah with **Tafsir** ticked; airplane mode; open that surah in the reader and open an ayah's tafsir | It opens with no connection | |
 | D13 | **Save the text of the whole Qur'an** (Wi-Fi), airplane mode, open a few surahs | Each opens; the page says 114 surahs | |
 | D14 | `/surah-audios/36`: Play a reciter that is not yours; Download another | The Settings reciter does not change; Saved shows with the size | |
 | D15 | In the player sheet press **Save audio to listen offline** | Progress, then "Saved on this device" | |
-| D16 | Firefox (only if you use it): D2 and D4 | Works, or "This browser can't keep files…" | |
+| D16 | Firefox (only if you use it): D2 and D4 | Works, or "This browser can't keep files…" | owner reports tested (2026-10-28) |
+
+## Phase 13: Daily Fiqh
+
+- **K1 (Khamenei against leader.ir): waived by the owner on 2026-10-28.** The 30 entries of `docs/phases/phase-13-khamenei-spot-check.md` were not checked; his pointers stay as built, and Phase 13 is accepted without it. Not a claim that his text was checked.
+- **F1 (installed phone, offline):** open Daily Fiqh online, choose a marja', open Taqlid and one Salat topic; switch to airplane mode and reload both: the rulings show. Open a category you did not open: it says it is not on the device with Try again. Back online, Save all for offline, then offline again: every topic opens.
+- **F2 (a phone that never opened Daily Fiqh):** offline, open `/fiqh` in a new tab: a plain "Daily Fiqh isn't on this device yet" page, not a blank one.
+- **F3 (Urdu on a phone):** choose Urdu and Both on a Sistani topic: the Nastaliq text reads well at 375 px and nothing is cut off.
 
 ## Manual review (not on a device)
 

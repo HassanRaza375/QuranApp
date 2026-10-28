@@ -3,7 +3,7 @@
   "commit": "7120b6cd6301ed267085b130052d767f95b2c15a",
   "branch": "revamp-design-logic",
   "committedAt": "2026-10-22T12:33:44+05:00",
-  "syncedAt": "2026-10-26",
+  "syncedAt": "2026-10-28",
   "files": {
     "app/assets/data/names.json": {
       "bytes": 26727,
@@ -90,9 +90,69 @@
       "sha256": "0e93b26372cf60c3a4513c2aff26989862dfaf6b7b1eb78a1a003b68990b7666",
       "source": "git"
     },
+    "app/data/wajibat/access.ts": {
+      "bytes": 919,
+      "sha256": "092b6584e1ba13d1f0724c59af1e2fcd884ba2c76fa051fe85312ac0a9abaf0f",
+      "source": "git"
+    },
     "app/data/wajibat/categories.ts": {
       "bytes": 4352,
       "sha256": "871cb77ef76e1492d701a79f6d7830175f318cdebc59686dd973e37594e10faf",
+      "source": "git"
+    },
+    "app/data/wajibat/chunks/foundations.ts": {
+      "bytes": 484,
+      "sha256": "7eda4644f58d8867b26153f2e9aa1e9e3e45f70ce06f572600cb85893ff5838e",
+      "source": "git"
+    },
+    "app/data/wajibat/chunks/khums.ts": {
+      "bytes": 408,
+      "sha256": "d9fc0bb527ae5f7aa7688bc5c62350b3211e04ff6fcfcaea1fcdc3204079d56b",
+      "source": "git"
+    },
+    "app/data/wajibat/chunks/salat.ts": {
+      "bytes": 880,
+      "sha256": "09116826cb4ad03eef360117b35e2e4e94fd706c949ae39a2ca787195b8e39a7",
+      "source": "git"
+    },
+    "app/data/wajibat/chunks/sawm.ts": {
+      "bytes": 529,
+      "sha256": "06736a1f6e02184b7706701874105e018f7ee179e84d0814f392bdef05b2dfd1",
+      "source": "git"
+    },
+    "app/data/wajibat/chunks/taharat.ts": {
+      "bytes": 606,
+      "sha256": "adac10bca1f4a04037b6a2ec787939381598fd5da61097c8d97b74a13e4985b6",
+      "source": "git"
+    },
+    "app/data/wajibat/chunks/zakat.ts": {
+      "bytes": 408,
+      "sha256": "403a161847f2af76e4c7335b0c14391d15210c9e6d45d8a11f09aee16f043a96",
+      "source": "git"
+    },
+    "app/data/wajibat/decisionTrees.ts": {
+      "bytes": 425,
+      "sha256": "a8c4d9034bce48a02b7141fd5b1dfcb621c22cf64d1b0889cd28b4439d97ea70",
+      "source": "git"
+    },
+    "app/data/wajibat/decisionTrees/salat.ts": {
+      "bytes": 135567,
+      "sha256": "16bc536cb93fd711f6816f07e54eff7d8b5e605e25758711bf4a6551d44c3a81",
+      "source": "git"
+    },
+    "app/data/wajibat/decisionTrees/taharat.ts": {
+      "bytes": 40188,
+      "sha256": "36fd32faad82886e921ffd7e9c0a9eb48474f852383b754f4cebf4c9c2942305",
+      "source": "git"
+    },
+    "app/data/wajibat/glossary.ts": {
+      "bytes": 34975,
+      "sha256": "12bc66edd12dc7b12621d8c5159ea46722c950f0a8c330fe0d8b91115a6fa8ce",
+      "source": "git"
+    },
+    "app/data/wajibat/index.ts": {
+      "bytes": 3339,
+      "sha256": "4a805570d8f7a6b30544ade86159fb25bb054b7644072242638126639734dfaf",
       "source": "git"
     },
     "app/data/wajibat/marja.ts": {
@@ -100,9 +160,84 @@
       "sha256": "0dc0694e11a9c27ecbc8b56a01267882be0f5b2532b715ecdab2c36b23b3780d",
       "source": "git"
     },
+    "app/data/wajibat/procedures/salat.ts": {
+      "bytes": 92421,
+      "sha256": "823e8d8cec8ef99012c5a156e510d44e23f6b5e03467b2c65a426fd9c7bcb56a",
+      "source": "git"
+    },
+    "app/data/wajibat/procedures/taharat.ts": {
+      "bytes": 10499,
+      "sha256": "d7683b76751aa1078c40677ac1e4334087985c480b3a77b5fa22ba093d761836",
+      "source": "git"
+    },
+    "app/data/wajibat/recitations.ts": {
+      "bytes": 1743,
+      "sha256": "3f6fe7d7eb7081d1f11cf11e5968e02b14c639024e855f446f5e7bdbf8274896",
+      "source": "git"
+    },
+    "app/data/wajibat/rulingIndex.ts": {
+      "bytes": 162430,
+      "sha256": "aa6c3c5480f201efff3bc6a593315752ad8702aa9f87e636c6bbdc256c32cfad",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/doubts.ts": {
+      "bytes": 255944,
+      "sha256": "1e4ce32a90586a804ca32146728a2293d34c49c3658d633f1cfb1411e5252857",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/foundations.ts": {
+      "bytes": 44413,
+      "sha256": "b49f57d84b6b7ab1e06ed05627a7100d13cb5ea0c48d1b4485a1d9025e8f4f63",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/khums.ts": {
+      "bytes": 826608,
+      "sha256": "ccabfee268ee03a51982823496147f8174593e6aa639a1eedcfbc1f1cad257fa",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/salat.ts": {
+      "bytes": 419522,
+      "sha256": "49e231fd03a6321aeeda21ba7be23c25a4c0b5d56d278e9514ae14b5e064da17",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/salatQa.ts": {
+      "bytes": 142535,
+      "sha256": "7a365c8ae72c5d08f80a6be1341420500d0efb47e32cd996ee78375d337ddaa1",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/sawm.ts": {
+      "bytes": 614607,
+      "sha256": "3866686167d8940055958536b18543a2eadfb81590e78e8f1fbf975f7a0566b0",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/sawmQa.ts": {
+      "bytes": 97347,
+      "sha256": "01fc2cfde43bdb32670638f8c9990c4c91f8346db438d0078164530de6adef61",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/taharat.ts": {
+      "bytes": 325696,
+      "sha256": "5c38afc44a3f1a3fe538c48888eb9b30a5f2ff33996ab78d6459a2e4dbd22165",
+      "source": "git"
+    },
+    "app/data/wajibat/rulings/zakat.ts": {
+      "bytes": 193226,
+      "sha256": "1b52809b7f0029dd1b24c98069f79130914411ea002aa73fc78d7a2e0384ec67",
+      "source": "git"
+    },
+    "app/data/wajibat/runtime.ts": {
+      "bytes": 4300,
+      "sha256": "7db3432e39c70b97c011f482bfa6cbc0c94f18d4a9f7bc23b72700875dd4a89d",
+      "source": "git"
+    },
     "app/data/wajibat/topics.ts": {
       "bytes": 60285,
       "sha256": "eb83e6ebd93ab016650348d6dedfa0a509faa037bfc9d787978a35177d65d372",
+      "source": "git"
+    },
+    "app/data/wajibat/treeReviews.json": {
+      "bytes": 3,
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
       "source": "git"
     },
     "app/data/wajibat/types.ts": {
@@ -240,6 +375,41 @@
       "sha256": "179b93d84cf018c10cff6b31e92713d4114a07f3f78867875951c8c910f93e06",
       "source": "git"
     },
+    "app/utils/wajibatCoverage.ts": {
+      "bytes": 2625,
+      "sha256": "ed3c04be60a6a7a2ec8899bdab232bfa876f38dff18dac34437be71e08b43521",
+      "source": "git"
+    },
+    "app/utils/wajibatLabels.ts": {
+      "bytes": 2872,
+      "sha256": "f2b354f1061bdbf32c48d8b9fc128702c850896bf46d3d3ed2d831da88720669",
+      "source": "git"
+    },
+    "app/utils/wajibatMismatch.ts": {
+      "bytes": 3930,
+      "sha256": "367170d61d5c0b84223c49c35ec8768990cd1d26286172898bfbbe9cf8094baf",
+      "source": "git"
+    },
+    "app/utils/wajibatMismatchWords.json": {
+      "bytes": 6516,
+      "sha256": "a7a235916fedc612b6054dd09f725ed8d9e6a7fca71df35040d999204f45cc95",
+      "source": "git"
+    },
+    "app/utils/wajibatReview.ts": {
+      "bytes": 4232,
+      "sha256": "5ecae84c86f4ebbdff6cc5a6ba4f9acabc51ff8ee5288e90dc3d00ba9aa6422a",
+      "source": "git"
+    },
+    "app/utils/wajibatSearch.ts": {
+      "bytes": 2852,
+      "sha256": "0ea15efd6b2129b5534ddfac43c926524704c029adaf3d0b5d83557dade64a10",
+      "source": "git"
+    },
+    "app/utils/wajibatValidate.ts": {
+      "bytes": 24998,
+      "sha256": "d345c4cb9bccdeea8dbc2f6471f059553fa2d36b928f2afbbfe47df1014ab676",
+      "source": "git"
+    },
     "dist/sw.js": {
       "bytes": 12479,
       "sha256": "44c3aec8274860cc8971741097d0dbc06334c844700a25f1fe47c891e0492de9",
@@ -256,6 +426,21 @@
       "bytes": 985,
       "sha256": "0c24884c81161c107b17b05d7a166f8f63999309c69c01edbd939177b3b5307f",
       "source": "derived"
+    },
+    "tests/fixtures/wajibatMismatchDecisions.json": {
+      "bytes": 348659,
+      "sha256": "0b2516b2fbb1599daff2741e8f7c0dc5af68e615fcc422285d83e6de886f50f4",
+      "source": "git"
+    },
+    "tests/fixtures/wajibatMismatches.json": {
+      "bytes": 526728,
+      "sha256": "70cccbdced9ca39062240df228d0ba4b963eabd6053a8cc572883d3d0c9edf3e",
+      "source": "git"
+    },
+    "tests/fixtures/wajibatSourceSnapshot.json": {
+      "bytes": 1745067,
+      "sha256": "aab68128620b73296352305e72dbc8ce0bc3aa005bc2408fc10f1cb6205ee61e",
+      "source": "git"
     }
   }
 }
