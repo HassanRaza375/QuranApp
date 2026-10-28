@@ -79,8 +79,9 @@ test.describe("nothing plays by itself", () => {
     await openListing(page);
     await page.getByTestId("mini-toggle").click();
     await expect(page.getByTestId("mini-toggle")).toHaveAccessibleName("Pause");
+    // the button turns to Pause while the file is still being looked up; the element is asked to play a moment later, so wait for it (a one-shot read failed once in a full run)
+    await expect.poll(async () => (await A(page)).srcs).toHaveLength(1);
     const a = await A(page);
-    expect(a.srcs).toHaveLength(1);
     expect(a.srcs[0]).toMatch(/\/2\/18\.mp3$/); // reciter 2 (Abu Bakr Al Shatri), surah 18
     expect(a.srcs[0]).not.toContain("audio.test");
   });
@@ -313,6 +314,7 @@ test.describe("Space and the keyboard", () => {
     await start(page, 1);
     await openSheet(page);
     const slider = page.getByTestId("player-slider");
+    await expect(page.getByTestId("player-status")).toHaveText("Playing"); // not while it still says Loading…: Space would land on a file that is not playing yet
     await slider.focus();
     await page.keyboard.press("Space");
     await expect(page.getByTestId("player-status")).toHaveText(/Paused/);
