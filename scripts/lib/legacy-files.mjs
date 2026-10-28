@@ -96,6 +96,8 @@ export const TRACKED_FILES = [
   "app/composables/useSearchHistory.ts", // run by the history parity test (scripts/lib/legacy-search-history.mjs)
   "app/composables/useDownloads.ts", // run by the downloads-manifest parity test (scripts/lib/legacy-downloads.mjs)
   "app/composables/useTasbeeh.ts",
+  "app/composables/useHifz.ts", // Phase 14: run by the Hifz parity test (scripts/lib/legacy-hifz.mjs)
+  "app/composables/useHifzSession.ts", // Phase 14: its queue and grading, run by the same test
 ];
 
 /**
