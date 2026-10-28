@@ -222,12 +222,25 @@ test.describe("during Ramadan (day 12)", () => {
     expect(rec.fastingLog["2027-02-15"]).toBe("fasted");
   });
 
-  test("Khatmah is read-only: with no goal it says so and links to reading; with a Ramadan Khatmah goal it shows today's count and the target", async ({ context, page }) => {
-    await setup(context, DAY12);
+  test("Khatmah: with no goal it says so, can plan one that ends on the last day of Ramadan (and pauses the main goal, with Undo), and links to reading and to Reading goals", async ({ context, page }) => {
+    const main = { id: "m", type: "ayahs-per-day", label: "10 ayahs/day", startDate: "2027-01-01", targetDate: null, dailyAyahTarget: 10, startAbsoluteAyah: 0, preferredDays: [0, 1, 2, 3, 4, 5, 6], status: "active", createdAt: 1 };
+    await setup(context, DAY12, { "quran:reading-goals:v1": JSON.stringify({ goals: [main], activeGoalId: "m", dailyLog: {} }) });
     await open(page);
-    await expect(page.getByTestId("khatmah-none")).toContainText("Reading goals in a later phase");
+    await expect(page.getByTestId("khatmah-none")).toContainText("No Ramadan Khatmah has been planned.");
     await expect(page.getByTestId("khatmah-read")).toHaveAttribute("href", "/surah/1");
-    await expect(page.getByTestId("khatmah").getByRole("button")).toHaveCount(0); // no way to create a goal here
+    await expect(page.getByTestId("khatmah-goals")).toHaveAttribute("href", "/goals");
+    await page.getByTestId("khatmah-plan").click();
+    await expect(page.locator("[data-sonner-toast]").filter({ hasText: "Ramadan Khatmah planned. Your previous goal is paused." })).toBeVisible();
+    await expect(page.getByTestId("khatmah-target")).toContainText("Aiming to finish by Mon 8 Mar");
+    await expect(page.getByTestId("khatmah-plan")).toHaveCount(0);
+    const s = JSON.parse((await readStorage(page))["quran:reading-goals:v1"]!);
+    expect(s.goals.map((g: { id: string; status: string }) => [g.id === "m" ? "m" : "khatmah", g.status])).toEqual([["m", "paused"], ["khatmah", "active"]]);
+    expect(s.goals[1]).toMatchObject({ label: "Ramadan Khatmah", type: "finish-by-date", targetDate: "2027-03-08" });
+    await page.locator("[data-sonner-toast]").getByRole("button", { name: "Undo" }).click();
+    const back = JSON.parse((await readStorage(page))["quran:reading-goals:v1"]!);
+    expect(back.goals).toEqual([main]);
+    expect(back.activeGoalId).toBe("m");
+    await expect(page.getByTestId("khatmah-none")).toBeVisible();
   });
 
   test("with a stored Ramadan Khatmah goal and a reading place", async ({ context, page }) => {
@@ -237,7 +250,7 @@ test.describe("during Ramadan (day 12)", () => {
     await expect(page.getByTestId("khatmah-today")).toHaveText("3 of 216 ayahs today");
     await expect(page.getByTestId("khatmah-target")).toContainText("Aiming to finish by Mon 8 Mar");
     await expect(page.getByTestId("khatmah-read")).toHaveAttribute("href", "/surah/18#ayah-10");
-    expect(JSON.parse((await readStorage(page))["quran:reading-goals:v1"]!)).toEqual(goals); // read only
+    expect(JSON.parse((await readStorage(page))["quran:reading-goals:v1"]!)).toEqual(goals); // showing it writes nothing
   });
 
   test("Laylat al-Qadr: the legacy nights for both fiqhs, labelled as the app's data; today is marked only on one of them", async ({ context, page }) => {

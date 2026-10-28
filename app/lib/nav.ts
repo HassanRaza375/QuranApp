@@ -48,6 +48,7 @@ export const NAV: NavGroup[] = [
     { label: "Prayer times", to: "/prayerTime", icon: "lucide:clock", phase: 5 },
     { label: "Qibla", to: "/qibla-direction", icon: "lucide:compass", phase: 5 },
     { label: "Ramadan", to: "/ramadan", icon: "lucide:moon", phase: 8 },
+    { label: "Calendar", to: "/calender", icon: "lucide:calendar", phase: 15 },
     { label: "Tasbeeh", to: "/tasbeeh", icon: "lucide:circle-dot", phase: 9 },
     { label: "Sajda", to: "/sajda", icon: "lucide:arrow-down-to-line", phase: 9 },
     { label: "Asma-ul-Husna", to: "/asma-ul-husna", icon: "lucide:badge-info", phase: 9 },

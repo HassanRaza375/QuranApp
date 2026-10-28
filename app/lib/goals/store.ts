@@ -1,7 +1,7 @@
 // The goals record `quran:reading-goals:v1` = { goals, activeGoalId, dailyLog } in the legacy shape. The reader appends to `dailyLog` (lib/goalLog.ts) and
 // this page edits the goals, so every change reads the stored record fresh and writes it back with everything it does not know kept. Pure functions
 // over a record, plus a `mutate` wrapper over the storage wrapper.
-import { addDaysKey, daysBetweenKeys } from "../dayKeys";
+import { daysBetweenKeys } from "../dayKeys";
 import { GOALS_KEY } from "../goalLog";
 import { getJSON, setJSON } from "../storage";
 import { dailyAmount, isComplete, ALL_DAYS, TOTAL_AYAHS, KHATMAH_LABEL, type Goal, type GoalStatus, type GoalType } from "./model";
@@ -180,6 +180,11 @@ export function undoMakeMain(rec: GoalsRecord, id: string, before: { status: Goa
   return { ...rec, goals, activeGoalId: before.activeGoalId };
 }
 
+/** Puts a goal's status and the main goal back as they were (Undo of a pause). */
+export function restoreState(rec: GoalsRecord, id: string, before: { status: GoalStatus; activeGoalId: string | null }): GoalsRecord {
+  return { ...rec, goals: rec.goals.map((g) => (g.id === id ? { ...g, status: before.status } : g)), activeGoalId: before.activeGoalId };
+}
+
 export interface Removed {
   goal: Goal;
   index: number;
@@ -222,5 +227,3 @@ export function completeFinished(rec: GoalsRecord, position: number | null): { r
   return { rec: next, completed: done };
 }
 
-/** The last day of a Ramadan Khatmah plan, as the goal's `targetDate`. */
-export const khatmahTarget = (lastDayOfRamadan: string, adjust: number): string => addDaysKey(lastDayOfRamadan, -adjust);

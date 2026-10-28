@@ -170,11 +170,6 @@ describe("making and changing goals", () => {
     const pace = start();
     expect(G.completeFinished(pace.rec, 6236).completed).toEqual([]);
   });
-  it("a Ramadan Khatmah ends on the last day of Ramadan as the user sees it (the adjustment applied)", () => {
-    expect(G.khatmahTarget("2027-03-08", 0)).toBe("2027-03-08");
-    expect(G.khatmahTarget("2027-03-08", 1)).toBe("2027-03-07");
-    expect(G.khatmahTarget("2027-03-08", -1)).toBe("2027-03-09");
-  });
 });
 
 describe("the stored record", () => {
