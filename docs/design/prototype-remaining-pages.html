@@ -1,0 +1,1113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quran revamp · Prototype for remaining pages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri&family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Noto+Nastaliq+Urdu&display=swap">
+<style>
+:root{
+  --paper:#F5F4F0;--surface:#FCFBF8;--sunk:#EEECE6;--ink:#1D2427;--ink-2:#4B565B;--ink-3:#9AA2A5;
+  --line:#E1DED6;--line-2:#D2CEC4;--accent:#2B6777;--accent-ink:#fff;--accent-soft:#E2EDEF;
+  --gold:#A8833A;--warn:#9A5B1E;--warn-soft:#F6EBDD;--weak:#B4553F;
+  --s1:#D9D6CE;--s2:#9DC0C8;--s3:#4E8A99;--s4:#A8833A;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ar:"Amiri","Scheherazade New","Traditional Arabic",serif;
+  --ur:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif;
+  --r:10px;--r-s:6px;color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#11171A;--surface:#172024;--sunk:#0D1215;--ink:#E4E7E5;--ink-2:#A6B0B2;--ink-3:#5B676B;
+  --line:#253035;--line-2:#33403F;--accent:#5CA0AF;--accent-ink:#0C1316;--accent-soft:#1B2E33;
+  --gold:#CBA65E;--warn:#E0A35F;--warn-soft:#2C2218;--weak:#D9806B;
+  --s1:#2A3438;--s2:#2F5A64;--s3:#5CA0AF;--s4:#CBA65E;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11171A;--surface:#172024;--sunk:#0D1215;--ink:#E4E7E5;--ink-2:#A6B0B2;--ink-3:#5B676B;
+  --line:#253035;--line-2:#33403F;--accent:#5CA0AF;--accent-ink:#0C1316;--accent-soft:#1B2E33;
+  --gold:#CBA65E;--warn:#E0A35F;--warn-soft:#2C2218;--weak:#D9806B;
+  --s1:#2A3438;--s2:#2F5A64;--s3:#5CA0AF;--s4:#CBA65E;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.ico{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.ico.l{width:20px;height:20px}
+
+/* shell */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid var(--line);padding:18px 12px 24px;background:var(--paper)}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 18px;font:500 19px/1 var(--serif)}
+.brand b{font:400 22px/1 var(--ar);color:var(--accent)}
+.navg{margin:14px 0 4px;padding:0 10px;font-size:12px;color:var(--ink-2)}
+.nav a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r-s);text-decoration:none;color:var(--ink-2);position:relative}
+.nav a:hover{background:var(--sunk);color:var(--ink)}
+.nav a[aria-current="page"]{color:var(--ink);background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.nav a[aria-current="page"]::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--accent)}
+.nav .built{opacity:.55;pointer-events:none}
+.nav small{margin-left:auto;font-size:11px;color:var(--ink-2)}
+.main{min-width:0}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;padding:10px 28px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px)}
+.top .crumb{font-size:13px;color:var(--ink-2);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .crumb a{text-decoration:none}.top .crumb a:hover{text-decoration:underline}
+.ib{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:var(--r-s);border:1px solid transparent;background:none;color:var(--ink-2)}
+.ib:hover{background:var(--sunk);color:var(--ink)}
+.menu-btn{display:none}
+.pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border:1px solid var(--line-2);border-radius:99px;background:var(--surface);font-size:13px;color:var(--ink-2)}
+.pill[aria-pressed="true"]{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.page{max-width:920px;margin:0 auto;padding:32px 28px 120px}
+.page.wide{max-width:1080px}
+.offline-bar{display:none;align-items:center;gap:8px;padding:8px 28px;background:var(--warn-soft);color:var(--warn);font-size:13px;border-bottom:1px solid var(--line)}
+body.offline .offline-bar{display:flex}
+
+/* type */
+h1{font:500 34px/1.12 var(--serif);letter-spacing:-.01em;margin:0 0 6px}
+h2{font:500 21px/1.25 var(--serif);margin:0 0 12px}
+h3{font:600 15px/1.35 var(--sans);margin:0 0 4px}
+.lede{color:var(--ink-2);margin:0 0 26px;max-width:62ch}
+.muted{color:var(--ink-2)}
+.small{font-size:13px}
+.serif{font-family:var(--serif)}
+.ar{font-family:var(--ar);direction:rtl;font-size:26px;line-height:2.05;letter-spacing:0}
+.ur{font-family:var(--ur);direction:rtl;line-height:2.3;font-size:18px}
+.vend{display:inline-grid;place-items:center;min-width:1.6em;height:1.6em;margin:0 .2em;border:1.5px solid var(--gold);border-radius:50%;color:var(--gold);font:600 12px/1 var(--sans);vertical-align:.35em}
+.hr{height:1px;background:var(--line);border:0;margin:24px 0}
+.section{margin:34px 0 0}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.section-h h2{margin:0}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 16px;border-radius:var(--r-s);border:1px solid var(--line-2);background:var(--surface);font-weight:500;text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--ink-3)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:none;color:var(--accent)}
+.btn.ghost:hover{background:var(--accent-soft)}
+.btn.sm{height:30px;padding:0 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:99px;border:1px solid var(--line-2);background:none;font-size:13px;color:var(--ink-2);text-decoration:none}
+.chip:hover{color:var(--ink);border-color:var(--ink-3)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .n{opacity:.7;font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:4px;font-size:12px;background:var(--sunk);color:var(--ink-2);white-space:nowrap}
+.tag.acc{background:var(--accent-soft);color:var(--accent)}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.tag.line{background:none;box-shadow:inset 0 0 0 1px var(--line-2)}
+.field{display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border:1px solid var(--line-2);border-radius:var(--r-s);background:var(--surface)}
+.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.field input,.field select{flex:1;min-width:0;border:0;background:none;outline:none;height:100%}
+.seg{display:inline-flex;padding:3px;border-radius:8px;background:var(--sunk);gap:2px}
+.seg button{height:30px;padding:0 12px;border:0;border-radius:6px;background:none;color:var(--ink-2);font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.switch{position:relative;width:38px;height:22px;flex:none;border-radius:99px;border:0;background:var(--line-2);transition:background .15s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s}
+.switch[aria-checked="true"]{background:var(--accent)}
+.switch[aria-checked="true"]::after{transform:translateX(16px)}
+.row{display:flex;align-items:center;gap:12px}
+.grow{flex:1;min-width:0}
+.wrap{flex-wrap:wrap}
+
+/* cards & lists */
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:18px}
+.card.flat{background:none}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.list{border-top:1px solid var(--line)}
+.li{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;content-visibility:auto;contain-intrinsic-size:auto 56px}
+a.li:hover{background:linear-gradient(90deg,var(--sunk),transparent)}
+.li .t{font-weight:500}
+.li .s{font-size:13px;color:var(--ink-2)}
+.num{font-variant-numeric:tabular-nums}
+.badge-n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--sunk);font:500 13px/1 var(--sans);color:var(--ink-2);flex:none}
+.empty{padding:36px 20px;text-align:center;border:1px dashed var(--line-2);border-radius:var(--r);color:var(--ink-2)}
+.empty h3{color:var(--ink)}
+.note{display:flex;gap:10px;padding:12px 14px;border-radius:var(--r-s);background:var(--sunk);font-size:13px;color:var(--ink-2)}
+.note.warn{background:var(--warn-soft);color:var(--warn)}
+.note .ico{margin-top:2px}
+
+/* the thread: the whole mushaf as one line */
+.thread{display:block;width:100%;height:22px}
+.thread .trk{fill:var(--sunk)}
+.thread .jz{stroke:var(--line-2);stroke-width:1;vector-effect:non-scaling-stroke}
+.thread .fill{fill:var(--accent);opacity:.85}
+.thread .fill.soft{fill:var(--s2);opacity:1}
+.thread .mk{stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
+.thread .here{stroke:var(--ink);stroke-width:2;vector-effect:non-scaling-stroke}
+.thread-scale{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-2);margin-top:4px}
+
+/* search */
+.search-hero .field{height:56px;font-size:18px;border-radius:12px;padding:0 16px}
+.search-hero .field input{font-size:18px}
+.kbd{font:500 11px/1 var(--sans);padding:4px 6px;border:1px solid var(--line-2);border-radius:4px;color:var(--ink-2)}
+.jump{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);text-decoration:none;margin-bottom:18px}
+.jump .ar{font-size:22px;line-height:1.4}
+.rgroup{margin-top:28px}
+.rgroup-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.rgroup-h h2{margin:0;font-size:18px}
+mark{background:var(--accent-soft);color:inherit;border-radius:2px;padding:0 1px}
+.hist{display:flex;align-items:center;gap:4px;height:30px;padding:0 4px 0 12px;border-radius:99px;border:1px solid var(--line-2);font-size:13px}
+.hist button{border:0;background:none;color:var(--ink-2);display:grid;place-items:center;width:22px;height:22px;border-radius:50%}
+.hist button:hover{background:var(--sunk)}
+.hist a{text-decoration:none}
+
+/* downloads */
+.meter{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden;display:flex}
+.meter i{display:block;height:100%}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:var(--c)}
+.prog{height:3px;background:var(--sunk);border-radius:2px;overflow:hidden;margin-top:6px}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .25s linear}
+.parts{display:flex;gap:4px}
+.part{display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 8px;border-radius:5px;border:1px solid var(--line-2);font-size:12px;background:none;color:var(--ink-2)}
+.part[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.part.done{border-color:transparent;background:var(--sunk);color:var(--ink)}
+
+/* knowledge */
+.ktabs{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--line);margin:0 0 22px;scrollbar-width:none}
+.ktabs a{display:flex;align-items:center;gap:8px;padding:10px 12px;text-decoration:none;color:var(--ink-2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.ktabs a[aria-current="page"]{color:var(--ink);border-color:var(--accent)}
+.kcard{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-decoration:none}
+.kcard:hover{border-color:var(--ink-3)}
+.kcard .ar{font-size:22px;line-height:1.5;text-align:right}
+.kcard .thread{height:12px;margin-top:auto}
+.refs{display:flex;flex-wrap:wrap;gap:6px}
+.ref{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-radius:6px;border:1px solid var(--line-2);font-size:13px;text-decoration:none;font-variant-numeric:tabular-nums}
+.ref:hover{border-color:var(--accent);color:var(--accent)}
+.ayah{padding:22px 0;border-bottom:1px solid var(--line)}
+.ayah .ar{text-align:right}
+.ayah .tr{font:400 17px/1.65 var(--serif);color:var(--ink);margin-top:8px}
+.ayah-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px;color:var(--ink-2)}
+.det-head{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.det-head .ar{font-size:40px;line-height:1.3;color:var(--accent)}
+
+/* fiqh */
+.marja{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.marja .dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font:500 15px var(--serif)}
+.mcard{display:block;width:100%;text-align:left;padding:18px;border:1px solid var(--line-2);border-radius:var(--r);background:var(--surface)}
+.mcard:hover{border-color:var(--accent)}
+.mcard[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.cat{display:flex;flex-direction:column;gap:4px;padding:16px;border:1px solid var(--line);border-radius:var(--r);text-decoration:none;background:var(--surface);min-height:118px}
+.cat:hover{border-color:var(--ink-3)}
+.cat .ar{font-size:20px;line-height:1.4;color:var(--accent)}
+.cat.later{background:none;border-style:dashed;pointer-events:none}
+.cat.later .ar{color:var(--ink-2)}
+.ruling{padding:18px 0;border-bottom:1px solid var(--line)}
+.quote{margin:10px 0;padding:12px 14px;border-left:3px solid var(--accent);background:var(--sunk);border-radius:0 6px 6px 0;font:400 16px/1.6 var(--serif)}
+.quote.slot{color:var(--ink-2);font-style:italic}
+.src{font-size:12px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{position:relative;padding:0 0 18px 46px;counter-increment:s}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;font-size:13px;color:var(--ink-2);background:var(--surface)}
+.steps li::after{content:"";position:absolute;left:15px;top:32px;bottom:2px;width:1px;background:var(--line)}
+.steps li:last-child::after{display:none}
+.steps li.done::before{content:"✓";background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+details.panel{border:1px solid var(--line);border-radius:var(--r);padding:0 16px;background:var(--surface)}
+details.panel summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;height:50px;font-weight:500}
+details.panel summary::-webkit-details-marker{display:none}
+details.panel[open] summary .chev{transform:rotate(90deg)}
+.chev{transition:transform .15s}
+.az{display:flex;flex-wrap:wrap;gap:2px;margin:14px 0}
+.az button{width:30px;height:30px;border:0;border-radius:5px;background:none;color:var(--ink-2);font-size:13px}
+.az button:hover:not(:disabled){background:var(--sunk);color:var(--ink)}
+.az button:disabled{opacity:.3;cursor:default}
+.gl{padding:16px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:200px 1fr;gap:16px}
+
+/* hifz */
+.hstrip{display:grid;grid-template-columns:repeat(auto-fill,minmax(18px,1fr));gap:3px}
+.hstrip i{aspect-ratio:1;border-radius:3px;background:var(--s1);position:relative}
+.hstrip i[data-s="learning"]{background:var(--s2)}
+.hstrip i[data-s="memorized"]{background:var(--s3)}
+.hstrip i[data-s="strong"]{background:var(--s4)}
+.hstrip i[data-s="weak"]{background:none;box-shadow:inset 0 0 0 2px var(--weak)}
+.hstrip i[data-t="weak"]::after{content:"";position:absolute;right:-3px;top:35%;width:3px;height:30%;background:var(--weak)}
+.hkey{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-2)}
+.hkey span{display:inline-flex;align-items:center;gap:6px}
+.hkey i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.today{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:22px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.today .big{font:500 44px/1 var(--serif)}
+.sig{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.sig div{background:var(--surface);padding:12px 14px}
+.sig b{display:block;font:500 20px/1.2 var(--serif)}
+.sig span{font-size:12px;color:var(--ink-2)}
+.session{max-width:720px;margin:0 auto}
+.sbar{display:flex;gap:3px;margin:8px 0 28px}
+.sbar i{flex:1;height:4px;border-radius:2px;background:var(--sunk)}
+.sbar i.d{background:var(--accent)}.sbar i.c{background:var(--ink-2)}
+.prompt{padding:26px 0 8px;text-align:center}
+.prompt .ar{font-size:32px;line-height:2.1}
+.hidden-ayah{margin:18px 0;padding:24px;border:1px dashed var(--line-2);border-radius:12px;text-align:center;min-height:120px;display:grid;place-items:center}
+.hidden-ayah .ar{font-size:30px}
+.hint .ar{font-size:30px;color:var(--ink-2)}
+.grades{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.grades button{height:64px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.grades button span{font-size:12px;color:var(--ink-2)}
+.grades button:hover{border-color:var(--accent)}
+
+/* goals */
+.spine{display:grid;grid-template-columns:repeat(30,1fr);gap:2px}
+.spine i{height:34px;border-radius:2px;background:var(--sunk);position:relative}
+.spine i.d{background:var(--accent)}
+.spine i.p{background:linear-gradient(90deg,var(--accent) var(--p),var(--sunk) var(--p))}
+.spine-l{display:grid;grid-template-columns:repeat(30,1fr);gap:2px;font-size:10px;color:var(--ink-2);text-align:center;margin-top:4px}
+.week{display:flex;gap:8px}
+.week div{flex:1;text-align:center;font-size:12px;color:var(--ink-2)}
+.week i{display:block;height:36px;border-radius:6px;margin-bottom:4px;background:var(--sunk);position:relative;overflow:hidden}
+.week i b{position:absolute;left:0;right:0;bottom:0;background:var(--accent)}
+.week i.off{background:repeating-linear-gradient(135deg,var(--sunk) 0 4px,transparent 4px 8px)}
+.week .tdy{color:var(--ink);font-weight:600}
+.gtype{display:block;width:100%;text-align:left;padding:14px;border:1px solid var(--line-2);border-radius:var(--r);background:var(--surface)}
+.gtype[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line-2);border-radius:var(--r-s);overflow:hidden;background:var(--surface)}
+.stepper button{width:38px;height:38px;border:0;background:none;display:grid;place-items:center}
+.stepper button:hover{background:var(--sunk)}
+.stepper input{width:64px;height:38px;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);text-align:center;background:none;font-variant-numeric:tabular-nums}
+.preview{padding:16px;border-radius:var(--r);background:var(--accent-soft);color:var(--ink)}
+.preview b{font:500 30px/1.1 var(--serif);color:var(--accent)}
+
+/* calendar */
+.cal-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cal-head h1{flex:1;margin:0}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.cal .dow{padding:8px;font-size:12px;color:var(--ink-2);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cal button{position:relative;min-height:86px;padding:8px;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);text-align:left;display:flex;flex-direction:column;gap:2px}
+.cal button:hover{background:var(--sunk)}
+.cal button.pad{background:none;pointer-events:none}
+.cal .h{font:500 22px/1 var(--serif)}
+.cal .g{font-size:11px;color:var(--ink-2)}
+.cal .ev{margin-top:auto;display:flex;gap:3px;flex-wrap:wrap}
+.cal .ev i{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.cal .ev i.r{background:none;box-shadow:inset 0 0 0 1.5px var(--ink-2)}
+.cal button.is-today .h{color:var(--accent)}
+.cal button.is-today::after{content:"";position:absolute;inset:3px;border:1.5px solid var(--accent);border-radius:6px;pointer-events:none}
+.cal button[aria-pressed="true"]{background:var(--accent-soft)}
+.cal-layout{display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start}
+.cal.gfirst .h{font:500 18px/1 var(--sans)}
+
+/* overlays */
+.scrim{position:fixed;inset:0;background:rgba(10,14,16,.45);z-index:50;display:none}
+.scrim.open{display:block}
+.sheet{position:fixed;z-index:60;left:50%;top:50%;transform:translate(-50%,-48%);width:min(520px,calc(100vw - 32px));max-height:min(86vh,720px);overflow:auto;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:0 24px 60px -20px rgba(0,0,0,.45);padding:22px;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
+.sheet.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.sheet-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sheet-h h2{flex:1;margin:0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:70;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 16px;border-radius:10px;background:var(--ink);color:var(--paper);font-size:14px;opacity:0;pointer-events:none;transition:.2s}
+.toast.open{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{border:0;background:none;color:var(--paper);font-weight:600;text-decoration:underline;padding:6px 8px}
+.proto{font-size:12px;color:var(--ink-2);padding:14px 10px 0;border-top:1px solid var(--line);margin-top:18px}
+.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;z-index:99;background:var(--surface);padding:8px 12px}
+
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;inset:0 auto 0 0;width:280px;z-index:55;transform:translateX(-100%);transition:transform .2s;background:var(--paper)}
+  body.nav-open .side{transform:none}
+  .menu-btn{display:inline-grid}
+  .top{padding:8px 14px}
+  .page{padding:22px 16px 110px}
+  .offline-bar{padding:8px 16px}
+  .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cal-layout{grid-template-columns:1fr}
+  .sig{grid-template-columns:repeat(2,1fr)}
+  .sheet{left:0;right:0;top:auto;bottom:0;width:100%;transform:translateY(100%);border-radius:16px 16px 0 0;max-height:88vh;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+  .sheet.open{transform:none}
+}
+@media (max-width:600px){
+  h1{font-size:28px}
+  .g2,.g3{grid-template-columns:1fr}
+  .cal button{min-height:62px;padding:5px}
+  .cal .h{font-size:18px}
+  .gl{grid-template-columns:1fr;gap:4px}
+  .det-head{grid-template-columns:1fr}
+  .det-head .ar{text-align:left}
+  .today{grid-template-columns:1fr}
+  .grades button{height:56px}
+  .spine i{height:26px}
+  .spine-l span:nth-child(even){visibility:hidden}
+  .hide-sm{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5A2.5 2.5 0 0 0 4 21.5 2.5 2.5 0 0 0 6.5 24"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
+<symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+<symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M12 2H2v10l9.3 9.3a1 1 0 0 0 1.4 0l8.6-8.6a1 1 0 0 0 0-1.4z"/><circle cx="7" cy="7" r="1.5"/></symbol>
+<symbol id="i-hands" viewBox="0 0 24 24"><path d="M7 11V5a2 2 0 0 1 4 0v8M11 9V4a2 2 0 0 1 4 0v9M15 8a2 2 0 0 1 4 0v6a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-3l-3-5a2 2 0 0 1 3.4-2L7 13"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4s1-1 4-1 5 2 8 2 4-1 4-1v11s-1 1-4 1-5-2-8-2-4 1-4 1"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/><path d="M19 17v4M17 19h4"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14M3 7l2 7a3 3 0 0 0 4 0l-4-7M19 7l-2 7a3 3 0 0 0 4 0l-2-7M12 3l-3 2M12 3l3 2"/></symbol>
+<symbol id="i-scroll" viewBox="0 0 24 24"><path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4M14 8h-4M15 12h-5"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-chevl" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 4v16M16 4v16"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></symbol>
+<symbol id="i-wifioff" viewBox="0 0 24 24"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.2-2.8M19 13a10 10 0 0 0-2.3-1.6M2 8.8a15 15 0 0 1 4.2-2.7M22 8.8A15 15 0 0 0 10.7 5M12 20h.01"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+<symbol id="i-note" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></symbol>
+<symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 2.7 6.3 8.4a8 8 0 1 0 11.4 0z"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9z"/><path d="M12 12v6M9.5 15.5 12 18l2.5-2.5"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+<symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.8 5.5 21l2-7.5L2 9h7z"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+<symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor"/></symbol>
+</svg>
+<a class="skip" href="#view">Skip to content</a>
+<div class="app">
+  <aside class="side" aria-label="Main navigation">
+    <div class="brand"><b>ق</b>Quran</div>
+    <nav class="nav" id="nav"></nav>
+    <div class="proto">Prototype of the pages still to build. Greyed rows are already built. Sample content only; the build reads the services and data files.</div>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <button class="ib menu-btn" data-a="menu" aria-label="Open menu"><svg class="ico l"><use href="#i-menu"/></svg></button>
+      <div class="crumb" id="crumb"></div>
+      <button class="pill" data-a="offline" aria-pressed="false" title="Preview each page's offline state"><svg class="ico"><use href="#i-wifioff"/></svg><span class="hide-sm">Offline preview</span></button>
+      <a class="ib" href="#/search" aria-label="Search"><svg class="ico"><use href="#i-search"/></svg></a>
+      <button class="ib" data-a="theme" aria-label="Switch light or dark"><svg class="ico"><use href="#i-contrast"/></svg></button>
+    </header>
+    <div class="offline-bar" role="status"><svg class="ico"><use href="#i-wifioff"/></svg>You're offline. Saved surahs, Daily Fiqh you've opened, and everything in the knowledge base still work.</div>
+    <main id="view" tabindex="-1"></main>
+  </div>
+</div>
+<div class="scrim" id="scrim" data-a="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+<div class="toast" id="toast" role="status"><span></span><button data-a="undo" hidden>Undo</button></div>
+<script>
+const NAMES="Al-Fatihah|Al-Baqarah|Ali 'Imran|An-Nisa|Al-Ma'idah|Al-An'am|Al-A'raf|Al-Anfal|At-Tawbah|Yunus|Hud|Yusuf|Ar-Ra'd|Ibrahim|Al-Hijr|An-Nahl|Al-Isra|Al-Kahf|Maryam|Ta-Ha|Al-Anbiya|Al-Hajj|Al-Mu'minun|An-Nur|Al-Furqan|Ash-Shu'ara|An-Naml|Al-Qasas|Al-'Ankabut|Ar-Rum|Luqman|As-Sajdah|Al-Ahzab|Saba|Fatir|Ya-Sin|As-Saffat|Sad|Az-Zumar|Ghafir|Fussilat|Ash-Shura|Az-Zukhruf|Ad-Dukhan|Al-Jathiyah|Al-Ahqaf|Muhammad|Al-Fath|Al-Hujurat|Qaf|Adh-Dhariyat|At-Tur|An-Najm|Al-Qamar|Ar-Rahman|Al-Waqi'ah|Al-Hadid|Al-Mujadila|Al-Hashr|Al-Mumtahanah|As-Saff|Al-Jumu'ah|Al-Munafiqun|At-Taghabun|At-Talaq|At-Tahrim|Al-Mulk|Al-Qalam|Al-Haqqah|Al-Ma'arij|Nuh|Al-Jinn|Al-Muzzammil|Al-Muddaththir|Al-Qiyamah|Al-Insan|Al-Mursalat|An-Naba|An-Nazi'at|'Abasa|At-Takwir|Al-Infitar|Al-Mutaffifin|Al-Inshiqaq|Al-Buruj|At-Tariq|Al-A'la|Al-Ghashiyah|Al-Fajr|Al-Balad|Ash-Shams|Al-Layl|Ad-Duha|Ash-Sharh|At-Tin|Al-'Alaq|Al-Qadr|Al-Bayyinah|Az-Zalzalah|Al-'Adiyat|Al-Qari'ah|At-Takathur|Al-'Asr|Al-Humazah|Al-Fil|Quraysh|Al-Ma'un|Al-Kawthar|Al-Kafirun|An-Nasr|Al-Masad|Al-Ikhlas|Al-Falaq|An-Nas".split("|");
+const AYAHS=[7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+const CUM=[0];AYAHS.forEach(n=>CUM.push(CUM[CUM.length-1]+n));
+const TOTAL=CUM[114]; // 6236
+const abs=(s,a)=>CUM[s-1]+a;
+const fromAbs=n=>{let s=1;while(CUM[s]<n)s++;return [s,n-CUM[s-1]]};
+const JUZ=[[1,1],[2,142],[2,253],[3,93],[4,24],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[21,1],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[46,1],[51,31],[58,1],[67,1],[78,1]].map(([s,a])=>abs(s,a));
+const R=s=>{const [a,b]=s.split(":").map(Number);return {s:a,a:b,key:s,pos:abs(a,b)}};
+
+/* Sample content. In the build every string below comes from the services and data files. */
+const AYAT=[
+ {k:"2:255",en:"Allah – there is no deity except Him, the Ever-Living, the Sustainer of [all] existence."},
+ {k:"2:286",en:"Allah does not charge a soul except [with that within] its capacity."},
+ {k:"94:5",en:"For indeed, with hardship [will be] ease."},
+ {k:"13:28",en:"Unquestionably, by the remembrance of Allah hearts are assured."},
+ {k:"12:4",en:"When Joseph said to his father, \"O my father, indeed I have seen [in a dream] eleven stars and the sun and the moon; I saw them prostrating to me.\""},
+ {k:"12:87",en:"And despair not of relief from Allah. Indeed, no one despairs of relief from Allah except the disbelieving people."},
+ {k:"39:53",en:"Do not despair of the mercy of Allah. Indeed, Allah forgives all sins."},
+ {k:"20:114",en:"And say, \"My Lord, increase me in knowledge.\""},
+ {k:"3:96",en:"Indeed, the first House [of worship] established for mankind was that at Bakkah – blessed and a guidance for the worlds."},
+ {k:"7:65",en:"And to 'Aad [We sent] their brother Hud."},
+ {k:"7:73",en:"And to Thamud [We sent] their brother Salih."},
+ {k:"67:1",en:"Blessed is He in whose hand is dominion, and He is over all things competent."},
+ {k:"5:6",en:"O you who have believed, when you rise to [perform] prayer, wash your faces and your forearms to the elbows and wipe over your heads and wash your feet to the ankles."}
+];
+
+const MODULES=[
+ {id:"peoples",title:"Peoples & Nations",icon:"users",q:"Which communities?"},
+ {id:"places",title:"Places",icon:"pin",q:"Where?"},
+ {id:"themes",title:"Themes",icon:"tag",q:"What does it teach?"},
+ {id:"duas",title:"Duas",icon:"hands",q:"How did people call upon Allah?"},
+ {id:"events",title:"Events",icon:"flag",q:"What happened?"},
+ {id:"signs",title:"Signs & Miracles",icon:"spark",q:"What signs occurred?"},
+ {id:"commands",title:"Commands",icon:"scale",q:"What does Allah command and forbid?"}
+];
+const STATUS={quran:["Qur'an states","acc"],trad:["Traditional identification","line"],disp:["Interpretations differ","warn"]};
+const KN={
+ peoples:[
+  {id:"ad",name:"'Ad",ar:"عَاد",sum:"A people to whom the prophet Hud was sent.",status:"quran",refs:["7:65","11:50","11:59","26:123","41:15","46:21","54:18","69:4","89:6"],rel:[["persons","hud","Hud"],["places","ahqaf","Al-Ahqaf"]]},
+  {id:"thamud",name:"Thamud",ar:"ثَمُود",sum:"A people to whom the prophet Salih was sent; the she-camel is part of their account.",status:"quran",refs:["7:73","11:61","17:59","26:141","27:45","41:17","51:43","54:23","69:4","85:18","89:9","91:11"],rel:[["persons","salih","Salih"],["signs","shecamel","The she-camel"]]},
+  {id:"lut",name:"People of Lut",ar:"قَوْم لُوط",sum:"The people to whom Lut was sent.",status:"quran",refs:["7:80","11:77","15:61","26:160","27:54","29:28","54:33"],rel:[["persons","lut","Lut"]]},
+  {id:"saba",name:"People of Saba",ar:"سَبَأ",sum:"A prosperous people given two gardens; a surah carries their name.",status:"quran",refs:["27:22","34:15"],rel:[["places","saba","Saba"]]},
+  {id:"kahf",name:"Companions of the Cave",ar:"أَصْحَاب الْكَهْف",sum:"Young believers who took refuge in a cave.",status:"quran",refs:["18:9","18:13","18:22","18:25"],rel:[["stories","kahf","The Cave"]]},
+  {id:"israil",name:"Children of Israel",ar:"بَنِي إِسْرَائِيل",sum:"The descendants of Ya'qub, addressed often in the Qur'an.",status:"quran",refs:["2:40","2:47","2:122","5:12","7:137","17:4","20:80","45:16"],rel:[["persons","musa","Musa"],["places","misr","Egypt"]]}
+ ],
+ places:[
+  {id:"makkah",name:"Makkah",ar:"مَكَّة",sum:"Named once as Makkah and once as Bakkah.",status:"quran",refs:["48:24","3:96"],rel:[["persons","ibrahim","Ibrahim"]]},
+  {id:"yathrib",name:"Yathrib",ar:"يَثْرِب",sum:"The earlier name of Madinah, used once.",status:"quran",refs:["33:13"],rel:[]},
+  {id:"badr",name:"Badr",ar:"بَدْر",sum:"Site of the battle the Qur'an names.",status:"quran",refs:["3:123"],rel:[["events","badr","Battle of Badr"]]},
+  {id:"hunayn",name:"Hunayn",ar:"حُنَيْن",sum:"Site of the battle named in Surah At-Tawbah.",status:"quran",refs:["9:25"],rel:[]},
+  {id:"ahqaf",name:"Al-Ahqaf",ar:"الْأَحْقَاف",sum:"The sand dunes where 'Ad lived.",status:"quran",refs:["46:21"],rel:[["peoples","ad","'Ad"]]},
+  {id:"misr",name:"Egypt",ar:"مِصْر",sum:"Setting of much of the stories of Yusuf and Musa.",status:"quran",refs:["2:61","10:87","12:21","12:99","43:51"],rel:[["stories","yusuf","Yusuf"],["peoples","israil","Children of Israel"]]},
+  {id:"tur",name:"Mount Tur",ar:"الطُّور",sum:"The mount by which an oath is sworn; a surah carries its name.",status:"quran",refs:["2:63","19:52","52:1","95:2"],rel:[["persons","musa","Musa"]]},
+  {id:"saba",name:"Saba",ar:"سَبَأ",sum:"Land of the people of Saba.",status:"trad",refs:["27:22","34:15"],rel:[["peoples","saba","People of Saba"]]}
+ ],
+ themes:[
+  {id:"patience",name:"Patience",ar:"الصَّبْر",sum:"Steadfastness in hardship and in obedience.",status:"quran",refs:["2:153","2:155","3:200","12:18","12:83","103:3"],rel:[["stories","yusuf","Yusuf"]]},
+  {id:"mercy",name:"Hope in Allah's mercy",ar:"الرَّحْمَة",sum:"Never despairing of relief and forgiveness.",status:"quran",refs:["12:87","15:56","39:53","7:156"],rel:[]},
+  {id:"knowledge",name:"Knowledge",ar:"الْعِلْم",sum:"Seeking and honouring knowledge.",status:"quran",refs:["20:114","39:9","58:11","96:1"],rel:[["duas","ilm","Increase me in knowledge"]]}
+ ],
+ duas:[
+  {id:"ilm",name:"Increase me in knowledge",ar:"رَّبِّ زِدْنِي عِلْمًا",sum:"Taught to the Prophet.",status:"quran",refs:["20:114"],rel:[["themes","knowledge","Knowledge"]]},
+  {id:"yunus",name:"Dua of Yunus",ar:"لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ",sum:"Called out from the darkness.",status:"quran",refs:["21:87"],rel:[["persons","yunus","Yunus"]]},
+  {id:"hasanah",name:"Good in this world and the next",ar:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",sum:"From the passages on Hajj.",status:"quran",refs:["2:201"],rel:[]},
+  {id:"faqir",name:"Dua of Musa in Madyan",ar:"رَبِّ إِنِّي لِمَا أَنزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ",sum:"Said after watering the flocks.",status:"quran",refs:["28:24"],rel:[["persons","musa","Musa"]]},
+  {id:"parents",name:"Forgiveness for parents",ar:"رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ",sum:"From the dua of Ibrahim.",status:"quran",refs:["14:41"],rel:[["persons","ibrahim","Ibrahim"]]}
+ ],
+ events:[
+  {id:"badr",name:"Battle of Badr",ar:"غَزْوَة بَدْر",sum:"Victory given when the believers were few.",status:"quran",refs:["3:123","8:42"],rel:[["places","badr","Badr"]]},
+  {id:"flood",name:"The Flood",ar:"الطُّوفَان",sum:"The flood in the time of Nuh.",status:"quran",refs:["11:40","11:44","29:14","54:11"],rel:[["persons","nuh","Nuh"]]},
+  {id:"sea",name:"Parting of the sea",ar:"فَلْق الْبَحْر",sum:"Musa and the Children of Israel cross.",status:"quran",refs:["2:50","20:77","26:63"],rel:[["peoples","israil","Children of Israel"],["signs","staff","The staff"]]}
+ ],
+ signs:[
+  {id:"shecamel",name:"The she-camel",ar:"النَّاقَة",sum:"A sign given to Thamud.",status:"quran",refs:["7:73","11:64","17:59","26:155","54:27","91:13"],rel:[["peoples","thamud","Thamud"]]},
+  {id:"staff",name:"The staff of Musa",ar:"عَصَا مُوسَىٰ",sum:"Turned into a serpent; struck the sea and the rock.",status:"quran",refs:["2:60","7:107","20:18","26:63"],rel:[["events","sea","Parting of the sea"]]}
+ ],
+ commands:[
+  {id:"salah",name:"Establish prayer",ar:"أَقِيمُوا الصَّلَاة",sum:"The command to establish prayer.",status:"quran",refs:["2:43","2:110","4:103","24:56"],rel:[["fiqh","salah","Daily Fiqh: Salah"]]},
+  {id:"parents",name:"Kindness to parents",ar:"وَبِالْوَالِدَيْنِ إِحْسَانًا",sum:"Joined to the command to worship Allah alone.",status:"quran",refs:["2:83","4:36","6:151","17:23"],rel:[["duas","parents","Forgiveness for parents"]]}
+ ]
+};
+
+const PERSONS=[["adam","Adam"],["nuh","Nuh"],["ibrahim","Ibrahim"],["musa","Musa"],["yusuf","Yusuf"],["maryam","Maryam"],["hud","Hud"],["salih","Salih"],["lut","Lut"],["yunus","Yunus"]];
+const STORIES=[["yusuf","The story of Yusuf"],["adam","The story of Adam"],["kahf","The Companions of the Cave"]];
+const NOTES=[{id:"n1",t:"Note on 94:5",b:"Ease comes with the hardship, not only after it."},{id:"n2",t:"Collection: Duas for exams",b:"20:114 and 28:24."}];
+
+const MARAJI=[
+ {id:"sistani",name:"Sayyid Ali al-Sistani",short:"Sistani",ini:"س",books:"Islamic Laws (4th ed.) · توضیح المسائل",status:"active"},
+ {id:"khamenei",name:"Sayyid Ali Khamenei",short:"Khamenei",ini:"خ",books:"Practical Laws of Islam · Rules on Prayer & Fasting",status:"active"},
+ {id:"makarem",name:"Naser Makarem Shirazi",short:"Makarem Shirazi",ini:"م",books:"Primary text not yet reached",status:"pending"}
+];
+const FCATS=[
+ {id:"foundations",t:"Foundations",ar:"الأصول",s:"Taqlid, bulugh, the roots and branches.",n:5},
+ {id:"taharah",t:"Taharah",ar:"الطهارة",s:"Wudu, ghusl, tayammum and purity.",n:9},
+ {id:"salah",t:"Salah",ar:"الصلاة",s:"Times, conditions, actions and doubts.",n:14},
+ {id:"sawm",t:"Sawm",ar:"الصوم",s:"Fasting and zakat al-fitrah.",n:13},
+ {id:"khums",t:"Khums",ar:"الخمس",s:"What it is due on and how it is paid.",n:11},
+ {id:"zakat",t:"Zakat",ar:"الزكاة",s:"Conditions, amounts and recipients.",n:10},
+ {id:"hajj",t:"Hajj",ar:"الحج",s:"An overview.",later:1},
+ {id:"furu",t:"Other furu'",ar:"فروع الدين",s:"Jihad, enjoining good and more.",later:1},
+ {id:"daily",t:"Daily life",ar:"الحياة اليومية",s:"Food, earnings and conduct.",later:1}
+];
+/* topic: [id, title, arabic, sampleRulingCount, flags] flags: p=procedure, h=decision helper, l=live tool, w=women's panel, s=sensitive */
+const FTOPICS={
+ foundations:[["taqlid","Taqlid","التقليد",6,""],["ahkam","The five rulings","الأحكام",1,""],["usul","Roots of religion","أصول الدين",3,""],["furu","Branches of religion","فروع الدين",3,""],["bulugh","Reaching maturity","البلوغ",4,"w"]],
+ taharah:[["wudu","Wudu","الوضوء",24,"pw"],["ghusl","Ghusl","الغسل",31,"pw"],["tayammum","Tayammum","التيمم",18,"p"],["najasat","Impurities","النجاسات",22,""],["mutahhirat","Purifiers","المطهرات",19,""],["water","Kinds of water","المياه",14,""],["toilet","Toilet etiquette","أحكام التخلي",9,""],["haydh","Menstruation","الحيض",27,"s"],["mayyit","Washing the deceased","غسل الميت",16,"p"]],
+ salah:[["times","Prayer times","أوقات الصلاة",12,"l"],["qibla","Qibla","القبلة",6,"l"],["clothing","Clothing and place","لباس المصلي ومكانه",21,"w"],["adhan","Adhan and iqamah","الأذان والإقامة",8,""],["actions","Actions of prayer","أفعال الصلاة",34,"p"],["invalidators","What breaks a prayer","مبطلات الصلاة",15,""],["doubts","Doubts in prayer","الشكوك",23,"h"],["ihtiyat","Prayer of precaution","صلاة الاحتياط",7,"p"],["sahw","Prostration of forgetfulness","سجدتا السهو",9,"p"],["qada","Missed prayers","القضاء",11,""],["travel","Prayer while travelling","صلاة المسافر",19,""],["jamaah","Congregational prayer","صلاة الجماعة",17,""],["jumuah","Friday prayer","صلاة الجمعة",6,""],["ayat","Prayer of signs","صلاة الآيات",8,"p"]],
+ sawm:[["niyyah","Intention to fast","النية",7,""],["muftirat","What breaks a fast","المفطرات",29,""],["dawn","Dawn, maghrib and breaking the fast","الفجر والمغرب",6,"l"],["kaffarah","Expiation","الكفارة",12,""],["qadasawm","Making up fasts","قضاء الصوم",10,""],["fitrah","Zakat al-fitrah","زكاة الفطرة",14,""]]
+};
+const GLOSS=[
+ ["Bulugh","البلوغ","بلوغ","Reaching the age of religious responsibility."],
+ ["Fatwa","الفتوى","فتویٰ","A marja's definite ruling on an issue."],
+ ["Furu' al-din","فروع الدين","فروع دین","The branches of religion: the acts of practice."],
+ ["Ghusl","الغسل","غسل","The ritual washing of the whole body."],
+ ["Ihtiyat mustahab","الاحتياط المستحب","احتیاط مستحب","A recommended precaution; the follower may leave it."],
+ ["Ihtiyat wajib","الاحتياط الواجب","احتیاط واجب","An obligatory precaution; the follower acts on it or refers to the next most learned."],
+ ["Marja'","المرجع","مرجع","A jurist whose rulings are followed."],
+ ["Najasah","النجاسة","نجاست","Ritual impurity."],
+ ["Qada","القضاء","قضا","Making up a missed obligatory act."],
+ ["Rukn","الركن","رکن","An essential part of an act whose omission invalidates it."],
+ ["Taqlid","التقليد","تقلید","Following a qualified jurist in matters of practice."],
+ ["Tayammum","التيمم","تیمم","Dry ablution, in place of wudu or ghusl."],
+ ["Usul al-din","أصول الدين","اصول دین","The roots of religion: matters of belief."],
+ ["Wudu","الوضوء","وضو","The ritual washing before prayer."]
+];
+
+const HIFZ=[
+ {id:"t1",surah:67,start:1,end:30,last:14,pace:2,mins:15},
+ {id:"t2",surah:18,start:1,end:10,last:10,pace:1,mins:10}
+];
+const MULK=[
+ "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ",
+ "الَّذِي خَلَقَ الْمَوْتَ وَالْحَيَاةَ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا ۚ وَهُوَ الْعَزِيزُ الْغَفُورُ",
+ "الَّذِي خَلَقَ سَبْعَ سَمَاوَاتٍ طِبَاقًا ۖ مَّا تَرَىٰ فِي خَلْقِ الرَّحْمَٰنِ مِن تَفَاوُتٍ ۖ فَارْجِعِ الْبَصَرَ هَلْ تَرَىٰ مِن فُطُورٍ"
+];
+
+/* Hijri months: Umm al-Qura starts from RESEARCH.md; the in-app adjustment shifts these */
+const HMONTHS=[
+ {n:"Rabi' al-Thani",ar:"ربيع الآخر",y:1448,start:"2026-09-13",len:29},
+ {n:"Jumada al-Ula",ar:"جمادى الأولى",y:1448,start:"2026-10-12",len:30},
+ {n:"Jumada al-Akhirah",ar:"جمادى الآخرة",y:1448,start:"2026-11-11",len:29},
+ {n:"Rajab",ar:"رجب",y:1448,start:"2026-12-10",len:30},
+ {n:"Sha'ban",ar:"شعبان",y:1448,start:"2027-01-09",len:30},
+ {n:"Ramadan",ar:"رمضان",y:1448,start:"2027-02-08",len:29}
+];
+const HEVENTS={"Rajab:1":["Rajab begins","A sacred month"],"Sha'ban:15":["Mid-Sha'ban",""],"Ramadan:1":["First day of Ramadan",""]};
+const TODAY=new Date(2026,9,22); // fixed for the prototype: Thu 22 Oct 2026 = 11 Jumada al-Ula 1448
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const I=(n,c="")=>`<svg class="ico ${c}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const fmtMB=b=>b>=1000?(b/1000).toFixed(1)+" GB":Math.round(b)+" MB";
+const dkey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const parseD=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const addD=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const daysBetween=(a,b)=>Math.round((b-a)/864e5);
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmtD=d=>`${d.getDate()} ${MON[d.getMonth()]}`;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+
+/* normalisation: Arabic marks, Latin diacritics, apostrophes, letter forms */
+const norm=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/ک/g,"ك").replace(/ی/g,"ي").replace(/['’ʿʾ`\-]/g,"").toLowerCase();
+function hl(text,q){
+  const nq=norm(q).replace(/\s+/g," ").trim(); if(!nq) return esc(text);
+  const V={"ا":"[اأإآٱ]","ي":"[يىی]","ه":"[هة]","ك":"[كک]"};
+  const pat=[...nq].map(ch=>ch===" "?"\\s+":V[ch]||ch.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("[\\u064B-\\u065F\\u0670\\u06D6-\\u06ED\\u0640'’ʿʾ\\-]*");
+  try{return esc(text).replace(new RegExp(`(${pat})`,"ig"),"<mark>$1</mark>")}catch{return esc(text)}
+}
+
+/* the thread: whole mushaf as one line */
+function thread({fills=[],marks=[],here=null,soft=false,scale=false}={}){
+  const jz=JUZ.slice(1).map(p=>`<line class="jz" x1="${p}" x2="${p}" y1="4" y2="18"/>`).join("");
+  const f=fills.map(([a,b])=>`<rect class="fill${soft?" soft":""}" x="${a-1}" y="6" width="${Math.max(b-a+1,4)}" height="10" rx="2"/>`).join("");
+  const m=marks.map(p=>`<line class="mk" x1="${p}" x2="${p}" y1="2" y2="20"/>`).join("");
+  const h=here?`<line class="here" x1="${here}" x2="${here}" y1="0" y2="22"/>`:"";
+  return `<svg class="thread" viewBox="0 0 ${TOTAL} 22" preserveAspectRatio="none" role="img" aria-label="Position in the Qur'an"><rect class="trk" x="0" y="6" width="${TOTAL}" height="10" rx="5"/>${jz}${f}${m}${h}</svg>`+(scale?`<div class="thread-scale"><span>Al-Fatihah</span><span>Juz 15</span><span>An-Nas</span></div>`:"");
+}
+
+/* ---------- shell ---------- */
+const NAV=[
+ ["Read",[["Search","search","#/search"],["Surahs","book",null,1],["Prayer & Qibla","compass",null,1]]],
+ ["Study",[["Library","bookmark",null,1],["Downloads","download","#/downloads"],["Reading goals","target","#/goals"],["Hifz","repeat","#/hifz"]]],
+ ["Knowledge base",[["Prophets & People","user",null,1],...MODULES.map(m=>[m.title,m.icon,"#/k/"+m.id])]],
+ ["Worship",[["Daily Fiqh","scroll","#/fiqh"],["Calendar","cal","#/calender"],["Ramadan","moon",null,1],["Tasbeeh","circle",null,1]]]
+];
+function renderNav(path){
+  $("#nav").innerHTML=NAV.map(([g,items])=>`<div class="navg">${g}</div>`+items.map(([t,ic,href,built])=>
+    built?`<a class="built" tabindex="-1">${I(ic)}${t}<small>built</small></a>`
+    :`<a href="${href}" ${path.startsWith(href.slice(1))?'aria-current="page"':""}>${I(ic)}${t}</a>`).join("")).join("");
+}
+const S={offline:false,undo:null};
+function toast(msg,undo){
+  const t=$("#toast");t.querySelector("span").textContent=msg;
+  const b=t.querySelector("button");b.hidden=!undo;S.undo=undo;
+  t.classList.add("open");clearTimeout(S.tt);S.tt=setTimeout(()=>t.classList.remove("open"),5000);
+}
+function openSheet(html){$("#sheet").innerHTML=html;$("#sheet").classList.add("open");$("#scrim").classList.add("open");setTimeout(()=>{const f=$("#sheet").querySelector("input,button:not(.ib),select");f&&f.focus()},60)}
+function closeSheet(){$("#sheet").classList.remove("open");if(!document.body.classList.contains("nav-open"))$("#scrim").classList.remove("open")}
+const sheetHead=t=>`<div class="sheet-h"><h2>${t}</h2><button class="ib" data-a="close" aria-label="Close">${I("x")}</button></div>`;
+
+/* ---------- SEARCH ---------- */
+const HISTK="quran:search-history:v1";
+let hist=store.get(HISTK,[{id:1,q:"patience",at:1},{id:2,q:"yusuf",at:2},{id:3,q:"رب زدني",at:3}]);
+function searchIndex(){
+  const out=[];
+  NAMES.forEach((n,i)=>out.push({type:"Surahs",t:n,s:`Surah ${i+1} · ${AYAHS[i]} ayahs`,href:"#/search",pos:abs(i+1,1),local:1}));
+  PERSONS.forEach(([id,n])=>out.push({type:"People",t:n,s:"Prophets & People",href:"#/search",local:1}));
+  STORIES.forEach(([id,n])=>out.push({type:"Stories",t:n,s:"Story",href:"#/search",local:1}));
+  Object.entries(KN).forEach(([m,arr])=>arr.forEach(e=>out.push({type:m==="duas"?"Duas":"Knowledge base",t:e.name,ar:e.ar,s:MODULES.find(x=>x.id===m).title,href:`#/k/${m}/${e.id}`,extra:e.sum,local:1,marks:e.refs.map(r=>R(r).pos)})));
+  FCATS.filter(c=>!c.later).forEach(c=>out.push({type:"Daily Fiqh",t:c.t,ar:c.ar,s:c.s,href:"#/fiqh",local:1}));
+  NOTES.forEach(n=>out.push({type:"Notes",t:n.t,s:n.b,href:"#/search",local:1}));
+  AYAT.forEach(a=>{const r=R(a.k);out.push({type:"Ayahs",t:`${NAMES[r.s-1]} ${a.k}`,s:a.en,href:"#/search",pos:r.pos,local:0})});
+  return out.map(x=>({...x,n:norm(x.t+" "+(x.ar||"")+" "+x.s+" "+(x.extra||""))}));
+}
+let IDX=null;
+const ORDER=["Ayahs","Surahs","People","Stories","Duas","Knowledge base","Daily Fiqh","Notes"];
+let sq={q:"",scope:"All"};
+function pgSearch(){
+  const qs=new URLSearchParams(location.hash.split("?")[1]||"");sq.q=qs.get("q")||sq.q;
+  return `<div class="page search-hero">
+  <h1>Search</h1>
+  <p class="lede">Ayahs, people, stories, duas, fiqh topics and your notes. Marks and spelling variants are ignored, so <em>yusuf</em> finds Yūsuf and <span class="ar" style="font-size:17px">رب</span> finds <span class="ar" style="font-size:17px">رَبِّ</span>.</p>
+  <label class="field">${I("search","l")}<input id="q" type="search" autocomplete="off" placeholder="Try 2:255, Al-Kahf, patience, or رب زدني" value="${esc(sq.q)}" aria-label="Search"><span class="kbd hide-sm">/</span></label>
+  <div id="sres"></div></div>`;
+}
+function runSearch(){
+  IDX=IDX||searchIndex();
+  const q=sq.q.trim(),box=$("#sres");if(!box)return;
+  if(!q){
+    box.innerHTML=`<div class="section"><div class="section-h"><h2 class="small" style="font:600 13px var(--sans)">Recent</h2>${hist.length?`<button class="btn ghost sm" data-a="hist-clear">Clear</button>`:""}</div>
+    ${hist.length?`<div class="chips">${hist.map(h=>`<span class="hist"><a href="#/search?q=${encodeURIComponent(h.q)}" data-a="hist-go" data-q="${esc(h.q)}">${esc(h.q)}</a><button data-a="hist-del" data-id="${h.id}" aria-label="Remove ${esc(h.q)}">${I("x")}</button></span>`).join("")}</div>`:`<p class="muted small">Your searches appear here, on this device only.</p>`}</div>
+    <div class="section"><h2 class="small" style="font:600 13px var(--sans)">Browse</h2><div class="chips">${["Duas","Patience","Al-Mulk","Badr","Wudu","Thamud"].map(x=>`<button class="chip" data-a="try" data-q="${x}">${x}</button>`).join("")}</div></div>`;
+    return;
+  }
+  const m=q.match(/^\s*(\d{1,3})\s*[:.\s]\s*(\d{1,3})\s*$/);
+  let jump="";
+  if(m){const s=+m[1],a=+m[2];
+    jump=(s>=1&&s<=114&&a>=1&&a<=AYAHS[s-1])?`<a class="jump" href="#/search">${I("book","l")}<div class="grow"><div style="font-weight:600">Open ${NAMES[s-1]} ${s}:${a}</div><div class="small" style="opacity:.85">Goes to the reader at this ayah</div></div>${I("chev")}</a>`
+    :`<div class="note warn" style="margin-bottom:18px">${I("info")}<span>${s>114?"There are 114 surahs.":`${NAMES[s-1]} has ${AYAHS[s-1]} ayahs.`}</span></div>`;}
+  const nq=norm(q),res=IDX.filter(x=>x.n.includes(nq));
+  const groups={};res.forEach(r=>(groups[r.type]=groups[r.type]||[]).push(r));
+  const counts=ORDER.filter(t=>groups[t]).map(t=>[t,groups[t].length]);
+  const scopes=[["All",res.length],...counts];
+  if(!scopes.find(s=>s[0]===sq.scope))sq.scope="All";
+  const shown=ORDER.filter(t=>groups[t]&&(sq.scope==="All"||sq.scope===t));
+  const marks=res.filter(r=>r.pos).map(r=>r.pos).concat(...res.filter(r=>r.marks).map(r=>r.marks));
+  let html=jump;
+  if(m&&!res.length){box.innerHTML=html;return}
+  html+=`<div class="chips" style="margin-top:18px" role="group" aria-label="Filter results">${scopes.map(([t,n])=>`<button class="chip" data-a="scope" data-s="${t}" aria-pressed="${sq.scope===t}">${t} <span class="n">${n}</span></button>`).join("")}</div>`;
+  if(marks.length>1)html+=`<div class="section" style="margin-top:22px"><div class="small muted" style="margin-bottom:6px">Where your results fall in the Qur'an</div>${thread({marks,scale:1})}</div>`;
+  if(!res.length&&!(S.offline&&nq.length>2)){html+=`<div class="empty" style="margin-top:24px"><h3>Nothing matches “${esc(q)}”</h3><p class="small">Check the spelling, try fewer words, or search an ayah number like 18:10.</p></div>`}
+  html+=shown.map(t=>{
+    const items=groups[t];
+    if(t==="Ayahs"&&S.offline)return `<div class="rgroup"><div class="rgroup-h">${I("book")}<h2>Ayahs</h2></div><div class="note warn">${I("wifioff")}<span>Searching ayah text needs a connection. Everything below is on your device and still works. Open an ayah directly by typing its number, like 2:255.</span></div></div>`;
+    const cap=sq.scope==="All"?4:60;
+    return `<div class="rgroup"><div class="rgroup-h">${I(t==="Ayahs"?"book":t==="Duas"?"hands":t==="Daily Fiqh"?"scroll":t==="Notes"?"note":t==="People"?"user":t==="Surahs"?"list":"tag")}<h2>${t}</h2><span class="tag num">${items.length}</span>${t==="Ayahs"?`<span class="small muted hide-sm" style="margin-left:auto">Saheeh International</span>`:""}</div>
+    <div class="list">${items.slice(0,cap).map(r=>`<a class="li" href="${r.href}"><div class="grow"><div class="t">${hl(r.t,q)}</div><div class="s">${t==="Ayahs"?`<span class="serif" style="font-size:15px;color:var(--ink)">${hl(r.s,q)}</span>`:hl(r.extra||r.s,q)}</div></div>${r.ar?`<span class="ar hide-sm" style="font-size:19px;line-height:1.4">${hl(r.ar,q)}</span>`:""}</a>`).join("")}</div>
+    ${items.length>cap?`<button class="btn ghost sm" style="margin-top:6px" data-a="scope" data-s="${t}">Show all ${items.length}</button>`:""}</div>`}).join("");
+  if(S.offline&&!groups.Ayahs&&nq.length>2)html+=`<div class="rgroup"><div class="rgroup-h">${I("book")}<h2>Ayahs</h2></div><div class="note warn">${I("wifioff")}<span>Ayah text search needs a connection. Results from your device are shown above.</span></div></div>`;
+  box.innerHTML=html;
+}
+function saveHist(q){q=q.trim();if(q.length<2)return;hist=[{id:Date.now(),q,at:Date.now()},...hist.filter(h=>norm(h.q)!==norm(q))].slice(0,12);store.set(HISTK,hist)}
+
+/* ---------- DOWNLOADS ---------- */
+const RECITERS=["Mishary Alafasy","Abu Bakr Al-Shatri","Nasser Al-Qatami","Yasser Al-Dosari","Hani Ar-Rifai"];
+const estAudio=s=>Math.max(0.6,AYAHS[s-1]*0.318); // calibrated to Al-Baqarah ≈ 91 MB; real sizes from the audio URL report
+const estText=s=>Math.max(.02,AYAHS[s-1]*.0025),estTaf=s=>Math.max(.05,AYAHS[s-1]*.012);
+const DL={prefs:store.get("quran:download-prefs:v1",{wifiOnly:true,reciter:0}),saved:new Map([[1,{text:1,taf:1,audio:1}],[18,{text:1,taf:1,audio:1}],[36,{text:1,taf:0,audio:1}],[67,{text:1,taf:1,audio:0}]]),queue:[],pick:{text:1,taf:1,audio:1},filter:"",show:"all"};
+for(let s=78;s<=114;s++)DL.saved.set(s,{text:1,taf:0,audio:0});
+function dlUsed(){let a=0,t=0;DL.saved.forEach((v,s)=>{if(v.audio)a+=estAudio(s);t+=(v.text?estText(s):0)+(v.taf?estTaf(s):0)});return {a,t}}
+function pgDownloads(){
+  const {a,t}=dlUsed(),quota=2048,free=quota-a-t-120;
+  const fills=[...DL.saved.keys()].map(s=>[abs(s,1),abs(s,AYAHS[s-1])]);
+  const presets=[["Juz 'Amma",Array.from({length:37},(_,i)=>78+i)],["Al-Kahf",[18]],["Ya-Sin",[36]],["Al-Mulk",[67]],["Al-Waqi'ah",[56]],["Ar-Rahman",[55]]];
+  return `<div class="page">
+  <div class="row wrap" style="align-items:flex-end"><div class="grow"><h1>Downloads</h1><p class="lede" style="margin:0">Save surahs to read and listen with no connection.</p></div>
+  <button class="btn pri" data-a="dl-add">${I("plus")}Add surahs</button></div>
+  <div class="card section">
+    <div class="row" style="margin-bottom:10px"><div class="grow"><h3>On this device</h3><div class="small muted num">${fmtMB(a+t)} saved · ${fmtMB(free)} free</div></div><span class="tag num">${DL.saved.size} surahs</span></div>
+    <div class="meter" aria-hidden="true"><i style="width:${a/quota*100}%;background:var(--accent)"></i><i style="width:${t/quota*100}%;background:var(--s2)"></i><i style="width:${120/quota*100}%;background:var(--line-2)"></i></div>
+    <div class="legend"><span style="--c:var(--accent)">Audio ${fmtMB(a)}</span><span style="--c:var(--s2)">Text and tafsir ${fmtMB(t)}</span><span style="--c:var(--line-2)">App and browsing cache</span></div>
+    <div style="margin-top:18px"><div class="small muted" style="margin-bottom:6px">What's saved, across the Qur'an</div>${thread({fills,scale:1})}</div>
+  </div>
+  ${DL.queue.length?`<div class="section"><div class="section-h"><h2>Downloading</h2><button class="btn ghost sm" data-a="dl-cancel-all">Cancel all</button></div><div class="list" id="queue">${queueHTML()}</div></div>`:""}
+  <div class="section"><h2>Quick picks</h2><div class="chips">${presets.map(([n,ss])=>{const done=ss.every(s=>DL.saved.has(s)&&DL.saved.get(s).audio);const mb=ss.reduce((x,s)=>x+estAudio(s)+estText(s)+estTaf(s),0);return `<button class="chip" data-a="dl-preset" data-ss="${ss.join(",")}" ${done?"disabled":""}>${done?I("check"):I("download")}${n} <span class="n">${done?"saved":"≈ "+fmtMB(mb)}</span></button>`}).join("")}</div></div>
+  <div class="section"><div class="section-h"><h2>Saved</h2><div class="seg" role="group"><button data-a="dl-show" data-v="all" aria-pressed="${DL.show==="all"}">All</button><button data-a="dl-show" data-v="audio" aria-pressed="${DL.show==="audio"}">With audio</button></div></div>
+  <div class="list">${[...DL.saved.entries()].filter(([s,v])=>DL.show==="all"||v.audio).sort((x,y)=>x[0]-y[0]).map(([s,v])=>`<div class="li"><span class="badge-n num">${s}</span><div class="grow"><div class="t">${NAMES[s-1]}</div><div class="s num">${AYAHS[s-1]} ayahs · ${fmtMB((v.audio?estAudio(s):0)+(v.text?estText(s):0)+(v.taf?estTaf(s):0))}</div></div>
+   <div class="parts hide-sm">${[["text","Text"],["taf","Tafsir"],["audio","Audio"]].map(([k,l])=>v[k]?`<span class="part done">${I("check")}${l}</span>`:`<button class="part" data-a="dl-part" data-s="${s}" data-k="${k}">${I("plus")}${l}</button>`).join("")}</div>
+   <button class="ib" data-a="dl-remove" data-s="${s}" aria-label="Remove ${NAMES[s-1]}">${I("trash")}</button></div>`).join("")}</div></div>
+  <div class="section"><h2>Preferences</h2><div class="card flat" style="padding:4px 16px">
+   <div class="li" style="border-bottom:1px solid var(--line)"><div class="grow"><div class="t">Download on Wi-Fi only</div><div class="s">Audio downloads wait until you're on Wi-Fi.</div></div><button class="switch" role="switch" aria-checked="${DL.prefs.wifiOnly}" data-a="dl-wifi" aria-label="Download on Wi-Fi only"></button></div>
+   <div class="li" style="border:0"><div class="grow"><div class="t">Reciter for downloads</div><div class="s">Changing it doesn't remove audio you've already saved.</div></div><select class="field" style="height:36px;width:auto" data-a="dl-reciter" aria-label="Reciter">${RECITERS.map((r,i)=>`<option value="${i}" ${i==DL.prefs.reciter?"selected":""}>${r}</option>`).join("")}</select></div>
+  </div><p class="small muted">Sizes marked ≈ are estimates until the download starts. Downloads keep going while you use the rest of the app.</p></div>
+  </div>`;
+}
+function queueHTML(){return DL.queue.map(q=>`<div class="li"><span class="badge-n num">${q.s}</span><div class="grow"><div class="row"><div class="t grow">${NAMES[q.s-1]}</div><span class="small muted num">${q.wait?"Waiting for Wi-Fi":Math.round(q.p)+"%"}</span></div><div class="prog"><i style="width:${q.p}%"></i></div></div><button class="ib" data-a="dl-cancel" data-s="${q.s}" aria-label="Cancel">${I("x")}</button></div>`).join("")}
+function enqueue(ss,parts){ss.forEach(s=>{if(!DL.queue.find(q=>q.s===s))DL.queue.push({s,p:0,parts:{...parts}})});tickDL();}
+function tickDL(){
+  clearInterval(DL.timer);if(!DL.queue.length)return;
+  DL.timer=setInterval(()=>{
+    const q=DL.queue[0];if(!q){clearInterval(DL.timer);return}
+    if(S.offline){q.wait=1}else{q.wait=0;q.p+=Math.min(100,18+Math.random()*30)}
+    if(q.p>=100){DL.queue.shift();const cur=DL.saved.get(q.s)||{};DL.saved.set(q.s,{text:1,taf:cur.taf||q.parts.taf,audio:cur.audio||q.parts.audio});if(!DL.queue.length){clearInterval(DL.timer);toast(`Saved ${NAMES[q.s-1]}`);}if(route().startsWith("/downloads"))render();return}
+    const el=$("#queue");if(el)el.innerHTML=queueHTML();
+  },220);
+}
+function sheetAdd(){
+  const items=NAMES.map((n,i)=>[i+1,n]).filter(([s,n])=>!DL.filter||norm(n+" "+s).includes(norm(DL.filter)));
+  const sel=DL.sel||(DL.sel=new Set());
+  const mb=[...sel].reduce((x,s)=>x+(DL.pick.audio?estAudio(s):0)+estText(s)+(DL.pick.taf?estTaf(s):0),0);
+  return sheetHead("Add surahs")+`
+  <label class="field" style="margin-bottom:10px">${I("search")}<input data-a="dl-filter" placeholder="Filter by name or number" value="${esc(DL.filter)}"></label>
+  <div class="row" style="margin-bottom:6px"><span class="small muted grow">Include</span><div class="parts">${[["taf","Tafsir"],["audio","Audio"]].map(([k,l])=>`<button class="part" data-a="dl-pick" data-k="${k}" aria-pressed="${!!DL.pick[k]}">${l}</button>`).join("")}</div></div>
+  <div class="list" style="max-height:44vh;overflow:auto" id="dl-list">${items.map(([s,n])=>{const has=DL.saved.has(s);return `<label class="li" style="cursor:pointer"><input type="checkbox" data-a="dl-sel" value="${s}" ${sel.has(s)?"checked":""} ${has?"disabled":""}><span class="badge-n num">${s}</span><span class="grow"><span class="t">${n}</span> <span class="s num">${AYAHS[s-1]} ayahs</span></span><span class="small muted num">${has?"Saved":"≈ "+fmtMB((DL.pick.audio?estAudio(s):0)+estText(s)+(DL.pick.taf?estTaf(s):0))}</span></label>`}).join("")}</div>
+  <div class="row" style="margin-top:14px"><div class="grow small muted num" id="dl-sum">${sel.size?`${sel.size} selected · ≈ ${fmtMB(mb)}`:"Select surahs to download"}</div><button class="btn pri" data-a="dl-start" ${sel.size?"":"disabled"}>${I("download")}Download</button></div>
+  ${DL.pick.audio&&DL.prefs.wifiOnly?`<p class="small muted" style="margin:10px 0 0">Wi-Fi only is on, so audio waits for Wi-Fi.</p>`:""}`;
+}
+
+/* ---------- KNOWLEDGE ---------- */
+function ktabs(cur){return `<nav class="ktabs" aria-label="Knowledge base">${MODULES.map(m=>`<a href="#/k/${m.id}" ${m.id===cur?'aria-current="page"':""}>${I(m.icon)}${m.title}</a>`).join("")}</nav>`}
+let kq="";
+function pgKList(mod){
+  const M=MODULES.find(m=>m.id===mod);if(!M)return notFound();
+  const all=KN[mod],list=all.filter(e=>!kq||norm(e.name+e.ar+e.sum).includes(norm(kq)));
+  return `<div class="page wide">${ktabs(mod)}
+  <div class="row wrap" style="align-items:flex-end;margin-bottom:22px"><div class="grow"><h1>${M.title}</h1><p class="lede" style="margin:0">${M.q} ${all.length} entries, each anchored to the ayahs that mention it.</p></div>
+  <label class="field" style="width:min(280px,100%)">${I("search")}<input data-a="kq" placeholder="Filter ${M.title.toLowerCase()}" value="${esc(kq)}"></label></div>
+  ${list.length?`<div class="grid g3">${list.map(e=>`<a class="kcard" href="#/k/${mod}/${e.id}">
+    <div class="ar" style="${mod==="duas"?"font-size:20px":""}">${e.ar}</div><h3>${esc(e.name)}</h3><div class="small muted">${esc(e.sum)}</div>
+    <div class="row small muted" style="margin-top:6px"><span class="grow num">${e.refs.length} ${e.refs.length===1?"ayah":"ayahs"}</span>${e.status!=="quran"?`<span class="tag ${STATUS[e.status][1]}">${STATUS[e.status][0]}</span>`:""}</div>
+    ${thread({marks:e.refs.map(r=>R(r).pos)})}</a>`).join("")}</div>`:`<div class="empty"><h3>No ${M.title.toLowerCase()} match “${esc(kq)}”</h3><button class="btn ghost" data-a="kq-clear">Clear filter</button></div>`}
+  </div>`;
+}
+function pgKDetail(mod,id){
+  const M=MODULES.find(m=>m.id===mod),e=M&&KN[mod].find(x=>x.id===id);if(!e)return notFound();
+  const refs=e.refs.map(R),bySurah={};refs.forEach(r=>(bySurah[r.s]=bySurah[r.s]||[]).push(r));
+  const referencedBy=[];Object.entries(KN).forEach(([m,arr])=>arr.forEach(x=>x.rel.forEach(([rm,rid])=>{if(rm===mod&&rid===id)referencedBy.push([m,x])})));
+  const ayahs=refs.map(r=>({r,en:(AYAT.find(a=>a.k===r.key)||{}).en}));
+  return `<div class="page">${ktabs(mod)}
+  <div class="det-head"><div><div class="small muted"><a href="#/k/${mod}">${M.title}</a></div><h1 style="margin-top:6px">${esc(e.name)}</h1><p class="lede" style="margin:0">${esc(e.sum)}</p>
+   <div class="row" style="margin-top:14px;gap:8px"><span class="tag ${STATUS[e.status][1]}">${STATUS[e.status][0]}</span><button class="btn sm" data-a="save" data-k="${mod}:${id}">${I("bookmark")}Save</button>${mod==="duas"?`<button class="btn sm" data-a="toast" data-m="Playing ${esc(e.name)}">${I("play")}Listen</button>`:`<button class="btn sm" data-a="toast" data-m="Playing ${refs.length} ayahs in order">${I("play")}Play all</button>`}</div></div>
+   <div class="ar" ${mod==="duas"?'style="font-size:30px;line-height:1.9;max-width:420px"':""}>${e.ar}</div></div>
+  <div class="section"><div class="section-h"><h2>Where it appears</h2><span class="small muted num">${refs.length} ayahs in ${Object.keys(bySurah).length} surahs</span></div>
+   ${thread({marks:refs.map(r=>r.pos),scale:1})}
+   <div class="refs" style="margin-top:14px">${refs.map(r=>`<a class="ref" href="#ayah-${r.key.replace(":","-")}">${NAMES[r.s-1]} <b>${r.key}</b></a>`).join("")}</div></div>
+  <div class="section"><h2>The ayahs</h2>${ayahs.map(({r,en})=>`<div class="ayah" id="ayah-${r.key.replace(":","-")}"><div class="ayah-meta"><b>${NAMES[r.s-1]} ${r.key}</b><span class="grow"></span><button class="ib" aria-label="Play ${r.key}" data-a="toast" data-m="Playing ${r.key}">${I("play")}</button><button class="ib" aria-label="Open in reader">${I("book")}</button></div>
+   ${mod==="duas"&&refs.length===1?`<div class="ar">${e.ar} <span class="vend">${r.a}</span></div>`:""}
+   <div class="tr">${en?esc(en):`<span class="muted">Translation loads from the reader's cache.</span>`}</div></div>`).join("")}</div>
+  ${e.rel.length?`<div class="section"><h2>Connected</h2><div class="chips">${e.rel.map(([m,rid,label])=>{const ok=KN[m]&&KN[m].find(x=>x.id===rid);const mm=MODULES.find(x=>x.id===m);return ok?`<a class="chip" href="#/k/${m}/${rid}">${I(mm.icon)}${label}</a>`:`<span class="chip" style="cursor:default">${I(m==="persons"?"user":m==="fiqh"?"scroll":"book")}${label}</span>`}).join("")}</div></div>`:""}
+  ${referencedBy.length?`<div class="section"><h2>Referenced by</h2><div class="list">${referencedBy.map(([m,x])=>`<a class="li" href="#/k/${m}/${x.id}">${I(MODULES.find(y=>y.id===m).icon)}<div class="grow"><div class="t">${esc(x.name)}</div><div class="s">${MODULES.find(y=>y.id===m).title}</div></div>${I("chev")}</a>`).join("")}</div></div>`:""}
+  </div>`;
+}
+
+/* ---------- FIQH ---------- */
+const FP=store.get("quran:fiqh-prefs:v1",{marjaId:null,lang:"en"});
+const FIQH={tradition:"jafari",done:new Set(),seen:new Set(),tq:""};
+function marjaBar(){const m=MARAJI.find(x=>x.id===FP.marjaId);return `<div class="marja"><span class="dot">${m.ini}</span><div class="grow"><div class="small muted">Showing rulings of</div><div class="t" style="font-weight:600">${m.name}</div></div><a class="btn sm" href="#/fiqh/choose-marja">Change</a></div>`}
+function fiqhGate(){return `<div class="page"><div class="empty" style="padding:48px 20px">${I("scroll","l")}<h3 style="margin-top:12px">Choose whose rulings to follow</h3><p class="small" style="max-width:44ch;margin:0 auto 16px">Daily Fiqh shows one marja's rulings at a time. Nothing is shown until you choose.</p><a class="btn pri" href="#/fiqh/choose-marja">Choose a marja'</a></div></div>`}
+function fiqhBanner(){return FIQH.tradition==="sunni"?`<div class="note" style="margin-bottom:18px">${I("info")}<span>Daily Fiqh covers Fiqh Ja'fari only for now. Your prayer setting is Sunni; nothing else in the app changes.</span></div>`:""}
+function pgFiqh(){
+  if(!FP.marjaId)return fiqhGate();
+  return `<div class="page">${fiqhBanner()}
+  <div class="row wrap" style="align-items:flex-end;margin-bottom:20px"><div class="grow"><h1>Daily Fiqh</h1><p class="lede" style="margin:0">The obligatory acts, quoted from your marja's own books.</p></div><a class="btn ghost" href="#/fiqh/glossary">${I("list")}Glossary</a></div>
+  ${marjaBar()}
+  <label class="field section" style="margin-top:18px">${I("search")}<input placeholder="Search rulings, e.g. ihtiyat, wudu, qada" data-a="fiqh-q" aria-label="Search Daily Fiqh"></label>
+  <div class="section"><h2>Continue</h2><a class="li" href="#/fiqh/taharah/wudu" style="border-top:1px solid var(--line)">${I("droplet")}<div class="grow"><div class="t">Wudu</div><div class="s">Taharah · step 3 of 6 in the procedure</div></div>${I("chev")}</a></div>
+  <div class="section"><h2>Topics</h2><div class="grid g3">${FCATS.map(c=>`<a class="cat ${c.later?"later":""}" href="${c.later?"":"#/fiqh/"+c.id}"><div class="ar">${c.ar}</div><h3>${c.t}</h3><div class="small muted">${c.s}</div><div class="small muted" style="margin-top:auto">${c.later?"Coming later":c.n+" topics"}</div></a>`).join("")}</div></div>
+  <div class="section"><div class="row note">${I("cloud")}<span class="grow">Visited topics are saved for offline. Save everything (≈ 2.4 MB) to read all of it with no connection.</span><button class="btn sm" data-a="toast" data-m="All of Daily Fiqh is saved for offline">Save all</button></div></div>
+  </div>`;
+}
+function pgChooseMarja(){
+  return `<div class="page" style="max-width:640px">
+  <h1>Choose a marja'</h1><p class="lede">Rulings are shown for one marja' at a time. Where a ruling of his isn't added yet, you'll be told to check his risala; another marja's ruling is never shown in its place.</p>
+  <div class="grid">${MARAJI.map(m=>`<button class="mcard" data-a="pick-marja" data-id="${m.id}" aria-pressed="${FP.marjaId===m.id}"><div class="row"><span class="dot" style="width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font:500 18px var(--serif)">${m.ini}</span><div class="grow"><h3 style="font:500 18px var(--serif)">${m.name}</h3><div class="small muted">${m.books}</div></div>${m.status==="pending"?`<span class="tag warn">Rulings not added yet</span>`:FP.marjaId===m.id?I("check"):""}</div></button>`).join("")}</div>
+  <div class="section"><h3>Language</h3><div class="seg" role="group" aria-label="Language">${[["en","English"],["ur","اردو"],["both","Both"]].map(([v,l])=>`<button data-a="fiqh-lang" data-v="${v}" aria-pressed="${FP.lang===v}">${l}</button>`).join("")}</div></div>
+  <p class="small muted section">You can change this any time. It's stored on this device only.</p></div>`;
+}
+const slot=(t,ur)=>{const en=`<div class="quote slot">Verbatim text of ${t} appears here, cut from the official source by script.</div>`;const u=`<div class="quote slot ur" style="font-style:normal">یہاں سرکاری اردو متن آئے گا</div>`;return FP.lang==="en"?en:FP.lang==="ur"?(ur?u:en+`<div class="small muted">Official Urdu not available for this ruling.</div>`):en+(ur?u:"")};
+const FLAG={p:["Step by step","list"],h:["Help me find the ruling","compass"],l:["Live times","clock"],w:["Women's rulings","info"]};
+function pgCategory(cid){
+  if(!FP.marjaId)return fiqhGate();
+  const c=FCATS.find(x=>x.id===cid);if(!c||c.later)return notFound();
+  const m=MARAJI.find(x=>x.id===FP.marjaId),pending=m.status==="pending";
+  const tops=FTOPICS[cid]||[];
+  const total=tops.reduce((a,t)=>a+t[3],0),missing=pending?total:Math.round(total*(m.id==="khamenei"?.18:.04));
+  const tq=FIQH.tq||"",shown=tops.filter(t=>!tq||norm(t[1]+t[2]).includes(norm(tq)));
+  return `<div class="page">${fiqhBanner()}
+  <div class="small muted"><a href="#/fiqh">Daily Fiqh</a></div>
+  <div class="det-head" style="margin-top:6px;border:0;padding-bottom:6px"><div><h1>${c.t}</h1><p class="lede" style="margin:0">${c.s}</p></div><div class="ar">${c.ar}</div></div>
+  ${marjaBar()}
+  <div class="section" style="margin-top:18px"><div class="row" style="margin-bottom:6px"><span class="small grow"><b class="num">${total-missing}</b> <span class="muted">of ${total} rulings added for ${m.short}</span></span>${missing?`<span class="small muted num">${missing} not added yet</span>`:""}</div>
+   <div class="meter"><i style="width:${(total-missing)/total*100}%;background:var(--accent)"></i></div>
+   <p class="small muted">Where one isn't added, the topic tells you to check his risala. No other marja's ruling is shown instead.</p></div>
+  ${tops.length>6?`<label class="field section">${I("search")}<input data-a="tq" placeholder="Filter ${c.t.toLowerCase()} topics" value="${esc(tq)}"></label>`:""}
+  ${pending?`<div class="empty section"><h3>No rulings from ${m.short} have been added yet</h3><p class="small">The topics are listed so you can see what's coming. Refer to his risala meanwhile.</p></div>`:""}
+  <div class="section"><div class="list">${shown.map(([id,t,ar,n,f],i)=>{const seen=FIQH.seen.has(cid+"/"+id);return `<a class="li" href="#/fiqh/${cid}/${id}"><span class="badge-n num">${i+1}</span><div class="grow"><div class="t">${t}</div><div class="s num">${n} ${n===1?"ruling":"rulings"}${[...f].filter(x=>FLAG[x]).map(x=>` · ${FLAG[x][0]}`).join("")}${seen?" · Saved offline":""}</div></div><span class="ar hide-sm" style="font-size:19px;line-height:1.4;color:var(--ink-2)">${ar}</span>${I("chev")}</a>`}).join("")||(tops.length?`<div class="empty"><h3>No topics match</h3></div>`:`<div class="empty"><h3>Topics come from the generated data</h3><p class="small">This prototype only lists sample topics for Foundations, Taharah, Salah and Sawm.</p></div>`)}</div></div>
+  <div class="section"><div class="row note">${I("cloud")}<span class="grow">Topics you open in ${c.t} are saved for offline automatically.</span><button class="btn sm" data-a="toast" data-m="${c.t} saved for offline">Save all of ${c.t}</button></div></div>
+  </div>`;
+}
+function pgTopic(cid,tid){
+  if(!FP.marjaId)return fiqhGate();
+  const c=FCATS.find(x=>x.id===cid),tp=c&&(FTOPICS[cid]||[]).find(t=>t[0]===tid);if(!tp)return notFound();
+  FIQH.seen.add(cid+"/"+tid);
+  const [id,title,ar,n,f]=tp,m=MARAJI.find(x=>x.id===FP.marjaId),pending=m.status==="pending",isWudu=id==="wudu";
+  const steps=isWudu?["Intention","Wash the face","Wash the right arm","Wash the left arm","Wipe the head","Wipe the feet"]:["First step","Second step","Third step","Fourth step"];
+  const rulings=isWudu?[
+   {subj:"Order of the acts of wudu",basis:"Fatwa",ur:1},
+   {subj:"Washing the face: from the hairline to the chin",basis:"Fatwa",ur:1},
+   {subj:"Wiping the head with the wetness of the hand",basis:"Obligatory precaution",ur:0},
+   {subj:"Wudu with water that is not one's own",basis:"Fatwa",ur:1,miss:"khamenei"}]
+   :[{subj:"Ruling subject (from the generated data)",basis:"Fatwa",ur:1},{subj:"Ruling subject",basis:"Obligatory precaution",ur:1},{subj:"Ruling subject",basis:"Precaution, type not stated",ur:0,miss:"khamenei"}];
+  const siblings=(FTOPICS[cid]||[]).filter(t=>t[0]!==id).slice(0,4);
+  return `<div class="page">${fiqhBanner()}
+  <div class="small muted"><a href="#/fiqh">Daily Fiqh</a> · <a href="#/fiqh/${cid}">${c.t}</a></div>
+  <div class="row wrap" style="align-items:flex-end;margin:6px 0 18px"><div class="grow"><h1>${title} <span class="ar" style="font-size:28px;color:var(--accent)">${ar}</span></h1></div>
+   <div class="seg" role="group" aria-label="Language">${[["en","EN"],["ur","اردو"],["both","Both"]].map(([v,l])=>`<button data-a="fiqh-lang" data-v="${v}" aria-pressed="${FP.lang===v}">${l}</button>`).join("")}</div></div>
+  ${marjaBar()}
+  <div class="note" style="margin-top:14px">${I("info")}<span><b>Not scholar-reviewed.</b> A study aid. Follow your own marja' or a local scholar for your situation.</span></div>
+  ${pending?`<div class="empty section"><h3>No rulings from ${m.short} have been added yet</h3><p class="small">Refer to his risala. Rulings of other maraji' are not shown in their place.</p></div>`:`
+  <div class="section"><h2>In short</h2><p class="serif" style="font-size:17px;line-height:1.7;margin:0 0 6px">${isWudu?"Wudu is washing the face and arms and wiping the head and feet, in order, with the intention of nearness to Allah.":"A short summary of this topic, written by the app."}</p><span class="tag">Written by the app, not a ruling</span></div>
+  ${f.includes("l")?`<div class="section"><div class="card row wrap" style="gap:18px">${I("clock","l")}<div class="grow"><div class="small muted">Today, at your saved location</div><div class="num" style="font:500 20px var(--serif)">Fajr 05:01 · Maghrib 17:32</div></div><a class="btn sm" href="#/fiqh">Prayer times</a></div><p class="small muted">From the Prayer page, using the Ja'fari method. Nothing is recalculated here.</p></div>`:""}
+  ${f.includes("h")?`<div class="section"><div class="card" style="border-color:var(--accent)"><div class="row wrap"><span class="dot" style="width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)">${I("compass")}</span><div class="grow"><h3>Help me find the ruling</h3><div class="small muted">A few questions about what happened, then ${m.short}'s own words.</div></div><button class="btn pri" data-a="helper">Start</button></div></div><p class="small muted">Shown only once a reviewer has signed off every path.</p></div>`:""}
+  ${isWudu?`<div class="section"><h2>Qur'anic basis</h2><div class="card flat"><div class="ayah-meta"><b>Al-Ma'idah 5:6</b><span class="grow"></span><button class="ib" aria-label="Open in reader">${I("book")}</button></div><div class="tr serif" style="font-size:17px;line-height:1.65">${AYAT.find(a=>a.k==="5:6").en}</div></div></div>`:""}
+  ${f.includes("p")?`<div class="section"><div class="section-h"><h2>Step by step</h2><span class="small muted">${m.short}</span></div>
+   <ol class="steps">${steps.map((t,i)=>`<li class="${FIQH.done.has(id+i)?"done":""}"><div class="row"><h3 class="grow" style="margin:4px 0">${t}</h3><button class="btn ghost sm" data-a="step" data-i="${id+i}" aria-pressed="${FIQH.done.has(id+i)}">${FIQH.done.has(id+i)?"Undo":"Mark done"}</button></div>${slot("this step's ruling",1)}<div class="src">Islamic Laws, ruling ###<span class="tag acc">Level A</span></div></li>`).join("")}</ol>
+   <p class="small muted">Marking steps is only for following along now. Nothing is tracked.</p></div>`:""}
+  <div class="section"><div class="section-h"><h2>Rulings</h2><span class="small muted num">${n}</span></div>${rulings.map(r=>`<div class="ruling"><div class="row" style="align-items:flex-start"><h3 class="grow serif" style="font:500 17px/1.4 var(--serif)">${r.subj}</h3><button class="ib" data-a="save" data-k="fiqh:${id}" aria-label="Save">${I("bookmark")}</button></div>
+   ${r.miss===FP.marjaId?`<div class="note warn" style="margin-top:8px">${I("info")}<span>Not added yet for ${m.short}. Refer to his risala.</span></div>`:`${slot("this ruling",r.ur)}<div class="src"><span class="tag ${r.basis==="Fatwa"?"acc":"warn"}">${r.basis}</span>${m.id==="sistani"?"Islamic Laws, ruling":"Practical Laws of Islam, Q&A"} ###<span class="tag line">Level A</span><a href="#/fiqh/${cid}/${id}" class="small" style="margin-left:auto">Official source ${I("ext")}</a></div>`}</div>`).join("")}
+   ${n>rulings.length?`<button class="btn ghost sm" style="margin-top:8px" data-a="toast" data-m="In the build, all ${n} rulings are listed">Show all ${n} rulings</button>`:""}</div>
+  ${f.includes("w")||f.includes("s")?`<div class="section"><details class="panel" ${f.includes("s")?"":""}><summary>${I("chev","chev")}<span class="grow">Rulings for women</span><span class="small muted">3</span></summary><div style="padding-bottom:12px">${slot("this ruling",1)}<div class="src">Islamic Laws, ruling ###<span class="tag acc">Fatwa</span></div></div></details></div>`:""}
+  <div class="section"><h2>Also in ${c.t}</h2><div class="chips">${siblings.map(t=>`<a class="chip" href="#/fiqh/${cid}/${t[0]}">${t[1]}</a>`).join("")}<a class="chip" href="#/fiqh/glossary">Glossary</a></div></div>`}
+  </div>`;
+}
+/* Decision helper: one question per screen. Questions describe the situation only; outcomes quote the marja' or refer to his risala. */
+const HELP={q1:{q:"Which prayer were you praying?",o:[["A two-rak'ah prayer","q2"],["A three-rak'ah prayer","q2"],["A four-rak'ah prayer","q3"]]},
+ q2:{q:"When did the doubt come?",o:[["While praying","r1"],["After I had finished","r2"]]},
+ q3:{q:"Between which numbers are you unsure?",o:[["Between 2 and 3","q4"],["Between 3 and 4","q4"],["Something else","refer"]]},
+ q4:{q:"Where were you when the doubt came?",o:[["Standing","r1"],["After the second sajdah","r1"]]}};
+const HS2={path:[],at:"q1"};
+function helperSheet(){
+  const m=MARAJI.find(x=>x.id===FP.marjaId),node=HELP[HS2.at],trail=HS2.path.map(p=>`<span class="tag">${esc(p)}</span>`).join(" ");
+  const head=sheetHead("Doubts in prayer")+`<div class="small muted" style="margin:-6px 0 14px">${m.name}</div>${trail?`<div class="chips" style="margin-bottom:14px">${trail}</div>`:""}`;
+  if(node)return head+`<h2 style="font-size:22px">${node.q}</h2><div class="grid" style="margin-top:14px">${node.o.map(([l,nx])=>`<button class="mcard" data-a="h-opt" data-n="${nx}" data-l="${esc(l)}">${l}</button>`).join("")}<button class="mcard" data-a="h-opt" data-n="refer" data-l="Not sure" style="color:var(--ink-2)">I'm not sure</button></div>
+   <div class="row" style="margin-top:16px">${HS2.path.length?`<button class="btn ghost sm" data-a="h-back">${I("chevl")}Back</button>`:""}<span class="grow"></span><span class="small muted">Question ${HS2.path.length+1}</span></div>`;
+  const refer=HS2.at==="refer";
+  return head+`<div role="status" aria-live="polite">${refer?`<h2 style="font-size:22px">Check his risala for this case</h2><p class="muted">This situation isn't covered here. The app doesn't guess.</p><div class="src">Islamic Laws, chapter on doubts in prayer, ruling ###</div>`
+   :`<h2 style="font-size:22px">What ${m.short} says</h2>${slot("the matching ruling",1)}<div class="src"><span class="tag acc">Fatwa</span>Islamic Laws, ruling ###<span class="tag line">Level A</span></div>`}
+   <div class="note" style="margin-top:14px">${I("info")}<span><b>Not scholar-reviewed.</b> If your case differs, ask your marja's office or a local scholar.</span></div></div>
+   <div class="row" style="margin-top:16px"><button class="btn ghost sm" data-a="h-back">${I("chevl")}Back</button><span class="grow"></span><button class="btn" data-a="h-reset">Start over</button></div>`;
+}
+let gq="",gl="";
+function pgGlossary(){
+  const list=GLOSS.filter(g=>(!gq||norm(g.join(" ")).includes(norm(gq)))&&(!gl||g[0][0].toUpperCase()===gl));
+  const letters=new Set(GLOSS.map(g=>g[0][0].toUpperCase()));
+  return `<div class="page"><div class="small muted"><a href="#/fiqh">Daily Fiqh</a></div><h1 style="margin-top:6px">Glossary</h1><p class="lede">Terms used in the rulings, in English, Arabic and Urdu.</p>
+  <label class="field">${I("search")}<input data-a="gq" placeholder="Search terms in any script" value="${esc(gq)}"></label>
+  <div class="az" role="group" aria-label="Jump to letter">${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(l=>`<button data-a="gl" data-l="${l}" ${letters.has(l)?"":"disabled"} aria-pressed="${gl===l}" style="${gl===l?"background:var(--accent);color:var(--accent-ink)":""}">${l}</button>`).join("")}${gl?`<button data-a="gl" data-l="" style="width:auto;padding:0 8px">All</button>`:""}</div>
+  ${list.length?`<div style="border-top:1px solid var(--line)">${list.map(([t,ar,ur,d])=>`<div class="gl"><div><h3 style="font:500 18px var(--serif)">${hl(t,gq)}</h3><div class="ar" style="font-size:20px;line-height:1.6;text-align:left">${ar}</div></div><div><p class="serif" style="font-size:16px;margin:0 0 4px">${hl(d,gq)}</p><div class="ur" style="font-size:16px;text-align:left">${ur}</div></div></div>`).join("")}</div>`:`<div class="empty"><h3>No terms match</h3></div>`}
+  <p class="small muted section">Definitions are written by the app. Each links to its source in the build.</p></div>`;
+}
+
+/* ---------- HIFZ ---------- */
+function hifzState(t){
+  const n=t.end-t.start+1,out=[];
+  for(let i=0;i<n;i++){const a=t.start+i;let s="not-started",tr="";
+    if(a<=t.last){const h=(a*7+t.surah*3)%10;s=h<2?"learning":h<6?"memorized":h<9?"strong":"weak";if(t.surah===67&&a===9)tr="weak";if(t.surah===67&&a===4)s="weak";}
+    out.push({a,s,tr});}
+  return out;
+}
+const SKEY={"not-started":"Not started",learning:"Learning",memorized:"Memorized",strong:"Strong",weak:"Needs work"};
+function pgHifz(){
+  const ts=HIFZ.map(t=>({t,st:hifzState(t)}));
+  const weak=ts.flatMap(({t,st})=>st.filter(x=>x.s==="weak").map(x=>`${NAMES[t.surah-1]} ${t.surah}:${x.a}`).concat(st.filter(x=>x.tr==="weak").map(x=>`${NAMES[t.surah-1]} ${x.a} → ${x.a+1}`)));
+  return `<div class="page">
+  <h1>Hifz</h1><p class="lede">Memorise at your own pace. Revision comes first, so new ayahs slow down while some need work.</p>
+  <div class="today"><div><div class="small muted">Today's practice</div><div class="big num">23 <span style="font:400 17px var(--sans);color:var(--ink-2)">items · about 18 min</span></div>
+   <div class="small muted" style="margin-top:8px">${weak.length} to recover · 14 revisions · 2 new ayahs of Al-Mulk</div></div>
+   <div style="display:flex;flex-direction:column;gap:8px"><a class="btn pri" href="#/hifz/session">${I("play")}Start session</a><button class="btn" data-a="quick">${I("clock")}Quick test</button></div></div>
+  <div class="section"><div class="section-h"><h2>Your surahs</h2><button class="btn ghost sm" data-a="hifz-new">${I("plus")}Add a surah</button></div>
+  ${ts.map(({t,st})=>{const c={};st.forEach(x=>c[x.s]=(c[x.s]||0)+1);const intro=t.last-t.start+1,n=t.end-t.start+1;return `<div class="card" style="margin-bottom:12px">
+   <div class="row" style="margin-bottom:14px"><div class="grow"><h3 style="font:500 20px var(--serif)">${NAMES[t.surah-1]} <span class="muted num" style="font:400 14px var(--sans)">${t.start}–${t.end}</span></h3><div class="small muted num">${intro} of ${n} ayahs started · ${t.pace} new a day</div></div><button class="ib" aria-label="Options">${I("dots")}</button></div>
+   <div class="hstrip" role="img" aria-label="${Object.entries(c).map(([k,v])=>v+" "+SKEY[k]).join(", ")}">${st.map(x=>`<i data-s="${x.s}" ${x.tr?`data-t="${x.tr}"`:""} title="Ayah ${x.a}: ${SKEY[x.s]}${x.tr?" · link to next needs work":""}"></i>`).join("")}</div>
+   <div class="row wrap" style="margin-top:14px;gap:8px">${c.weak?`<a class="btn sm" href="#/hifz/session">Recover ${c.weak}</a>`:""}<button class="btn ghost sm" data-a="toast" data-m="Free practice: nothing is graded">Practise freely</button><button class="btn ghost sm" data-a="toast" data-m="Full check of ${intro} ayahs and ${intro-1} links">Full check</button></div></div>`}).join("")}
+  <div class="hkey">${[["s1","Not started"],["s2","Learning"],["s3","Memorized"],["s4","Strong"]].map(([v,l])=>`<span><i style="background:var(--${v})"></i>${l}</span>`).join("")}<span><i style="box-shadow:inset 0 0 0 2px var(--weak)"></i>Needs work</span><span><i style="background:var(--weak);width:3px"></i>Link to next ayah</span></div></div>
+  <div class="section"><h2>How it's going</h2><div class="sig">${[["86%","Recalled first time, last 14 days"],["9","Mistakes this week"],["0.4","Hints per ayah"],["12 Oct","Last full check"]].map(([b,s])=>`<div><b class="num">${b}</b><span>${s}</span></div>`).join("")}</div>
+   <p class="small muted">These are the signals, side by side. There's no single score.</p></div>
+  <div class="section"><h2>Needs work</h2><div class="list">${weak.map(w=>`<a class="li" href="#/hifz/session">${I("alert")}<div class="grow t">${w}</div><span class="small muted">${w.includes("→")?"Link":"Ayah"}</span>${I("chev")}</a>`).join("")}</div></div>
+  </div>`;
+}
+const HS={i:0,shown:false,hint:0,items:[
+ {kind:"Warm-up",mode:"Recite the ayah",ask:"Al-Mulk 67:1",ayah:0},
+ {kind:"Needs work",mode:"Continue from here",ask:"Al-Mulk 67:2",ayah:1,start:"الَّذِي خَلَقَ الْمَوْتَ"},
+ {kind:"Link",mode:"What comes next?",ask:"After 67:2",ayah:2,prev:1},
+ {kind:"New",mode:"Read, then recite",ask:"Al-Mulk 67:3",ayah:2,isNew:1}
+],res:[]};
+function pgSession(){
+  const it=HS.items[HS.i];
+  if(!it)return `<div class="page session" style="text-align:center"><div style="padding:40px 0"><span class="vend" style="width:56px;height:56px;font-size:22px">${I("check","l")}</span><h1 style="margin-top:18px">Session complete</h1><p class="lede" style="margin:0 auto 22px">${HS.res.filter(r=>r!=="again").length} of ${HS.res.length} recalled. ${HS.res.includes("again")?"Missed ayahs come back sooner.":"Everything moves further out."}</p><div class="row" style="justify-content:center"><a class="btn pri" href="#/hifz">Back to Hifz</a><button class="btn" data-a="sess-restart">Practise again</button></div></div></div>`;
+  const words=MULK[it.ayah].split(" ");
+  const hintTxt=HS.hint===1?words.map(w=>w[0]+"…").join(" "):HS.hint===2?words.slice(0,Math.ceil(words.length/2)).join(" ")+" …":"";
+  return `<div class="page session">
+  <div class="row"><a class="ib" href="#/hifz" aria-label="Leave session">${I("x")}</a><div class="grow small muted" style="text-align:center">${HS.i+1} of ${HS.items.length}</div><button class="btn ghost sm" data-a="sess-skip">Skip</button></div>
+  <div class="sbar">${HS.items.map((_,i)=>`<i class="${i<HS.i?"d":i===HS.i?"c":""}"></i>`).join("")}</div>
+  <div class="row" style="justify-content:center;gap:8px"><span class="tag ${it.kind==="Needs work"||it.kind==="Link"?"warn":it.kind==="New"?"acc":""}">${it.kind}</span><span class="small muted">${it.ask}</span></div>
+  <div class="prompt"><h2 style="font-size:24px">${it.mode}</h2>
+   ${it.prev!=null?`<div class="ar" style="color:var(--ink-2)">${MULK[it.prev]} <span class="vend">${it.prev+1}</span></div>`:""}
+   ${it.start?`<div class="ar">${it.start} …</div>`:""}</div>
+  <div class="hidden-ayah">${it.isNew||HS.shown?`<div class="ar">${MULK[it.ayah]} <span class="vend">${it.ayah+1}</span></div>`:HS.hint?`<div class="hint"><div class="ar">${hintTxt}</div></div>`:`<div class="muted small">Recite from memory, then reveal to check.</div>`}</div>
+  ${it.isNew||HS.shown?`<div class="grades" role="group" aria-label="How did it go?"><button data-a="grade" data-g="again"><b>Missed</b><span>See it again soon</span></button><button data-a="grade" data-g="good"><b>Got it</b><span>With some effort</span></button><button data-a="grade" data-g="easy"><b>Easy</b><span>Space it out</span></button></div>
+   <div class="row" style="justify-content:center;margin-top:14px"><button class="btn ghost sm" data-a="toast" data-m="Playing 67:${it.ayah+1}">${I("play")}Listen</button></div>`
+  :`<div class="row" style="justify-content:center;gap:10px"><button class="btn" data-a="hint" ${HS.hint>=2?"disabled":""}>${I("eye")}${HS.hint===0?"First letters":HS.hint===1?"First half":"No more hints"}</button><button class="btn pri" data-a="reveal">Reveal ayah</button></div>`}
+  <p class="small muted" style="text-align:center;margin-top:26px">Your place is saved. Leave any time and continue later.</p></div>`;
+}
+function sheetHifzNew(){return sheetHead("Add a surah")+`<label class="small muted">Surah</label><select class="field" style="width:100%;margin:6px 0 12px">${NAMES.map((n,i)=>`<option ${i===35?"selected":""}>${i+1}. ${n}</option>`).join("")}</select>
+ <div class="grid g2"><div><label class="small muted">From ayah</label><input class="field" style="width:100%;margin-top:6px" value="1" inputmode="numeric"></div><div><label class="small muted">To ayah</label><input class="field" style="width:100%;margin-top:6px" value="83" inputmode="numeric"></div></div>
+ <div class="section" style="margin-top:18px"><label class="small muted">New ayahs a day</label><div class="seg" style="display:flex;margin-top:6px">${[1,2,3,5].map(n=>`<button style="flex:1" aria-pressed="${n===2}">${n}</button>`).join("")}</div><p class="small muted">At 2 a day, Ya-Sin is fully started in about 6 weeks. New ayahs pause while 3 or more need work.</p></div>
+ <button class="btn pri" style="width:100%;margin-top:6px" data-a="toast" data-m="Ya-Sin added">Add Ya-Sin</button>`}
+
+/* ---------- GOALS ---------- */
+const G={read:812,start:"2026-10-01",type:"date",target:"2027-02-07",amount:20,days:[0,1,2,3,4,5,6],log:{"2026-10-16":18,"2026-10-17":0,"2026-10-18":25,"2026-10-19":30,"2026-10-20":22,"2026-10-21":28,"2026-10-22":9},manual:10};
+const TYPES=[["date","Finish by a date","Pick the day; we work out the daily amount."],["ayahs","Ayahs a day","A steady number every day."],["pages","Pages a day","Counted by mushaf page (≈ 10.4 ayahs)."],["juz","Juz a week","Spread over the week."]];
+function dailyFor(type,amount,target,from=0){
+  if(type==="date"){const d=Math.max(1,daysBetween(TODAY,parseD(target)));return Math.ceil((TOTAL-from)/d)}
+  if(type==="pages")return Math.ceil(amount*TOTAL/604);if(type==="juz")return Math.ceil(amount*TOTAL/30/7);return Math.max(1,Math.round(amount));
+}
+function pgGoals(){
+  const target=dailyFor("date",0,G.target,G.read),pos=G.read,[ps,pa]=fromAbs(pos+1);
+  const today=G.log[dkey(TODAY)]||0;
+  const juzDone=JUZ.filter((j,i)=>(JUZ[i+1]||TOTAL+1)-1<=pos).length;
+  const cur=JUZ.findIndex((j,i)=>pos>=j&&pos<(JUZ[i+1]||TOTAL+1));
+  const curP=cur>=0?Math.round((pos-JUZ[cur])/((JUZ[cur+1]||TOTAL+1)-JUZ[cur])*100):0;
+  const daysLeft=daysBetween(TODAY,parseD(G.target));
+  const week=[...Array(7)].map((_,i)=>addD(TODAY,i-6));
+  const max=Math.max(...week.map(d=>G.log[dkey(d)]||0),target);
+  return `<div class="page">
+  <div class="row wrap" style="align-items:flex-end"><div class="grow"><h1>Reading goals</h1><p class="lede" style="margin:0">Khatmah before Ramadan · finish by ${fmtD(parseD(G.target))} 2027</p></div><button class="btn" data-a="goal-new">${I("plus")}New goal</button></div>
+  <div class="card section">
+   <div class="row wrap" style="align-items:flex-end;gap:24px"><div class="grow"><div class="small muted">Today</div><div style="font:500 44px/1 var(--serif)" class="num">${today} <span style="font:400 18px var(--sans);color:var(--ink-2)">of ${target} ayahs</span></div></div>
+    <div><div class="small muted">Next up</div><a href="#/goals" class="t" style="font:500 18px var(--serif);text-decoration:none">${NAMES[ps-1]} ${ps}:${pa}</a></div></div>
+   <div class="prog" style="height:6px;margin-top:14px"><i style="width:${Math.min(100,today/target*100)}%"></i></div>
+   <div class="row wrap" style="margin-top:16px;gap:8px"><a class="btn pri" href="#/goals">${I("book")}Continue reading</a><button class="btn" data-a="goal-log">${I("plus")}Log reading from a mushaf</button></div>
+   <p class="small muted" style="margin:14px 0 0">Ayahs count once they've been on screen for about a second and a half.</p>
+  </div>
+  <div class="section"><div class="section-h"><h2>Through the Qur'an</h2><span class="small muted num">${pos.toLocaleString()} of ${TOTAL.toLocaleString()} ayahs · ${juzDone} juz complete</span></div>
+   <div class="spine" role="img" aria-label="${juzDone} of 30 juz complete">${JUZ.map((_,i)=>`<i class="${i<cur?"d":i===cur?"p":""}" style="--p:${curP}%" title="Juz ${i+1}"></i>`).join("")}</div>
+   <div class="spine-l">${JUZ.map((_,i)=>`<span>${i+1}</span>`).join("")}</div>
+   <p class="small muted">At your pace, you'll finish around <b style="color:var(--ink)">${fmtD(addD(TODAY,Math.ceil((TOTAL-pos)/(pos/21))))} 2027</b>. ${daysLeft} days to your date; ${target} ayahs a day keeps you on it.</p></div>
+  <div class="section"><h2>This week</h2><div class="week">${week.map(d=>{const v=G.log[dkey(d)]||0,off=!G.days.includes(d.getDay());return `<div class="${dkey(d)===dkey(TODAY)?"tdy":""}"><i class="${off?"off":""}" title="${v} ayahs"><b style="height:${v/max*100}%"></b></i>${"SMTWTFS"[d.getDay()]}<br><span class="num">${v||"–"}</span></div>`}).join("")}</div>
+   <p class="small muted">The line is today's amount (${target}). Days you read less are simply days; the daily amount adjusts to keep your date.</p></div>
+  <div class="section"><h2>Other goals</h2><div class="list"><div class="li">${I("check")}<div class="grow"><div class="t">Ramadan khatmah 1447</div><div class="s">Completed · Mar 2026</div></div></div><div class="li">${I("pause")}<div class="grow"><div class="t">5 pages a day</div><div class="s">Paused</div></div><button class="btn sm" data-a="toast" data-m="Goal resumed. It's now your main goal.">Resume</button></div></div></div>
+  </div>`;
+}
+const NG={type:"date",amount:20,target:"2027-02-07"};
+function sheetGoal(){
+  const d=dailyFor(NG.type,NG.amount,NG.target);
+  const finish=NG.type==="date"?parseD(NG.target):addD(TODAY,Math.ceil(TOTAL/d));
+  return sheetHead("New goal")+`<div class="grid g2">${TYPES.map(([k,t,s])=>`<button class="gtype" data-a="ng-type" data-v="${k}" aria-pressed="${NG.type===k}"><h3>${t}</h3><div class="small muted">${s}</div></button>`).join("")}</div>
+  <div class="section" style="margin-top:20px">${NG.type==="date"?`<label class="small muted">Finish by</label><div class="chips" style="margin:6px 0 10px">${[["2027-02-07","Before Ramadan"],["2026-12-31","End of year"],["2026-11-21","In 30 days"]].map(([v,l])=>`<button class="chip" data-a="ng-date" data-v="${v}" aria-pressed="${NG.target===v}">${l}</button>`).join("")}</div><input type="date" class="field" style="width:100%" data-a="ng-dateinput" value="${NG.target}" min="${dkey(addD(TODAY,1))}">`
+  :`<label class="small muted">${NG.type==="ayahs"?"Ayahs":NG.type==="pages"?"Pages":"Juz"} ${NG.type==="juz"?"a week":"a day"}</label><div style="margin-top:6px"><span class="stepper"><button data-a="ng-step" data-d="-1" aria-label="Less">${I("minus")}</button><input class="num" value="${NG.amount}" data-a="ng-amt" inputmode="numeric" aria-label="Amount"><button data-a="ng-step" data-d="1" aria-label="More">${I("plus")}</button></span></div>`}</div>
+  <div class="preview section" style="margin-top:18px"><b class="num">${d}</b> ayahs a day<div class="small" style="margin-top:4px;color:var(--ink-2)">About ${Math.max(1,Math.round(d*0.45))} minutes. You'd finish ${NG.type==="date"?"on":"around"} ${fmtD(finish)} ${finish.getFullYear()}.</div></div>
+  <button class="btn pri" style="width:100%;margin-top:16px" data-a="ng-save">Start this goal</button>
+  <p class="small muted" style="margin:10px 0 0">Your current goal is paused, not deleted.</p>`;
+}
+
+/* ---------- CALENDAR ---------- */
+const CAL={m:1,sel:null,gfirst:false,rem:store.get("quran:cal-rem-proto",[{id:1,title:"Visit family",date:"2026-10-25",yearly:false}])};
+function hijriOf(d){for(const m of HMONTHS){const s=parseD(m.start),i=daysBetween(s,d);if(i>=0&&i<m.len)return {m,day:i+1}}return null}
+function pgCal(){
+  const M=HMONTHS[CAL.m],start=parseD(M.start),lead=start.getDay();
+  const days=[...Array(M.len)].map((_,i)=>addD(start,i));
+  const sel=CAL.sel?parseD(CAL.sel):(hijriOf(TODAY)&&hijriOf(TODAY).m===M?TODAY:start);
+  const ev=d=>{const h=hijriOf(d);const e=h&&HEVENTS[`${h.m.n}:${h.day}`];const r=CAL.rem.filter(x=>x.date===dkey(d));return {e,r}};
+  const sh=hijriOf(sel),se=ev(sel);
+  const upcoming=[];HMONTHS.forEach(m=>Object.entries(HEVENTS).forEach(([k,v])=>{const [mn,dd]=k.split(":");if(mn===m.n){const d=addD(parseD(m.start),+dd-1);if(d>=TODAY)upcoming.push([d,v[0],`${dd} ${m.n}`])}}));
+  CAL.rem.forEach(r=>{const d=parseD(r.date);if(d>=TODAY)upcoming.push([d,r.title,"Your reminder",r.id])});upcoming.sort((a,b)=>a[0]-b[0]);
+  const gEnd=addD(start,M.len-1);
+  return `<div class="page wide">
+  <div class="cal-head"><h1><span>${M.n}</span> <span class="muted num" style="font-size:.7em">${M.y}</span></h1>
+   <button class="ib" data-a="cal-m" data-d="-1" aria-label="Previous month" ${CAL.m===0?"disabled":""}>${I("chevl")}</button><button class="btn sm" data-a="cal-today">Today</button><button class="ib" data-a="cal-m" data-d="1" aria-label="Next month" ${CAL.m===HMONTHS.length-1?"disabled":""}>${I("chev")}</button></div>
+  <div class="row wrap" style="margin:-8px 0 18px"><span class="ar" style="font-size:22px;line-height:1.4;color:var(--accent)">${M.ar}</span><span class="small muted grow num">${fmtD(start)} – ${fmtD(gEnd)} ${gEnd.getFullYear()} · Umm al-Qura, adjusted −0 days</span><div class="seg" role="group" aria-label="Number shown first"><button data-a="cal-g" data-v="0" aria-pressed="${!CAL.gfirst}">Hijri</button><button data-a="cal-g" data-v="1" aria-pressed="${CAL.gfirst}">Gregorian</button></div></div>
+  <div class="cal-layout"><div><div class="cal ${CAL.gfirst?"gfirst":""}" role="grid">${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="dow">${d}</div>`).join("")}${"<button class='pad' tabindex='-1' aria-hidden='true'></button>".repeat(lead)}
+   ${days.map((d,i)=>{const {e,r}=ev(d),isT=dkey(d)===dkey(TODAY);return `<button data-a="cal-sel" data-d="${dkey(d)}" class="${isT?"is-today":""}" aria-pressed="${dkey(d)===dkey(sel)}" aria-label="${i+1} ${M.n}, ${fmtD(d)}${e?", "+e[0]:""}${r.length?", "+r.length+" reminder":""}"><span class="h num">${CAL.gfirst?d.getDate():i+1}</span><span class="g num">${CAL.gfirst?(i+1)+" "+M.n.split(" ").pop().slice(0,5):(d.getDate()===1||i===0?MON[d.getMonth()]+" ":"")+(CAL.gfirst?"":d.getDate())}</span><span class="ev">${e?"<i></i>":""}${r.map(()=>"<i class='r'></i>").join("")}</span></button>`}).join("")}</div>
+   <div class="hkey" style="margin-top:10px"><span><i style="background:var(--accent);border-radius:50%"></i>Islamic event</span><span><i style="box-shadow:inset 0 0 0 1.5px var(--ink-2);border-radius:50%"></i>Your reminder</span></div></div>
+  <aside><div class="card"><div class="small muted">${dkey(sel)===dkey(TODAY)?"Today":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][sel.getDay()]}</div><h2 style="margin:2px 0 0">${sh?sh.day+" "+sh.m.n:""}</h2><div class="muted small num">${fmtD(sel)} ${sel.getFullYear()}</div>
+   <div style="margin-top:14px">${se.e?`<div class="li" style="padding:10px 0">${I("star")}<div class="grow"><div class="t">${se.e[0]}</div>${se.e[1]?`<div class="s">${se.e[1]}</div>`:""}</div></div>`:""}${se.r.map(r=>`<div class="li" style="padding:10px 0">${I("bell")}<div class="grow t">${esc(r.title)}</div><button class="ib" data-a="rem-del" data-id="${r.id}" aria-label="Remove reminder">${I("trash")}</button></div>`).join("")}${!se.e&&!se.r.length?`<p class="small muted" style="margin:0 0 10px">Nothing on this day.</p>`:""}</div>
+   <button class="btn" style="width:100%;margin-top:8px" data-a="rem-add">${I("plus")}Add reminder</button></div>
+   <div class="section"><h3>Coming up</h3><div class="list">${upcoming.slice(0,5).map(([d,t,s,id])=>`<div class="li"><span class="badge-n num" style="width:auto;padding:0 8px">${fmtD(d)}</span><div class="grow"><div class="t">${esc(t)}</div><div class="s">${s} · in ${daysBetween(TODAY,d)} days</div></div></div>`).join("")}</div>
+   <p class="small muted">Reminders show here and on Home while the app is open.</p></div></aside></div>
+  </div>`;
+}
+function sheetRem(){return sheetHead("Add reminder")+`<label class="small muted">Title</label><input class="field" style="width:100%;margin:6px 0 12px" id="rt" placeholder="e.g. Fast on Monday"><label class="small muted">Date</label><input type="date" class="field" style="width:100%;margin:6px 0 12px" id="rd" value="${CAL.sel||dkey(TODAY)}"><div class="row" style="margin:6px 0 16px"><span class="grow">Repeat every year</span><button class="switch" role="switch" aria-checked="false" data-a="sw" aria-label="Repeat every year"></button></div><button class="btn pri" style="width:100%" data-a="rem-save">Add reminder</button>`}
+
+function notFound(){return `<div class="page"><div class="empty"><h3>This page doesn't exist</h3><a class="btn" href="#/search">Go to Search</a></div></div>`}
+
+/* ---------- router ---------- */
+const route=()=>(location.hash.slice(1)||"/search").split("?")[0];
+const TITLES={"/search":"Search","/downloads":"Downloads","/fiqh":"Daily Fiqh","/hifz":"Hifz","/goals":"Reading goals","/calender":"Calendar"};
+function render(){
+  const p=route(),parts=p.split("/").filter(Boolean);let html;
+  if(p==="/search")html=pgSearch();
+  else if(p==="/downloads")html=pgDownloads();
+  else if(parts[0]==="k")html=parts[2]?pgKDetail(parts[1],parts[2]):pgKList(parts[1]);
+  else if(p==="/fiqh")html=pgFiqh();
+  else if(p==="/fiqh/choose-marja")html=pgChooseMarja();
+  else if(p==="/fiqh/glossary")html=pgGlossary();
+  else if(parts[0]==="fiqh"&&parts.length===2)html=pgCategory(parts[1]);
+  else if(parts[0]==="fiqh"&&parts.length===3)html=pgTopic(parts[1],parts[2]);
+  else if(p==="/hifz")html=pgHifz();
+  else if(p==="/hifz/session")html=pgSession();
+  else if(p==="/goals")html=pgGoals();
+  else if(p==="/calender")html=pgCal();
+  else html=notFound();
+  $("#view").innerHTML=html;
+  renderNav(p);
+  const M=MODULES.find(m=>m.id===parts[1]);
+  $("#crumb").innerHTML=parts[0]==="k"?`<a href="#/k/${parts[1]}">${M?M.title:""}</a>`:esc(TITLES["/"+parts[0]]||"");
+  document.title=($("#view h1")?.textContent||"Quran")+" · Prototype";
+  if(p==="/search")runSearch();
+}
+let lastRoute="";
+window.addEventListener("hashchange",()=>{const r=route();if(r!==lastRoute){window.scrollTo(0,0);kq="";}lastRoute=r;document.body.classList.remove("nav-open");$("#scrim").classList.remove("open");render()});
+
+/* ---------- events (one delegated listener) ---------- */
+let deb;
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.id==="q"){sq.q=t.value;clearTimeout(deb);deb=setTimeout(()=>{runSearch();const nh="#/search"+(sq.q?"?q="+encodeURIComponent(sq.q):"");history.replaceState(null,"",nh)},90);clearTimeout(S.ht);S.ht=setTimeout(()=>saveHist(sq.q),1500)}
+  const a=t.dataset.a;
+  if(a==="kq"){kq=t.value;const pos=t.selectionStart;render();const n=$('[data-a="kq"]');n.focus();n.setSelectionRange(pos,pos)}
+  if(a==="tq"){FIQH.tq=t.value;const pos=t.selectionStart;render();const n=$('[data-a="tq"]');n.focus();n.setSelectionRange(pos,pos)}
+  if(a==="gq"){gq=t.value;const pos=t.selectionStart;render();const n=$('[data-a="gq"]');n.focus();n.setSelectionRange(pos,pos)}
+  if(a==="dl-filter"){DL.filter=t.value;const pos=t.selectionStart;openSheet(sheetAdd());const n=$('[data-a="dl-filter"]');n.focus();n.setSelectionRange(pos,pos)}
+  if(a==="ng-amt"){NG.amount=Math.max(1,+t.value||1);const sc=$("#sheet").scrollTop;$("#sheet").innerHTML=sheetGoal();$("#sheet").scrollTop=sc;const n=$('[data-a="ng-amt"]');n.focus()}
+  if(a==="ng-dateinput"&&t.value){NG.target=t.value;$("#sheet").innerHTML=sheetGoal()}
+  if(a==="fiqh-q"&&t.value.length>1){location.hash="#/search?q="+encodeURIComponent(t.value)}
+});
+document.addEventListener("change",e=>{
+  const t=e.target,a=t.dataset.a;
+  if(a==="dl-sel"){t.checked?DL.sel.add(+t.value):DL.sel.delete(+t.value);const sc=$("#dl-list").scrollTop;openSheet(sheetAdd());$("#dl-list").scrollTop=sc}
+  if(a==="dl-reciter"){DL.prefs.reciter=+t.value;store.set("quran:download-prefs:v1",DL.prefs);toast(`New audio downloads use ${RECITERS[t.value]}`)}
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="/"&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){e.preventDefault();if(route()!=="/search")location.hash="#/search";setTimeout(()=>$("#q")&&$("#q").focus(),30)}
+  if(e.key==="Escape"){closeSheet();document.body.classList.remove("nav-open");$("#scrim").classList.remove("open")}
+  if(e.key==="Enter"&&e.target.id==="q")saveHist(sq.q);
+  if(route()==="/hifz/session"&&!/INPUT/.test(document.activeElement.tagName)){const m={"1":"again","2":"good","3":"easy"};if(m[e.key]&&$('[data-a="grade"]'))grade(m[e.key]);if(e.key===" "&&$('[data-a="reveal"]')){e.preventDefault();HS.shown=true;render()}}
+});
+function grade(g){HS.res.push(g);HS.i++;HS.shown=false;HS.hint=0;render()}
+document.addEventListener("click",e=>{
+  const el=e.target.closest("[data-a]");if(!el||el.tagName==="INPUT"||el.tagName==="SELECT")return;const a=el.dataset.a,d=el.dataset;
+  switch(a){
+   case "close":closeSheet();break;
+   case "theme":{const r=document.documentElement,cur=r.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");r.dataset.theme=cur==="dark"?"light":"dark";break}
+   case "offline":S.offline=!S.offline;document.body.classList.toggle("offline",S.offline);el.setAttribute("aria-pressed",S.offline);render();if(!S.offline)tickDL();break;
+   case "menu":document.body.classList.add("nav-open");$("#scrim").classList.add("open");break;
+   case "scrim":closeSheet();document.body.classList.remove("nav-open");$("#scrim").classList.remove("open");break;
+   case "toast":toast(d.m);break;
+   case "save":toast("Saved to Library",()=>toast("Removed from Library"));break;
+   case "undo":S.undo&&S.undo();$("#toast").classList.remove("open");break;
+   case "try":case "hist-go":e.preventDefault();sq.q=d.q;saveHist(d.q);location.hash="#/search?q="+encodeURIComponent(d.q);if(route()==="/search"){$("#q").value=d.q;runSearch()}break;
+   case "hist-del":{const i=hist.findIndex(h=>h.id==d.id),h=hist[i];hist.splice(i,1);store.set(HISTK,hist);runSearch();toast(`Removed “${h.q}”`,()=>{hist.splice(i,0,h);store.set(HISTK,hist);runSearch()});break}
+   case "hist-clear":{const old=[...hist];hist=[];store.set(HISTK,hist);runSearch();toast("Search history cleared",()=>{hist=old;store.set(HISTK,hist);runSearch()});break}
+   case "scope":sq.scope=d.s;runSearch();window.scrollTo({top:0});break;
+   case "dl-add":DL.sel=new Set();DL.filter="";openSheet(sheetAdd());break;
+   case "dl-pick":DL.pick[d.k]=!DL.pick[d.k];openSheet(sheetAdd());break;
+   case "dl-start":enqueue([...DL.sel].sort((a,b)=>a-b),DL.pick);closeSheet();render();toast(`Downloading ${DL.sel.size} ${DL.sel.size===1?"surah":"surahs"}`);break;
+   case "dl-preset":enqueue(d.ss.split(",").map(Number),{text:1,taf:1,audio:1});render();break;
+   case "dl-part":enqueue([+d.s],{[d.k]:1});render();break;
+   case "dl-cancel":DL.queue=DL.queue.filter(q=>q.s!=d.s);render();tickDL();break;
+   case "dl-cancel-all":DL.queue=[];clearInterval(DL.timer);render();break;
+   case "dl-remove":{const s=+d.s,v=DL.saved.get(s);DL.saved.delete(s);render();toast(`Removed ${NAMES[s-1]}`,()=>{DL.saved.set(s,v);render()});break}
+   case "dl-show":DL.show=d.v;render();break;
+   case "dl-wifi":DL.prefs.wifiOnly=!DL.prefs.wifiOnly;store.set("quran:download-prefs:v1",DL.prefs);el.setAttribute("aria-checked",DL.prefs.wifiOnly);break;
+   case "kq-clear":kq="";render();break;
+   case "pick-marja":FP.marjaId=d.id;store.set("quran:fiqh-prefs:v1",{...FP,updatedAt:Date.now()});toast(`Showing rulings of ${MARAJI.find(m=>m.id===d.id).short}`);location.hash="#/fiqh";break;
+   case "fiqh-lang":FP.lang=d.v;store.set("quran:fiqh-prefs:v1",FP);render();break;
+   case "step":{const i=d.i;FIQH.done.has(i)?FIQH.done.delete(i):FIQH.done.add(i);render();break}
+   case "gl":gl=d.l;render();break;
+   case "helper":HS2.path=[];HS2.at="q1";openSheet(helperSheet());break;
+   case "h-opt":HS2.path.push(d.l);HS2.stack=(HS2.stack||[]).concat(HS2.at);HS2.at=d.n;$("#sheet").innerHTML=helperSheet();break;
+   case "h-back":HS2.path.pop();HS2.at=(HS2.stack||["q1"]).pop()||"q1";$("#sheet").innerHTML=helperSheet();break;
+   case "h-reset":HS2.path=[];HS2.stack=[];HS2.at="q1";$("#sheet").innerHTML=helperSheet();break;
+   case "hifz-new":openSheet(sheetHifzNew());break;
+   case "quick":openSheet(sheetHead("Quick test")+`<p class="muted">A short mixed test from what you've already started. Weak and due ayahs come first.</p><div class="grid g3">${[2,5,10].map(m=>`<a class="btn" style="height:64px;flex-direction:column;gap:0" href="#/hifz/session"><b class="num">${m} min</b><span class="small muted num">≈ ${Math.max(2,Math.round(m*60/45))} items</span></a>`).join("")}</div>`);break;
+   case "hint":HS.hint=Math.min(2,HS.hint+1);render();break;
+   case "reveal":HS.shown=true;render();break;
+   case "grade":grade(d.g);break;
+   case "sess-skip":HS.i++;HS.shown=false;HS.hint=0;render();break;
+   case "sess-restart":HS.i=0;HS.res=[];render();break;
+   case "goal-new":Object.assign(NG,{type:"date",amount:20,target:"2027-02-07"});openSheet(sheetGoal());break;
+   case "ng-type":NG.type=d.v;NG.amount=d.v==="pages"?2:d.v==="juz"?1:20;$("#sheet").innerHTML=sheetGoal();break;
+   case "ng-date":NG.target=d.v;$("#sheet").innerHTML=sheetGoal();break;
+   case "ng-step":NG.amount=Math.max(1,NG.amount+ +d.d);$("#sheet").innerHTML=sheetGoal();break;
+   case "ng-save":closeSheet();toast("Goal started. Your previous goal is paused.",()=>toast("Back to your previous goal"));break;
+   case "goal-log":openSheet(sheetHead("Log reading")+`<p class="muted">For reading from a printed mushaf. It counts toward today.</p><span class="stepper"><button data-a="lg" data-d="-5" aria-label="Fewer">${I("minus")}</button><input class="num" id="lgv" value="${G.manual}" aria-label="Ayahs read" inputmode="numeric"><button data-a="lg" data-d="5" aria-label="More">${I("plus")}</button></span> <span class="muted">ayahs</span><button class="btn pri" style="width:100%;margin-top:18px" data-a="lg-save">Add to today</button>`);break;
+   case "lg":{const v=$("#lgv");v.value=Math.max(1,(+v.value||0)+ +d.d);break}
+   case "lg-save":{const n=+$("#lgv").value||0,k=dkey(TODAY);G.log[k]=(G.log[k]||0)+n;G.read+=n;closeSheet();render();toast(`Added ${n} ayahs to today`,()=>{G.log[k]-=n;G.read-=n;render()});break}
+   case "cal-m":CAL.m=Math.max(0,Math.min(HMONTHS.length-1,CAL.m+ +d.d));CAL.sel=null;render();break;
+   case "cal-today":CAL.m=1;CAL.sel=null;render();break;
+   case "cal-sel":CAL.sel=d.d;render();break;
+   case "cal-g":CAL.gfirst=d.v==="1";render();break;
+   case "rem-add":openSheet(sheetRem());break;
+   case "sw":el.setAttribute("aria-checked",el.getAttribute("aria-checked")!=="true");break;
+   case "rem-save":{const t=$("#rt").value.trim();if(!t){$("#rt").focus();$("#rt").parentElement;$("#rt").style.borderColor="var(--weak)";return}CAL.rem.push({id:Date.now(),title:t,date:$("#rd").value});store.set("quran:cal-rem-proto",CAL.rem);CAL.sel=$("#rd").value;const h=hijriOf(parseD(CAL.sel));if(h)CAL.m=HMONTHS.indexOf(h.m);closeSheet();render();toast("Reminder added");break}
+   case "rem-del":{const i=CAL.rem.findIndex(r=>r.id==d.id),r=CAL.rem[i];CAL.rem.splice(i,1);store.set("quran:cal-rem-proto",CAL.rem);render();toast("Reminder removed",()=>{CAL.rem.splice(i,0,r);store.set("quran:cal-rem-proto",CAL.rem);render()});break}
+  }
+});
+render();lastRoute=route();
+</script></body></html>

@@ -48,7 +48,7 @@ export default defineNuxtConfig({
         { name: "apple-mobile-web-app-capable", content: "yes" },
       ],
       link: [
-        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+        { rel: "icon", type: "image/x-icon", href: "/favicon2.png" },
         { rel: "apple-touch-icon", href: "/pwa-192x192.png" },
       ],
       // Sets the theme class and the accessibility flags before first paint (no flash).

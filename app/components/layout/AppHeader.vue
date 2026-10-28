@@ -20,7 +20,7 @@ const themes: MenuOption[] = [
     </Button>
     <p class="font-serif text-[18px] font-medium tracking-tight" data-testid="page-title">{{ title }}</p>
 
-    <!-- Search is a link to /search until the Search page is rebuilt (Phase 10). -->
+    <!-- Search is a link to /search; "/" opens it from any page (useSearchShortcut). -->
     <NuxtLink
       to="/search"
       class="ml-4 hidden h-9 max-w-md flex-1 items-center gap-2 rounded-full border bg-sunken px-4 text-[13px] text-ink-2 hover:bg-accent md:flex"

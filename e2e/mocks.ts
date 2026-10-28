@@ -402,3 +402,56 @@ export const stubSensors = (context: BrowserContext, opts: { ios?: boolean } = {
       });
     }
   }, opts);
+
+// ---- Phase 10: the ayah text search (api.alquran.cloud /search/<text>/<surah or all>/<edition>)
+
+export interface SearchMock {
+  /** every request, as "text|scope|edition" */
+  calls: string[];
+  mode: "ok" | "http500" | "network";
+  /** milliseconds to hold the answer for a given text, to make a slow request */
+  delays: Record<string, number>;
+}
+
+const SEARCH_FIXTURES: Record<string, string> = {
+  "mercy|all|en.pickthall": "alquran-search-mercy-all-pickthall.json",
+  "ease|all|en.pickthall": "alquran-search-ease-all-pickthall.json",
+  "ease|94|en.pickthall": "alquran-search-ease-94-pickthall.json",
+};
+/** The recorded answers are REAL responses of the upstream (tests/fixtures/alquran-search-*.json). A scope the recording does not have is
+ * derived from the recorded "all" answer by keeping that surah's matches, which is what the upstream does. Anything else is "nothing found". */
+export const RABBI_TEXT = String.fromCodePoint(0x631, 0x628, 0x64a);
+export const RAHMAT_TEXT = String.fromCodePoint(0x631, 0x62d, 0x645, 0x62a); // "mercy" in Urdu
+
+export async function mockSearch(context: BrowserContext, mode: SearchMock["mode"] = "ok"): Promise<SearchMock> {
+  const state: SearchMock = { calls: [], mode, delays: {} };
+  await context.route(/https:\/\/api\.alquran\.cloud\/v1\/search\//, async (route: Route) => {
+    const parts = new URL(route.request().url()).pathname.split("/"); // "", v1, search, text, scope, edition
+    const text = decodeURIComponent(parts[3] ?? "");
+    const scope = parts[4] ?? "all";
+    const edition = parts[5] ?? "";
+    const key = `${text}|${scope}|${edition}`;
+    state.calls.push(key);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    if (state.delays[text]) await new Promise((r) => setTimeout(r, state.delays[text]));
+    const headers = { "access-control-allow-origin": "*" };
+    let body: string | null = null;
+    const file =
+      SEARCH_FIXTURES[key] ??
+      (text === RABBI_TEXT && scope === "all" && edition === "quran-simple" ? "alquran-search-rabbi-all-simple.json" : text === RAHMAT_TEXT && scope === "all" && edition === "ur.jalandhry" ? "alquran-search-rahmat-all-jalandhry.json" : null);
+    if (file) body = fixture(file);
+    else if (scope !== "all" && SEARCH_FIXTURES[`${text}|all|${edition}`]) {
+      const all = JSON.parse(fixture(SEARCH_FIXTURES[`${text}|all|${edition}`]!)) as { data: { count: number; matches: Array<{ surah: { number: number } }> } };
+      const matches = all.data.matches.filter((m) => m.surah.number === Number(scope));
+      body = matches.length ? JSON.stringify({ ...all, data: { count: matches.length, matches } }) : null;
+    }
+    try {
+      if (!body) return await route.fulfill({ status: 404, contentType: "application/json", headers, body: fixture("alquran-search-none.json") });
+      return await route.fulfill({ status: 200, contentType: "application/json", headers, body });
+    } catch {
+      // the page cancelled this request while it was being held (a newer search replaced it)
+    }
+  });
+  return state;
+}

@@ -21,12 +21,12 @@ Repository: this project is its own repo (it began as the `revamp-quran/` folder
 | 8B | Events (the Events tab, the 29 legacy events, reminders, a reviewed-events file shape) | **Done, awaiting review** (2026-10-21) | [phase-08b-events](phases/phase-08b-events.md), [plan](phases/phase-08b-events-plan.md) | [ramadan](pages/ramadan.md) (Events section) |
 | 9A | Per-page reader | **Done, awaiting review** (2026-10-21) | [phase-09a-per-page](phases/phase-09a-per-page.md), [plan](phases/phase-09-plan.md) | [per-page-read](pages/per-page-read.md) |
 | 9B | Tasbeeh, Sajda, Asma-ul-Husna | **Done, awaiting review** (2026-10-21) | [phase-09b-asma-sajda-tasbeeh](phases/phase-09b-asma-sajda-tasbeeh.md), [plan](phases/phase-09b-plan.md) | [asma-ul-husna](pages/asma-ul-husna.md), [sajda](pages/sajda.md), [tasbeeh](pages/tasbeeh.md) |
-| 10 | Search | Needs prototype | | |
-| 11 | Downloads and offline manager | Needs prototype | | |
-| 12 | Knowledge modules | Needs prototype | | |
-| 13 | Daily Fiqh (Wajibat) | Needs prototype | | |
-| 14 | Hifz | Needs design | | |
-| 15 | Reading goals, Calendar, About | Needs design | | |
+| 10 | Search | **Done, awaiting review** (2026-10-22; verify: 722 unit tests pass, 535 of 539 browser tests pass, the 4 failures are timing-sensitive audio-queue and per-page tests outside Search, see the phase doc; real-device checks X1 to X6 are yours) | [phase-10-search](phases/phase-10-search.md), [plan](phases/phase-10-search-plan.md) | [search](pages/search.md) |
+| 11 | Downloads and offline manager | Prototype agreed 2026-10-22; not started | | |
+| 12 | Knowledge modules | Prototype agreed 2026-10-22 for 14 of 16 routes (not `/poets`, `/poets/[slug]`); not started | | |
+| 13 | Daily Fiqh (Wajibat) | Prototype agreed 2026-10-22; not started | | |
+| 14 | Hifz | New simple-mode prototype agreed 2026-10-22 (`design/prototype-hifz.html`, `DECISIONS.md`); not started | | |
+| 15 | Reading goals, Calendar, About | Goals and Calendar prototyped 2026-10-22; `/about`, `/sitemap`, `/surah-vedios` not; not started | | |
 | 16 | Cutover | Not started | | |
 
 ## Temporary pages and code (must be removed or replaced)
