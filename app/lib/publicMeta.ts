@@ -4,7 +4,7 @@ export interface PublicMeta { title: string; description: string }
 
 export const PUBLIC_META: Record<string, PublicMeta> = {
   "/": { title: "Quran App", description: "A local-first Quran companion: reading, translations, tafsir, audio, prayer times and more." },
-  "/about": { title: "About · Quran App", description: "About the Quran App." },
+  "/about": { title: "About · Quran App", description: "About the Quran App: where its text, audio and prayer times come from, and what stays on your device." },
   "/surah-listing": { title: "Surahs · Quran App", description: "All 114 surahs of the Quran." },
 };
 
