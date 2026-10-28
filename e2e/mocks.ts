@@ -226,6 +226,32 @@ export async function mockQuranText(context: BrowserContext, mode: QuranTextMock
   return state;
 }
 
+// ---- Phase 14 (Hifz): the words of an ayah are found by their Arabic LETTERS, and fakeChapter's "TEST ARABIC 67:3" has none. This is SYNTHETIC text with the
+// right shape: every ayah is 4 to 7 "words" made of one repeated letter (a different letter for each word and ayah, never a real word), and ayah 3 of
+// every surah has a pause mark standing alone between two of them (it must not become a word). No Qur'an text is stored in a test.
+const LETTER_BASE = 0x628;
+const pauseMark = String.fromCodePoint(0x6d6);
+export const hifzWords = (n: number, a: number): string[] =>
+  Array.from({ length: 4 + ((n + a) % 4) }, (_, k) => String.fromCodePoint(LETTER_BASE + ((a * 3 + k * 5 + n) % 24)).repeat(3 + (k % 2)));
+export const hifzAyahText = (n: number, a: number): string => {
+  const w = hifzWords(n, a);
+  return (a === 3 ? [w[0]!, pauseMark, ...w.slice(1)] : w).join(" ");
+};
+/** Answers the reader's chapter request with the synthetic Arabic above (register after mockQuranText: the latest route wins). */
+export async function mockHifzText(context: BrowserContext, mode: QuranTextMock["mode"] = "ok"): Promise<QuranTextMock> {
+  const state: QuranTextMock = { chapters: [], tafsirs: [], mode, delayMs: 0 };
+  await context.route(/https:\/\/quranapi\.pages\.dev\/api\/\d+\.json/, async (route: Route) => {
+    const n = Number(/api\/(\d+)\.json/.exec(route.request().url())![1]);
+    state.chapters.push(n);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    const c = fakeChapter(n);
+    c.arabic1 = Array.from({ length: c.totalAyah }, (_, i) => hifzAyahText(n, i + 1));
+    return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify(c) });
+  });
+  return state;
+}
+
 /** Replaces the browser's Audio with a recorder; `window.__audio.fail = true` makes play() fail like a missing file. */
 export const stubAudio = (context: BrowserContext) =>
   context.addInitScript(() => {

@@ -53,7 +53,8 @@ test.describe("Play page", () => {
     await page.getByTestId("play-page").click();
     await expect(page.getByTestId("play-page")).toHaveText("Pause page");
     await expect(page.getByTestId("play-page")).toHaveAttribute("aria-pressed", "true");
-    expect((await A(page)).srcs).toEqual([url(1, list[0]!.s, list[0]!.a)]);
+    // the button turns to "Pause page" while the first file is still being looked up; the element is asked to play a moment later
+    await expect.poll(async () => (await A(page)).srcs).toEqual([url(1, list[0]!.s, list[0]!.a)]);
     await expect(page.getByTestId("mini-title")).toHaveText("Page 3");
     await expect(page.getByTestId("mini-status")).toHaveText(`${name(list[0]!.s)} ${list[0]!.s}:${list[0]!.a} · ayah 1 of ${list.length}`);
     await expect(mark(page, list[0]!.s, list[0]!.a)).toHaveAttribute("aria-current", "true");

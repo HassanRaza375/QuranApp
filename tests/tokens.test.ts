@@ -28,12 +28,15 @@ describe("design tokens (DESIGN_SYSTEM.md table)", () => {
     expect(light).toMatchObject({
       bg: "#f3f1ea", surface: "#fbfaf6", sunken: "#ece7da", ink: "#1c1b17", "ink-2": "#6b6558", "ink-3": "#9c978a",
       border: "#e1ddd0", accent: "#2b6777", "accent-soft": "#e3edef", gold: "#9c7a3c", "gold-soft": "#f1e6d2", danger: "#a5433a",
+      weak: "#b4553f", s1: "#d9d6ce", s2: "#9dc0c8", s3: "#4e8a99",
     });
   });
   it("dark values", () => {
     expect(dark).toEqual({
       bg: "#14161c", surface: "#1b1e26", sunken: "#191b22", ink: "#edeae2", "ink-2": "#b4afa0", "ink-3": "#75726a",
       border: "#2a2d36", accent: "#5ca0af", "accent-soft": "#1b2a2d", gold: "#c9a15e", "gold-soft": "#2e2717", danger: "#d97b72",
+      // Hifz (Phase 14)
+      weak: "#d9806b", s1: "#2a3438", s2: "#2f5a64", s3: "#5ca0af",
     });
   });
 });
@@ -68,6 +71,18 @@ describe("contrast (WCAG AA, 4.5:1 for text)", () => {
   it("gold on the page is at least 3:1 (it is a graphic mark, never body text)", () => {
     expect(contrast(light.gold!, light.bg!)).toBeGreaterThanOrEqual(3);
     expect(contrast(dark.gold!, dark.bg!)).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe("Hifz strength colours (Phase 14)", () => {
+  it("\"needs work\" (--weak) is at least 3:1 on the page and on the surface, so the outlined cell and a slipped word can be seen (graphic and large text)", () => {
+    for (const t of [light, dark]) {
+      expect(contrast(t.weak!, t.bg!)).toBeGreaterThanOrEqual(3);
+      expect(contrast(t.weak!, t.surface!)).toBeGreaterThanOrEqual(3);
+    }
+  });
+  it("the three steps below gold are told apart from the page and from each other by more than their colour alone (the strip is also read out in words)", () => {
+    for (const t of [light, dark]) expect(new Set([t.s1, t.s2, t.s3, t.gold]).size).toBe(4);
   });
 });
 

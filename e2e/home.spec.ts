@@ -60,7 +60,7 @@ test.describe("returning and new user", () => {
     await expect(study.getByRole("link", { name: "Continue" })).toHaveAttribute("href", "/persons/nuh");
     await expect(page.getByTestId("tile-goal")).toContainText("3 / 20 ayahs");
     await expect(page.getByTestId("tile-hifz")).toContainText("Open Hifz");
-    await expect(page.getByTestId("tile-hifz")).not.toContainText(/\d/); // no number: the due count arrives with Phase 14
+    await expect(page.getByTestId("tile-hifz")).not.toContainText(/\d/); // nothing is due in this record (its one target has no ayahs), so no count
   });
 
   test("the goal tile shows an ayah count only: no streak, no pace, no 'behind'", async ({ context, page }) => {

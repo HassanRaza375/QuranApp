@@ -100,6 +100,17 @@ Every decision made while designing and building the revamp, with the reason. Ph
 - **Phase 13 is accepted.**
 - **The rule for every phase from now on:** plan, your approval, build, full verify (clean), your acceptance, merge into `chore/standalone-repo` with `--no-ff`, verify the merged head, push, then the next phase from `chore/standalone-repo`. `main` is untouched until cutover.
 
+**Phase 14 (Hifz): owner decisions, 2026-10-28** (the plan in `phases/phase-14-hifz-plan.md` was approved "as recommended", with these specifics).
+1. **Hints.** Revealing a hidden word is a slip on that word. "First word" is a cue: the grade stays `good`, it is stored as hint level 1, and the "This was easy" button is not offered.
+2. **Dropped from the UI only:** the warm-up item, the mixed final test, Quick Test, the health score, the heatmap, the daily time goal and the wizard. Their stored data is not deleted or rewritten, so a rollback to the legacy app keeps working (new surahs keep `dailyTimeGoalMinutes: 15`; activity is still counted in the legacy shape).
+3. **Add a surah:** the whole surah by default, plus a "Choose ayahs" link for From and To.
+4. **Recite to someone and Check the whole surah are both graded**: per ayah, plus the joins for the whole-surah check.
+5. **Free practice records nothing**, including tricky words (and not the session or the timing either).
+6. **Tricky word:** slipped on 2 different days. Not tricky any more after 3 different days on which its ayah was recited without a slip on that word.
+7. **Time estimate:** about 1.5 s a word plus about 10 s an item, a new ayah four times that; after 10 sessions the user's own median per-item time (kept on this device). Shown as "about N min".
+- **Legacy quirks:** "a new ayah graded again still counts as introduced" is kept for parity; the mixed-final-test double grading and the Quick Test duplicates went with the dropped features.
+- **Found while reading the legacy code:** the legacy whole-surah assessment never graded its join items (they have no ayah number); here they are graded (decision 4).
+
 ## 4. Deliberate content gaps
 
 Ja'fari Laylat al-Qadr nights (19, 21, 23); the Sunni versus Ja'fari compare table and iftar/suhoor explanations; the Arabic of hadith duas; "After prayer" dhikr sequences; Arabic prayer names; revelation order; Juz names; translator and tafsir-school attribution; per-tradition event wording. Each becomes a data file once wording and a source are supplied.

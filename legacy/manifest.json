@@ -30,6 +30,16 @@
       "sha256": "8a36f461988f5cd17c273bfd34811e5eb1386e0c893d572a1dbcf9a736e55401",
       "source": "git"
     },
+    "app/composables/useHifz.ts": {
+      "bytes": 20243,
+      "sha256": "e17d9804176fe08b68b5dfa47709ab3d2135ef83c00f2d37cc7bd549f9995b67",
+      "source": "git"
+    },
+    "app/composables/useHifzSession.ts": {
+      "bytes": 13767,
+      "sha256": "7d2e4e3395f16b54eb0cd7708b0b6caee095927807c2af16a17bb2565be4e45e",
+      "source": "git"
+    },
     "app/composables/useSearch.ts": {
       "bytes": 3759,
       "sha256": "9e431061f8c42dddc40f848c99b60800c4c20c9664fff3677b82fd50b8be7278",
