@@ -224,66 +224,52 @@ const STEPS = {
     await el(page, "fiqh-live", "live-panel-times-mobile-dark");
     await ctx.close();
   },
-  // ---- the helpers (hidden in production): the development server with the flag on, port 3013
+  // ---- the helpers (shown to everyone; every result says "Not scholar-reviewed")
   async helpers() {
-    const dev = spawn("npx", ["nuxt", "dev", "--port", "3013", "--host", "localhost"], { cwd: ROOT, shell: true, env: { ...process.env, NUXT_PUBLIC_WAJIBAT_SHOW_UNREVIEWED_HELPERS: "true" }, stdio: "ignore" });
-    try {
-      for (let i = 0; i < 90; i++) {
-        try { if ((await fetch("http://localhost:3013/")).ok) break; } catch { /* not up yet */ }
-        await new Promise((r) => setTimeout(r, 2000));
-      }
-      const dev3013 = async (device, theme, marja) => {
-        const ctx = await browser.newContext({ viewport: SIZE[device], hasTouch: device !== "desktop", serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB" });
-        await ctx.addInitScript((all) => { for (const [k, v] of Object.entries(all)) localStorage.setItem(k, v); }, { themeMode: theme, prayerFiqh: "jafari", "quran:fiqh-prefs:v1": JSON.stringify({ marjaId: marja, lang: "en", updatedAt: 1 }) });
-        return { ctx, page: await ctx.newPage() };
-      };
-      const open = async (page, path) => {
-        await page.goto("http://localhost:3013" + path);
-        await page.getByTestId("fiqh-helper").first().waitFor({ timeout: 120000 });
-        await settle(page, 600);
-      };
-      const hshot = async (page, name) => {
-        const h = page.getByTestId("fiqh-helper").first();
-        await h.scrollIntoViewIfNeeded();
-        await h.screenshot({ path: `${OUT}/${name}.jpg`, type: "jpeg", quality: 82 });
-      };
-      const pick = async (page, label) => {
-        await page.getByTestId("helper-question").locator("label", { hasText: label }).first().locator("input").check();
-        await page.getByTestId("helper-next").click();
-        await settle(page, 150);
-      };
-      let { ctx, page } = await dev3013("desktop", "light", "sistani");
-      await open(page, "/fiqh/taharat/wudu");
-      await hshot(page, "helper-start-sistani-desktop");
-      await page.getByTestId("helper-start").click();
-      await hshot(page, "helper-question-sistani-desktop");
-      await pick(page, "I am not sure whether I performed wuḍūʾ at all");
-      await pick(page, "Before the prayer");
-      await hshot(page, "helper-answer-sistani-desktop");
-      await ctx.close();
-      ({ ctx, page } = await dev3013("desktop", "light", "sistani"));
-      await open(page, "/fiqh/taharat/wudu");
-      await page.getByTestId("helper-start").click();
-      await page.getByTestId("helper-notsure").check();
+    const open = async (page, path) => {
+      await page.goto(BASE + path);
+      await page.getByTestId("fiqh-helper").first().waitFor({ timeout: 30000 });
+      await settle(page, 600);
+    };
+    const hshot = async (page, name) => {
+      const h = page.getByTestId("fiqh-helper").first();
+      await h.scrollIntoViewIfNeeded();
+      await h.screenshot({ path: `${OUT}/${name}.jpg`, type: "jpeg", quality: 82 });
+    };
+    const pick = async (page, label) => {
+      await page.getByTestId("helper-question").locator("label", { hasText: label }).first().locator("input").check();
       await page.getByTestId("helper-next").click();
-      await hshot(page, "helper-not-sure-pointer-sistani-desktop");
-      await ctx.close();
-      ({ ctx, page } = await dev3013("desktop", "light", "khamenei"));
-      await open(page, "/fiqh/taharat/wudu");
-      await page.getByTestId("helper-start").click();
-      await pick(page, "I want to know whether something invalidates wuḍūʾ");
-      await pick(page, "Some fluid came out");
-      await pick(page, "Fluid that came out after istibrāʾ, and I doubt whether it is urine");
-      await hshot(page, "helper-answer-pointer-khamenei-desktop");
-      await ctx.close();
-      ({ ctx, page } = await dev3013("mobile", "dark", "sistani"));
-      await open(page, "/fiqh/taharat/wudu");
-      await page.getByTestId("helper-start").click();
-      await hshot(page, "helper-question-sistani-mobile-dark");
-      await ctx.close();
-    } finally {
-      spawn("taskkill", ["/pid", String(dev.pid), "/T", "/F"], { shell: true, stdio: "ignore" });
-    }
+      await settle(page, 150);
+    };
+    let { ctx, page } = await revamp("desktop", "light", { marja: "sistani" });
+    await open(page, "/fiqh/taharat/wudu");
+    await hshot(page, "helper-start-sistani-desktop");
+    await page.getByTestId("helper-start").click();
+    await hshot(page, "helper-question-sistani-desktop");
+    await pick(page, "I am not sure whether I performed wu\u1e0d\u016b\u02be at all");
+    await pick(page, "Before the prayer");
+    await hshot(page, "helper-answer-sistani-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light", { marja: "sistani" }));
+    await open(page, "/fiqh/taharat/wudu");
+    await page.getByTestId("helper-start").click();
+    await page.getByTestId("helper-notsure").check();
+    await page.getByTestId("helper-next").click();
+    await hshot(page, "helper-not-sure-pointer-sistani-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("desktop", "light", { marja: "khamenei" }));
+    await open(page, "/fiqh/taharat/wudu");
+    await page.getByTestId("helper-start").click();
+    await pick(page, "I want to know whether something invalidates wu\u1e0d\u016b\u02be");
+    await pick(page, "Some fluid came out");
+    await pick(page, "Fluid that came out after istibr\u0101\u02be, and I doubt whether it is urine");
+    await hshot(page, "helper-answer-pointer-khamenei-desktop");
+    await ctx.close();
+    ({ ctx, page } = await revamp("mobile", "dark", { marja: "sistani" }));
+    await open(page, "/fiqh/taharat/wudu");
+    await page.getByTestId("helper-start").click();
+    await hshot(page, "helper-question-sistani-mobile-dark");
+    await ctx.close();
   },
   async other() {
     let { ctx, page } = await revamp("desktop", "light");
@@ -307,7 +293,7 @@ const STEPS = {
     await ctx.close();
   },
 };
-for (const [name, fn] of Object.entries(STEPS)) if (ONLY ? ONLY === name : name !== "helpers") await fn(); // "helpers" starts the development server: run it by name
+for (const [name, fn] of Object.entries(STEPS)) if (!ONLY || ONLY === name) await fn();
 await browser.close();
 server.kill();
 console.log("done:", fs.readdirSync(OUT).length, "files in", OUT);

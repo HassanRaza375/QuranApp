@@ -21,7 +21,7 @@ Show the obligatory acts of Fiqh Ja'fari as one marja' states them, quoted from 
 - **Step by step (13b):** the guided procedure for the topic and the chosen marja', one step at a time with Next, Previous and Show all steps; each step is an app-written title over the quoted ruling with its book and number, and "Written by the app: …" where the data has a reason. A step whose ruling may not be shown shows the pointer. No guide for that marja': "Not added yet for X. Refer to his risala. The rulings above still apply."
 - **Recitations (13b):** the Arabic dhikr with its transliteration, from the marja's own Urdu edition, beside the ruling and step that carry it (Sistani only).
 - **Live panel (13b):** on the prayer-times, fasting-times and qibla topics: today's times as the Prayer Times feature loaded them (no request is made here), or "Open Prayer Times to load today's times for your location."
-- **Find your answer (13b, hidden):** a one-question-at-a-time helper with "I'm not sure" always offered; shown only on the development server with the flag on, until every path is signed off. Not in a production build.
+- **Find your answer (13b; on in production since 2026-10-28):** a one-question-at-a-time helper with "I'm not sure" always offered, for Sistani and Khamenei on the wuḍūʾ and doubts topics. No scholar has signed off its paths (owner decision: not required), so every result says "Not scholar-reviewed".
 
 ## What a reader is never shown
 
@@ -55,8 +55,8 @@ In `docs/design/fiqh-compare/README.md`.
 
 ## Tests
 
-`tests/fiqhData.test.ts` (the data, the validators, the verbatim check against the legacy snapshot, the hold list, and the display rules over every ruling, marja' and language); `tests/fiqhGuided.test.ts` (helpers, procedures, recitations, the build guard, on the real data); `e2e-helpers/helpers.spec.ts` (the helpers on the dev server with the flag; `npm run test:helpers`); `e2e/fiqh.spec.ts` (hub, picker, category, every kind of ruling card, Makarem Shirazi, Khamenei's zakat, the panels, Save, glossary, Library, Search, offline with the real service worker, 375 px).
+`tests/fiqhData.test.ts` (the data, the validators, the verbatim check against the legacy snapshot, the hold list, and the display rules over every ruling, marja' and language); `tests/fiqhGuided.test.ts` (helpers, procedures, recitations, the build guard, on the real data); `e2e/fiqhHelpers.spec.ts` (the helpers; `npm run test:helpers`); `e2e/fiqh.spec.ts` (hub, picker, category, every kind of ruling card, Makarem Shirazi, Khamenei's zakat, the panels, Save, glossary, Library, Search, offline with the real service worker, 375 px).
 
 ## Open questions
 
-Khamenei's spot check (30 entries) is yours, and the helpers' sign-off waits for it. The helpers stay hidden until then.
+None for Daily Fiqh. The Khamenei spot check was waived by the owner and the helpers need no sign-off (2026-10-28); his pointers stay as built.

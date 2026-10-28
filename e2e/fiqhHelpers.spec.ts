@@ -1,8 +1,10 @@
-// The Daily Fiqh decision helpers, on the development server with the development flag on (see playwright.helpers.config.ts). In a production build they are hidden (e2e/fiqh.spec.ts checks that).
+// The Daily Fiqh decision helpers, on the production build. No scholar has signed off their paths (owner decision 2026-10-28: not required), so they are shown to everyone and every result says "Not scholar-reviewed".
 // Rules under test: one question per screen, every question offers "I'm not sure" and it leads to a pointer to his risala; an answer shows his own words with his book and number; an answer that quotes a
 // ruling which may not be shown shows the pointer; Back and Start over work; "Not scholar-reviewed" is on every helper.
 import { expect, test, type Page } from "@playwright/test";
-import { forbidRealApis, freezeClock, mockQuranText, seed } from "../e2e/mocks";
+import { forbidRealApis, freezeClock, mockQuranText, seed } from "./mocks";
+
+test.use({ serviceWorkers: "block" });
 
 test.beforeEach(async ({ context }) => {
   await forbidRealApis(context);
@@ -22,7 +24,7 @@ async function answer(page: Page, label: string) {
   await page.getByTestId("helper-next").click();
 }
 
-test.describe("with the development flag on, each marja sees only his own helpers", () => {
+test.describe("each marja sees only his own helpers", () => {
   test("Sistani and Khamenei each get a helper on the wuḍūʾ topic and on the doubts topic; Makarem Shirazi none; each says Not scholar-reviewed", async ({ page, context }) => {
     for (const [marja, wudu, doubts] of [["sistani", "sistaniwudu", "sistanidoubts"], ["khamenei", "khameneiwudu", "khameneidoubts"]] as const) {
       await follow(context, marja);

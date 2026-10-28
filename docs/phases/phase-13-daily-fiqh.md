@@ -2,7 +2,7 @@
 
 - Branch: `phase-13-daily-fiqh` (off `phase-12-knowledge`)
 - Date: 2026-10-26 (13a), 2026-10-27 (13b)
-- Status: **13a and 13b built, full verify clean (third run, b42b129), awaiting your review (second stop).** Not accepted: **Khamenei's module is on hold until your browser spot check of 30 entries passes** (`docs/phases/phase-13-khamenei-spot-check.md`); no result has been received. The helpers' sign-off has not started and waits for the same result. The helpers are built and **hidden** (none of their 262 paths is signed off).
+- Status: **ACCEPTED by the owner on 2026-10-28.** Built 13a (2026-10-26) and 13b (2026-10-27); full verify clean on the third run (b42b129). **Owner decisions of 2026-10-28:** the Khamenei spot check is **waived** (his pointers stay as built; not a claim that his text was checked); no scholar sign-off is required, so the four helpers are **enabled in production** (the gate, the dev flag and the build guard are removed) with "Not scholar-reviewed" and "I'm not sure" kept. See `docs/DECISIONS.md`, "Owner decisions, 2026-10-28".
 - Plan: `docs/phases/phase-13-daily-fiqh-plan.md` (approved 2026-10-26 with your ten answers, listed below)
 
 ## Goal
@@ -78,6 +78,12 @@ Rebuild `/fiqh` on the legacy data exactly as the legacy decided what a reader m
 - [x] **Full `npm run verify` after 13b: clean on the third run** (b42b129, exit 0). Runs 1 and 2 were not clean; all three are recorded under "Verify result after 13b" below.
 - [ ] Keyboard and screen-reader pass: not done (real radios, buttons and links).
 - [ ] **Khamenei text against leader.ir: yours to run**, and the helpers' sign-off waits for it.
+
+## After acceptance: the helpers enabled in production (2026-10-28)
+
+- **Changed:** `FiqhTopic.vue` shows the chosen marja's helpers without `isHelperVisible`; removed `wajibatShowUnreviewedHelpers` (runtime config), the `assertNoUnreviewedHelpersInProduction` call in `nuxt.config.ts`, and the vendored `legacy/app/utils/wajibatBuildGuard.ts` (taken off `scripts/lib/legacy-files.mjs` and removed by `scripts/sync-legacy.mjs`, 87 other files unchanged; legacy commit still `7120b6c`). `treeReviews.json` stays vendored (the unit test counts the 262 paths and the 0 signed off).
+- **Tests:** the dev-server config and `e2e-helpers/` are gone (they existed only because a production build hid the helpers). The seven helper tests moved to `e2e/fiqhHelpers.spec.ts` and run on the production build with the rest of the suite; `npm run test:helpers` now runs that one file, and `npm run verify` no longer has a separate helper step. `e2e/fiqh.spec.ts` now checks that the helpers are shown (Sistani and Khamenei: one on the wuḍūʾ topic and one on doubts; Makarem Shirazi none), each saying "Not scholar-reviewed". The three tests of the removed build guard are deleted (unit tests 832).
+- **Still true, and unchanged:** the helper answers that quote a ruling that may not be shown show the pointer (20 for Khamenei), "I'm not sure" always ends at a pointer, and no helper path has been read by a scholar.
 
 ## Data and storage
 

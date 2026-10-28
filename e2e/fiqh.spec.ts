@@ -412,7 +412,7 @@ test.describe("offline (level B): the data is saved when a category is opened, o
   });
 });
 
-test.describe("13b: guided steps, recitations, the live panel, and the helpers that stay hidden", () => {
+test.describe("13b: guided steps, recitations, the live panel, and the helpers", () => {
   const push = (page: Page, to: string) =>
     page.evaluate((p) => (document.querySelector("#__nuxt") as unknown as { __vue_app__: { config: { globalProperties: { $router: { push(p: string): void } } } } }).__vue_app__.config.globalProperties.$router.push(p), to);
 
@@ -476,14 +476,16 @@ test.describe("13b: guided steps, recitations, the live panel, and the helpers t
     await expect(page.getByTestId("ruling-recitation")).toHaveCount(0);
   });
 
-  test("the four helpers are hidden in a production build: no 'Find your answer', for any marja, on either topic", async ({ page, context }) => {
-    for (const marja of ["sistani", "khamenei", "makarem"]) {
+  test("the four helpers are shown in the production build to the marja' who has them (Sistani and Khamenei: wuḍūʾ and doubts; Makarem Shirazi none), each saying Not scholar-reviewed; their walks are in e2e/fiqhHelpers.spec.ts", async ({ page, context }) => {
+    for (const [marja, count] of [["sistani", 1], ["khamenei", 1], ["makarem", 0]] as const) {
       await follow(context, marja);
       for (const [category, topic] of [["taharat", "wudu"], ["salat", "doubts"]] as const) {
         await openTopic(page, category, topic);
-        await expect(page.getByTestId("fiqh-helpers"), `${marja} ${topic}`).toHaveCount(0);
-        await expect(page.getByTestId("fiqh-helper")).toHaveCount(0);
-        await expect(page.getByText("Find your answer")).toHaveCount(0);
+        await expect(page.getByTestId("fiqh-helper"), `${marja} ${topic}`).toHaveCount(count);
+        if (count) {
+          await expect(page.getByText("Find your answer")).toBeVisible();
+          await expect(page.getByTestId("fiqh-helper")).toContainText("Not scholar-reviewed");
+        } else await expect(page.getByText("Find your answer")).toHaveCount(0);
       }
     }
   });

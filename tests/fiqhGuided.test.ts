@@ -1,10 +1,9 @@
-// Phase 13b: the guided procedures, the recitations and the decision helpers, on the REAL data. The helpers are hidden until every path is signed off (none is); these tests walk EVERY path of
+// Phase 13b: the guided procedures, the recitations and the decision helpers, on the REAL data. The helpers are shown without a scholar's sign-off (none has signed off; owner decision 2026-10-28); these tests walk EVERY path of
 // every helper, check that every quote is a verbatim part of the ruling it cites, and check that a step or an answer that quotes a ruling which may not be shown shows the pointer instead.
 import { describe, expect, it } from "vitest";
-import { MARAJI, WAJIBAT_DATASET, getRulingById } from "@legacy/data/wajibat/index";
+import { WAJIBAT_DATASET, getRulingById } from "@legacy/data/wajibat/index";
 import type { MarjaId } from "@legacy/data/wajibat/types";
-import { assertNoUnreviewedHelpersInProduction, showUnreviewedHelpersRequested, SHOW_UNREVIEWED_ENV } from "@legacy/utils/wajibatBuildGuard";
-import { enumeratePaths, isHelperVisible, summariseReview, type TreeReviews } from "@legacy/utils/wajibatReview";
+import { enumeratePaths, summariseReview, type TreeReviews } from "@legacy/utils/wajibatReview";
 import { allWalks, choose, currentNode, highlight, NOT_SURE, nodeById } from "../app/lib/fiqh/helperWalk";
 import { quoteView } from "../app/lib/fiqh/quoteView";
 import { readerNote } from "../app/lib/fiqh/visibility";
@@ -14,14 +13,12 @@ const TREES = WAJIBAT_DATASET.decisionTrees;
 const REVIEWS = reviews as unknown as TreeReviews;
 const BAD = /decision|\brule R|\bP\d{1,2}\b|\bR\d{1,2}\b|Data note|not shown in the UI|\.png|\(\//i;
 
-describe("the four helpers (hidden until every path is signed off)", () => {
-  it("are the four the legacy built, 262 paths in all, none of them signed off", () => {
+describe("the four helpers (shown to everyone; no scholar has signed off their paths: owner decision 2026-10-28)", () => {
+  it("are the four the legacy built, 262 paths in all, none of them signed off (they are shown anyway and say \"Not scholar-reviewed\")", () => {
     expect(TREES.map((t) => t.id).sort()).toEqual(["khameneidoubts", "khameneiwudu", "sistanidoubts", "sistaniwudu"]);
     expect(TREES.reduce((n, t) => n + enumeratePaths(t).length, 0)).toBe(262);
     for (const t of TREES) {
       expect(summariseReview(t, REVIEWS).approved, t.id).toBe(0);
-      expect(isHelperVisible(t, REVIEWS, false), t.id).toBe(false); // hidden
-      expect(isHelperVisible(t, REVIEWS, true), t.id).toBe(true); // shown only by the development flag
     }
   });
 
@@ -137,24 +134,5 @@ describe("the guided procedures and their recitations", () => {
       }
     for (const r of WAJIBAT_DATASET.recitations) expect(readerNote(r.note) ?? "", r.id).not.toMatch(BAD);
     expect(shown).toBeGreaterThan(100);
-  });
-});
-
-describe("the development flag never reaches a production build (legacy decision B3)", () => {
-  it("throws in a production build when the flag is on, in any common spelling, on Vercel too", () => {
-    for (const v of ["true", "TRUE", "1", "yes", "on", " true "]) expect(() => assertNoUnreviewedHelpersInProduction({ NODE_ENV: "production", [SHOW_UNREVIEWED_ENV]: v }), v).toThrow(/production build/);
-    expect(() => assertNoUnreviewedHelpersInProduction({ VERCEL_ENV: "production", [SHOW_UNREVIEWED_ENV]: "true" })).toThrow();
-  });
-  it("allows production without the flag or with it off, and development with it on", () => {
-    for (const v of [undefined, "", "false", "0", "no"]) expect(() => assertNoUnreviewedHelpersInProduction({ NODE_ENV: "production", [SHOW_UNREVIEWED_ENV]: v })).not.toThrow();
-    expect(() => assertNoUnreviewedHelpersInProduction({ NODE_ENV: "development", [SHOW_UNREVIEWED_ENV]: "true" })).not.toThrow();
-    expect(showUnreviewedHelpersRequested({ [SHOW_UNREVIEWED_ENV]: "true" })).toBe(true);
-  });
-  it("is called by nuxt.config.ts, so `nuxt build` runs it, and the runtime flag defaults to off", async () => {
-    const { readFileSync } = await import("node:fs");
-    const cfg = readFileSync("nuxt.config.ts", "utf8");
-    expect(cfg).toMatch(/assertNoUnreviewedHelpersInProduction\(process\.env\)/);
-    expect(cfg).toMatch(/wajibatShowUnreviewedHelpers:\s*false/);
-    expect(MARAJI.length).toBe(3);
   });
 });

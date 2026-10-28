@@ -1,12 +1,8 @@
 import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import { legacyBridge, LEGACY_APP, LEGACY_ROOT } from "./build/legacyBridge";
-import { assertNoUnreviewedHelpersInProduction } from "./legacy/app/utils/wajibatBuildGuard";
 import { NO_FLASH_SCRIPT } from "./app/lib/noFlashScript";
 import { injectPublicMeta } from "./app/lib/publicMeta";
-
-// Daily Fiqh decision helpers are hidden until every path is signed off. The development flag that shows them early must never reach a production build (legacy decision B3): this throws first.
-assertNoUnreviewedHelpersInProduction(process.env);
 
 // Revamp of the Quran App UI: Nuxt 4 SPA + shadcn-vue + Tailwind v4. See docs/PLAN.md and
 // docs/phases/phase-00-foundation.md for why each setting is here.
@@ -108,8 +104,6 @@ export default defineNuxtConfig({
       quranApiBase: process.env.QURAN_API_BASE || "https://quranapi.pages.dev/api",
       // must be https:// (see the README CORS gotcha)
       quranApiBase2: process.env.QURAN_API_BASE2 || "https://api.alquran.cloud/v1",
-      // development flag (NUXT_PUBLIC_WAJIBAT_SHOW_UNREVIEWED_HELPERS): shows the Daily Fiqh helpers before they are signed off; a production build fails if it is on
-      wajibatShowUnreviewedHelpers: false,
     },
   },
 

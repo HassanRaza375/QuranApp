@@ -1,3 +1,5 @@
+> **Waived by the owner on 2026-10-28.** This check was not run; Khamenei's pointers stay as built. The list is kept in case it is run later.
+
 # Phase 13: Khamenei spot check (30 entries)
 
 For you, with a browser. Written 2026-10-26. **Phase 13 is not accepted until this passes; if any entry differs, Khamenei’s module is held** (his followers see "Refer to his risala" everywhere until it is fixed).

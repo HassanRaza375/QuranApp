@@ -29,7 +29,7 @@ Made by `scripts/screenshots/phase-13-fiqh.mjs` against the production build. **
 
 ## Phase 13b: guided steps, recitations, the live panel, the helpers
 
-Made by `node scripts/screenshots/phase-13-fiqh.mjs guided` (production build; the live times are the real AlAdhan answer for Lahore) and `... helpers` (the development server on port 3013 with the flag on, because a production build hides the helpers). The prototype has no guided steps, recitations, live panel or helper, so there are no pairs: these are the revamp alone, checked against the rules in `docs/phases/phase-13-daily-fiqh.md`.
+Made by `node scripts/screenshots/phase-13-fiqh.mjs guided` (production build; the live times are the real AlAdhan answer for Lahore) and `... helpers` (the production build; the first set was taken on the development server with the flag on, while the helpers were still hidden, and retaken on the production build on 2026-10-28 when they were enabled). The prototype has no guided steps, recitations, live panel or helper, so there are no pairs: these are the revamp alone, checked against the rules in `docs/phases/phase-13-daily-fiqh.md`.
 
 | Image | What |
 | --- | --- |

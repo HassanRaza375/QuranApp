@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // A step-by-step helper ("Find your answer"): one question per screen about the reader's situation, ending in the marja's own wording or a pointer to his risala. Nothing here is a ruling written by the
 // app. Every question offers "I'm not sure", which leads to the pointer and never to a guessed answer. An answer that quotes a ruling which is held, whose English is withheld or that is on our hold
-// list shows the pointer in the quote's place. A helper is only shown when every path is signed off (see FiqhTopic and `isHelperVisible`).
+// list shows the pointer in the quote's place. No scholar has signed off the paths (owner decision, 2026-10-28: not required), so the result always says "Not scholar-reviewed".
 import type { DecisionTree, Marja } from "@legacy/data/wajibat/types";
 import { getRulingById } from "~/lib/fiqh/data";
 import { back as walkBack, choose, currentNode, NOT_SURE, nodeById, type WalkStep } from "~/lib/fiqh/helperWalk";
