@@ -16,7 +16,7 @@ test.afterEach(() => {
   expect(leaks, "a test reached a real upstream API").toEqual([]);
 });
 
-type Hooks = { srcs: string[]; rates: number[]; fail: boolean; playError: string | null; stall: boolean; duration: number; tick(t: number): void; end(): void; emit(n: string): void };
+type Hooks = { srcs: string[]; rates: number[]; fail: boolean; playError: string | null; stall: boolean; duration: number; tick(t: number): void | Promise<void>; end(): void | Promise<void>; emit(n: string): void };
 const A = (page: Page) => page.evaluate(() => ({ ...(window as unknown as { __audio: Hooks }).__audio }));
 const hook = <K extends keyof Hooks>(page: Page, k: K, v: Hooks[K]) => page.evaluate(([key, val]) => (((window as unknown as { __audio: Record<string, unknown> }).__audio[key as string]) = val), [k, v] as const);
 const tick = (page: Page, t: number) => page.evaluate((x) => (window as unknown as { __audio: Hooks }).__audio.tick(x), t);
@@ -134,18 +134,17 @@ test.describe("the mini player and the sheet", () => {
     expect((await A(page)).srcs[0]).toMatch(/\/2\/18\.mp3$/);
   });
 
-  test("Save audio is a visible, real button with aria-disabled and its reason; no offline claim anywhere in the sheet", async ({ page }) => {
+  test("Save audio is a real, enabled button for a surah (with the size); it says what a saved surah covers, and does nothing until pressed", async ({ page }) => {
     await openListing(page);
     await start(page, 1);
     await openSheet(page);
     const save = page.getByTestId("player-save");
     expect(await save.evaluate((el) => el.tagName)).toBe("BUTTON");
-    await expect(save).toHaveAttribute("aria-disabled", "true");
-    await expect(save).toHaveAccessibleDescription("Saving audio arrives with Downloads");
-    await save.click({ force: true });
-    expect((await A(page)).srcs).toHaveLength(1); // nothing was requested
-    const text = (await page.getByTestId("player-sheet").textContent())!;
-    expect(text).not.toMatch(/plays? offline|works offline|available offline/i);
+    await expect(save).toBeEnabled();
+    await expect(save).not.toHaveAttribute("aria-disabled", "true");
+    await expect(save).toContainText("Save audio to listen offline · ");
+    await expect(page.getByTestId("save-note")).toContainText("plays the whole recitation");
+    expect((await A(page)).srcs).toHaveLength(1); // nothing was requested by showing it
   });
 });
 

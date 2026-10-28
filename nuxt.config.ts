@@ -110,6 +110,15 @@ export default defineNuxtConfig({
       clientsClaim: true,
       runtimeCaching: [
         {
+          // Saved surah audio (Phase 11, Downloads). The player asks for `<original url>?offline` ONLY when the file is saved; this answers from
+          // `quran-downloads-audio-cache` (keyed by the original URL, hence ignoreSearch) and never reaches the network. `rangeRequests` slices
+          // the stored whole file into 206 answers, which is what makes seeking work offline. It must stay first: the first matching rule wins.
+          // (The urlPattern function is copied into the generated worker as text, so it can use nothing from this file.)
+          urlPattern: ({ url }) => /\.(mp3|ogg|wav)$/i.test(url.pathname) && url.searchParams.has("offline"),
+          handler: "CacheOnly",
+          options: { cacheName: "quran-downloads-audio-cache", matchOptions: { ignoreSearch: true }, rangeRequests: true },
+        },
+        {
           // Immutable Quran text/translation/tafsir/reciter list (same rule and cache name as the legacy app)
           urlPattern: ({ url }) => url.hostname.includes("quranapi.pages.dev"),
           handler: "CacheFirst",
@@ -120,7 +129,8 @@ export default defineNuxtConfig({
           },
         },
         {
-          urlPattern: ({ request, url }) => request.destination === "audio" || /\.(mp3|ogg|wav)$/i.test(url.pathname),
+          // `cache: "no-store"` marks a deliberate download (Phase 11): it is stored once, in the downloads cache, not also here.
+          urlPattern: ({ request, url }) => request.cache !== "no-store" && (request.destination === "audio" || /\.(mp3|ogg|wav)$/i.test(url.pathname)),
           handler: "CacheFirst",
           options: {
             cacheName: "quran-audio-cache",

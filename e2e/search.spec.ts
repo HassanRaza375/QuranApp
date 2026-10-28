@@ -96,6 +96,23 @@ test.describe("the local groups: instant, from one character, no request", () =>
     await expect(page).toHaveURL(/\/surah\/1$/);
   });
 
+  test("opening a result right after typing is not undone by the URL sync: a slow route does not turn the click into /search?q=… again", async ({ page }) => {
+    await open(page);
+    // From now on every NEW script the page asks for (the reader's code) arrives 1.2 s late, so the navigation started by the click is still pending
+    // when the 400 ms timer that writes ?q= into the URL fires (this is what a slow phone or a loaded machine does).
+    await page.route(/\/_nuxt\/.*\.js$/, async (route) => {
+      await new Promise((r) => setTimeout(r, 1200));
+      await route.continue();
+    });
+    await input(page).fill("fatiha");
+    const row = page.locator('[data-testid="group-surahs"] a').first();
+    await expect(row).toContainText("Al-Faatiha");
+    await row.click();
+    await expect(page).toHaveURL(/\/surah\/1$/, { timeout: 15000 });
+    await page.waitForTimeout(1500); // and it stays there: nothing writes the search URL back afterwards
+    await expect(page).toHaveURL(/\/surah\/1$/);
+  });
+
   test("a number is that surah and is never sent to the text search", async ({ page }) => {
     await open(page);
     await input(page).fill("18");

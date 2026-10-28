@@ -554,7 +554,8 @@ test.describe("Data & privacy", () => {
     await expect(box).toContainText("This removes:");
     await expect(box).toContainText("settings, bookmarks, notes and collections, reading goals and progress, Hifz progress");
     await expect(box).toContainText("This stays:");
-    await expect(box).toContainText("downloaded audio and cached Qur’an text stay on this device");
+    await expect(box).toContainText("downloaded audio stays on this device and is listed again under Downloads");
+    await expect(box).toContainText("the text and tafsir you saved for offline reading");
     await expect(page.getByTestId("confirm-downloads-link")).toHaveAttribute("href", "/downloads");
     await expect(page.getByTestId("clear-cancel")).toBeFocused();
     await page.keyboard.press("Escape");

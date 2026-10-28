@@ -184,6 +184,32 @@ Use the **Surah listing** Play buttons (and the reader's "Play surah"). Surah 1 
 
 ---
 
+## Phase 11: Downloads
+
+Open the Vercel preview of branch `phase-11-downloads` on the phone. Use **Wi-Fi** for downloads. The smallest file is Al-Ikhlaas (about 0.4 MB); good real tests are Al-Mulk (about 7 MB) and Yaseen (about 17 MB).
+
+**Result so far (2026-10-23, Pixel 7 Pro, Android 17, Chrome, first slice):** D2 pass (Al-Ikhlas downloaded and listed), D4 pass (played offline in airplane mode). Not yet tried: seeking offline, reopening offline, Al-Baqarah.
+
+| # | What | Expect | You saw |
+| --- | --- | --- | --- |
+| D1 | Open **Downloads**. The line under Preferences | "Reciter: <your reciter> · Change in Settings". On iPhone in Safari (not the Home Screen app) one note about adding the app to the Home Screen | |
+| D2 | Add **Al-Ikhlaas** (Add surahs, tick it, Download) | A progress bar, then the surah is listed under Saved with Text and Audio ticked and its size. "Offline playback is ready." at the bottom (reload once if it says it needs one more load) | **Pass** on Pixel 7 Pro, Android 17, Chrome |
+| D3 | Add **Al-Mulk** or **Yaseen** | Same; the percentage and "MB of MB" move. Note the time and the network | |
+| D4 | **Airplane mode**, then press Play on a saved surah | It plays from the first second | **Pass** on the same phone |
+| **D4b (open)** | Still offline: **seek** in the player sheet (to the middle, and near the end) | It jumps and keeps playing | **Not tested yet** |
+| **D5 (open)** | Still offline: **close the app completely**, open it again, go to Downloads, press Play | The surah is still listed and still plays | **Not tested yet** |
+| D6 | Offline: press Play on a surah that is **not** saved | "Couldn't play. Audio needs a connection unless it was downloaded." with Try again; no endless spinner | |
+| D7 | Online: **Remove** a saved surah, then **Undo** within a few seconds; remove again and wait | It comes back; the second time it is gone and Settings, Data and privacy shows less used | |
+| **D8 (open)** | **Al-Baqarah** (90 to 121 MB, on Wi-Fi): download it, play it offline, seek near the end | It plays and seeks, or say exactly what happened (the page reloaded, the audio stopped, low memory) | **Not tried** |
+| **D9 (open)** | iPhone only: a day or more later, open the app and look at Downloads | The saved surahs are still there (Safari may clear a site's data after a week without a visit unless the app is on the Home Screen: the **7-day Safari check**) | |
+| **D10 (open)** | **iPhone Safari**: repeat D2 to D7 (in the browser tab, then from the Home Screen) | Each works, or say which step fails and the message | |
+| D11 | Android Chrome: Settings, Audio, turn on **Download on Wi-Fi only**; on **mobile data** add a surah with audio | The text is saved; the audio says "Waiting for Wi-Fi"; join Wi-Fi and it starts by itself | |
+| D12 | Add a surah with **Tafsir** ticked; airplane mode; open that surah in the reader and open an ayah's tafsir | It opens with no connection | |
+| D13 | **Save the text of the whole Qur'an** (Wi-Fi), airplane mode, open a few surahs | Each opens; the page says 114 surahs | |
+| D14 | `/surah-audios/36`: Play a reciter that is not yours; Download another | The Settings reciter does not change; Saved shows with the size | |
+| D15 | In the player sheet press **Save audio to listen offline** | Progress, then "Saved on this device" | |
+| D16 | Firefox (only if you use it): D2 and D4 | Works, or "This browser can't keep files…" | |
+
 ## Manual review (not on a device)
 
 These need your judgement, not a phone. Details are in `docs/CONTENT_TO_VERIFY.md`.

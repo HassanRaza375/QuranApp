@@ -107,3 +107,22 @@ export async function putCached(store: typeof CHAPTERS | typeof TAFSIRS | typeof
     /* best effort */
   }
 }
+
+// ---- Downloads (Phase 11): which surahs' text and tafsir are in the reader's store, and removing them. Same rule: never load-bearing, never throws.
+export async function cachedKeys(store: typeof CHAPTERS | typeof TAFSIRS): Promise<(number | string)[]> {
+  try {
+    return (await (await getRevampDb()).getAllKeys(store)) as (number | string)[];
+  } catch {
+    return [];
+  }
+}
+
+export async function deleteCached(store: typeof CHAPTERS | typeof TAFSIRS, keys: (number | string)[]): Promise<void> {
+  try {
+    const tx = (await getRevampDb()).transaction(store, "readwrite");
+    for (const k of keys) tx.store.delete(k);
+    await tx.done;
+  } catch {
+    /* best effort */
+  }
+}

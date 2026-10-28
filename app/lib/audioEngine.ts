@@ -99,6 +99,8 @@ export interface EngineDeps {
   resolveAyah(surah: number, ayah: number, reciter: string, fresh?: boolean): Promise<string | null>;
   /** fetch a file once so the next switch is instant */
   preload(url: string): void;
+  /** For a url that asks for the saved copy of a file (Downloads): the plain url to use if that fails (the copy is gone, or the service worker is not in charge of the page). Null for any other url. */
+  unmarked?(url: string): string | null;
   saveData(): boolean;
   surahTitle(surah: number): string;
   ayahCount(surah: number): number;
@@ -281,6 +283,17 @@ export class AudioEngine {
       }
       return this.fail("failed", ayahFailedMessage(t.surahNo, t.ayah), t.kind === "queue");
     }
+    if (t.kind === "surah" && this.el) {
+      // a saved copy that cannot be played (evicted, or no service worker in charge, as after a hard reload): once, ask for the file itself
+      const plain = this.deps.unmarked?.(this.el.src);
+      const k = `plain|${keyOf(t)}`;
+      if (plain && !this.retried.has(k)) {
+        this.retried.add(k);
+        this.el.src = plain;
+        void this.start(this.el, this.token);
+        return;
+      }
+    }
     this.fail("failed", PLAY_ERROR);
   }
 
@@ -438,6 +451,7 @@ export class AudioEngine {
     if (!t) return;
     this.loaded = null;
     this.retried.delete(keyOf(t)); // a manual retry gets its own automatic second chance
+    this.retried.delete(`plain|${keyOf(t)}`);
     await this.load(t, this.snap.position, true);
   }
 

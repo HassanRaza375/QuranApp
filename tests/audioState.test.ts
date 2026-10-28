@@ -91,7 +91,7 @@ describe("quran:audio-resume:v1", () => {
 
 describe("words of ours", () => {
   it("make no offline-play claim; the error keeps its meaning", () => {
-    for (const s of [A.PLAY_ERROR, A.TIMEOUT_ERROR, A.BLOCKED_NOTE, A.SAVE_AUDIO_REASON, A.RECITER_RESTART_NOTE, A.RESUME_LABEL, A.SKIP_AYAH, A.FOLLOW_DESC]) expect(s).not.toMatch(/plays? offline|works offline|available offline/i);
+    for (const s of [A.PLAY_ERROR, A.TIMEOUT_ERROR, A.BLOCKED_NOTE, A.RECITER_RESTART_NOTE, A.RESUME_LABEL, A.SKIP_AYAH, A.FOLLOW_DESC]) expect(s).not.toMatch(/plays? offline|works offline|available offline/i);
     expect(A.PLAY_ERROR).toBe("Couldn’t play. Audio needs a connection unless it was downloaded.");
     expect(A.RECITER_RESTART_NOTE).toBe("Switching reciter restarts this surah.");
     expect(A.ayahFailedMessage(2, 6)).toBe("Couldn’t play ayah 2:6. Audio needs a connection unless it was downloaded.");

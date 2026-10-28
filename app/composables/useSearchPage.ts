@@ -127,9 +127,23 @@ export function useSearchPage() {
   // ---------------------------------------------------------------- the URL
   const sameQuery = (a: Record<string, unknown>, b: Record<string, unknown>) => JSON.stringify(a) === JSON.stringify(b);
   let urlTimer: ReturnType<typeof setTimeout> | undefined;
+  // A router.replace while a navigation to another page is still loading cancels that navigation: a result opened within about 400 ms of typing
+  // (on a slow phone the reader's code takes longer than that to arrive) was turned back into /search?q=... by this timer. Once a navigation away
+  // has started, the URL is no longer written; if it is cancelled or fails, writing resumes.
+  let leaving = false;
+  const offGuard = router.beforeEach((to) => {
+    if (to.path !== "/search") {
+      leaving = true;
+      clearTimeout(urlTimer);
+    }
+  });
+  const offAfter = router.afterEach(() => {
+    leaving = false;
+  });
   function syncUrl() {
     clearTimeout(urlTimer);
     urlTimer = setTimeout(() => {
+      if (leaving) return;
       const next = stateToQuery(state);
       if (!sameQuery(next, stateToQuery(stateFromQuery(route.query)))) void router.replace({ query: next });
     }, DEBOUNCE_MS);
@@ -183,6 +197,8 @@ export function useSearchPage() {
     clearTimeout(debounce);
     clearTimeout(settle);
     clearTimeout(urlTimer);
+    offGuard();
+    offAfter();
     searcher.cancel();
     window.removeEventListener("online", onOnline);
   });

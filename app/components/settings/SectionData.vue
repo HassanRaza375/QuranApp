@@ -89,9 +89,9 @@ async function clearAll() {
       <div v-if="confirming" class="space-y-3 px-4 py-4" role="group" aria-label="Confirm: clear all local data" data-testid="clear-confirm" @keydown.esc="confirming = false">
         <p class="text-[14px] font-medium">Clear all local data on this device? This can’t be undone.</p>
         <div class="space-y-1.5 text-[13px] text-ink-2">
-          <p><span class="font-medium text-foreground">This removes:</span> your settings, bookmarks, notes and collections, reading goals and progress, Hifz progress, reminders, tasbeeh counts, saved places, and the saved prayer times.</p>
+          <p><span class="font-medium text-foreground">This removes:</span> your settings, bookmarks, notes and collections, reading goals and progress, Hifz progress, reminders, tasbeeh counts, saved places, the saved prayer times, and the text and tafsir you saved for offline reading.</p>
           <p>
-            <span class="font-medium text-foreground">This stays:</span> downloaded audio and cached Qur’an text stay on this device. Remove audio under
+            <span class="font-medium text-foreground">This stays:</span> downloaded audio stays on this device and is listed again under Downloads. Remove it under
             <NuxtLink to="/downloads" class="text-brand underline" data-testid="confirm-downloads-link">Manage downloads</NuxtLink>.
           </p>
         </div>
@@ -100,7 +100,7 @@ async function clearAll() {
           <Button class="min-h-11 bg-destructive text-background hover:bg-destructive/90 md:min-h-9" :disabled="clearing" data-testid="clear-yes" @click="clearAll">Yes, delete everything</Button>
         </div>
       </div>
-      <SettingsRow v-else label="Clear all local data" desc="Permanently deletes your settings, bookmarks, notes, progress and saved prayer times from this device. Downloaded audio stays.">
+      <SettingsRow v-else label="Clear all local data" desc="Permanently deletes your settings, bookmarks, notes, progress, saved prayer times, and saved text and tafsir from this device. Downloaded audio stays.">
         <Button variant="destructive" class="min-h-11 gap-2 md:min-h-9" data-testid="clear" @click="ask"><Icon name="lucide:trash-2" size="15" />Clear all data</Button>
       </SettingsRow>
     </SettingsGroup>

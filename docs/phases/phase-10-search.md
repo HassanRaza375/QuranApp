@@ -2,7 +2,7 @@
 
 - Branch: `phase-10-search`
 - Date: 2026-10-22
-- Status: **Done, awaiting review.** `npm run verify` is **not a clean pass**: 4 browser tests outside Search failed once (see Result); real-device checks are yours, rows X1 to X6 in `docs/DEVICE_CHECKS.md`
+- Status: **Done, awaiting review.** `npm run verify` was **not a clean pass** when this phase was built (4 browser tests outside Search failed once, see Result); **a later full run on `phase-11-downloads` was clean** (addendum at the end of Result); real-device checks are yours, rows X1 to X6 in `docs/DEVICE_CHECKS.md`
 
 ## Goal
 
@@ -83,6 +83,9 @@ The 4 failures, none in code Phase 10 touches:
 - `queue.spec.ts:78` ("Play page … goes back to the first ayah") and `queue.spec.ts:95` ("a page that crosses into the next surah…"): the queue did not move to the next ayah within 5 s after the test sent "ended".
 
 Re-run on the same build, three times each: both perpage tests and `queue.spec.ts:95` passed 3 of 3; **`queue.spec.ts:78` passed 2 of 3** (it failed once with the machine otherwise quiet). That same test also failed in the independence run of the standalone-repo task, on a commit made before Phase 10 existed, and passed when re-run. So the audio queue tests are timing-sensitive on this machine and this is not new, but it is not fixed here and the run above is **not a clean pass**. Whether it is only the test harness (the test sends "ended" before the engine is ready) or a real race in the queue is not yet known; it is worth its own look.
+
+
+**Addendum, 2026-10-23: the same tests, clean.** `npm run verify` on `phase-11-downloads` (commit `07688b4`, Node 24.22.1, 15:36 to 15:58): build, lint, **756 unit tests**, dev smoke and **547 browser tests passed, 0 failed** (the 539 of this phase plus 8 new Downloads tests). Cause of the queue failures: the test double sent "ended" before the first file had started (not a player bug); reproduced under CPU load (1 in 15 runs), fixed in `e2e/mocks.ts`, then 40 of 40 passed under heavier load. The two Per page failures (`perpage.spec.ts:345`, `:376`) passed in this run and in the earlier re-runs; **their cause was not found** and they are not fixed, only unseen since.
 
 ## Differences from the prototype
 
