@@ -6,7 +6,10 @@
 //
 // Two deliberate differences from the legacy runner, both written down in docs/phases/phase-14-hifz.md:
 //   * a join graded in "Check the whole surah" is graded (the legacy assessment never graded its join items, because they carry no ayah number);
-//   * a "new" ayah graded `again` still counts as introduced (kept for parity: it is started, comes back tomorrow, and is weak after two slips).
+//   * a "new" ayah graded `again` still counts as introduced (kept for parity: it is started, comes back tomorrow, and is weak after two slips);
+//   * a new ayah is graded when its Recite stage ends (`applyGrade`), not when the joins after it end; the join from the ayah before it is graded on its own
+//     (`finishJoins`). The legacy graded the ayah in the same call that moved on. The item then carries its `result` while the joins are left, which the
+//     screen reads to resume at the joins instead of grading the ayah a second time.
 import {
   activeTargets,
   dueOrOverdue,
@@ -142,15 +145,19 @@ export function advance(d: HifzData, s: HifzSession, today: string, now: number)
   return { data, session: { ...s, status: "completed", completedAt: now } };
 }
 
-/** Skips the current item: marked, not graded. */
+/** An item that already has a grade (a new ayah whose Recite stage is over and whose joins are left). */
+export const isGraded = (i: SessionItem | null): boolean => !!i && !!i.result && i.result !== "skipped";
+
+/** Skips the current item: marked, not graded. An item that was graded already (a new ayah, in its joins) keeps its grade and only moves on. */
 export function skipCurrent(d: HifzData, s: HifzSession, today: string, now: number): { data: HifzData; session: HifzSession } {
   const item = currentItem(s);
   if (!item) return { data: d, session: s };
+  if (isGraded(item)) return advance(d, s, today, now);
   return advance(d, { ...s, items: s.items.map((i) => (i.id === item.id ? { ...i, result: "skipped" as const } : i)) }, today, now);
 }
 
-/** Grades the current item (an ayah or a join) unless it is ungraded, then moves on. */
-export function gradeCurrent(d: HifzData, s: HifzSession, grade: Grade, hintLevel: number, today: string, now: number): { data: HifzData; session: HifzSession } {
+/** Records the grade of the current item (an ayah or a join) unless it is ungraded: the schedule, the new ayah's introduction and the item's result. Stays on the item. */
+export function applyGrade(d: HifzData, s: HifzSession, grade: Grade, hintLevel: number, today: string): { data: HifzData; session: HifzSession } {
   const item = currentItem(s);
   if (!item) return { data: d, session: s };
   let data = d;
@@ -159,12 +166,29 @@ export function gradeCurrent(d: HifzData, s: HifzSession, grade: Grade, hintLeve
     else if (item.ayahNo != null) data = gradeAyah(data, item.targetId, item.ayahNo, grade, hintLevel, today);
     if (item.type === "new" && item.ayahNo != null) data = introduceAyahs(data, item.targetId, 1, today).data;
   }
-  const marked: HifzSession = {
+  const session: HifzSession = {
     ...s,
     items: s.items.map((i) => (i.id === item.id ? { ...i, result: grade, hintLevel } : i)),
     stats: { mistakes: s.stats.mistakes + (grade === "again" ? 1 : 0), hints: s.stats.hints + (hintLevel > 0 ? 1 : 0) },
   };
-  return advance(data, marked, today, now);
+  return { data, session };
+}
+
+/** Grades the current item (an ayah or a join) unless it is ungraded, then moves on. */
+export function gradeCurrent(d: HifzData, s: HifzSession, grade: Grade, hintLevel: number, today: string, now: number): { data: HifzData; session: HifzSession } {
+  const applied = applyGrade(d, s, grade, hintLevel, today);
+  return currentItem(s) ? advance(applied.data, applied.session, today, now) : applied;
+}
+
+/**
+ * The joins of a new ayah are over. The ayah was graded when its Recite stage ended (`applyGrade`); here the join from the ayah before it is graded on
+ * its own (`good` when it was said at once, `again` after a "Not yet"), and the session moves on.
+ */
+export function finishJoins(d: HifzData, s: HifzSession, pairSaid: boolean, today: string, now: number): { data: HifzData; session: HifzSession } {
+  const item = currentItem(s);
+  if (!item) return { data: d, session: s };
+  const data = item.ayahNo != null && item.ayahNo > 1 && item.gradedTest ? gradeTransition(d, item.targetId, item.ayahNo - 1, pairSaid ? "good" : "again", today) : d;
+  return advance(data, s, today, now);
 }
 
 /** Moves past an ungraded (free practice) item: nothing changes in the schedule. */

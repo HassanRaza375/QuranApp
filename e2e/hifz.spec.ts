@@ -252,17 +252,20 @@ test.describe("a session", () => {
     await page.getByTestId("hifz-reveal-all").click();
     await page.getByTestId("hifz-finish").click();
     await page.getByTestId("hifz-continue").click();
-    // joins: 2, 3, 2 + 3, 1 to 3 (the plan starts at ayah 1)
+    // joins: 2, 3, 2 + 3, 1 to 3 (the plan starts at ayah 1). The ayah was graded when Recite ended; the join of 2 with 3 is not graded yet
     await expect(page.getByTestId("hifz-learn-join")).toBeVisible();
+    const recited = (await rec(page))!;
+    expect(recited.targets.find((t) => t.id === "t-mulk")!.lastPosition).toBe(3);
+    expect(ayahOf(recited, "t-mulk", 3)).toMatchObject({ reviewCount: 1, recentResults: ["good"] });
+    expect(recited.transitionStates.find((t) => t.targetId === "t-mulk" && t.fromAyah === 2 && t.toAyah === 3)!.recentResults).toEqual([]);
     for (let i = 0; i < 4; i++) {
       await expect(page.getByTestId("hifz-learn-join")).toContainText(/Recite ayahs? /);
       await page.getByTestId("hifz-join-said").click();
     }
-    // nothing was graded until the whole step ended; now Al-Mulk 3 is started
+    // the joins are over: the join of 2 with 3 was said at once and is graded on its own; the ayah was not graded a second time
     const mid = (await rec(page))!;
-    expect(mid.targets.find((t) => t.id === "t-mulk")!.lastPosition).toBe(3);
     expect(ayahOf(mid, "t-mulk", 3)).toMatchObject({ reviewCount: 1, recentResults: ["good"] });
-    expect(mid.transitionStates.some((t) => t.targetId === "t-mulk" && t.fromAyah === 2 && t.toAyah === 3)).toBe(true);
+    expect(mid.transitionStates.find((t) => t.targetId === "t-mulk" && t.fromAyah === 2 && t.toAyah === 3)!.recentResults).toEqual(["good"]);
 
     // 7. the second new ayah, skipped: not started
     await expect(page.getByTestId("hifz-title")).toHaveText("8 of 8");
@@ -319,6 +322,66 @@ test.describe("a session", () => {
     await page.getByTestId("hifz-finish").click();
     await page.getByTestId("hifz-continue").click();
     await expect(page.getByTestId("hifz-done")).toBeVisible();
+  });
+
+  /** Al-Ikhlas 1 is started and not due today, so the plan is one new ayah: Al-Ikhlas 2, which has a join (1 with 2) after its Recite stage. */
+  const ONE_NEW = () => {
+    let d = E.createTarget(E.emptyData(), { surahNo: 112, surahName: "Sincerity", startAyah: 1, endAyah: 4, dailyNewTarget: 1, dailyTimeGoalMinutes: 15 }, "t1", 1).data;
+    d = E.introduceAyahs(d, "t1", 1, TODAY).data;
+    return E.gradeAyah(d, "t1", 1, "good", 0, TODAY);
+  };
+  const toRecite = async (page: Page) => {
+    for (let i = 0; i < 3; i++) await page.getByTestId("hifz-next").click();
+    await page.getByTestId("hifz-reveal-all").click();
+    await page.getByTestId("hifz-finish").click();
+    await page.getByTestId("hifz-continue").click();
+    await expect(page.getByTestId("hifz-learn-join")).toBeVisible();
+  };
+
+  test("a new ayah is graded when Recite ends: leaving during its joins keeps the grade, and Resume goes straight to the joins without grading it again", async ({ page, context }) => {
+    await seed(context, { "quran:hifz:v2": record(ONE_NEW()) });
+    await page.goto("/hifz/session");
+    await expect(page.getByTestId("hifz-where")).toHaveText("Al-Ikhlaas 112:2");
+    await toRecite(page);
+    const graded = (await rec(page))!;
+    expect(graded.targets.find((t) => t.id === "t1")!.lastPosition).toBe(2);
+    expect(ayahOf(graded, "t1", 2)).toMatchObject({ reviewCount: 1, recentResults: ["good"] });
+    expect(graded.transitionStates.find((t) => t.targetId === "t1" && t.fromAyah === 1)!.recentResults).toEqual([]);
+    const stored = JSON.parse((await readStorage(page))["quran:hifz-session:v1"]!);
+    expect(stored).toMatchObject({ status: "in-progress", currentIndex: 0 });
+    expect(stored.items[0]).toMatchObject({ ayahNo: 2, result: "good" });
+
+    await page.getByTestId("hifz-leave").click();
+    await expect(page.getByTestId("hifz-resume")).toBeVisible();
+    await page.getByTestId("hifz-resume-go").click();
+    // not at Listen: the ayah has its grade, so only the joins are left
+    await expect(page.getByTestId("hifz-learn-join")).toBeVisible();
+    await expect(page.getByTestId("hifz-learn-join")).toContainText("Recite ayah 1");
+    for (let i = 0; i < 3; i++) await page.getByTestId("hifz-join-said").click();
+    await expect(page.getByTestId("hifz-done")).toBeVisible();
+    const after = (await rec(page))!;
+    expect(ayahOf(after, "t1", 2)).toMatchObject({ reviewCount: 1, recentResults: ["good"] }); // graded once
+    expect(after.transitionStates.find((t) => t.targetId === "t1" && t.fromAyah === 1)!.recentResults).toEqual(["good"]);
+    expect(after.targets.find((t) => t.id === "t1")!.lastPosition).toBe(2);
+  });
+
+  test("the join of the ayah before is graded on its own: a Not yet on it makes it weak and leaves the ayah's grade alone; a Not yet on another join step is practice", async ({ page, context }) => {
+    await seed(context, { "quran:hifz:v2": record(ONE_NEW()) });
+    await page.goto("/hifz/session");
+    await toRecite(page);
+    // steps: 1, 2, 1 + 2. A Not yet on the first step is only practice
+    await page.getByTestId("hifz-join-repeat").click();
+    await expect(page.getByTestId("hifz-learn-join")).toContainText("Take your time");
+    await page.getByTestId("hifz-join-said").click();
+    await page.getByTestId("hifz-join-said").click();
+    // the third step, the two together: not yet, then said
+    await expect(page.getByTestId("hifz-learn-join")).toContainText("ayahs 1 and 2");
+    await page.getByTestId("hifz-join-repeat").click();
+    await page.getByTestId("hifz-join-said").click();
+    await expect(page.getByTestId("hifz-done")).toBeVisible();
+    const after = (await rec(page))!;
+    expect(after.transitionStates.find((t) => t.targetId === "t1" && t.fromAyah === 1)).toMatchObject({ recentResults: ["again"], strength: "weak" });
+    expect(ayahOf(after, "t1", 2)).toMatchObject({ reviewCount: 1, recentResults: ["good"] });
   });
 
   test("audio that cannot be had says so and the step can still be skipped", async ({ page, context }) => {
