@@ -94,7 +94,7 @@ const repeatText = (r: { repeat?: ReminderRepeat }) => (r.repeat ? (r.repeat.by 
 
       <div class="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
         <span v-if="month.nameAr" class="ar leading-snug text-brand" style="font-size: calc(22px * var(--arabic-font-scale))" lang="ar" dir="rtl" data-testid="cal-title-ar">{{ month.nameAr }}</span>
-        <span class="min-w-0 flex-1 text-[13px] text-ink-2 tabular-nums" data-testid="cal-range">{{ range }} · {{ basis }}<template v-if="cal.adjust.value"> · {{ adjustNote(cal.adjust.value) }}</template></span>
+        <span class="min-w-0 basis-full text-[13px] text-ink-2 tabular-nums sm:flex-1 sm:basis-0" data-testid="cal-range">{{ range }} · {{ basis }}<template v-if="cal.adjust.value"> · {{ adjustNote(cal.adjust.value) }}</template></span>
         <SettingsSegmentedControl :model-value="cal.first.value" :options="firstOptions" label="Number shown first" @update:model-value="cal.setFirst($event as 'hijri' | 'gregorian')" />
       </div>
 
@@ -175,7 +175,7 @@ const repeatText = (r: { repeat?: ReminderRepeat }) => (r.repeat ? (r.repeat.by 
             <h2 id="cal-up-h" class="mb-1 font-serif text-[18px] font-medium">Coming up</h2>
             <ul v-if="cal.upcoming.value.length" class="divide-y border-y">
               <li v-for="u in cal.upcoming.value" :key="`${u.kind}${u.id ?? u.title}${u.date}`" class="flex items-center gap-3 py-2.5" data-testid="cal-up-row" :data-kind="u.kind" :data-date="u.date">
-                <span class="inline-flex h-[30px] shrink-0 items-center rounded-lg bg-sunken px-2 text-[12.5px] text-ink-2 tabular-nums">{{ formatShortDate(u.date).replace(/^\w+ /, "") }}</span>
+                <span class="inline-flex h-[30px] w-[62px] shrink-0 items-center justify-center rounded-lg bg-sunken px-1 text-[12.5px] text-ink-2 tabular-nums">{{ formatShortDate(u.date).replace(/^\w+ /, "") }}</span>
                 <div class="min-w-0 flex-1">
                   <p class="break-words text-[14.5px] font-medium">{{ u.title }}</p>
                   <p class="text-[12.5px] text-ink-2">{{ u.sub }} · {{ relativeDays(u.daysUntil) }}</p>

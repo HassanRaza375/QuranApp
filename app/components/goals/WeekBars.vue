@@ -6,7 +6,8 @@ import type { WeekBar } from "~/lib/goals/model";
 const props = defineProps<{ bars: WeekBar[]; line: number | null }>();
 const LETTERS = ["S", "M", "T", "W", "T", "F", "S"];
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const max = computed(() => Math.max(1, props.line ?? 0, ...props.bars.map((b) => b.count)));
+// a little headroom, so the line for today's amount sits inside the bars' box even when it is the tallest thing
+const max = computed(() => Math.max(1, (props.line ?? 0) * 1.12, ...props.bars.map((b) => b.count)));
 const hatch = "repeating-linear-gradient(135deg, var(--sunken) 0 4px, transparent 4px 8px)";
 </script>
 

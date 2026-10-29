@@ -233,6 +233,19 @@ Hifz is built and tested in a desktop browser with synthetic text and a recorded
 | H6 | **An installed app, offline**: open Hifz and a session with the connection off, for a surah you have read | The plan and the session work; a surah you have not read shows the message and Try again |
 | H7 | **Your legacy Hifz data** (if you used the legacy app): open Hifz on the revamp | Your surahs, counts and strengths are there; nothing looks reset; going back to the legacy app still shows your progress |
 
+## Phase 15: Reading goals, Calendar and the small pages
+
+Goals, the Calendar and the three small pages are built and tested in a desktop browser with a fixed clock, recorded real calendar months and synthetic reader text. These need a real device and real time.
+
+| # | Check | Pass when |
+| --- | --- | --- |
+| G1 | **A phone, in your hand.** Open Reading goals, start a goal of each kind, log reading from a mushaf, open the Calendar, add a reminder | The sheets rise from the bottom and are not taller than the screen; steppers, chips, the date field and every button are easy to hit with a thumb; the Calendar grid is readable at 375 px; the keyboard does not cover Add |
+| G2 | **The Hijri date against a calendar you trust**, for today and for the first and last day of this month; then set the Hijri adjustment to +1 and -1 in Settings | The Calendar's Hijri date matches your calendar (or differs by the one day the page says it can); with +1 and -1 every Gregorian date moves by that day and the first and last cells of the month are right |
+| G3 | **A real week of reading.** Read in the reader for several days with a goal running | The count on Goals and on Home is what you expect (the reader counts an ayah after about 1.5 s on screen); "Next up" is the ayah after your place; "Your last 7 days" matches your sense of it; nothing says you are behind |
+| G4 | **Finish by a date.** Make a goal for a date a few days away, then wait for the date | The amount each day is sensible; on the date and after it the page says "Your date has passed. Choose a new date or keep reading." and nothing else scolds |
+| G5 | **An installed app, offline:** open Goals, About, the Sitemap and Surah videos with the connection off; open the Calendar for a month you have seen and one you have not | The first four open and work; the seen month shows; the unseen one says it needs a connection once and offers Try again |
+| G6 | **Your legacy goals and reminders** (if you used the legacy app): open Goals and the Calendar on the revamp; add a reminder that repeats by Hijri date; go back to the legacy app | Your goals, targets and reminders are there and unchanged; the legacy app still shows your reminders (it ignores the repeat) and your goals |
+
 ## Manual review (not on a device)
 
 These need your judgement, not a phone. Details are in `docs/CONTENT_TO_VERIFY.md`.

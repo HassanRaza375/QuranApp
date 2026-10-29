@@ -335,21 +335,33 @@ What is ours, and needs your reading (the quoted rulings, the recitations and th
 
 ## Reading goals (Phase 15)
 
-- [ ] The sample goal (812 of 6,236 ayahs read, started 1 Oct 2026, finish 7 Feb 2027), the seven days of counts, "Ramadan khatmah 1447, Completed · Mar 2026" and "5 pages a day, Paused" are all samples. The build reads the reader's `dailyLog` and the legacy goal keys.
-- [ ] **"Pages a day: counted by mushaf page (≈ 10.4 ayahs)."** 6,236 ÷ 604 pages is 10.32, not 10.4 (checked). Use the computed figure, or the page data, not the typed number.
-- [ ] **"About N minutes" in the New goal preview** is the daily ayahs times 0.45: an invented reading speed. Remove it, or base it on the user's own measured reading time.
-- [ ] **"At your pace, you'll finish around …"** divides by the ayahs read so far over an assumed 21 days. A made-up projection; the build computes it from the real log, or leaves it out.
-- [ ] "Finish by" chips: "Before Ramadan" is 7 Feb 2027 (the day before 1 Ramadan 1448 in the prototype's own month table, below), "End of year", "In 30 days". The Ramadan date must come from the Hijri service with the user's adjustment.
-- [ ] Goal types and the juz-a-week rule ("Spread over the week"); "Your current goal is paused, not deleted."; "Ayahs count once they've been on screen for about a second and a half." (the real rule is the reader's 1.5 s, approved in Phase 4A; counts read higher than in the legacy app).
-- [ ] Wording of ours: "Khatmah before Ramadan · finish by …", "Through the Qur'an", "Days you read less are simply days; the daily amount adjusts to keep your date.", "For reading from a printed mushaf. It counts toward today.", "Goal started. Your previous goal is paused."
+Built 2026-10-29. What was a sample is now real or computed; what is ours is listed so you can read it.
+
+- [x] The sample goal (812 of 6,236 ayahs read, started 1 Oct 2026, finish 7 Feb 2027), the seven days of counts, "Ramadan khatmah 1447, Completed · Mar 2026" and "5 pages a day, Paused": not used. The page reads the reader's `dailyLog`, your saved place and the legacy goal key.
+- [x] **"Pages a day: counted by mushaf page (≈ 10.4 ayahs)."** Not used: the figure is computed, 6,236 ÷ 604 = 10.32 (shown as "Counted by mushaf page (604 pages)" and in the preview as the ayahs a day).
+- [x] **"About N minutes"** in the New goal preview: removed (an invented reading speed).
+- [x] **"At your pace, you'll finish around …"**: removed (an assumed 21 days). Replaced by "N ayahs a day from here keeps your date." (computed from the ayahs left and the days left) and, after a week of log, your own last-7-days average.
+- [x] "Before Ramadan": the day before 1 Ramadan from the calendar service with your Hijri adjustment; not offered when it is not available. "End of year" and "In 30 days" are computed from today.
+- [ ] **Wording of ours** to confirm: "Plan your reading", "Choose a daily amount, or a day to finish by. Your reading in the reader is counted for you, and nothing is sent anywhere.", "Ayahs count once they have been on screen for about a second and a half." (the reader's real 1.5 s rule), "Your date has passed. Choose a new date or keep reading." (the owner's sentence), "N ayahs a day from here keeps your date.", "Your last 7 days: N ayahs a day on average.", "Days you read less are simply days; the daily amount is worked out again from where you are, to keep your date.", "The dashed line is today's amount (N).", "Goal started. Your previous goal is paused.", "Goal resumed. It's now your main goal.", "Your current goal, “…”, is paused, not deleted.", "Counted from where you are in the reader.", the kind names and hints (Finish by a date, Ayahs a day, Pages a day, Juz a week), the status words (Paused, Complete, Stopped, Not your main goal), "Ramadan Khatmah planned. …", "Plan a Ramadan Khatmah".
+- [ ] **A goal made in the old app counts differently.** The legacy reader logged only the ayah a pause landed on; the revamp counts every ayah on screen for about 1.5 s (Phase 4A), so counts read higher. Stored targets are not rewritten and counts are not merged at cutover. Decide whether any note on the page should say so.
 
 ## Calendar (Phase 15)
 
-- [ ] **Hijri month starts (`HMONTHS`).** Four come from `RESEARCH.md` (Jumada I 12 Oct 2026, Rajab 10 Dec, Sha'ban 9 Jan 2027, Ramadan 8 Feb 2027). Rabi' al-Thani 13 Sep 2026 and Jumada al-Akhirah 11 Nov 2026 are not in that file. Checked against the browser's built-in Umm al-Qura table: five of six agree; **13 Sep 2026 is day 2 of Rabi' al-Thani there, so its start is 12 Sep**, which also makes the prototype's 29-day length for that month wrong. Treat the table as a sample; the build uses the Hijri calendar service with the in-app adjustment (never typed dates).
-- [ ] "Umm al-Qura, adjusted −0 days": the method label and the adjustment are fixed text. The build shows the real method and the user's real adjustment.
-- [ ] The three events in `HEVENTS` (Rajab begins "A sacred month", Mid-Sha'ban, First day of Ramadan) and their descriptions are samples. The build uses the 29 legacy events already shipped with the Ramadan page; per-tradition wording stays a deliberate gap.
-- [ ] Reminders: the prototype stores them under `quran:cal-rem-proto` (prototype-only). The real key and shape come from the legacy calendar, to be read in the Phase 15 legacy report; the Ramadan page already has reminders as list items only.
-- [ ] Wording of ours: "Reminders show here and on Home while the app is open.", "Nothing on this day.", "Islamic event", "Your reminder", "Repeat every year".
+Built 2026-10-29.
+
+- [x] **Hijri month starts (`HMONTHS`) and the method label** ("Umm al-Qura, adjusted −0 days"): not used. The months, their names, their lengths and the calendar's name ("Hijri Calendar of Saudi Arabia (HJCoSA)") are the calendar service's, and the real answer differs from the prototype's sample (22 Oct 2026 is 11 Jumādá al-ūlá 1448; the month runs 12 Oct to 10 Nov, 30 days). Your Hijri adjustment is shown ("Adjusted by +1 day") and applied to the dates shown only.
+- [x] The three events in `HEVENTS` and their descriptions: not used. The 29 legacy events (the Ramadan page's list) are shown on their days, filtered by your fiqh view; per-tradition wording stays a deliberate gap.
+- [x] Reminders: the real key and shape are the legacy `quran:reminders:v1`; `quran:cal-rem-proto` is never used. The yearly repeat is a new additive field.
+- [ ] **The Hijri date against a calendar you trust**, and at a month edge with an adjustment of +1 and -1 (`DEVICE_CHECKS.md`, G2).
+- [ ] **Wording of ours** to confirm: "Dates follow the calendar named above. Local moon sighting can differ by a day: Settings has a Hijri date adjustment.", "Nothing on this day.", "Islamic event", "Your reminder", "Coming up", "Nothing coming up in the months saved on this device.", "Saved to your list: <title>. No alert is sent.", "Repeat every year", "By Hijri date" ("The same day of the same Hijri month each year."), "By Gregorian date" ("The same day of the same month each year."), "The Hijri date of that day is not saved on this device yet.", "That month is not saved on this device. It needs a connection once.", "That month could not be loaded just now.", "The calendar needs a connection once. After that, the months you have seen are kept on this device.", "Number shown first", the tradition tags (Both, Sunni, Ja'fari, as on the Events page).
+
+## About, Sitemap and Surah videos (Phase 15, no prototype)
+
+Built 2026-10-28 and approved at the screenshot checkpoint. All the wording is ours.
+
+- [ ] **About:** the lede; "There is no account to make. Your place in the Qur'an, bookmarks, notes, reading goals, Hifz progress and settings are saved in this browser, on this device, and are not uploaded anywhere. Pages that need a connection say so, and parts you have opened or saved keep working without one."; "Like any website, a service can see your device's network address when your device asks it for something."; the "provides" and "Sent" line of each of the five services (checked against the code by `tests/about.test.ts`, but the sentences are ours); "Each entry in the study pages … points to the ayahs it comes from. Where an entry rests on tradition or on scholars' interpretation rather than on the Qur'an stating it, the entry says so, in words such as “Traditional identification”, “Scholarly interpretation” or “Disputed interpretation”."; "This app is not affiliated with any religious institution, and nothing in it is a ruling. Where traditions differ, it shows them side by side. For a religious question, follow your own marja' or a local scholar." (the project's rule for rulings, in our words).
+- [ ] **Sitemap:** the group names (taken from the sidebar), "Every page of the app, in one place.", "No videos yet. Every surah has audio."
+- [ ] **Surah videos:** "There are no videos in the app yet.", "Every surah does have audio instead: five reciters, to play here or to save and listen to with no connection. Choose a surah.", "All surahs to read or play".
 
 ## Hifz (Phase 14, `prototype-hifz.html`)
 

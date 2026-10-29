@@ -109,7 +109,7 @@ function remove(g: Goal) {
       <section v-if="main" class="mt-8" aria-labelledby="goals-week-h">
         <h2 id="goals-week-h" class="mb-3 font-serif text-[20px] font-medium">This week</h2>
         <GoalsWeekBars :bars="store.week" :line="amount" />
-        <p class="mt-3 text-[13px] text-ink-2">{{ main.type === "finish-by-date" ? "Days you read less are simply days; the daily amount is worked out again from where you are, to keep your date." : "Days you read less are simply days." }}</p>
+        <p class="mt-3 text-[13px] text-ink-2" data-testid="goals-week-note">{{ amount ? `The dashed line is today’s amount (${amount}). ` : "" }}{{ main.type === "finish-by-date" ? "Days you read less are simply days; the daily amount is worked out again from where you are, to keep your date." : "Days you read less are simply days." }}</p>
       </section>
 
       <!-- other goals -->
