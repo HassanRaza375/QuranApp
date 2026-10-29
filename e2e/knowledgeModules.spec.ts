@@ -242,10 +242,13 @@ test.describe("links between modules", () => {
     await expect(page).toHaveURL(/\/places\//);
     await expect(page.getByTestId("k-name")).toBeVisible();
     await page.goto("/themes/tawhid");
-    const link = page.locator('[data-testid="k-connected-section"] [data-testid="k-link"]').first();
+    // The Connected sections fill in as each module's data arrives, so the FIRST link on the page can be a person's (that page has no k-name): take the first
+    // link to a knowledge module's own page. (This was the cause of the one failure in 50 runs: the page it landed on was /persons/ibrahim.)
+    const link = page.locator(["peoples", "places", "themes", "duas", "events", "signs", "commands"].map((m) => `[data-testid="k-connected-section"] [data-testid="k-link"][href^="/${m}/"]`).join(", ")).first();
+    await expect(link).toBeVisible();
     await link.click();
     await expect(page.getByTestId("k-name")).toBeVisible();
-    expect(await page.locator("body").innerText()).not.toContain("This page is not rebuilt yet");
+    expect(await page.locator("body").innerText()).not.toContain("Page not found");
   });
 
   test("a story's place chip opens a sheet that links to the place; its event chip is a link", async ({ page }) => {
@@ -284,7 +287,7 @@ test.describe("the Library", () => {
     }
     await page.locator('[data-testid="library-row"][data-key="dua:adamrepentance"]').getByTestId("row-open").click();
     await expect(page.getByTestId("k-name")).toHaveText("Adam's Prayer of Repentance");
-    expect(await page.locator("body").innerText()).not.toContain("This page is not rebuilt yet");
+    expect(await page.locator("body").innerText()).not.toContain("Page not found");
   });
 });
 

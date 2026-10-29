@@ -278,6 +278,7 @@ test.describe("entities and links", () => {
   });
 
   test("no link on a story page, the directory or a person's Story tab goes to a missing route", async ({ page }) => {
+    test.setTimeout(120_000); // up to 40 page loads: it took 22 to 37 s on a busy machine against the 30 s default
     const seen = new Set<string>();
     for (const path of ["/stories/yusufstory", "/stories/adamandiblis", "/stories", "/persons/yusuf"]) {
       await open(page, path, path === "/stories" ? "stories-list" : path.startsWith("/persons") ? "person-page" : "story-page");
@@ -290,7 +291,7 @@ test.describe("entities and links", () => {
     for (const href of [...seen].slice(0, 40)) {
       await page.goto(href);
       await expect(page.getByRole("heading", { level: 1 }).first(), href).toBeVisible();
-      await expect(page.getByRole("heading", { level: 1 }).first(), href).not.toHaveText("This page is not rebuilt yet");
+      await expect(page.getByRole("heading", { level: 1 }).first(), href).not.toHaveText("Page not found");
     }
   });
 

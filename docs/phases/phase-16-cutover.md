@@ -30,3 +30,8 @@ The investigations (axe sweep, keyboard walk, Play-to-audio start time, the two 
 1. The `/foundation` approach: kept in local builds, left out of Vercel builds. Say if you would rather delete it and have me move its tests.
 2. **Done (owner, 2026-10-29):** the Settings section "Modules" and its switch are removed and the `literaryModules` preference is gone; the stored key is never read or written; it returns with Poets (`DECISIONS.md`). Settings now has seven sections.
 3. The wording of the not-found page and the About line (listed in `CONTENT_TO_VERIFY.md`).
+
+
+## Stage 2 (investigations): done, see `phase-16-stage2.md`
+
+Accessibility: 0 axe violations in 196 page views after three small fixes; no keyboard trap on 49 pages. Play-to-audio start: no change across Phase 14, the prefetch hypothesis not supported. Flakes: `knowledgeModules.spec.ts:239` reproduced (about 2%) and fixed (an unordered choice of link); the two Per page tests not reproduced in 100 runs each. **The V7 screen-reader pass is still yours.**

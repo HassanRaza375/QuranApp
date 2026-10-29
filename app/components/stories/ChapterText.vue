@@ -83,7 +83,7 @@ async function expand() {
         <p class="text-[14.5px]">{{ (loaded[b.surahNumber] as Extract<Load, { state: "error" }>).message }}</p>
         <Button variant="outline" class="mt-3 min-h-11 md:min-h-8" data-testid="chapter-retry" @click="loadSurah(b.surahNumber)">Retry</Button>
       </div>
-      <div v-else class="mt-3" aria-busy="true" aria-label="Loading the text" data-testid="chapter-loading">
+      <div v-else class="mt-3" role="status" aria-busy="true" aria-label="Loading the text" data-testid="chapter-loading">
         <div v-for="i in Math.min(3, b.ayahEnd - b.ayahStart + 1)" :key="`${bi}-${i}`" class="border-b py-5"><Skeleton class="mb-3 ml-auto h-9 w-4/5" /><Skeleton class="h-4 w-2/3" /></div>
       </div>
     </template>

@@ -70,7 +70,7 @@ const repeatText = (r: { repeat?: ReminderRepeat }) => (r.repeat ? (r.repeat.by 
 <template>
   <section class="mx-auto max-w-[1040px]" data-testid="cal-page">
     <!-- loading / needs the service once -->
-    <div v-if="cal.state.value === 'loading'" class="space-y-3" aria-busy="true" aria-label="Loading the calendar" data-testid="cal-loading">
+    <div v-if="cal.state.value === 'loading'" class="space-y-3" role="status" aria-busy="true" aria-label="Loading the calendar" data-testid="cal-loading">
       <Skeleton class="h-10 w-72" />
       <Skeleton class="h-[420px] w-full" />
     </div>

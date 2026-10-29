@@ -74,7 +74,7 @@ onBeforeUnmount(() => snippets.forget());
 
         <div class="mt-3 pl-9">
           <p v-if="textOf(r) && textOf(r) !== 'loading' && (textOf(r) as { state: string }).state === 'text'" class="ar text-right" lang="ar" dir="rtl" data-testid="sajda-text">{{ (textOf(r) as { text: string }).text }}</p>
-          <div v-else-if="!textOf(r) || textOf(r) === 'loading'" class="space-y-2" aria-busy="true" aria-label="Loading the text" data-testid="sajda-loading"><Skeleton class="ml-auto h-8 w-4/5" /></div>
+          <div v-else-if="!textOf(r) || textOf(r) === 'loading'" class="space-y-2" role="status" aria-busy="true" aria-label="Loading the text" data-testid="sajda-loading"><Skeleton class="ml-auto h-8 w-4/5" /></div>
           <p v-else-if="(textOf(r) as { state: string }).state === 'none'" class="text-[13px] text-ink-2" data-testid="sajda-none">{{ SAJDA_NO_TEXT }}</p>
           <p v-else class="text-[13px] text-ink-2" data-testid="sajda-failed">
             {{ SAJDA_TEXT_FAILED }}

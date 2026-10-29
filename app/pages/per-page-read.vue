@@ -200,7 +200,7 @@ watch(page, () => void load());
     </div>
 
     <div class="mt-5">
-      <div v-if="status === 'loading'" aria-busy="true" aria-label="Loading the page" data-testid="page-skeleton" class="rounded-[14px] border px-4 py-6">
+      <div v-if="status === 'loading'" role="status" aria-busy="true" aria-label="Loading the page" data-testid="page-skeleton" class="rounded-[14px] border px-4 py-6">
         <Skeleton v-for="i in 6" :key="i" class="mb-4 ml-auto h-8" :class="i % 2 ? 'w-full' : 'w-4/5'" />
       </div>
       <div v-else-if="status === 'error'" class="rounded-[10px] border border-dashed px-4 py-8 text-center" data-testid="page-error">
