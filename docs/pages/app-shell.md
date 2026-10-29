@@ -32,7 +32,7 @@ The frame around every page: grouped navigation, a header with the theme menu, t
 
 | Data | Service / composable | Cache or storage key |
 | --- | --- | --- |
-| theme, literary modules flag | `usePreferencesStore` | `themeMode`, `quran:additional-modules-enabled:v1` |
+| theme | `usePreferencesStore` | `themeMode` |
 
 ## States
 

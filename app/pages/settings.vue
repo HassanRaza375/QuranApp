@@ -13,7 +13,6 @@ const SECTIONS = [
   { id: "prayer", label: "Prayer & location", icon: "lucide:map-pin" },
   { id: "notifications", label: "Notifications", icon: "lucide:bell" },
   { id: "accessibility", label: "Accessibility", icon: "lucide:accessibility" },
-  { id: "modules", label: "Modules", icon: "lucide:layers" },
   { id: "data", label: "Data & privacy", icon: "lucide:shield" },
 ] as const;
 type SectionId = (typeof SECTIONS)[number]["id"];
@@ -74,7 +73,6 @@ const pickerOptions: MenuOption[] = SECTIONS.map((s) => ({ value: s.id, label: s
         <SettingsSectionPrayer v-else-if="current === 'prayer'" />
         <SettingsSectionNotifications v-else-if="current === 'notifications'" />
         <SettingsSectionAccessibility v-else-if="current === 'accessibility'" />
-        <SettingsSectionModules v-else-if="current === 'modules'" />
         <SettingsSectionData v-else />
       </section>
     </div>

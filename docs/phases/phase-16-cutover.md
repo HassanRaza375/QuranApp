@@ -28,5 +28,5 @@ The investigations (axe sweep, keyboard walk, Play-to-audio start time, the two 
 ## Open questions for the review
 
 1. The `/foundation` approach: kept in local builds, left out of Vercel builds. Say if you would rather delete it and have me move its tests.
-2. **The Settings switch "Show literary modules in the sidebar" now does nothing** (Poets is deferred and its nav group is gone). I left the switch, its description (which names Mir Anis) and the stored key `quran:additional-modules-enabled:v1` untouched because removing the Settings section changes several settings tests and is your call. Say if you want the switch removed (the key would stay unread and unwritten).
+2. **Done (owner, 2026-10-29):** the Settings section "Modules" and its switch are removed and the `literaryModules` preference is gone; the stored key is never read or written; it returns with Poets (`DECISIONS.md`). Settings now has seven sections.
 3. The wording of the not-found page and the About line (listed in `CONTENT_TO_VERIFY.md`).

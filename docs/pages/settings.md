@@ -2,7 +2,7 @@
 
 - Route(s): `/settings` (`?section=<id>`; the default is Appearance)
 - Phase: 2
-- Prototype section: `d-page-settings` / `m-page-settings` (eight sections; mobile uses a section picker)
+- Prototype section: `d-page-settings` / `m-page-settings` (seven sections since Phase 16; mobile uses a section picker)
 - Offline level: A. Update now is the only control that needs a connection.
 - Indexable: no (`robots: noindex, follow`)
 
@@ -31,7 +31,6 @@ Every preference in one place. Changes are saved at once on this device, in the 
 | Prayer & location | Fiqh (Sunni, Ja'fari); calculation method; Asr (Sunni only); Hijri adjustment -2 to +2 with a live preview; Daily Fiqh marja' (Ja'fari only); location; saved prayer times and Update now |
 | Notifications | Prayer notifications switch and the permission state; the five prayers; reminder time; Send test |
 | Accessibility | Reduce motion, high contrast, larger touch targets |
-| Modules | Literary modules in the sidebar |
 | Data & privacy | Storage use and Manage downloads; Export; Reset settings; Clear all local data |
 
 ## Components
