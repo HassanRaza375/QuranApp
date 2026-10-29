@@ -50,7 +50,7 @@ For feature behaviour, the legacy docs still win: `docs/legacy-reference/MODULE_
    - No depictions of any person (prophets, companions, angels, family). Use calligraphy, places, objects and geometry only.
    - Removing something offers Undo instead of a blocking confirm, except for wiping all data.
 8. **Rendering and offline** (details in `docs/PLAN.md`)
-   - SPA by default; at most a few public pages are prerendered (Home, About, Surah listing).
+   - SPA by default; at most a few public pages are prerendered (Home, About, Surah listing), **as the SPA shell with their own head tags only** (title, description, Open Graph, from `app/lib/publicMeta.ts`). Their bodies are not prerendered: with JavaScript off a page shows no text.
    - Offline pages work from one precached app shell. Every page declares its offline level (A, B or C) in its page doc.
    - Level C (online-only) features must show a clear offline state, never a blank page or a spinner forever.
    - Never call `localStorage` directly. Use the storage wrapper. Never fetch third-party APIs from components; go through services.

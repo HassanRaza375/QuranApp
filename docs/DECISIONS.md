@@ -111,6 +111,22 @@ Every decision made while designing and building the revamp, with the reason. Ph
 - **Legacy quirks:** "a new ayah graded again still counts as introduced" is kept for parity; the mixed-final-test double grading and the Quick Test duplicates went with the dropped features.
 - **Found while reading the legacy code:** the legacy whole-surah assessment never graded its join items (they have no ayah number); here they are graded (decision 4).
 
+**Phase 14 follow-ups (accepted 2026-10-28).** Idle prefetch of the Hifz chunks stays as it is (13 KB of engine code loads after the page is up on every route; measured in `phases/phase-14-followups.md`). A new ayah is graded when its Recite stage ends, and its join is graded on its own on the "n-1 + n" step (good when said at once, again after any "Not yet").
+
+**Phase 15 (Reading goals, Calendar, small pages): owner decisions, 2026-10-28** (plan `phases/phase-15-goals-calendar-plan.md`, approved with defaults and the changes below).
+1. **Finish by a date:** today's amount is worked out each day from the ayahs left and the days left, shown plainly (large amounts near the end too). On the date, or after it, the page says "Your date has passed. Choose a new date or keep reading." Never "behind", no catch-up, no streak. Home's tile uses the same function (`lib/goals/model.ts` `todayFor`).
+2. **A new goal pauses the main goal, with Undo** (Resume does the same). The legacy left the older goal active.
+3. **"Complete" applies only to finish-by-date goals** (a Ramadan Khatmah is one), set when the saved place reaches the last ayah. A pace goal never completes. No new field.
+4. **Stored targets are never rewritten.** After a week of log the page shows "Your last 7 days" as a plain average. No reading-time estimate (the prototype's was invented).
+5. **Repeat every year:** when on, "by Hijri date" (the default) or "by Gregorian date", in a **new additive `repeat` field** on the reminder (`{ by: "gregorian" }` or `{ by: "hijri", month, day }`). The legacy `recurringYearly` stays untouched (always written false). A day whose Hijri date is not saved offers only the Gregorian choice.
+6. **Reminders are list items only** (no alert, as in Phase 8) and do not appear on Home in this phase.
+7. **Calendar:** one route, `/calender` (the legacy spelling); a Worship row "Calendar"; Hijri first or Gregorian first kept in one additive key `quran:calendar-prefs:v1`; no Suhoor or Iftar times (the Ramadan page has the timetable); dates from the service's own Gregorian months, the Settings adjustment applied for display only.
+8. **Poets stays deferred.** `/poets` is on the Phase 16 cutover checklist (a real page, or an honest "not in this version" page, before the domain moves).
+9. **Surah videos:** an honest page ("There are no videos in the app yet") that lists the 114 surahs, each linking to `/surah-audios/[id]`; listed in the Sitemap with that note; no sidebar row.
+10. **About:** written from facts, in our words. The services it names are one list in `lib/about.ts`, and a test compares it with the hosts the code calls.
+11. **`/juz/[id]`** opens the reader at the juz's first ayah and replaces the URL; anything else goes to the Juz tab.
+12. **About's body is not prerendered** (recorded 2026-10-29, correcting the plan). With `ssr: false` the build prerenders only each route's head tags (title, description, Open Graph) as the SPA shell (the Phase 0 spike result, unchanged). Home, About and the Surah listing all work that way, so with JavaScript off About shows no text; link previews get the title and description. The plan's "About prerendered text present with JS off" was wrong and is withdrawn; `e2e/prerender.spec.ts` checks the head tags only.
+
 ## 4. Deliberate content gaps
 
 Ja'fari Laylat al-Qadr nights (19, 21, 23); the Sunni versus Ja'fari compare table and iftar/suhoor explanations; the Arabic of hadith duas; "After prayer" dhikr sequences; Arabic prayer names; revelation order; Juz names; translator and tafsir-school attribution; per-tradition event wording. Each becomes a data file once wording and a source are supplied.

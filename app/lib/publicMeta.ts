@@ -1,4 +1,4 @@
-// Per-page <head> tags for the few prerendered public pages (link previews). Pure, unit-tested.
+// Per-page <head> tags for the few prerendered public pages (link previews). Only the head is prerendered; the page body is client-rendered. Pure, unit-tested.
 // Keep the title/description here in step with each page's own useSeoMeta.
 export interface PublicMeta { title: string; description: string }
 

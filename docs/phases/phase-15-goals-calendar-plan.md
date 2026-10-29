@@ -2,7 +2,7 @@
 
 - Branch: `phase-15-goals-calendar` (from the merged `chore/standalone-repo`)
 - Date: 2026-10-28
-- Status: **Plan. Nothing built. Waiting for your approval.**
+- Status: **Approved 2026-10-28 with the owner's changes (recorded in `DECISIONS.md`, Phase 15).** Built; see `phase-15-goals-calendar.md`.
 - Read for this: the legacy `goals/index.vue`, `useReadingGoals.ts`, `calender.vue`, `useReminders.ts`, `islamicEvents.js`, `about.vue`, `sitemap.vue`, `surah-vedios.vue`, `juz/[id].vue` (legacy commit 7120b6c), the prototype's `pgGoals`, `sheetGoal`, `pgCal`, `sheetRem`, `DECISIONS.md`, `CONTENT_TO_VERIFY.md` (Goals and Calendar), and what this repo already has for Hijri dates, events, reminders and the reading log.
 
 ## 1. Summary
@@ -110,14 +110,14 @@ Never written: `calendar_v2_*` and `prayer_*` (the legacy day-keyed caches), `qu
 
 **Small pages**
 - **`/juz/[id]`**: `1` to `30` replaces the URL with the reader at the juz's first ayah; anything else goes to `/juz` (the Juz tab). No network.
-- **About**: a calm text page from the existing type scale, written from facts: what the app is, where the text, translations, tafsir, audio, prayer times, Hijri dates and place search come from (the real hosts), what stays on the device and what is sent (matches Settings, Data & privacy; linked, not duplicated), the source labels the knowledge pages actually show, a limitations paragraph in our words, a link to Sitemap. Prerendered (it is one of the three public pages); no stored-data reading at render.
+- **About**: a calm text page from the existing type scale, written from facts: what the app is, where the text, translations, tafsir, audio, prayer times, Hijri dates and place search come from (the real hosts), what stays on the device and what is sent (matches Settings, Data & privacy; linked, not duplicated), the source labels the knowledge pages actually show, a limitations paragraph in our words, a link to Sitemap. Level A, static, nothing read from storage. Its head tags (title and description) are prerendered like Home's and the Surah listing's; its body is not (SPA mode, `DECISIONS.md` Phase 15, item 12).
 - **Sitemap**: grouped links built from `lib/nav.ts` (the one list of destinations) plus the pages not in the nav (Juz, Search, Calendar), counts only from the real data, none typed.
 - **Surah videos**: an honest page: "Surah videos aren't available yet", what to use today (Surah listing, the audio of each surah, Downloads), no invented content.
 
 ### 3.4 Tests
 
 - Unit: goal amounts (all types, edge days, local-day boundaries), today's amount against Home's tile, progress and the juz line, week bars, status changes and Undo, unknown fields kept, a `custom` goal shown; parity with the vendored legacy composables; calendar grid for 29 and 30 day months and each weekday start, events per tradition, yearly reminders, the adjustment; the juz table (all 30 and the invalid ids); sitemap links against the real routes.
-- Browser (production build, fixed clock, mocked services): goals first run, each type with its preview, pause and resume, Undo on Remove, manual log with Undo, legacy data with a streak and a catch-up amount present (neither shown), the Home tile and the page agree, the reader's log updates the page; calendar month and Today, toggle, an event on its day for each fiqh, reminder add / remove with Undo / yearly, adjustment, offline cached and uncached; `/juz/7` lands in the reader at its first ayah, `/juz/31` on `/juz`; About prerendered text present with JS off; every Sitemap link opens a built page; 1280 and 375 px, light and dark; the keyboard; no console errors.
+- Browser (production build, fixed clock, mocked services): goals first run, each type with its preview, pause and resume, Undo on Remove, manual log with Undo, legacy data with a streak and a catch-up amount present (neither shown), the Home tile and the page agree, the reader's log updates the page; calendar month and Today, toggle, an event on its day for each fiqh, reminder add / remove with Undo / yearly, adjustment, offline cached and uncached; `/juz/7` lands in the reader at its first ayah, `/juz/31` on `/juz`; About's prerendered head tags (title and description, no JavaScript needed); every Sitemap link opens a built page; 1280 and 375 px, light and dark; the keyboard; no console errors.
 
 ### 3.5 Stages (one stop for you)
 
@@ -140,7 +140,7 @@ Poets and `/poets/[slug]`; notifications for reminders (a reminder is a list ite
 - **Adjustment at a month edge.** With +1 or −1 the visible month's first and last cells move. `displayedDate` is applied per cell, never to the cache, and a test covers month edges.
 - **Yearly reminders.** Gregorian and Hijri repeats give different dates; decision 5.
 - **About says what is true.** It will name the hosts the app really calls; if a service changes, the page is wrong. The hosts are read from one list in code (so a test fails if a service is added without it), not typed twice.
-- **Prerendered About.** Its title and description are duplicated in `lib/publicMeta.ts` today; the prerender test must still pass.
+- **About's head tags.** Only the head tags are prerendered (not the body). Its title and description are duplicated in `lib/publicMeta.ts`; a test compares the two, and the prerender test must still pass.
 - **Cutover:** `/poets` has no page yet (decision 8).
 
 ## 5. Decisions I need from you (my default in bold; I will use it unless you say otherwise)
