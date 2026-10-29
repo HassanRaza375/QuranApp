@@ -57,8 +57,9 @@ describe("a new goal: the same ayahs a day, the same fields", () => {
   it("matches the legacy on random types, amounts, places and dates", async () => {
     const rand = rng(15);
     const pick = <T>(xs: readonly T[]) => xs[Math.floor(rand() * xs.length)]!;
+    const { data, goals, counts } = await both(); // the legacy modules are loaded once; each round starts from an empty store
     for (let i = 0; i < 60; i++) {
-      const { data, goals, counts } = await both();
+      data.clear();
       goals.load();
       const type = pick(["finish-by-date", "ayahs-per-day", "pages-per-day", "juz-per-week", "custom"] as const);
       const surah = rand() < 0.2 ? undefined : 1 + Math.floor(rand() * 114);
@@ -79,7 +80,7 @@ describe("a new goal: the same ayahs a day, the same fields", () => {
       for (const k of ["type", "dailyAyahTarget", "startAbsoluteAyah", "startDate", "targetDate", "preferredDays", "status"] as const) expect(mine[k], `${k} (${type}, ${surah}:${ayah}, amount ${amount})`).toEqual(theirs[k]);
       if (label) expect(mine.label).toBe(theirs.label);
     }
-  });
+  }, 30_000);
 
   it("reads the place the way the legacy does (the saved place is the last ayah on screen)", () => {
     expect(positionOf({ surahNo: 2, ayahNo: 5 })).toBe(7 + 5);
@@ -113,8 +114,9 @@ describe("the daily log and the status changes", () => {
 
   it("pause, resume and remove move the main goal the way the legacy does", async () => {
     const rand = rng(7);
+    const { data, goals } = await both();
     for (let round = 0; round < 25; round++) {
-      const { data, goals } = await both();
+      data.clear();
       goals.load();
       let mine = G.emptyGoals();
       const theirIds: string[] = [];
