@@ -1,0 +1,9 @@
+# Reading goals and Calendar: prototype and build, side by side (Phase 15)
+
+Made by `node scripts/screenshots/phase-15-goals-calendar.mjs` against a production build (it needs the internet: the Calendar's Hijri dates are the calendar service's own). The clock is fixed to the prototype's "today" (22 Oct 2026). The goals are a seeded sample (a finish-by-date goal for 7 Feb 2027, a place in Al-Kahf, a week of log, a paused and a completed goal). `proto-*` files are the prototype (`docs/design/prototype-remaining-pages.html`); the others are the build. Pairs compare layout and behaviour, not words or numbers.
+
+**Looked at one by one (2026-10-29):** goals-desktop-light and proto-goals-desktop-light; calendar-desktop-light and proto-calendar-desktop-light; calendar-mobile-light; goals-mobile-dark; calendar-ramadan-mobile-dark; goals-new-desktop-light. The phone calendar header, the Coming-up date badges and the week line were fixed after the first look and the files regenerated; the three that changed (calendar-mobile-light, goals-mobile-dark, calendar-ramadan-mobile-dark) were looked at again.
+
+**Not looked at:** goals-desktop-dark, goals-mobile-light, goals-empty-desktop-light, goals-passed-mobile-light, goals-new-mobile-light and -dark, goals-log-mobile-light, calendar-desktop-dark, calendar-mobile-dark, calendar-gregorian-desktop-light, calendar-ramadan-desktop-light, calendar-reminder-desktop-light and -mobile-light, calendar-unavailable-mobile-light, and the remaining proto-* files.
+
+**Differences that show:** the app's header and sidebar around the page; the Calendar's month, year and method are the service's (the prototype's table was a sample); no projection sentence and no minutes on Goals; "Pause this goal" and "Remove this goal" under Today; the dashed line in This week; the Hijri / Gregorian choice is the app's own segmented control; real events in Coming up.

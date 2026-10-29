@@ -87,7 +87,7 @@ export const useHomeState = () => {
       user,
       reading,
       study,
-      goal: goalToday(read(HISTORY_KEYS.readingGoals), localDateKey(new Date())),
+      goal: goalToday(read(HISTORY_KEYS.readingGoals), localDateKey(new Date()), read(HISTORY_KEYS.readingProgress)),
       hifz: user.has.hifz ? "has-data" : "none",
       hifzDue: user.has.hifz ? hifzDue() : 0,
     };

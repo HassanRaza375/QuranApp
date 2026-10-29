@@ -98,6 +98,9 @@ export const TRACKED_FILES = [
   "app/composables/useTasbeeh.ts",
   "app/composables/useHifz.ts", // Phase 14: run by the Hifz parity test (scripts/lib/legacy-hifz.mjs)
   "app/composables/useHifzSession.ts", // Phase 14: its queue and grading, run by the same test
+  // Phase 15: the legacy goals and reminders composables, run by tests/goalsParity.test.ts beside lib/goals and lib/reminders (never imported by the app)
+  "app/composables/useReadingGoals.ts",
+  "app/composables/useReminders.ts",
 ];
 
 /**

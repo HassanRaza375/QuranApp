@@ -40,6 +40,16 @@
       "sha256": "7d2e4e3395f16b54eb0cd7708b0b6caee095927807c2af16a17bb2565be4e45e",
       "source": "git"
     },
+    "app/composables/useReadingGoals.ts": {
+      "bytes": 11501,
+      "sha256": "bb21cba960cbf654daa5c8b8ef7dd5bc6d315ae69d124f50d021c4951ff1925b",
+      "source": "git"
+    },
+    "app/composables/useReminders.ts": {
+      "bytes": 2153,
+      "sha256": "72224ff67c4b9624e829471e8e5048f8b666489ab13b7ac5a14b5172ef466c7d",
+      "source": "git"
+    },
     "app/composables/useSearch.ts": {
       "bytes": 3759,
       "sha256": "9e431061f8c42dddc40f848c99b60800c4c20c9664fff3677b82fd50b8be7278",

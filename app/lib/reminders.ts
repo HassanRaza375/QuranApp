@@ -5,6 +5,12 @@ import { getJSON, setJSON } from "./storage";
 
 export const REMINDERS_KEY = "quran:reminders:v1";
 
+/**
+ * "Repeat every year" (Phase 15), a NEW additive field the legacy app ignores (the legacy `recurringYearly` is left exactly as it was): on the same
+ * Hijri day (month 1 to 12, day 1 to 30; the Calendar works the day out from the service's own days) or on the same Gregorian day.
+ */
+export type ReminderRepeat = { by: "gregorian" } | { by: "hijri"; month: number; day: number };
+
 export interface Reminder {
   id: string;
   title: string;
@@ -14,9 +20,18 @@ export interface Reminder {
   recurringYearly: boolean;
   done: boolean;
   createdAt: number;
+  repeat?: ReminderRepeat;
   [k: string]: unknown;
 }
 const DAY_KEY = /^\d{4}-\d{2}-\d{2}$/;
+
+export function repeatFrom(v: unknown): ReminderRepeat | null {
+  const r = v as { by?: unknown; month?: unknown; day?: unknown } | null;
+  if (!r || typeof r !== "object") return null;
+  if (r.by === "gregorian") return { by: "gregorian" };
+  if (r.by === "hijri" && Number.isInteger(r.month) && Number.isInteger(r.day) && (r.month as number) >= 1 && (r.month as number) <= 12 && (r.day as number) >= 1 && (r.day as number) <= 30) return { by: "hijri", month: r.month as number, day: r.day as number };
+  return null;
+}
 
 export function readReminders(): Reminder[] {
   const raw = getJSON<unknown>(REMINDERS_KEY, []);
@@ -24,7 +39,9 @@ export function readReminders(): Reminder[] {
   return raw.flatMap((r) => {
     const x = r as Partial<Reminder> | null;
     if (!x || typeof x !== "object" || typeof x.id !== "string" || typeof x.title !== "string" || typeof x.date !== "string" || !DAY_KEY.test(x.date)) return [];
-    return [{ ...x, id: x.id, title: x.title, date: x.date, note: typeof x.note === "string" ? x.note : "", recurringYearly: !!x.recurringYearly, done: !!x.done, createdAt: typeof x.createdAt === "number" ? x.createdAt : 0 } as Reminder];
+    const { repeat: stored, ...kept } = x as Partial<Reminder>;
+    const repeat = repeatFrom(stored);
+    return [{ ...kept, id: x.id, title: x.title, date: x.date, note: typeof x.note === "string" ? x.note : "", recurringYearly: !!x.recurringYearly, done: !!x.done, createdAt: typeof x.createdAt === "number" ? x.createdAt : 0, ...(repeat ? { repeat } : {}) } as Reminder];
   });
 }
 const write = (list: Reminder[]): boolean => setJSON(REMINDERS_KEY, list);
@@ -34,10 +51,10 @@ const makeId = (): string => (typeof crypto !== "undefined" && "randomUUID" in c
 /** The reminder for this title on this day, if there is one. */
 export const findReminder = (list: Reminder[], title: string, date: string): Reminder | undefined => list.find((r) => r.title === title && r.date === date);
 
-export function addReminder(title: string, date: string, now = Date.now()): Reminder | null {
+export function addReminder(title: string, date: string, now = Date.now(), repeat?: ReminderRepeat | null): Reminder | null {
   const list = readReminders();
   if (findReminder(list, title, date)) return findReminder(list, title, date)!;
-  const r: Reminder = { id: makeId(), title: title.trim(), date, note: "", recurringYearly: false, done: false, createdAt: now };
+  const r: Reminder = { id: makeId(), title: title.trim(), date, note: "", recurringYearly: false, done: false, createdAt: now, ...(repeat ? { repeat } : {}) };
   return write([...list, r]) ? r : null;
 }
 export function removeReminder(id: string): Reminder | null {
