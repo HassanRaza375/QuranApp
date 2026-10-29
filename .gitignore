@@ -19,3 +19,4 @@ dist
 test-results
 playwright-report
 coverage
+scripts/measure/a11y-result*.json

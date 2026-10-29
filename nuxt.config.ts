@@ -4,6 +4,11 @@ import { legacyBridge, LEGACY_APP, LEGACY_ROOT } from "./build/legacyBridge";
 import { shipsTestPages, TEST_ONLY_ROUTES } from "./build/testPages";
 import { NO_FLASH_SCRIPT } from "./app/lib/noFlashScript";
 import { injectPublicMeta } from "./app/lib/publicMeta";
+import { isIndexable, NOINDEX, seoHeadTags, siteUrl } from "./app/lib/seo";
+
+// Where this build is made decides what search engines may do (app/lib/seo.ts): only a Vercel production build is indexable.
+const SITE = siteUrl(process.env);
+const INDEXABLE = isIndexable(process.env);
 
 // Revamp of the Quran App UI: Nuxt 4 SPA + shadcn-vue + Tailwind v4. See docs/PLAN.md and
 // docs/phases/phase-00-foundation.md for why each setting is here.
@@ -99,16 +104,24 @@ export default defineNuxtConfig({
   // ssr:false catch-all). So the three routes are prerendered as the SPA shell and this hook writes each one's own
   // <title>, description and Open Graph tags into its HTML.
   nitro: {
-    prerender: { routes: ["/", "/about", "/surah-listing"], crawlLinks: false },
+    prerender: { routes: ["/", "/about", "/surah-listing", "/robots.txt", "/sitemap.xml"], crawlLinks: false },
+    // A preview, a local build and a dev server are not indexable: every response says so (Vercel adds the same header to previews itself; this makes it ours).
+    routeRules: INDEXABLE ? {} : { "/**": { headers: { "X-Robots-Tag": NOINDEX } } },
     hooks: {
       "prerender:generate"(route) {
-        if (route.contents && typeof route.contents === "string") route.contents = injectPublicMeta(route.route, route.contents);
+        if (route.contents && typeof route.contents === "string" && !/\.(txt|xml)$/.test(route.route)) {
+          route.contents = injectPublicMeta(route.route, route.contents);
+          route.contents = route.contents.replace("</head>", `${seoHeadTags({ site: SITE, path: route.route, indexable: INDEXABLE, verification: process.env.GOOGLE_SITE_VERIFICATION })}</head>`);
+        }
       },
     },
   },
 
   runtimeConfig: {
     public: {
+      siteUrl: SITE,
+      indexable: INDEXABLE,
+      googleSiteVerification: process.env.GOOGLE_SITE_VERIFICATION || "",
       quranApiBase: process.env.QURAN_API_BASE || "https://quranapi.pages.dev/api",
       // must be https:// (see the README CORS gotcha)
       quranApiBase2: process.env.QURAN_API_BASE2 || "https://api.alquran.cloud/v1",
@@ -144,7 +157,7 @@ export default defineNuxtConfig({
       globIgnores: ["**/wajibat-data-*.js"],
       // Every navigation falls back to the precached SPA shell, except API routes.
       navigateFallback: "/",
-      navigateFallbackDenylist: [/^\/api\//],
+      navigateFallbackDenylist: [/^\/api\//, /^\/robots\.txt$/, /^\/sitemap\.xml$/],
       cleanupOutdatedCaches: true,
       clientsClaim: true,
       runtimeCaching: [

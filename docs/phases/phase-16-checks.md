@@ -18,7 +18,7 @@ Total rows: 135 (133 table rows plus F1 to F3, minus the two about legacy data, 
 | S3 | Visit Home and the Surah listing online, then switch on airplane mode and reopen the installed app | the installed app offline |
 | P1 | Home, "Set location", allow the browser's prompt | location is the gate for prayer times and Qibla |
 | P2 | Same, but deny the prompt | the denied path must not dead-end |
-| P6 | VoiceOver (iPhone) or TalkBack (Android) through Home | screen-reader pass (V7) |
+| P6 | VoiceOver (iPhone) or TalkBack (Android) through Home | screen-reader pass (V7); Home on TalkBack done 2026-10-29 |
 | N1 | Settings, Notifications, switch alerts on, allow the permission prompt | notifications have never fired on a device |
 | N2 | "Test notification" | same |
 | N3 | Deny the permission instead | the denied path |
@@ -59,7 +59,7 @@ Total rows: 135 (133 table rows plus F1 to F3, minus the two about legacy data, 
 | 15-G5 | An installed app, offline: open Goals, About, the Sitemap and Surah videos with the connection of... | Goals, About and the Calendar offline |
 | V1 | Wording of ours across all pages (labels, notices, error messages), including the resume line and... | the wording of ours is yours to read before users do |
 | V2 | The three relationship entries (Isa, Maryam) and the status chips on People; `nuhflood` in the "a... | content decisions that edit the data at cutover |
-| V7 | Screen-reader passes (VoiceOver and TalkBack) on Home, Settings, the listing, the reader, the pla... | no screen-reader pass has ever been done |
+| V7 | DONE 2026-10-29 (owner): TalkBack, Pixel 7 Pro, pass on Home, Search and Hifz. Open: VoiceOver (iPhone); TalkBack on Settings, the listing, the reader, the player, Per page | the screen-reader pass; partly done |
 | 16-RB | Instant Rollback: deploy a harmless change to the new project, roll back with Instant Rollback, t... | the rollback plan itself: an Instant Rollback must reach an installed phone within a visit or two |
 
 ### First week (use the installed app for a week; note anything odd)

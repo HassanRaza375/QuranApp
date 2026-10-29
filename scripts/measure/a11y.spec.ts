@@ -1,5 +1,6 @@
 // Dev-only (not part of verify): an accessibility sweep over every legacy route that has a page, and a keyboard walk of each page.
-//   AXE=<path to axe.min.js> OUT=<result.json> npx playwright test --config scripts/measure/playwright.config.ts a11y
+//   npm run build && npm run test:a11y        (OUT=<result.json> keeps the full result; not part of verify: run at the end of each phase)
+// It fails when any route has a violation of the rules below, or when focus gets stuck on a page.
 // 1. axe-core (WCAG 2.0 A and AA, 2.1 AA, 2.2 AA rules) on each route at 1280 and 375 px, light and dark. Services are mocked (recorded or synthetic answers), so
 //    pages show content; anything a mock does not answer is blocked, so some pages show their empty or offline state.
 // 2. A keyboard walk at 1280 px: Tab through the page, and record every stop (what it is, whether it has a visible focus indicator, whether it is on screen),
@@ -8,12 +9,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { test, type BrowserContext, type Page } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test, type BrowserContext, type Page } from "@playwright/test";
 import { concrete, DEFERRED_ROUTES, LEGACY_ROUTES } from "../../tests/legacyRoutes";
 import { forbidRealApis, freezeClock, LAHORE_LEGACY, mockAladhan, mockHijri, mockQuranText, mockVerse, seed } from "../../e2e/mocks";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const AXE = process.env.AXE!;
 const OUT = process.env.OUT ?? path.resolve(HERE, "a11y-result.json");
 const ROUTES = LEGACY_ROUTES.filter((r) => !(DEFERRED_ROUTES as readonly string[]).includes(r)).map(concrete);
 const VIEWS = [
@@ -50,7 +51,6 @@ test.use({ serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB" 
 
 test("axe: every route, 1280 and 375, light and dark", async ({ browser }) => {
   test.setTimeout(3_000_000);
-  const source = fs.readFileSync(AXE, "utf8");
   for (const theme of ["light", "dark"]) {
     for (const v of VIEWS) {
       const context = await browser.newContext({ viewport: { width: v.width, height: v.height }, serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB" });
@@ -58,19 +58,15 @@ test("axe: every route, 1280 and 375, light and dark", async ({ browser }) => {
       const page = await context.newPage();
       for (const route of ROUTES) {
         await open(page, route);
-        await page.evaluate(source);
-        const res = await page.evaluate(async () => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const r = await (window as any).axe.run(document, { runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"] }, resultTypes: ["violations"] });
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return r.violations.map((x: any) => ({ id: x.id, impact: x.impact, help: x.help, count: x.nodes.length, first: x.nodes[0]?.target?.join(" ") ?? "", html: String(x.nodes[0]?.html ?? "").slice(0, 160) }));
-        });
-        result.axe[`${theme} ${v.name} ${route}`] = res;
+        const r = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
+        result.axe[`${theme} ${v.name} ${route}`] = r.violations.map((x) => ({ id: x.id, impact: x.impact, help: x.help, count: x.nodes.length, first: x.nodes[0]?.target?.join(" ") ?? "", html: String(x.nodes[0]?.html ?? "").slice(0, 160) }));
       }
       save();
       await context.close();
     }
   }
+  const failing = Object.entries(result.axe).filter(([, v]) => v.length);
+  expect(failing.map(([k, v]) => `${k}: ${(v as Array<{ id: string }>).map((x) => x.id).join(", ")}`), "pages with accessibility violations").toEqual([]);
 });
 
 test("keyboard walk: every route at 1280 px", async ({ browser }) => {
@@ -131,4 +127,6 @@ test("keyboard walk: every route at 1280 px", async ({ browser }) => {
   }
   save();
   await context.close();
+  const bad = Object.entries(result.keys).filter(([, v]) => (v as { stuck: boolean; noIndicator: string[] }).stuck || (v as { noIndicator: string[] }).noIndicator.length);
+  expect(bad.map(([k]) => k), "pages where focus gets stuck or a stop has no focus indicator").toEqual([]);
 });

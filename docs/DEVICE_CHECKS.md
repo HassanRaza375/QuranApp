@@ -258,7 +258,7 @@ These need your judgement, not a phone. Details are in `docs/CONTENT_TO_VERIFY.m
 | V4 | The 99 names (apostrophes, repeated meanings), the list of 15 sajda verses, the five dhikr | CONTENT_TO_VERIFY (Asma, Sajda, Tasbeeh) |
 | V5 | The "not a line-for-line copy" sentence on Per page | CONTENT_TO_VERIFY (Per page) |
 | V6 | The screenshots I did not look at one by one (each compare README says which I did) | `docs/design/*-compare/` |
-| V7 | Screen-reader passes (VoiceOver and TalkBack) on Home, Settings, the listing, the reader, the player, Per page | Rows P6, R6 and your own |
+| V7 | **Done (owner, 2026-10-29): TalkBack on a Pixel 7 Pro, pass on Home, Search and Hifz.** Screen-reader passes (VoiceOver and TalkBack) on Home, Settings, the listing, the reader, the player, Per page. **Not covered by that pass (still open if you want them): VoiceOver on an iPhone, and TalkBack on Settings, the listing, the reader, the player and Per page.** | Rows P6 (Home, TalkBack: done), R6, and your own |
 
 ## Results to paste back
 

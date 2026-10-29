@@ -1,8 +1,11 @@
 <script setup lang="ts">
 // Prophets & People (prototype d-page-people / m-page-people): the directory and the Timeline, as two links (one URL each).
 // All of it comes from the bundled legacy data, so it works offline. See docs/phases/phase-07a-people.md.
-defineProps<{ view: "browse" | "timeline" }>();
-useSeoMeta({ title: "Prophets & People of the Qur’an · Quran App", description: "Browse the prophets and people mentioned in the Qur’an, with their references and relationships." });
+const props = defineProps<{ view: "browse" | "timeline" }>();
+// each of the two URLs has its own title and description (search engines see two pages)
+useSeoMeta(props.view === "timeline"
+  ? { title: "Timeline · Prophets & People · Quran App", description: "The prophets and people mentioned in the Qur’an on a timeline, with their references." }
+  : { title: "Prophets & People of the Qur’an · Quran App", description: "Browse the prophets and people mentioned in the Qur’an, with their references and relationships." });
 const TABS = [
   { id: "browse", label: "Browse people", to: "/persons" },
   { id: "timeline", label: "Timeline", to: "/persons/timeline" },
