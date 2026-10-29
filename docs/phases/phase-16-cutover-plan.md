@@ -2,17 +2,18 @@
 
 - Branch: `phase-16-cutover` (from the merged `chore/standalone-repo`)
 - Date: 2026-10-29
-- Status: **Plan only. Nothing changed. Waiting for your approval.** Revised 2026-10-29 with the owner's four decisions (all 30 keys covered before cutover; the service-worker switch back rehearsed in a preview, with cutover blocked until it passes; the 136 checks sorted; `/poets` as stubs) and the new rule that a phase is accepted only after a full verify on its own branch.
+- Status: **Plan, revised 2026-10-29 for the owner's deployment setup; stage 1 is built and waits for review.** Setup (owner, 2026-10-29): users use the **new Vercel project's own address**; the legacy app stays at its own address and **is not changed**; **no domain move**; **legacy data does not carry over** (a fresh start, no export or import). Earlier decisions that still hold: `/poets` as stubs; the 136 checks sorted (now re-sorted); a phase is accepted only after a **full verify on its own branch** (the merged-head verify is extra). Dropped by this setup: the service-worker switch-back rehearsal, the 21 extra legacy-key tests, the domain move, and everything about a hand-over from the legacy worker.
 - Read for this: `docs/DEPLOY.md`, `docs/PLAN.md` (Phase 16 and the cutover checklist), `docs/LEGACY_INVENTORY.md` (the storage keys), `docs/DEVICE_CHECKS.md`, `docs/CONTENT_TO_VERIFY.md`, the phase docs' flake records (10, 13, 14, 15), and the legacy repo's `app/pages`, `server/` and Poets files (read only).
-- What I cannot see: the Vercel account (either project, the domain, the environment variables), and any real device. Where the plan needs a fact from there it says so and lists it under "Decisions and facts I need".
+- What I cannot see: the Vercel account (the new project, its address, the environment variables), and any real device. Where the plan needs a fact from there it says so and lists it under "Decisions and facts I need".
 
 ## 1. Summary
 
-- **Every legacy route has a page in the revamp except two: `/poets` and `/poets/[slug]`.** Decided: both are **stub pages at cutover**; Poets is built later as its own phase (section 2).
-- **The 136 manual checks are sorted** into **49 before cutover, 56 in the first week, 31 whenever** (section 3 and `phase-16-checks.md`). Five more things are open and are not rows: the screen-reader and keyboard pass, the Play-to-audio start time before and after Phase 14, and the two flake families (3.2).
-- **Rollback covers all 30 legacy localStorage keys before cutover** (4.1): a test for each, today 9 are proven. **The service-worker switch back is designed (two designs) and rehearsed on a Vercel preview alias, and cutover is blocked until the rehearsal passes** (4.3).
-- **The merge to `main` is safe and changes nothing for users** (section 5): `main` is an ancestor of `chore/standalone-repo`. What users see changes only when the **domain** moves, a separate, reversible step after production smoke tests.
-- **Process:** the phase is accepted only after a **full verify on its own branch**; the merged-head verify is extra, not instead (stage 5).
+- **Cutover is a merge:** `chore/standalone-repo` → `main` on the new project, whose Production Branch is `main`. The production deployment is the address users use. **Rollback is Vercel Instant Rollback on the new project.** Nothing is done to the legacy site or its project.
+- **Fresh start.** Nothing from the legacy app is carried over (a different address is a different browser origin, and the legacy app has few users). No export or import is built. **About says so briefly** (stage 1).
+- **Every legacy route still has a page in the revamp except `/poets` and `/poets/[slug]`**, which become **stub pages** (stage 1, built). The routes list stays: an old link to a legacy path on the new address must not land on "not rebuilt yet" (section 2).
+- **The checks are re-sorted for this setup** (3.1 and `phase-16-checks.md`): **135 rows: 48 before cutover, 56 in the first week, 31 whenever.** Two rows about legacy data are dropped and one is added: that an Instant Rollback reaches an installed phone within a visit or two (4.1).
+- **Rollback is within the new project:** the 9 legacy keys already tested stay tested; **the other 21 are not added** (4.2). Instant Rollback means the previous deployment of the same app, so the storage and the service worker are the same app's.
+- **Process:** the phase is accepted only after a full verify on its own branch; the merged-head verify is extra.
 
 ## 2. Every legacy route, and what the revamp has
 
@@ -64,17 +65,17 @@ Revamp-only pages to deal with: **`/foundation`** (a spike page: remove, on the 
 
 ## 3. The open checks, in one list
 
-### 3.1 Device and manual checks (`DEVICE_CHECKS.md`): 136 rows, sorted
+### 3.1 Device and manual checks (`DEVICE_CHECKS.md`): 135 rows after the setup change, sorted
 
-133 table rows plus Daily Fiqh F1 to F3 (K1 is waived). Ids that repeat across phases (G, H and D each mean two things) get a phase prefix in the sorted list (`5-H1`, `14-H1`, `15-G1`, `11-D1`, `9-D1`). The full sorted table is `docs/phases/phase-16-checks.md`. The rule used:
+133 table rows plus Daily Fiqh F1 to F3 (K1 is waived), **minus 14-H7 and 15-G6** (they test opening legacy Hifz and goals data, which no longer carries over), **plus 16-RB** (the Instant Rollback check). Ids that repeat across phases get a phase prefix in the sorted list (`5-H1`, `14-H1`, `15-G1`, `11-D1`, `9-D1`). The full table is `docs/phases/phase-16-checks.md`.
 
 | Group | Count | What goes here |
 | --- | --- | --- |
-| **Before cutover** | **49** | Anything whose failure is **data loss, a dead end, a wrong prayer time or Hijri date, or breaks the hand-over**: install, update and offline (S1 to S3); location and its denied path (P1, P2, 5-G1, 5-G2); notifications (N1 to N4: they have never fired on a device); the core of the player on a phone (A1 to A4, A6 to A8, A11, A14, A17 to A19; A1 to A3 are reported tested by the owner on Safari); the compass (C1 to C4); the Hijri date and the Sunni and Ja'fari times against a source you trust (5-H1, 5-H4, 5-H5); your notes (B1); Downloads storage and offline play (11-D1, 11-D2, D4, D6); Hifz on a phone, offline, and your legacy data (14-H1, 14-H6, 14-H7); Phase 15 on a phone, offline, and your legacy goals and reminders (15-G1, 15-G2, 15-G5, 15-G6); Daily Fiqh offline (F1, F2); your reading of the wording and the data decisions (V1, V2); and the **screen-reader pass (V7, P6, R6)**. |
-| **First week** | **56** | Things to notice while really using the installed app for a week: the rest of the player (repeat, next surah, lock screen, slow network, queues, Follow audio, offline per-ayah), the rest of the compass, Hijri adjustment and offline prayer times, notification details, Downloads variants, search, Library select mode, a long surah, stories offline, a real week of Hifz and of goals, the Hifz and Goals extras. |
-| **Whenever** | **31** | Polish and low-risk: rotation, share and save toasts, dark-mode looks at 375 px, Tasbeeh, Asma, Sajda, the Firefox repeats, desktop-only checks, the wording I am less sure of. |
+| **Before cutover** | **48** | Anything whose failure is **data loss, a dead end, a wrong prayer time or Hijri date, or breaks how an installed app updates**: install, update and offline (S1 to S3, where S2 now means "a new deploy reaches an installed app"); location (P1, P2, 5-G1, 5-G2); notifications (N1 to N4); the core of the player on a phone (A1 to A4, A6 to A8, A11, A14, A17 to A19; A1 to A3 reported tested by the owner on Safari); the compass (C1 to C4); the Hijri date and the Sunni and Ja'fari times against a trusted source (5-H1, 5-H4, 5-H5); your notes (B1); Downloads storage and offline play; Hifz on a phone and offline; Phase 15 on a phone and offline; Daily Fiqh offline (F1, F2); your reading of the wording and the data decisions (V1, V2); the **screen-reader pass (V7, P6, R6)**; and **16-RB, the Instant Rollback check**. |
+| **First week** | **56** | Things to notice while really using the installed app for a week. |
+| **Whenever** | **31** | Polish and low-risk. |
 
-Three rules for the sorting: a check on something **already proven by an automated run and low-risk if wrong** is never "before"; a check on something **users rely on that no automated run can show** (real audio, GPS, notifications, the installed app, a trusted source for a date or a time) is "before"; a check that needs **days of use** is "first week" by nature. You can move any row; the list is a table so it is one edit.
+The three rules for sorting are unchanged (proven by an automated run and low-risk: never "before"; users rely on it and no automated run can show it: "before"; needs days of use: "first week"). You can move any row.
 
 ### 3.2 Not rows, but open (each becomes work in this phase)
 
@@ -84,122 +85,82 @@ Three rules for the sorting: a check on something **already proven by an automat
    - `perpage.spec.ts:345` and `:376` (Phase 10, one run): the first got the offline wording instead of the failed-request wording; the second ("Next quietly has the next page's surah ready") also failed. They passed 3 of 3 on re-run and in the Phase 11 verify. No cause was found.
    - `knowledgeModules.spec.ts:239` (Phase 13, one run): `k-name` not visible within 5 s after clicking a Connected link. It passed 10 of 10 alone, the spec was not changed, and no cause was found.
    Plan for both: run each 50 times under a controlled CPU load (a stress process pinned at 70 to 90%) and 50 times idle, on the current head and on the commit where it first failed; read the failures' traces; fix the test (a retrying assertion, a wait for the real condition) or the code if the traces show a race in the page; or record them as load-only with the numbers. No retries are turned on.
-4. **The checklist in `PLAN.md`** (collected through the phases): remove `/foundation`; compare the Ja'fari times (Leva, Tehran) with an independent source; replace the WMM coefficients before 2030 (not a cutover blocker: they are valid to 2030); the Open-Meteo non-commercial note (revisit only if the app gains ads or subscriptions); normalise the persons relationship data and fix the `nuhflood` story status (each a **content decision of yours**, then one reviewed commit to `legacy/app/data`, the one allowed edit there); `/poets` (section 2).
-5. **`DEPLOY.md`, "Before the day":** refresh `legacy/dist/sw.js` from what production serves today and re-run `e2e/cutover.spec.ts`; `robots.txt` (the legacy serves allow-all; the build has none, so `/robots.txt` returns the shell) and the two legacy favicons; the SEO pass (a unique title and description per page, a default share image, `noindex` on personal pages, a sitemap file); a PWA audit and a performance pass (Lighthouse on Home, the reader and the listing, mobile profile; the budgets are agreed in 3.3).
+4. **The checklist in `PLAN.md`** (collected through the phases), as it stands for this setup: `/foundation` removed and `/poets` stubs (stage 1); compare the Ja'fari times (Leva, Tehran) with an independent source (row 5-H4); replace the WMM coefficients before 2030 (not a cutover blocker); the Open-Meteo non-commercial note (revisit only if the app gains ads or subscriptions); the persons relationship data and the `nuhflood` story status (content decisions of yours, V2). The items about domains and the legacy service worker no longer apply.
+5. **`DEPLOY.md` rewritten for this setup:** no domain move, no legacy rollback; Instant Rollback and the release rule (section 4); `robots.txt` (the build has none, so `/robots.txt` returns the app shell) and favicons; the SEO pass (a unique title and description per page, a default share image, `noindex` on personal pages, a sitemap file); a PWA audit and a performance pass (Lighthouse on Home, the reader and the listing, mobile profile; budgets in 3.3).
 
 ### 3.3 Performance and PWA: what I will measure and what counts as passing
 
-Using `scripts/measure/startup.mjs` and Lighthouse (mobile, throttled): the Home start set (814 KB of script at Phase 14), first contentful paint and load on the five routes measured in Phase 14, and the precache size. **Proposed gate: no route more than 10% slower than the legacy app on the same machine and settings, and Lighthouse PWA, accessibility and best-practices each at least 90.** The legacy app is built from commit 7120b6c on port 3016 for the comparison. Say if you want different numbers.
+Using `scripts/measure/startup.mjs` and Lighthouse (mobile, throttled): the Home start set (814 KB of script at Phase 14), first contentful paint and load on the five routes measured in Phase 14, and the precache size. **Proposed gate:** no route more than 10% slower than the Phase 14 numbers recorded in `phase-14-followups.md` (the legacy comparison is no longer needed: nothing switches between the two apps), and Lighthouse PWA, accessibility and best-practices each at least 90. Say if you want different numbers.
 
-## 4. Rollback
+## 4. Rollback, inside the new project
 
-### 4.1 All 30 legacy keys, covered before cutover
+### 4.1 Vercel Instant Rollback, and the one check that it reaches an installed phone
 
-**Decided:** every one of the 30 legacy localStorage keys gets a test that runs the legacy reader against revamp-written data, before the domain moves. Today 9 are covered (by running 7 vendored composables: `audio-prefs`, `audio-resume`, `tasbeeh`, `downloads`, `hifz:v1`, `hifz:v2`, `hifz-session`, `reading-goals`, `reminders`). The other 21:
+**The mechanism.** Instant Rollback re-points the project's production address at a **previous production deployment of the same project**: no rebuild, seconds. Users are already on the new address, so a rollback is the new app's previous version, not a different app. **What a user keeps is the same origin's storage** (localStorage, IndexedDB `quran-revamp-db`, Cache Storage), so no data question arises. The rule that keeps it safe is the one already followed: a release does not change a stored format in a way the previous release cannot read (additive keys and additive fields only, versioned migrations; `quran-revamp-db` only moves forward by one version at a time, and **a release that bumps its version must be rolled back with care: the older code would fail to open a newer database**; I will list this in `DEPLOY.md` and check that no release between now and cutover bumps it).
 
-| Key | Who reads it in the legacy | How it is run |
-| --- | --- | --- |
-| `quran:bookmarks:v1`, `quran:bookmarks:added-at:v1` | `useBookmarks.js` | vendor the composable, loader as for Hifz |
-| `quran:library:v1` | `useLibrary.ts` | vendor, loader |
-| `quran:reading-progress:v1` | `useReadingProgress.ts` | vendor, loader (the goals loader already stubs it) |
-| `quran:ramadan:v1` | `useRamadan.ts` | vendor, loader |
-| `quran:persons-study:v1` | `usePersonStudy.ts`, `utils/personStudy.ts` | vendor (the util is vendored already), loader |
-| `quran:search-history:v1` | `useSearchHistory.ts` | vendor, loader (the legacy parser breaks on anything but a list of strings: a test pins that) |
-| `quran:fiqh-prefs:v1` | `useFiqhPrefs.ts` | vendor, loader |
-| `quran:accessibility:v1` | `useAccessibilityPrefs.ts` | vendor, loader |
-| `quran:additional-modules-enabled:v1` | `usePoetModules.ts` | vendor, loader |
-| `reciter` | `useReciter.ts` | vendor, loader |
-| `tafsirDefaultAuthor`, `translationDefaultLang` | `useTafsirPreference.ts`, `useTranslationPreference.ts` | vendor, loader |
-| `ayah-of-day` | `useAyahOfTheDay.ts` | vendor, loader (the revamp adds `localDate`; the legacy compares the UTC `date`: a test pins both) |
-| `prayerFiqh`, `prayerSettings`, `last_location`, `prayer_<lat>_<lon>_<fiqh>_<DD-MM-YYYY>` | the legacy prayer store (`stores/prayer.js`) and the Qibla page | the store is plain JS: vendor and run it with a stubbed `$storage` and `$api`; `last_location` is written by the revamp in the same shape; the `prayer_*` day keys are **never written** by the revamp, and the test asserts they are byte-identical after a full revamp session |
-| `calendar_v2_<lat>_<lon>_<fiqh>_<m>_<y>` | inline in `calender.vue` | the revamp never reads or writes it; the test asserts untouched, and runs the page's own cache-key and read expression from its vendored script block |
-| `themeMode`, `preferredVerseDisplay` | the Vuetify plugin (`plugins/vuetify.js`) and the reader page | extract and run the plugin's and the page's read code (the `<script>` block) with stubs; where a page cannot run in isolation, the test runs the exact read expression and says "expression-level" in its report |
+**What can go wrong on a phone.** An installed app runs from the service worker's precache. After a rollback the server serves the previous version's `/sw.js` (different bytes), and the browser must notice, install it, and the app must switch. Two worker facts decide how fast:
 
-**Plan (a test per key, then a real rehearsal):**
+- **The check.** The code makes **no explicit update call** (no `registration.update()` on load or on visibility; the build uses the default `registerType: "prompt"`). Browsers check `/sw.js` themselves on navigation, but the standard limits that check to once in 24 hours unless something calls `update()`; Chrome and Safari differ in practice. **I cannot confirm "our SW checks on every load" from the code**, so the check below measures it. If it is not true, the fix is small and I would build it in stage 4: call `registration.update()` on load and when the page becomes visible.
+- **The switch.** With `registerType: "prompt"` a new worker waits until the user taps "A new version of Quran App is available. Reload". After a rollback the toast is the same toast. So "reaches an installed phone within a visit or two" means: the worker is found, the toast appears, and one tap puts the phone on the rolled-back version. If you would rather a rollback applied by itself, say so (`skipWaiting` on install, a reload on activation): it also means every normal update applies unasked mid-reading, so I recommend keeping the prompt.
 
-1. **A data fixture from the revamp itself.** A browser test (`e2e/rollbackData.spec.ts`) uses the revamp for a representative session (a bookmark, a note, a collection, progress, a goal, a reminder with a repeat, Hifz, Tasbeeh, fasting, a saved place, every Settings choice, a download manifest, a search) and writes all of `localStorage` to a fixture. IndexedDB is not in it: `quran-app-db` is never opened by the revamp (a test scans for that).
-2. **Vendor the readers** in the table through `scripts/sync-legacy.mjs` (about 15 files), each with a `scripts/lib/legacy-*.mjs` loader in the same style.
-3. **`tests/rollbackKeys.test.ts`: one test per key (30).** Feed the fixture to the legacy reader: it loads without throwing and returns the user-visible values the revamp showed. Then let the legacy code **write** (add a bookmark, toggle a goal, edit a reminder) and assert that the revamp-only fields (`repeat`, `quran:hifz-words:v1`, pins, the new keys) survive and the revamp reads the result. The report lists, per key, which legacy code ran; **no key is allowed to say "by reading code"**.
-4. **A real-browser rehearsal on one origin** (4.3 uses the same rig): legacy (7120b6c) and revamp builds served alternately on one origin with a persistent profile: legacy → revamp → legacy → revamp; at each step bookmarks, goals, Hifz, reminders, Tasbeeh, saved place, settings and downloads are as left, and IndexedDB `quran-app-db` opens at version 1 in the legacy app.
+**The check (row 16-RB, before cutover, once, on the new project):** (1) install the app on your phone from the new project's address; (2) deploy a harmless visible change (the About page's last line) and confirm the phone gets the toast and the change; (3) Instant Rollback to the previous deployment; (4) on the phone, open the app once, then again if needed, and note **how many visits until the toast and until the rolled-back page**; (5) pass means **within two visits, one tap**; the number is written in `DEPLOY.md`. Android Chrome and iPhone Safari (installed and as a tab) separately. I script the steps; you run them on your phone.
 
-### 4.2 Switching Vercel back to the legacy build in one step
+### 4.2 The legacy-key tests: kept, not extended
 
-DEPLOY.md already says it: the new project is separate; the **legacy project and its last production deployment stay untouched**; rollback is to **move the production domain back to the legacy project** (Settings, Domains), minutes, no redeploy. Two sharper forms so it is one action under stress:
+The tests already written stay as they are: the vendored legacy composables that run in memory against the revamp's data (`useAudioPlayer`, `useTasbeeh`, `useDownloads`, `useHifz` and `useHifzSession`, `useReadingGoals`, `useReminders`, covering 9 of the 30 legacy keys). **The other 21 are not added**: they protected a rollback to the legacy app, which no longer exists. The inventory of the legacy keys stays in `LEGACY_INVENTORY.md` as history. The additive-keys rule (`CLAUDE.md`, hard rule 4) is unchanged because Instant Rollback still needs the previous release to read what the current one wrote.
 
-- **The command:** `vercel alias set <legacy-production-deployment-url> <your-domain>` (one line; the legacy deployment URL written down beforehand), or the two clicks in the dashboard. I will write the exact line with your real names into `docs/DEPLOY.md` and **run it for real in the rehearsal (4.3) on a throwaway alias**, because I cannot see your account.
-- **The window:** keep the legacy project and that deployment for at least four weeks (the Phase 0 decision); delete neither until you say.
+### 4.3 Not done (the setup makes them unnecessary)
 
-### 4.3 The service-worker switch back: designed, rehearsed in a preview, and a blocker
+The service-worker switch-back rehearsal (a legacy worker replacing ours; a clean-up worker), the throwaway-alias rehearsal, the legacy worker file in `legacy/dist` as a cutover fixture, the one-origin legacy-to-revamp data rehearsal, and any change to the legacy site or its project. `e2e/cutover.spec.ts` (legacy worker to ours on one origin) tests a hand-over that will not happen; I propose retiring it in stage 4 (with your OK), since a test for a scenario that cannot occur only costs verify time.
 
-**Why it matters.** Users who took the new worker keep the new app from its cache until their browser takes a different `/sw.js`. After a rollback the legacy project serves its own `/sw.js` at the same URL and scope. **This direction has never been tested** (`e2e/cutover.spec.ts` does legacy to new only). **Cutover is blocked until the rehearsal below passes.**
+## 5. Cutover: the merge to `main`
 
-**Two designs, both built and both rehearsed; I recommend A as the normal path with B staged as the emergency path.**
+**State:** `origin/main` is at 2d097f6, an **ancestor** of `chore/standalone-repo` (0 commits ahead, many behind). The pull request is a clean update with no conflicts. There is **no CI** in the repository (no `.github`), so a pull request runs no checks: the gate is the recorded full `npm run verify` **on the phase branch** (the acceptance), quoted in the PR with its date, Node version and counts, and the merged-head verify as extra.
 
-- **A. The legacy worker replaces ours (nothing extra to ship).** The rollback is only the domain move. A browser checks `/sw.js` on a navigation or within 24 h, gets the legacy file (different bytes), installs it, and waits. Both workers use `registerType: "prompt"` and answer `SKIP_WAITING`, so our running app shows "A new version of Quran App is available. Reload"; accepting it activates the legacy worker and reloads into the legacy app. **Weakness:** it needs the user to tap. Until then they keep the new app, so a rollback is not immediate for everyone.
-- **B. A clean-up worker, staged and not deployed.** A legacy deployment (the legacy build with one change: `/sw.js` is the clean-up file) is built ahead of time and sits as a non-production deployment, ready to alias. The clean-up worker: on install `skipWaiting()`; on activate, **delete the precache and the API cache but not the user's saved audio** (`quran-downloads-audio-cache` and `quran-audio-cache` stay), write a marker into Cache Storage, `unregister()` itself, then **reload every open window** so it fetches the legacy app fresh. **A loop breaker is part of the design:** if the marker already exists when a clean-up worker activates (the legacy app re-registers `/sw.js` on load and gets the clean-up file again), it does nothing except unregister itself, so there is no reload loop. A later deployment (a day or two on) restores the real legacy `sw.js`, which installs normally because no worker is left. **Weakness:** two deployments and a window with no precache (online-only legacy app) in between.
+**Merge method:** a merge commit (keeps each phase's history).
 
-**The rehearsal (a preview, mirroring the real mechanism).**
+**What Vercel does on merge** (new project, Production Branch `main`): a production deployment of `main` (`npm ci`, `npm run build`, Node 22), published at the project's **production address, the one users use**. **Merging is the cutover.** There is no domain step and nothing to do on the legacy project. Before the merge, every push to `chore/standalone-repo` already gets a **preview** deployment from the same project: **the preview is where every smoke test runs first.**
 
-1. **A rehearsal origin:** a Vercel alias on a preview (`rehearsal-<something>.vercel.app`) that I point first at a **revamp preview**, then at a **legacy preview** with `vercel alias set`, exactly as the real rollback would. A browser profile has the new worker and data on that origin.
-2. **Automated (Playwright with the real service worker, against the alias):** (A) after the repoint, `registration.update()` finds a waiting legacy worker, the revamp shows the update toast, accepting it lands on the legacy app, **data intact** (the 30-key fixture), the app opens **offline** afterwards; (B) the same with the clean-up deployment: the clean-up worker clears the right caches, **keeps the saved audio**, reloads the page by itself, loads the legacy app, does not loop (count reloads), and after the real legacy `sw.js` is restored the legacy worker installs and the app works offline. Also with **no window open** during the switch (the next visit must still end on the legacy app) and with **two windows** open.
-3. **By hand, on your phone (a numbered script from me):** repeat (A) and (B) on **Android Chrome and iPhone Safari**, installed to the Home Screen and as a tab, because service-worker update timing differs on Safari.
-4. **Pass means:** every scenario ends on the legacy app, data intact, saved audio intact, offline working, no reload loop. A failure is fixed and the whole rehearsal rerun. The result is a dated report in `docs/`.
-5. **The same rig** runs the one-origin data rehearsal of 4.1 step 4 and the exact `vercel alias set` rollback line.
+**Order of the day:** full verify on the phase branch (accepted) → preview smoke test → check 16-RB can be done on a preview-then-production pair → merge → production smoke test → tell users the address.
 
-## 5. The merge to `main`
-
-**State:** `origin/main` is at 2d097f6 (the standalone layout), an **ancestor** of `chore/standalone-repo` (57 commits ahead, 0 behind). The pull request is a clean, conflict-free update. There is **no CI** in the repository (no `.github`), so a pull request runs no checks: the gate is the recorded `npm run verify` on the head being merged, which the PR description quotes with its date, Node version and counts.
-
-**Merge method:** a **merge commit** (keeps each phase's history, like every phase merge so far); not a squash.
-
-**What Vercel does on merge** (assuming the new project exists, as DEPLOY.md section 1 describes, with Production Branch `main`):
-
-1. A push to `chore/standalone-repo` (already done for every phase) gives a **preview deployment** if the project exists; that is where the first smoke test runs, before the merge.
-2. Merging to `main` starts a **production deployment** of the new project: `npm ci`, `npm run build` on Node 22, published at the project's own address (`<project>.vercel.app`). **It does not touch your real domain while the domain is still on the legacy project.** Users see no change.
-3. Only moving the **domain** changes what users get: the last, reversible step.
-
-So the order of the day is: preview smoke test → merge → production smoke test on the project address → move the domain → smoke test on the real domain → watch.
-
-**If the Vercel project does not exist yet, or already has the domain, I need to know (section 6): the order above changes.**
-
-### The smoke test (written in this phase as `scripts/smoke-prod.mjs`, run three times: preview, project address, real domain)
+### The smoke test (written in this phase as `scripts/smoke-prod.mjs`, run on the preview and again on production)
 
 Against a base URL, in a real browser, no secrets:
 
-1. `/sw.js` answers 200, JavaScript, **not** immutable; `/manifest.webmanifest` 200 with the legacy identity; `/` title and description; `/about` head tags; `/api/surahs` is JSON, not HTML; `/robots.txt` is the real file.
+1. `/sw.js` answers 200, JavaScript, **not** immutable; `/manifest.webmanifest` 200; `/` title and description; `/about` head tags; `/api/surahs` is JSON, not HTML; `/robots.txt` is the real file.
 2. A deep link (`/settings`, `/surah/18`, `/persons/…`) renders the app, not a 404; an unknown address shows "Page not found" with `noindex`; `/juz/7` lands in the reader; `/poets` shows the stub.
-3. The service worker registers and controls the page; after one visit, **offline reload of `/` works**; the install prompt criteria hold (the manifest and icons load).
+3. The service worker registers and controls the page; after one visit, **offline reload of `/` works**; the manifest and icons load.
 4. The reader loads a real surah from the real service; the Play button asks for the real audio file (the request is made and answers 200 or 206; not played); Prayer times for a saved place load (one real request) and "Last updated" shows.
-5. Seeded data survives: with a profile whose `localStorage` holds a legacy bookmark, goal, Hifz record and reminder (seeded in the test), the app shows them.
-6. **Only on the real domain, with your own browser or phone** (the one that has the legacy app installed): the "new version available" toast appears, Reload works, and your bookmarks, goals, Hifz progress, settings and downloads are all there; you then open Settings and the Calendar once. I script the checklist; you run it.
-7. Each run writes a dated report (URL, commit, Vercel deployment id, results) to `docs/`.
+5. A **first run on a clean profile** shows the empty states (Home, Library, Goals, Hifz), with no error.
+6. Each run writes a dated report (URL, commit, Vercel deployment id, results) to `docs/`.
 
 ## 6. Decisions and facts I need
 
-Decided already (2026-10-29): all 30 keys before cutover; the service-worker rehearsal as a blocker; the sorting (you can still move rows); `/poets` stubs; the branch-verify rule.
+Decided: the setup above (new project's own address, no domain move, fresh start, Instant Rollback, no legacy-site changes); `/poets` stubs; the sorting (re-sorted); the branch-verify rule.
 
-1. **Vercel facts** (I cannot see them): does the new project exist and has it built the current branch; the production domain; the name of the legacy project and its last production deployment URL; the values of `QURAN_API_BASE` and `QURAN_API_BASE2` there (or "unset"); whether the Vercel CLI is logged in on this machine (the rehearsal needs `vercel alias set`), and whether I may create a throwaway alias on your team.
-2. **Which service-worker design to ship as the normal path** (4.3): my recommendation is A with B staged; the rehearsal may change it.
-3. **Content decisions that edit `legacy/app/data`:** the persons relationship convention and the `nuhflood` status: decide now (they are in the "before" list as V2) or defer.
-4. **`@axe-core/playwright` as a dev dependency**, and the performance and Lighthouse gate in 3.3.
-5. **A canary period:** leave the domain on the legacy app for N days while you use the new project's own address daily, then move it; or move it as soon as the gates pass.
-6. **Your time:** the 49 before-cutover checks, the screen-reader pass and the phone rehearsal need a few hours of yours; I will give a numbered script for each so it can be done in sittings.
+1. **Vercel facts:** does the new project exist and has it built `chore/standalone-repo`; its address; its production branch setting; the values of `QURAN_API_BASE` and `QURAN_API_BASE2` (or "unset": the code defaults are the same upstreams); whether Instant Rollback is available on your plan (it needs a previous production deployment, so it only exists after the second production deploy).
+2. **A release rule for rollback:** no release bumps the `quran-revamp-db` version or changes a stored format incompatibly without telling you first (proposed; the Phase 16 work does not).
+3. **If the 16-RB check shows slow pick-up:** whether to add the `registration.update()` on load and on visibility (my recommendation), and whether a rollback should apply by itself or keep the prompt (4.1; I recommend the prompt).
+4. **Retire `e2e/cutover.spec.ts`** (legacy worker to ours on one origin) in stage 4?
+5. **`@axe-core/playwright` as a dev dependency**, and the performance and Lighthouse gate in 3.3 (without the legacy comparison now: see 3.3).
+6. **Content decisions that edit `legacy/app/data`:** the persons relationship convention and the `nuhflood` status: V2 in the "before" list. Decide now or defer.
+7. **Your time:** the 48 before-cutover checks (including the screen-reader pass and 16-RB) need a few hours of yours; I give a numbered script for each.
 
 ## 7. Stages (stops for you)
 
-1. The route test, the Poets stubs, `/foundation` removed, the real "Page not found" (small; first commit).
+1. **Stage 1 (built, waiting for your review):** the route test and the Poets stubs (`/poets`, every `/poets/[slug]`), `/foundation` removed, a real "Page not found" in place of "This page is not rebuilt yet", and a short fresh-start note on About. See `phase-16-cutover.md` (stage 1 record) for what changed. **Stop.**
 2. The investigations (3.2 items 1 to 3): the axe sweep and keyboard walk, `play.mjs`, the two flake runs. A short report with numbers. **Stop.**
-3. The rollback work: the 30-key tests (4.1) and the service-worker rehearsal (4.3), with the clean-up worker. A report with the rehearsal results. **Stop. Cutover does not proceed unless the rehearsal passed.**
-4. SEO, `robots.txt`, favicons, the performance and PWA gate (3.3), `legacy/dist/sw.js` refreshed from production, `DEPLOY.md` filled with your real names, `smoke-prod.mjs`.
-5. **A full `npm run verify` on the phase branch itself, clean, recorded in the phase doc: this is what the acceptance rests on.** Then the preview smoke test and the PR to `main`. **Stop for your acceptance.**
-6. After acceptance: merge, the **merged-head verify (extra, not instead)**, push; production smoke test on the project address; the 49 before-cutover checks; then, on your word, the domain move and the smoke test on the real domain.
+3. SEO, `robots.txt`, favicons, the performance and PWA gate (3.3), `DEPLOY.md` rewritten for this setup (no domain move; Instant Rollback; the release rule), possibly the update-check fix (4.1), `smoke-prod.mjs`, `cutover.spec.ts` retired if you agree. **Stop.**
+4. **A full `npm run verify` on the phase branch, clean, recorded in the phase doc: this is what the acceptance rests on.** Preview smoke test. **Stop for your acceptance.**
+5. After acceptance: merge to `main` (the cutover), the **merged-head verify (extra)**, production smoke test, check 16-RB, the 48 before-cutover checks. Then tell users the address.
 
-Nothing in 1 to 5 changes what users get; only step 6's domain move does.
+Nothing in 1 to 4 changes what users get; step 5's merge does.
 
 ## 8. Risks
 
-- **The worker switch both ways is the largest unproven thing.** The forward direction is rehearsed in `cutover.spec.ts`; the back direction is not. It is the reason for the rehearsal and the kill switch.
+- **Instant Rollback and the service worker:** an installed phone may not notice a rollback quickly, because nothing calls `registration.update()` and the toast needs a tap. That is what 16-RB measures, and 4.1 has the small fix.
+- **A newer IndexedDB version cannot be opened by older code.** A rollback after a release that bumped `quran-revamp-db` would break the old version on any phone that already upgraded. The release rule in section 6 covers it.
+- **Fresh start means every user starts empty:** no bookmarks, goals or Hifz carry over. About says so; nothing is lost from the legacy app, which keeps its own address and its own data.
 - **Real devices:** iPhone Safari and Android Chrome behave differently from the desktop browser for sheets, the keyboard, the audio element and the installed app; the blocking device rows exist for this.
-- **Vendoring about 15 more legacy files** enlarges the snapshot (`legacy/`); each is added only with a test that runs it, and the legacy snapshot test already enforces "no file nothing uses".
-- **The domain's service worker is shared by two apps for weeks.** Any change to the worker's file name, scope, cache names or the manifest identity breaks the hand-over (DEPLOY.md lists them: do not change them).
-- **A bug found late costs more.** The first stage is small and safe on purpose; the investigations come before the rollback work so any fix lands early.
+- **Two sets of old links:** a legacy path on the new address works (section 2); an old bookmark on the legacy address keeps working there, untouched.
+- **A bug found late costs more.** Stage 1 is small and safe on purpose; the investigations come before the final verify so any fix lands early.

@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import { legacyBridge, LEGACY_APP, LEGACY_ROOT } from "./build/legacyBridge";
+import { shipsTestPages, TEST_ONLY_ROUTES } from "./build/testPages";
 import { NO_FLASH_SCRIPT } from "./app/lib/noFlashScript";
 import { injectPublicMeta } from "./app/lib/publicMeta";
 
@@ -11,6 +12,13 @@ export default defineNuxtConfig({
   // SPA by default (one precached shell makes every route work offline). Only a few public pages are prerendered.
   ssr: false,
   devtools: { enabled: false },
+  // Test-only pages (/foundation) are dropped from the build Vercel makes (build/testPages.ts); a local build keeps them for the browser tests.
+  hooks: {
+    "pages:extend"(pages) {
+      if (shipsTestPages(process.env)) return;
+      for (let i = pages.length - 1; i >= 0; i--) if (TEST_ONLY_ROUTES.includes(pages[i]!.path)) pages.splice(i, 1);
+    },
+  },
   // The legacy app uses 3000. (`npm run dev -- --port N` still overrides it.)
   devServer: { port: 3001 },
 

@@ -1,15 +1,20 @@
-﻿# Phase 16: the 136 manual checks, sorted
+# Phase 16: the 135 manual checks, sorted
 
-From docs/DEVICE_CHECKS.md. Sorted 2026-10-29 for the owner to move rows between groups. See phase-16-cutover-plan.md, section 3.1, for the rule used.
+From docs/DEVICE_CHECKS.md, re-sorted 2026-10-29 for the owner's setup (users use the new project's own address; no legacy data carries over; rollback is Instant Rollback). The rule is in phase-16-cutover-plan.md, section 3.1. Move any row between the groups.
 
-Total rows: 136 (133 table rows plus F1 to F3; K1 is waived). Before cutover: 49. First week: 56. Whenever: 31.
+Total rows: 135 (133 table rows plus F1 to F3, minus the two about legacy data, plus the new rollback check; K1 is waived). Before cutover: 48. First week: 56. Whenever: 31.
+
+### Dropped (no legacy data carries over)
+
+- 14-H7: Your legacy Hifz data (if you used the legacy app): open Hifz on the revamp
+- 15-G6: Your legacy goals and reminders (if you used the legacy app): open Goals and the Calendar on the rev
 
 ### Before cutover
 
 | # | Check | Why before |
 | --- | --- | --- |
 | S1 | Chrome Android: open the preview, menu, "Install app". iPhone Safari: Share, "Add to Home Screen"... | install is how most users will run it |
-| S2 | After a new deploy, open the installed app (or reload the browser tab) | the update hand-over: the one thing the domain move depends on |
+| S2 | After a new deploy, open the installed app (or reload the browser tab) | a new deploy reaches an installed app (every later update, and any rollback, depends on it) |
 | S3 | Visit Home and the Surah listing online, then switch on airplane mode and reopen the installed app | the installed app offline |
 | P1 | Home, "Set location", allow the browser's prompt | location is the gate for prayer times and Qibla |
 | P2 | Same, but deny the prompt | the denied path must not dead-end |
@@ -24,7 +29,7 @@ Total rows: 136 (133 table rows plus F1 to F3; K1 is waived). Before cutover: 49
 | A3 | iPhone Safari: play surah 18 with two reciters | owner reports tested |
 | A4 | Chrome on Android: repeat A1 to A3 | Android Chrome has not been done |
 | A6 | While a large file plays, open the sheet (tap the title) and drag the position slider to the middle | seeking in a large file |
-| A7 | Pause and Play; change speed to 1.5Ã—; Back 10 s and Forward 10 s | basic controls |
+| A7 | Pause and Play; change speed to 1.5×; Back 10 s and Forward 10 s | basic controls |
 | A8 | Switch reciter in the sheet | reciter switch |
 | A11 | Play something to 12:34, force-close the browser, reopen the app | resume after the browser is closed |
 | A14 | Airplane mode, then press Play on a surah you have not played | the offline error must be plain |
@@ -49,14 +54,13 @@ Total rows: 136 (133 table rows plus F1 to F3; K1 is waived). Before cutover: 49
 | F2 | a phone that never opened Daily Fiqh | a new tab offline must not be blank |
 | 14-H1 | A phone, in your hand. Add a surah, press Start, recite an ayah aloud, tap a word, Reveal all, ma... | Hifz on a phone |
 | 14-H6 | An installed app, offline: open Hifz and a session with the connection off, for a surah you have ... | Hifz offline |
-| 14-H7 | Your legacy Hifz data (if you used the legacy app): open Hifz on the revamp | your own legacy Hifz data |
 | 15-G1 | A phone, in your hand. Open Reading goals, start a goal of each kind, log reading from a mushaf, ... | Goals and Calendar on a phone |
 | 15-G2 | The Hijri date against a calendar you trust, for today and for the first and last day of this mon... | the Hijri date and the adjustment at a month edge |
 | 15-G5 | An installed app, offline: open Goals, About, the Sitemap and Surah videos with the connection of... | Goals, About and the Calendar offline |
-| 15-G6 | Your legacy goals and reminders (if you used the legacy app): open Goals and the Calendar on the ... | your own legacy goals and reminders |
 | V1 | Wording of ours across all pages (labels, notices, error messages), including the resume line and... | the wording of ours is yours to read before users do |
 | V2 | The three relationship entries (Isa, Maryam) and the status chips on People; `nuhflood` in the "a... | content decisions that edit the data at cutover |
 | V7 | Screen-reader passes (VoiceOver and TalkBack) on Home, Settings, the listing, the reader, the pla... | no screen-reader pass has ever been done |
+| 16-RB | Instant Rollback: deploy a harmless change to the new project, roll back with Instant Rollback, t... | the rollback plan itself: an Instant Rollback must reach an installed phone within a visit or two |
 
 ### First week (use the installed app for a week; note anything odd)
 
@@ -87,7 +91,7 @@ Total rows: 136 (133 table rows plus F1 to F3; K1 is waived). Before cutover: 49
 | C5 | Turn until facing the Qibla |
 | C6 | The accuracy note on iPhone |
 | C7 | Deny the compass permission |
-| 5-H2 | Settings, Hijri adjustment +1 then âˆ’1 |
+| 5-H2 | Settings, Hijri adjustment +1 then −1 |
 | 5-H3 | At a Hijri month edge (adjust to cross it) |
 | 5-H6 | Prayer page offline after one online visit |
 | B2 | Select mode: select several rows, remove them, then Undo |
@@ -138,9 +142,9 @@ Total rows: 136 (133 table rows plus F1 to F3; K1 is waived). Before cutover: 49
 | E5 | The story reader and People at 375, dark |
 | M2 | Ramadan, Timetable at 375 in dark |
 | M3 | Events: tap a bell, then Undo; open "Your reminders" |
-| M5 | Hijri adjustment +1 and âˆ’1 |
+| M5 | Hijri adjustment +1 and −1 |
 | W1 | Per page, `?page=1` and a page with two surahs, at 375 in dark |
-| W2 | Aâˆ’ / A+ up to the largest size |
+| W2 | A− / A+ up to the largest size |
 | W4 | Pin page and Save, then the Library |
 | W5 | Per page: the sajda sign (for example page 416, 32:15) |
 | T2 | Reach the goal (33) |
@@ -154,4 +158,3 @@ Total rows: 136 (133 table rows plus F1 to F3; K1 is waived). Before cutover: 49
 | D16 | Firefox (only if you use it): D2 and D4 |
 | V4 | The 99 names (apostrophes, repeated meanings), the list of 15 sajda verses, the five dhikr |
 | V5 | The "not a line-for-line copy" sentence on Per page |
-

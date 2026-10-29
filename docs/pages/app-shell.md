@@ -38,7 +38,7 @@ The frame around every page: grouped navigation, a header with the theme menu, t
 
 - Loading: the shell is static; the theme is applied before first paint.
 - Empty / first run: light theme, Literary modules hidden.
-- Error: unknown routes show "This page is not rebuilt yet" (`pages/[...slug].vue`).
+- Error: an address that is not a page shows "Page not found" (`pages/[...slug].vue`, Phase 16).
 - Offline: works from the precached shell.
 - Fiqh variants: none in the shell.
 - Dark mode and high contrast: both implemented; high contrast uses the `data-high-contrast` flag.
@@ -53,7 +53,7 @@ Skip link; landmark `nav` named "Main"; visible 2px focus ring; touch targets 44
 
 ## Cross-links
 
-Links to every legacy route. Unbuilt ones land on the "not rebuilt yet" page.
+Links to every legacy route. Every one has a page, a redirect or a stub (Phase 16).
 
 ## Known differences from the prototype
 

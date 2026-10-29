@@ -214,9 +214,9 @@ test.describe("mobile shell (375px)", () => {
 });
 
 test.describe("shell basics", () => {
-  test("an unbuilt legacy route shows a clear message, not a blank page", async ({ page }) => {
-    await page.goto("/poets"); // Poets is deferred (Phase 16 decides); /goals was the example until Phase 15, /hifz until Phase 14
-    await expect(page.getByRole("heading", { name: "This page is not rebuilt yet" })).toBeVisible();
+  test("an address that is not a page shows a clear message, not a blank page", async ({ page }) => {
+    await page.goto("/no-such-page"); // every legacy route has a page now (Phase 16); an unknown address says so
+    await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
   });
 
   test("no console errors or hydration warnings on the public pages", async ({ page, context }) => {
