@@ -2,7 +2,7 @@
 
 - Branch: `phase-16-cutover` (from the merged `chore/standalone-repo`)
 - Date: 2026-10-29
-- Status: **Plan, revised 2026-10-29 for the owner's deployment setup; stage 1 is built and waits for review.** Setup (owner, 2026-10-29): users use the **new Vercel project's own address**; the legacy app stays at its own address and **is not changed**; **no domain move**; **legacy data does not carry over** (a fresh start, no export or import). Earlier decisions that still hold: `/poets` as stubs; the 136 checks sorted (now re-sorted); a phase is accepted only after a **full verify on its own branch** (the merged-head verify is extra). Dropped by this setup: the service-worker switch-back rehearsal, the 21 extra legacy-key tests, the domain move, and everything about a hand-over from the legacy worker.
+- Status: **Plan, revised 2026-10-29 for the owner's deployment setup; stage 1 is built and waits for review.** Setup (owner, 2026-10-29): users use the **new Vercel project's own address**; the legacy app stays at its own address and **is not changed**; **no domain move**; **legacy data does not carry over** (a fresh start, no export or import). Earlier decisions that still hold: `/poets` deferred with no stub; the 136 checks sorted (now re-sorted); a phase is accepted only after a **full verify on its own branch** (the merged-head verify is extra). Dropped by this setup: the service-worker switch-back rehearsal, the 21 extra legacy-key tests, the domain move, and everything about a hand-over from the legacy worker.
 - Read for this: `docs/DEPLOY.md`, `docs/PLAN.md` (Phase 16 and the cutover checklist), `docs/LEGACY_INVENTORY.md` (the storage keys), `docs/DEVICE_CHECKS.md`, `docs/CONTENT_TO_VERIFY.md`, the phase docs' flake records (10, 13, 14, 15), and the legacy repo's `app/pages`, `server/` and Poets files (read only).
 - What I cannot see: the Vercel account (the new project, its address, the environment variables), and any real device. Where the plan needs a fact from there it says so and lists it under "Decisions and facts I need".
 
@@ -10,7 +10,7 @@
 
 - **Cutover is a merge:** `chore/standalone-repo` → `main` on the new project, whose Production Branch is `main`. The production deployment is the address users use. **Rollback is Vercel Instant Rollback on the new project.** Nothing is done to the legacy site or its project.
 - **Fresh start.** Nothing from the legacy app is carried over (a different address is a different browser origin, and the legacy app has few users). No export or import is built. **About says so briefly** (stage 1).
-- **Every legacy route still has a page in the revamp except `/poets` and `/poets/[slug]`**, which become **stub pages** (stage 1, built). The routes list stays: an old link to a legacy path on the new address must not land on "not rebuilt yet" (section 2).
+- **Every legacy route still has a page in the revamp except `/poets` and `/poets/[slug]`**, which are **deferred with no stub** (owner, 2026-10-29): they show the normal "Page not found", there is no nav row or Sitemap entry, and they are not on the cutover checklist (section 2).
 - **The checks are re-sorted for this setup** (3.1 and `phase-16-checks.md`): **135 rows: 48 before cutover, 56 in the first week, 31 whenever.** Two rows about legacy data are dropped and one is added: that an Instant Rollback reaches an installed phone within a visit or two (4.1).
 - **Rollback is within the new project:** the 9 legacy keys already tested stay tested; **the other 21 are not added** (4.2). Instant Rollback means the previous deployment of the same app, so the storage and the service worker are the same app's.
 - **Process:** the phase is accepted only after a full verify on its own branch; the merged-head verify is extra.
@@ -39,7 +39,7 @@ Legacy: 51 page files (`app/pages` at commit 7120b6c), `server/api` (four proxie
 | `/per-page-read` | `per-page-read.vue` | |
 | `/persons`, `/persons/[id]`, `/persons/timeline` | `persons/*` | |
 | `/places`, `/places/[id]` | `places/*` | |
-| **`/poets`, `/poets/[slug]`** | **none** (the catch-all says "This page is not rebuilt yet") | **gap, see below** |
+| **`/poets`, `/poets/[slug]`** | **none, deferred** (the catch-all, now "Page not found") | no stub, not on the checklist |
 | `/prayerTime`, `/qibla-direction` | `prayerTime.vue`, `qibla-direction.vue` | one component, both routes kept |
 | `/ramadan` | `ramadan/index.vue` | |
 | `/sajda` | `sajda.vue` | |
@@ -59,7 +59,7 @@ Server routes: the four proxies (`/api/chapters`, `/api/juz`, `/api/sajda`, `/ap
 
 Revamp-only pages to deal with: **`/foundation`** (a spike page: remove, on the checklist); **the catch-all** `[...slug].vue` ("This page is not rebuilt yet"): once Poets is handled, replace it with a real **"Page not found"** (search link, `noindex`); a single-page app answers 200 for an unknown address, so it carries `noindex` and says plainly that the page does not exist.
 
-**Poets: decided, stub pages at cutover.** The legacy has one module (Mir Anis): an index page and a seven-tab page over `mir-anis.json` (278 KB of Urdu verse, a biography, works, characters and themes, each fact with a verification level A to E and the banner "Seed data, not yet fully verified"), behind the Literary modules setting (`quran:additional-modules-enabled:v1`, which the revamp already stores). It is religious and literary content typed by a researcher; under the project's content rule it needs a review before it ships in a rebuilt UI. So for cutover: `/poets` and `/poets/[slug]` (every slug, `/poets/mir-anis` included) show one honest page ("Literary modules are not in this version yet. Your setting is kept."), no invented content, `noindex`; the Literary row stays behind the setting; the Sitemap lists nothing for it; `foundation.spec.ts`'s "unbuilt route" example moves to a made-up address (it uses `/poets` today). Building Poets is a later phase with a content review.
+**Poets: deferred, no stub (owner, 2026-10-29; this replaces my earlier plan for stub pages).** The legacy has one module (Mir Anis): 278 KB of Urdu verse that its own data labels "seed data, not yet fully verified", behind the Literary modules setting. Building it needs a content review, so it is a later phase. For cutover `/poets` and `/poets/[slug]` show the normal "Page not found"; the "Literary modules" nav group (its only row was Poets) is removed and the Sitemap never listed it. It is off the cutover checklist and recorded in `DECISIONS.md`.
 
 **Checks this section becomes** (automated, in this phase): a unit test that lists the 51 legacy page files' route patterns (read from the vendored legacy page list, kept in `legacy/manifest` terms) and fails if one has no page, no redirect and no stub; and a browser test that opens one concrete address per route and fails on "not rebuilt yet".
 
@@ -85,7 +85,7 @@ The three rules for sorting are unchanged (proven by an automated run and low-ri
    - `perpage.spec.ts:345` and `:376` (Phase 10, one run): the first got the offline wording instead of the failed-request wording; the second ("Next quietly has the next page's surah ready") also failed. They passed 3 of 3 on re-run and in the Phase 11 verify. No cause was found.
    - `knowledgeModules.spec.ts:239` (Phase 13, one run): `k-name` not visible within 5 s after clicking a Connected link. It passed 10 of 10 alone, the spec was not changed, and no cause was found.
    Plan for both: run each 50 times under a controlled CPU load (a stress process pinned at 70 to 90%) and 50 times idle, on the current head and on the commit where it first failed; read the failures' traces; fix the test (a retrying assertion, a wait for the real condition) or the code if the traces show a race in the page; or record them as load-only with the numbers. No retries are turned on.
-4. **The checklist in `PLAN.md`** (collected through the phases), as it stands for this setup: `/foundation` removed and `/poets` stubs (stage 1); compare the Ja'fari times (Leva, Tehran) with an independent source (row 5-H4); replace the WMM coefficients before 2030 (not a cutover blocker); the Open-Meteo non-commercial note (revisit only if the app gains ads or subscriptions); the persons relationship data and the `nuhflood` story status (content decisions of yours, V2). The items about domains and the legacy service worker no longer apply.
+4. **The checklist in `PLAN.md`** (collected through the phases), as it stands for this setup: `/foundation` left out of Vercel builds (stage 1); `/poets` deferred, no stub; compare the Ja'fari times (Leva, Tehran) with an independent source (row 5-H4); replace the WMM coefficients before 2030 (not a cutover blocker); the Open-Meteo non-commercial note (revisit only if the app gains ads or subscriptions); the persons relationship data and the `nuhflood` story status (content decisions of yours, V2). The items about domains and the legacy service worker no longer apply.
 5. **`DEPLOY.md` rewritten for this setup:** no domain move, no legacy rollback; Instant Rollback and the release rule (section 4); `robots.txt` (the build has none, so `/robots.txt` returns the app shell) and favicons; the SEO pass (a unique title and description per page, a default share image, `noindex` on personal pages, a sitemap file); a PWA audit and a performance pass (Lighthouse on Home, the reader and the listing, mobile profile; budgets in 3.3).
 
 ### 3.3 Performance and PWA: what I will measure and what counts as passing
@@ -128,7 +128,7 @@ The service-worker switch-back rehearsal (a legacy worker replacing ours; a clea
 Against a base URL, in a real browser, no secrets:
 
 1. `/sw.js` answers 200, JavaScript, **not** immutable; `/manifest.webmanifest` 200; `/` title and description; `/about` head tags; `/api/surahs` is JSON, not HTML; `/robots.txt` is the real file.
-2. A deep link (`/settings`, `/surah/18`, `/persons/…`) renders the app, not a 404; an unknown address shows "Page not found" with `noindex`; `/juz/7` lands in the reader; `/poets` shows the stub.
+2. A deep link (`/settings`, `/surah/18`, `/persons/…`) renders the app, not a 404; an unknown address shows "Page not found" with `noindex`; `/juz/7` lands in the reader; `/poets` shows "Page not found".
 3. The service worker registers and controls the page; after one visit, **offline reload of `/` works**; the manifest and icons load.
 4. The reader loads a real surah from the real service; the Play button asks for the real audio file (the request is made and answers 200 or 206; not played); Prayer times for a saved place load (one real request) and "Last updated" shows.
 5. A **first run on a clean profile** shows the empty states (Home, Library, Goals, Hifz), with no error.
@@ -136,7 +136,7 @@ Against a base URL, in a real browser, no secrets:
 
 ## 6. Decisions and facts I need
 
-Decided: the setup above (new project's own address, no domain move, fresh start, Instant Rollback, no legacy-site changes); `/poets` stubs; the sorting (re-sorted); the branch-verify rule.
+Decided: the setup above (new project's own address, no domain move, fresh start, Instant Rollback, no legacy-site changes); `/poets` deferred with no stub; the sorting (re-sorted); the branch-verify rule.
 
 1. **Vercel facts:** does the new project exist and has it built `chore/standalone-repo`; its address; its production branch setting; the values of `QURAN_API_BASE` and `QURAN_API_BASE2` (or "unset": the code defaults are the same upstreams); whether Instant Rollback is available on your plan (it needs a previous production deployment, so it only exists after the second production deploy).
 2. **A release rule for rollback:** no release bumps the `quran-revamp-db` version or changes a stored format incompatibly without telling you first (proposed; the Phase 16 work does not).
@@ -148,7 +148,7 @@ Decided: the setup above (new project's own address, no domain move, fresh start
 
 ## 7. Stages (stops for you)
 
-1. **Stage 1 (built, waiting for your review):** the route test and the Poets stubs (`/poets`, every `/poets/[slug]`), `/foundation` removed, a real "Page not found" in place of "This page is not rebuilt yet", and a short fresh-start note on About. See `phase-16-cutover.md` (stage 1 record) for what changed. **Stop.**
+1. **Stage 1 (built, waiting for your review):** the route test, Poets deferred (no stub, no nav row), `/foundation` left out of Vercel builds, a real "Page not found" in place of "This page is not rebuilt yet", and a short fresh-start note on About. See `phase-16-cutover.md` (stage 1 record) for what changed. **Stop.**
 2. The investigations (3.2 items 1 to 3): the axe sweep and keyboard walk, `play.mjs`, the two flake runs. A short report with numbers. **Stop.**
 3. SEO, `robots.txt`, favicons, the performance and PWA gate (3.3), `DEPLOY.md` rewritten for this setup (no domain move; Instant Rollback; the release rule), possibly the update-check fix (4.1), `smoke-prod.mjs`, `cutover.spec.ts` retired if you agree. **Stop.**
 4. **A full `npm run verify` on the phase branch, clean, recorded in the phase doc: this is what the acceptance rests on.** Preview smoke test. **Stop for your acceptance.**

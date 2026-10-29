@@ -10,11 +10,11 @@ Users use the new Vercel project's own address; the legacy app stays at its own 
 
 ## Stage 1: what was built
 
-- **`/poets` and `/poets/[slug]` are stubs** (`components/poets/Stub.vue`): "Literary modules are not in this version yet. Your setting is kept." `noindex`; nothing from the legacy module (`docs/pages/poets.md`).
+- **Poets is deferred with no stub** (owner, 2026-10-29, replacing the stub I first built): `/poets` and `/poets/[slug]` show the normal "Page not found"; the stub pages, their component and their page doc are deleted; the sidebar group "Literary modules" (its only row was Poets) is removed. `tests/legacyRoutes.ts` marks the two routes as deferred.
 - **"Page not found"** replaces "This page is not rebuilt yet" (`pages/[...slug].vue`, `docs/pages/not-found.md`): `noindex`, links to Home, Search and the Sitemap.
 - **`/foundation` is left out of the build Vercel makes** (`build/testPages.ts`, a `pages:extend` hook in `nuxt.config.ts`: Vercel sets `VERCEL`). A local build still has it, because about 25 browser tests and the dev smoke exercise the shell's pieces on it. I did not delete the page: that would have meant rewriting those tests onto other pages for no user-visible gain. A Vercel-style build (`VERCEL=1 npm run build`) was made and checked: the route is not registered (the only remaining mention of "Foundation check" is a title string in `lib/nav.ts`).
 - **About says it is a fresh start:** "A fresh start: nothing from the older version of this app carries over to this address, so you begin with nothing saved."
-- **Route tests:** `tests/legacyRoutes.ts` lists the 51 page files of the legacy app (commit 7120b6c, as routes); `tests/legacyRoutes.test.ts` (7) fails if one has no page, a redirect or a stub; `e2e/routes.spec.ts` (4) opens a concrete address for each of the 51 on the production build and fails if one lands on "Page not found", and checks the stubs and the not-found page.
+- **Route tests:** `tests/legacyRoutes.ts` lists the 51 page files of the legacy app (commit 7120b6c, as routes) and marks Poets as deferred; `tests/legacyRoutes.test.ts` (7) fails if a non-deferred one has no page or redirect, and checks that Poets has none; `e2e/routes.spec.ts` (4) opens a concrete address for each of the other 49 on the production build and fails if one lands on "Page not found", and checks that `/poets`, `/poets/mir-anis` and any slug do show it.
 - Tests that used the old wording or `/goals` as an "unbuilt" example now use an unknown address (`foundation.spec.ts`, `offline.spec.ts`).
 
 ## What was checked (stage 1 only, not the full verify)
@@ -28,4 +28,5 @@ The investigations (axe sweep, keyboard walk, Play-to-audio start time, the two 
 ## Open questions for the review
 
 1. The `/foundation` approach: kept in local builds, left out of Vercel builds. Say if you would rather delete it and have me move its tests.
-2. The wording of the stub, the not-found page and the About line (listed in `CONTENT_TO_VERIFY.md`).
+2. **The Settings switch "Show literary modules in the sidebar" now does nothing** (Poets is deferred and its nav group is gone). I left the switch, its description (which names Mir Anis) and the stored key `quran:additional-modules-enabled:v1` untouched because removing the Settings section changes several settings tests and is your call. Say if you want the switch removed (the key would stay unread and unwritten).
+3. The wording of the not-found page and the About line (listed in `CONTENT_TO_VERIFY.md`).

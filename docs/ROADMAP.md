@@ -24,7 +24,7 @@ Two prototypes are agreed: `design/prototype-remaining-pages.html` and `design/p
 | Page | Routes | Notes |
 | --- | --- | --- |
 | About, Sitemap, Surah videos | `/about`, `/sitemap`, `/surah-vedios` | Keep routes unchanged. Apply the design system; no prototype yet |
-| Poets | `/poets`, `/poets/[slug]` | Behind the "Literary modules" setting. Deferred |
+| Poets | `/poets`, `/poets/[slug]` | Deferred with no stub (2026-10-29): shows "Page not found"; no nav row. A later phase with a content review |
 
 Decided: `/juz/[id]` redirects to the reader at the juz's first ayah (`DECISIONS.md`).
 

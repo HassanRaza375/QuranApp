@@ -366,7 +366,6 @@ Built 2026-10-28 and approved at the screenshot checkpoint. All the wording is o
 ## Phase 16 (cutover): wording of ours
 
 - [ ] **About:** "A fresh start: nothing from the older version of this app carries over to this address, so you begin with nothing saved."
-- [ ] **Literary modules stub (`/poets`):** "Literary modules", "Literary modules are not in this version yet. Your setting is kept." Nothing from the legacy Poets data is shown.
 - [ ] **Page not found:** "Page not found", "There is no page at <address>.", "Go to Home", "Search", "See every page in the Sitemap".
 
 ## Hifz (Phase 14, `prototype-hifz.html`)

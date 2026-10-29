@@ -208,7 +208,6 @@ test.describe("Appearance, Reading, Audio write the legacy keys and formats", ()
     await open(page, "modules");
     await page.getByRole("switch", { name: "Show literary modules in the sidebar" }).click();
     expect((await readStorage(page))["quran:additional-modules-enabled:v1"]).toBe("true");
-    await expect(page.getByRole("navigation", { name: "Main" }).first().getByText("Literary modules")).toBeVisible();
   });
 });
 

@@ -121,7 +121,7 @@ Every decision made while designing and building the revamp, with the reason. Ph
 5. **Repeat every year:** when on, "by Hijri date" (the default) or "by Gregorian date", in a **new additive `repeat` field** on the reminder (`{ by: "gregorian" }` or `{ by: "hijri", month, day }`). The legacy `recurringYearly` stays untouched (always written false). A day whose Hijri date is not saved offers only the Gregorian choice.
 6. **Reminders are list items only** (no alert, as in Phase 8) and do not appear on Home in this phase.
 7. **Calendar:** one route, `/calender` (the legacy spelling); a Worship row "Calendar"; Hijri first or Gregorian first kept in one additive key `quran:calendar-prefs:v1`; no Suhoor or Iftar times (the Ramadan page has the timetable); dates from the service's own Gregorian months, the Settings adjustment applied for display only.
-8. **Poets stays deferred.** `/poets` is on the Phase 16 cutover checklist (a real page, or an honest "not in this version" page, before the domain moves).
+8. **Poets stays deferred, with no stub page** (owner, 2026-10-29, replacing the earlier plan for stub pages). `/poets` and `/poets/[slug]` show the normal "Page not found" page for now; there is no sidebar row and no Sitemap entry (the nav group "Literary modules" was removed). It is **not on the cutover checklist**. The legacy module (Mir Anis) is 278 KB of Urdu verse its own data labels "seed data, not yet fully verified", so a rebuild needs a content review and is its own later phase. The preference `quran:additional-modules-enabled:v1` and its Settings switch are left as they are (see the open question in `phases/phase-16-cutover.md`).
 9. **Surah videos:** an honest page ("There are no videos in the app yet") that lists the 114 surahs, each linking to `/surah-audios/[id]`; listed in the Sitemap with that note; no sidebar row.
 10. **About:** written from facts, in our words. The services it names are one list in `lib/about.ts`, and a test compares it with the hosts the code calls.
 11. **`/juz/[id]`** opens the reader at the juz's first ayah and replaces the URL; anything else goes to the Juz tab.
@@ -133,7 +133,7 @@ Ja'fari Laylat al-Qadr nights (19, 21, 23); the Sunni versus Ja'fari compare tab
 
 ## 5. Cutover checklist
 
-- All legacy routes exist in the revamp (including `/surah-vedios`, `/sitemap`, `/about`, `/poets`), or the domain does not move.
+- All legacy routes exist in the revamp (a page or a redirect), **except `/poets` and `/poets/[slug]`, which are deferred and show "Page not found"** (decision 8 of Phase 15, 2026-10-29).
 - Remove `/foundation` and any placeholder pages.
 - Compare the Ja'fari prayer times with an independent source.
 - Normalise the relationship convention; decide `nuhflood`; review the status chips.

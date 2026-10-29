@@ -1,9 +1,9 @@
-// Phase 16: every legacy route has a page in the revamp (a page, a redirect or a stub), and the test-only page is not part of the build Vercel makes.
+// Phase 16: every legacy route has a page in the revamp (a page or a redirect; Poets is deferred), and the test-only page is not part of the build Vercel makes.
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { shipsTestPages, TEST_ONLY_ROUTES } from "../build/testPages";
-import { concrete, LEGACY_ROUTES } from "./legacyRoutes";
+import { concrete, DEFERRED_ROUTES, LEGACY_ROUTES } from "./legacyRoutes";
 
 const PAGES = path.resolve(__dirname, "../app/pages");
 
@@ -39,16 +39,14 @@ describe("the legacy routes", () => {
     expect(LEGACY_ROUTES).toHaveLength(51);
     expect(new Set(LEGACY_ROUTES).size).toBe(51);
   });
-  it("each has a page in the revamp (a page, a redirect or a stub), not the catch-all", () => {
-    const missing = LEGACY_ROUTES.filter((r) => !pageFor(r));
+  it("each has a page in the revamp (a page or a redirect), except the deferred ones", () => {
+    const missing = LEGACY_ROUTES.filter((r) => !(DEFERRED_ROUTES as readonly string[]).includes(r) && !pageFor(r));
     expect(missing).toEqual([]);
   });
-  it("the Poets routes are stubs that show nothing of the legacy module", () => {
-    const stub = fs.readFileSync(path.resolve(__dirname, "../app/components/poets/Stub.vue"), "utf8");
-    const template = stub.slice(stub.indexOf("<template>"));
-    expect(template).toContain("not in this version yet");
-    expect(template).not.toMatch(/mir-anis|Mir Anis|marsiya/i);
-    for (const r of ["/poets", "/poets/[slug]"]) expect(fs.readFileSync(path.join(PAGES, pageFor(r)!), "utf8")).toContain("<PoetsStub />");
+  it("Poets is deferred with no page and no stub: its routes are not pages, so they show 'Page not found'", () => {
+    for (const r of DEFERRED_ROUTES) expect(pageFor(r), r).toBeNull();
+    expect(fs.existsSync(path.join(PAGES, "poets"))).toBe(false);
+    expect(fs.existsSync(path.resolve(__dirname, "../app/components/poets"))).toBe(false);
   });
   it("a concrete address can be made for every pattern", () => {
     for (const r of LEGACY_ROUTES) expect(concrete(r)).not.toMatch(/[[\]]/);

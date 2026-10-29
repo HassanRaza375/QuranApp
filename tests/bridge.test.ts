@@ -61,7 +61,6 @@ describe("navigation uses the legacy routes", () => {
   });
 
   it("groups follow the design system order", () => {
-    expect(NAV.map((g) => g.label)).toEqual(["Read", "Study", "Knowledge base", "Worship", "Literary modules"]);
-    expect(NAV.at(-1)!.optional).toBe("literaryModules");
+    expect(NAV.map((g) => g.label)).toEqual(["Read", "Study", "Knowledge base", "Worship"]);
   });
 });

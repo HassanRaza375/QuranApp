@@ -135,17 +135,17 @@ test.describe("desktop shell (1280px)", () => {
     await page.goto("/foundation");
     const nav = page.getByRole("navigation", { name: "Main" }).first();
     for (const g of ["Read", "Study", "Knowledge base", "Worship"]) await expect(nav.getByText(g, { exact: true })).toBeVisible();
-    await expect(nav.getByText("Literary modules")).toHaveCount(0); // hidden until enabled in Settings
+    await expect(nav.getByText("Literary modules")).toHaveCount(0); // Poets is deferred: no nav row
     await expect(page.getByRole("button", { name: "Open menu" })).toBeHidden();
     await page.getByRole("link", { name: "Surahs" }).first().click();
     const active = page.getByRole("link", { name: "Surahs" }).first();
     await expect(active).toHaveAttribute("aria-current", "page");
   });
 
-  test("the Literary modules group appears when the legacy flag is on", async ({ page }) => {
+  test("the legacy Literary modules flag adds nothing to the sidebar (Poets is deferred)", async ({ page }) => {
     await seed(page, { "quran:additional-modules-enabled:v1": "true" });
     await page.goto("/foundation");
-    await expect(page.getByRole("navigation", { name: "Main" }).first().getByText("Literary modules")).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Main" }).first().getByText("Literary modules")).toHaveCount(0);
   });
 
   test("the menu is a popover on desktop", async ({ page }) => {

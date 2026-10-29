@@ -1,5 +1,8 @@
-// The page files of the legacy app (`app/pages` at legacy commit 7120b6c, read 2026-10-29), as routes. Every one must answer with a page, a redirect or a stub in
-// the revamp (tests/legacyRoutes.test.ts, e2e/routes.spec.ts). Vue Router syntax: [x] is a parameter.
+// The page files of the legacy app (`app/pages` at legacy commit 7120b6c, read 2026-10-29), as routes. Every one must answer with a page or a redirect in
+// the revamp (except the deferred ones below) (tests/legacyRoutes.test.ts, e2e/routes.spec.ts). Vue Router syntax: [x] is a parameter.
+/** Legacy routes deliberately without a page: Poets is deferred (owner, 2026-10-29), so these show "Page not found" for now. */
+export const DEFERRED_ROUTES = ["/poets", "/poets/[slug]"] as const;
+
 export const LEGACY_ROUTES = [
   "/",
   "/about",

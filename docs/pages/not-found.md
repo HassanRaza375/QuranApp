@@ -7,7 +7,7 @@
 
 ## Layout
 
-"Page not found", "There is no page at <the address>.", and three links: Home, Search, the Sitemap. Every legacy route has a page, a redirect (`/juz/<n>`) or a stub (`/poets`), so only a mistyped or old address lands here (`tests/legacyRoutes.test.ts` and `e2e/routes.spec.ts` open all 51 legacy routes and fail if one lands here).
+"Page not found", "There is no page at <the address>.", and three links: Home, Search, the Sitemap. Every legacy route has a page or a redirect (`/juz/<n>`), except Poets, which is deferred with no stub (owner, 2026-10-29): `/poets` and `/poets/[slug]` land here. So a mistyped or old address, or a Poets address, shows this page (`tests/legacyRoutes.test.ts` and `e2e/routes.spec.ts` open the other 49 legacy routes and fail if one lands here, and check that the Poets ones do).
 
 ## Tests
 
