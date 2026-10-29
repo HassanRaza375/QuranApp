@@ -215,7 +215,7 @@ test.describe("mobile shell (375px)", () => {
 
 test.describe("shell basics", () => {
   test("an unbuilt legacy route shows a clear message, not a blank page", async ({ page }) => {
-    await page.goto("/goals"); // Phase 15; /hifz was the example until Phase 14
+    await page.goto("/poets"); // Poets is deferred (Phase 16 decides); /goals was the example until Phase 15, /hifz until Phase 14
     await expect(page.getByRole("heading", { name: "This page is not rebuilt yet" })).toBeVisible();
   });
 
