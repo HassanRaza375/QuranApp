@@ -1,8 +1,14 @@
 import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import { legacyBridge, LEGACY_APP, LEGACY_ROOT } from "./build/legacyBridge";
+import { shipsTestPages, TEST_ONLY_ROUTES } from "./build/testPages";
 import { NO_FLASH_SCRIPT } from "./app/lib/noFlashScript";
 import { injectPublicMeta } from "./app/lib/publicMeta";
+import { isIndexable, NOINDEX, seoHeadTags, siteUrl } from "./app/lib/seo";
+
+// Where this build is made decides what search engines may do (app/lib/seo.ts): only a Vercel production build is indexable.
+const SITE = siteUrl(process.env);
+const INDEXABLE = isIndexable(process.env);
 
 // Revamp of the Quran App UI: Nuxt 4 SPA + shadcn-vue + Tailwind v4. See docs/PLAN.md and
 // docs/phases/phase-00-foundation.md for why each setting is here.
@@ -11,6 +17,13 @@ export default defineNuxtConfig({
   // SPA by default (one precached shell makes every route work offline). Only a few public pages are prerendered.
   ssr: false,
   devtools: { enabled: false },
+  // Test-only pages (/foundation) are dropped from the build Vercel makes (build/testPages.ts); a local build keeps them for the browser tests.
+  hooks: {
+    "pages:extend"(pages) {
+      if (shipsTestPages(process.env)) return;
+      for (let i = pages.length - 1; i >= 0; i--) if (TEST_ONLY_ROUTES.includes(pages[i]!.path)) pages.splice(i, 1);
+    },
+  },
   // The legacy app uses 3000. (`npm run dev -- --port N` still overrides it.)
   devServer: { port: 3001 },
 
@@ -24,6 +37,35 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss(), legacyBridge()],
     server: { fs: { allow: [fileURLToPath(new URL(".", import.meta.url)), LEGACY_ROOT] } },
+    // Daily Fiqh (Phase 13): the ruling data is large (about 2.3 MB raw), so each category is its own chunk, named wajibat-data-<category>, plus a small
+    // "core" (topics, glossary, the one-line ruling index). Named so the PWA config can keep them out of the install-time precache (see pwa.workbox) and
+    // app/lib/fiqh/offline.ts can cache them. `marja`, `types`, `access`, `categories` and `topics` are small and used by Settings, the Library and Search, so they stay in the ordinary chunks (precached).
+    $client: {
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks(id: string) {
+              const p = id.replace(/\\/g, "/");
+              // Vite's dynamic-import helper is used by the entry and by the data chunks; left alone it was placed in the core data chunk, which put that chunk (not in the precache)
+              // into the entry's static imports, and a tab opened offline then showed nothing at all. It gets a chunk of its own.
+              if (p.includes("preload-helper")) return "vite-preload-helper";
+              if (!p.includes("/data/wajibat/")) return;
+              // small and needed outside Daily Fiqh (Settings, the Library, Search): their own ordinary chunk (`fiqh-shared`, precached). Left to the default they were put in the core data chunk. The name must not start with `wajibat-`: the bundler merged a `wajibat-shared` group into the core chunk.
+              if (/\/data\/wajibat\/(marja|types|access|categories|topics)\./.test(p)) return "fiqh-shared";
+              if (/\/(chunks\/foundations|rulings\/foundations)\./.test(p)) return "wajibat-data-foundations";
+              if (/\/(chunks\/taharat|rulings\/taharat|procedures\/taharat|decisionTrees\/taharat)\./.test(p)) return "wajibat-data-taharat";
+              if (/\/(chunks\/salat|rulings\/(salat|salatQa|doubts)|procedures\/salat|recitations|decisionTrees\/salat)\./.test(p)) return "wajibat-data-salat";
+              if (/\/(chunks\/sawm|rulings\/(sawm|sawmQa))\./.test(p)) return "wajibat-data-sawm";
+              if (/\/(chunks\/khums|rulings\/khums)\./.test(p)) return "wajibat-data-khums";
+              if (/\/(chunks\/zakat|rulings\/zakat)\./.test(p)) return "wajibat-data-zakat";
+              return "wajibat-data-core";
+            },
+            // Nuxt's default chunk file name has no [name]; without this the grouping above lands under an anonymous hash and cannot be targeted by name.
+            chunkFileNames: (chunk: { name: string }) => (/^(wajibat-data|fiqh-shared)/.test(chunk.name) ? "_nuxt/[name]-[hash].js" : "_nuxt/[hash].js"),
+          },
+        },
+      },
+    },
   },
 
   // Icons are Lucide, bundled into the app: nothing is fetched from api.iconify.design at runtime (offline rule).
@@ -62,16 +104,24 @@ export default defineNuxtConfig({
   // ssr:false catch-all). So the three routes are prerendered as the SPA shell and this hook writes each one's own
   // <title>, description and Open Graph tags into its HTML.
   nitro: {
-    prerender: { routes: ["/", "/about", "/surah-listing"], crawlLinks: false },
+    prerender: { routes: ["/", "/about", "/surah-listing", "/robots.txt", "/sitemap.xml"], crawlLinks: false },
+    // A preview, a local build and a dev server are not indexable: every response says so (Vercel adds the same header to previews itself; this makes it ours).
+    routeRules: INDEXABLE ? {} : { "/**": { headers: { "X-Robots-Tag": NOINDEX } } },
     hooks: {
       "prerender:generate"(route) {
-        if (route.contents && typeof route.contents === "string") route.contents = injectPublicMeta(route.route, route.contents);
+        if (route.contents && typeof route.contents === "string" && !/\.(txt|xml)$/.test(route.route)) {
+          route.contents = injectPublicMeta(route.route, route.contents);
+          route.contents = route.contents.replace("</head>", `${seoHeadTags({ site: SITE, path: route.route, indexable: INDEXABLE, verification: process.env.GOOGLE_SITE_VERIFICATION })}</head>`);
+        }
       },
     },
   },
 
   runtimeConfig: {
     public: {
+      siteUrl: SITE,
+      indexable: INDEXABLE,
+      googleSiteVerification: process.env.GOOGLE_SITE_VERIFICATION || "",
       quranApiBase: process.env.QURAN_API_BASE || "https://quranapi.pages.dev/api",
       // must be https:// (see the README CORS gotcha)
       quranApiBase2: process.env.QURAN_API_BASE2 || "https://api.alquran.cloud/v1",
@@ -103,12 +153,29 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+      // Daily Fiqh ruling data (Phase 13) is not part of the install: it is cached when a category is opened or when "Save all for offline" is pressed.
+      globIgnores: ["**/wajibat-data-*.js"],
       // Every navigation falls back to the precached SPA shell, except API routes.
       navigateFallback: "/",
-      navigateFallbackDenylist: [/^\/api\//],
+      navigateFallbackDenylist: [/^\/api\//, /^\/robots\.txt$/, /^\/sitemap\.xml$/],
       cleanupOutdatedCaches: true,
       clientsClaim: true,
       runtimeCaching: [
+        {
+          // Daily Fiqh data chunks, once cached by app/lib/fiqh/offline.ts (same cache name as the legacy app). Answers from the cache first, so a category read once works offline.
+          urlPattern: ({ url }) => /\/wajibat-data-.*\.js$/.test(url.pathname),
+          handler: "CacheFirst",
+          options: { cacheName: "wajibat-data-cache", expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 }, cacheableResponse: { statuses: [0, 200] } },
+        },
+        {
+          // Saved surah audio (Phase 11, Downloads). The player asks for `<original url>?offline` ONLY when the file is saved; this answers from
+          // `quran-downloads-audio-cache` (keyed by the original URL, hence ignoreSearch) and never reaches the network. `rangeRequests` slices
+          // the stored whole file into 206 answers, which is what makes seeking work offline. It must stay first: the first matching rule wins.
+          // (The urlPattern function is copied into the generated worker as text, so it can use nothing from this file.)
+          urlPattern: ({ url }) => /\.(mp3|ogg|wav)$/i.test(url.pathname) && url.searchParams.has("offline"),
+          handler: "CacheOnly",
+          options: { cacheName: "quran-downloads-audio-cache", matchOptions: { ignoreSearch: true }, rangeRequests: true },
+        },
         {
           // Immutable Quran text/translation/tafsir/reciter list (same rule and cache name as the legacy app)
           urlPattern: ({ url }) => url.hostname.includes("quranapi.pages.dev"),
@@ -120,7 +187,8 @@ export default defineNuxtConfig({
           },
         },
         {
-          urlPattern: ({ request, url }) => request.destination === "audio" || /\.(mp3|ogg|wav)$/i.test(url.pathname),
+          // `cache: "no-store"` marks a deliberate download (Phase 11): it is stored once, in the downloads cache, not also here.
+          urlPattern: ({ request, url }) => request.cache !== "no-store" && (request.destination === "audio" || /\.(mp3|ogg|wav)$/i.test(url.pathname)),
           handler: "CacheFirst",
           options: {
             cacheName: "quran-audio-cache",

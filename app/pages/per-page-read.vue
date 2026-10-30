@@ -185,9 +185,9 @@ watch(page, () => void load());
     <p v-if="param.notice" class="mt-4 rounded-lg border border-dashed px-3 py-2 text-center text-[13.5px]" role="status" data-testid="page-notice">{{ param.notice }}</p>
 
     <div class="mt-4 flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Page tools">
-      <Button variant="outline" class="min-h-11 min-w-11 rounded-full md:min-h-9 md:min-w-9" :disabled="atMin" aria-label="Smaller Arabic text" data-testid="text-smaller" @click="bump(-0.1)">A−</Button>
+      <Button variant="outline" class="min-h-11 min-w-11 rounded-full md:min-h-9 md:min-w-9" :disabled="atMin" aria-label="A−, smaller Arabic text" data-testid="text-smaller" @click="bump(-0.1)">A−</Button>
       <span class="w-10 text-center text-[12.5px] tabular-nums text-ink-2" data-testid="text-scale">{{ scale.toFixed(1) }}×</span>
-      <Button variant="outline" class="min-h-11 min-w-11 rounded-full md:min-h-9 md:min-w-9" :disabled="atMax" aria-label="Larger Arabic text" data-testid="text-bigger" @click="bump(0.1)">A+</Button>
+      <Button variant="outline" class="min-h-11 min-w-11 rounded-full md:min-h-9 md:min-w-9" :disabled="atMax" aria-label="A+, larger Arabic text" data-testid="text-bigger" @click="bump(0.1)">A+</Button>
       <Button variant="outline" class="min-h-11 gap-1.5 rounded-full md:min-h-9" :aria-pressed="pinned" :class="pinned ? 'border-brand text-brand' : ''" data-testid="pin-page" @click="onPin">
         <Icon name="lucide:pin" size="15" />{{ pinned ? "Pinned" : "Pin page" }}
       </Button>
@@ -200,7 +200,7 @@ watch(page, () => void load());
     </div>
 
     <div class="mt-5">
-      <div v-if="status === 'loading'" aria-busy="true" aria-label="Loading the page" data-testid="page-skeleton" class="rounded-[14px] border px-4 py-6">
+      <div v-if="status === 'loading'" role="status" aria-busy="true" aria-label="Loading the page" data-testid="page-skeleton" class="rounded-[14px] border px-4 py-6">
         <Skeleton v-for="i in 6" :key="i" class="mb-4 ml-auto h-8" :class="i % 2 ? 'w-full' : 'w-4/5'" />
       </div>
       <div v-else-if="status === 'error'" class="rounded-[10px] border border-dashed px-4 py-8 text-center" data-testid="page-error">

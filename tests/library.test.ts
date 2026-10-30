@@ -380,6 +380,7 @@ const providers: Providers = {
   fiqhTopic: (id) => (id === "taqlid" ? { title: "Taqlid", category: "Foundations", categoryId: "foundations" } : null),
   name: (id) => (id === "1" ? { transliteration: "Ar-Rahman", english: "The Most Merciful", arabic: "from the data" } : null),
   story: (id) => (id === "adamandiblis" ? { title: "Adam and Iblis" } : null),
+  entry: (m, id) => (m === "peoples" && id === "ad" ? { name: "'Ad", arabic: "from the data" } : null),
 };
 
 describe("what each key is (real data only)", () => {
@@ -410,7 +411,17 @@ describe("what each key is (real data only)", () => {
     expect(d("mystery:x").title).toBe("mystery: x");
   });
   it("only the readers that exist today are 'open today'", () => {
-    expect(OPENS_TODAY).toMatchObject({ ayah: true, surah: true, sajda: true, juz: true, page: true, person: true, story: true, name: true, fiqh: false, audio: false });
+    // audio: /surah-audios/[id] was rebuilt in Phase 11 (this line used to say false); all seven knowledge kinds open (Phase 12)
+    expect(OPENS_TODAY).toMatchObject({ ayah: true, surah: true, sajda: true, juz: true, page: true, person: true, story: true, name: true, fiqh: true, audio: true, community: true, place: true, theme: true, dua: true, event: true, sign: true, command: true });
+  });
+  it("the seven legacy knowledge keys (community:, place:, theme:, dua:, event:, sign:, command:) become typed rows with the module as detail and the entry's name from the data", () => {
+    expect(d("community:ad")).toMatchObject({ type: "community", title: "'Ad", detail: "Peoples & Nations", arabicName: "from the data", href: "/peoples/ad" });
+    // an id the data does not have still gets a readable row, never a dropped one
+    expect(d("community:nobody")).toMatchObject({ type: "community", title: "People or nation: nobody", href: "/peoples/nobody" });
+    // a module whose pages are not built yet: the row says what it is and links to its (not rebuilt yet) route
+    expect(d("dua:adamrepentance")).toMatchObject({ type: "dua", detail: "Duas", href: "/duas/adamrepentance" });
+    for (const [key, type] of [["place:makkah", "place"], ["theme:tawhid", "theme"], ["event:x", "event"], ["sign:x", "sign"], ["command:x", "command"]] as const) expect(d(key).type).toBe(type);
+    expect(d("community:").type).toBe("unknown");
   });
   it("saved-time wording from the added-at time", () => {
     const now = new Date(T0 + 3 * 3600_000);

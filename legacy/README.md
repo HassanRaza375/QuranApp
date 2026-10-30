@@ -5,8 +5,8 @@ tests and deploys on its own: nothing in this repo reaches outside it, and no le
 
 <!-- sync-legacy:begin -->
 - Commit: `7120b6cd6301ed267085b130052d767f95b2c15a` (branch `revamp-design-logic`, committed 2026-10-22)
-- Synced: 2026-10-22
-- Files: 30, 739 KB (listed in `manifest.json`)
+- Synced: 2026-10-28
+- Files: 91, 6929 KB (listed in `manifest.json`)
 <!-- sync-legacy:end -->
 
 ## Rules

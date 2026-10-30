@@ -3,6 +3,7 @@
 // nowPlaying: { type, surahNo, title, subtitle } } exactly as the legacy composable writes them (tests/audioLegacy.test.ts runs the legacy
 // code beside this one). Additions are only extra fields: `nowPlaying.reciter`.
 import { getJSON, remove, setJSON } from "./storage";
+import { isModule } from "./knowledge/modules";
 import { DEFAULT_RECITER, RECITER_NAMES } from "./surahAudio";
 
 export const AUDIO_PREFS_KEY = "quran:audio-prefs:v1";
@@ -100,16 +101,17 @@ export function spokenTime(sec: number): string {
 /** "1 minute 20 seconds of 6 minutes". */
 export const spokenPosition = (pos: number, dur: number): string => `${spokenTime(pos)} of ${spokenTime(dur)}`;
 
-export { BLOCKED_NOTE, FOLLOW_DESC, FOLLOW_LABEL, FOLLOW_REDUCED_NOTE, NO_RECORDING, PLAY_ERROR, RECITER_RESTART_NOTE, RESUME_LABEL, SAVE_AUDIO_REASON, SKIP_AYAH, reciterNote, TIMEOUT_ERROR, ayahFailedMessage } from "./audioText";
+export { BLOCKED_NOTE, FOLLOW_DESC, FOLLOW_LABEL, FOLLOW_REDUCED_NOTE, NO_RECORDING, PLAY_ERROR, RECITER_RESTART_NOTE, RESUME_LABEL, SKIP_AYAH, reciterNote, TIMEOUT_ERROR, ayahFailedMessage } from "./audioText";
 
 // ---- the queue's saved place (Phase 4C): a NEW additive key, so the legacy `quran:audio-resume:v1` stays exactly as it is
 
 export const AUDIO_QUEUE_KEY = "quran:audio-queue:v1";
-/** Which queue: a page of the page reader, or a chapter of a story. The list of ayahs is never stored: it is rebuilt from the data. */
-export type QueueRef = { page: number } | { storyId: string; chapter: number };
+/** Which queue: a page of the page reader, a chapter of a story, or the passages of a knowledge entry (Phase 12). The list of ayahs is never stored: it is rebuilt from the data. */
+export type QueueRef = { page: number } | { storyId: string; chapter: number } | { module: string; id: string };
+export type QueueKind = "page" | "story" | "knowledge";
 export interface QueueRecord {
   v: 1;
-  kind: "page" | "story";
+  kind: QueueKind;
   ref: QueueRef;
   /** which ayah of the queue */
   index: number;
@@ -118,7 +120,7 @@ export interface QueueRecord {
   savedAt: number;
 }
 export interface RestoredQueue {
-  kind: "page" | "story";
+  kind: QueueKind;
   ref: QueueRef;
   index: number;
   reciter: string;
@@ -126,7 +128,7 @@ export interface RestoredQueue {
 }
 /** A saved queue, or null for anything damaged (never an error). The reciter must be a known name, else the default. */
 export function restoredQueue(raw: unknown): RestoredQueue | null {
-  if (!isObject(raw) || raw.v !== 1 || (raw.kind !== "page" && raw.kind !== "story") || !isObject(raw.ref)) return null;
+  if (!isObject(raw) || raw.v !== 1 || (raw.kind !== "page" && raw.kind !== "story" && raw.kind !== "knowledge") || !isObject(raw.ref)) return null;
   const ref = raw.ref;
   const index = typeof raw.index === "number" && Number.isInteger(raw.index) && raw.index >= 0 ? raw.index : -1;
   if (index < 0) return null;
@@ -134,6 +136,9 @@ export function restoredQueue(raw: unknown): RestoredQueue | null {
   if (raw.kind === "page") {
     if (typeof ref.page !== "number" || !Number.isInteger(ref.page) || ref.page < 1 || ref.page > 604) return null;
     r = { page: ref.page };
+  } else if (raw.kind === "knowledge") {
+    if (!isModule(ref.module) || typeof ref.id !== "string" || !ref.id) return null;
+    r = { module: ref.module, id: ref.id };
   } else {
     if (typeof ref.storyId !== "string" || !ref.storyId || typeof ref.chapter !== "number" || !Number.isInteger(ref.chapter) || ref.chapter < 0) return null;
     r = { storyId: ref.storyId, chapter: ref.chapter };

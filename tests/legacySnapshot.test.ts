@@ -86,5 +86,7 @@ describe("legacy snapshot", () => {
       }
     }
     expect(appFiles.filter((f) => !used.has(f))).toEqual([]);
-  });
+    // A pure file scan (about 500 files, 2.5 MB, then one regex pass per vendored file): 0.25 to 0.4 s on a quiet machine, with no waiting and no race. The 5 s default timed out once while
+    // the machine was busy and all 49 unit files ran at once, so this one test has its own limit; the global timeout is unchanged.
+  }, 30_000);
 });

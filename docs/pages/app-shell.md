@@ -14,7 +14,7 @@ The frame around every page: grouped navigation, a header with the theme menu, t
 
 - Desktop (768px and up): fixed 256px sidebar (`sunken`), header 56px (`surface`) with the theme menu, content column max 896px.
 - Mobile: header with a menu button (44px) opens a left drawer with the same navigation; content is full width with 16px gutters.
-- Groups in order: Read, Study, Knowledge base, Worship, Literary modules (only when the legacy `quran:additional-modules-enabled:v1` flag is true), then Settings and About. The list is `app/lib/nav.ts`; every link is a legacy route.
+- Groups in order: Read, Study, Knowledge base, Worship (the optional "Literary modules" group was removed in Phase 16: Poets is deferred), then Settings and About. The list is `lib/nav.ts`.
 - The mini player (`MiniPlayer.vue`) renders only when a track is set; on desktop it sits right of the sidebar. It is a shell until Phase 4.
 
 ## Components
@@ -32,13 +32,13 @@ The frame around every page: grouped navigation, a header with the theme menu, t
 
 | Data | Service / composable | Cache or storage key |
 | --- | --- | --- |
-| theme, literary modules flag | `usePreferencesStore` | `themeMode`, `quran:additional-modules-enabled:v1` |
+| theme | `usePreferencesStore` | `themeMode` |
 
 ## States
 
 - Loading: the shell is static; the theme is applied before first paint.
-- Empty / first run: light theme, Literary modules hidden.
-- Error: unknown routes show "This page is not rebuilt yet" (`pages/[...slug].vue`).
+- Empty / first run: light theme.
+- Error: an address that is not a page shows "Page not found" (`pages/[...slug].vue`, Phase 16).
 - Offline: works from the precached shell.
 - Fiqh variants: none in the shell.
 - Dark mode and high contrast: both implemented; high contrast uses the `data-high-contrast` flag.
@@ -53,7 +53,7 @@ Skip link; landmark `nav` named "Main"; visible 2px focus ring; touch targets 44
 
 ## Cross-links
 
-Links to every legacy route. Unbuilt ones land on the "not rebuilt yet" page.
+Links to every legacy route. Every one has a page, a redirect or a stub (Phase 16).
 
 ## Known differences from the prototype
 

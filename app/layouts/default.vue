@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const navOpen = ref(false);
 usePrayerNotifications(); // reminders while the app is open, on any page (no permission prompt, no location prompt)
+useSearchShortcut(); // "/" opens Search from any page
 const player = usePlayerStore();
 onMounted(() => player.restore()); // shows a saved place paused; plays nothing
 const route = useRoute();

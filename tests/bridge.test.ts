@@ -35,7 +35,7 @@ describe("prerendered public pages", () => {
   it("injects the page's own title, description and Open Graph tags", () => {
     const out = injectPublicMeta("/about", html);
     expect(out).toContain("<title>About · Quran App</title>");
-    expect(out).toContain('<meta name="description" content="About the Quran App.">');
+    expect(out).toContain('<meta name="description" content="About the Quran App: where its text, audio and prayer times come from, and what stays on your device.">');
     expect(out).toContain('<meta property="og:title" content="About · Quran App">');
   });
 
@@ -61,7 +61,6 @@ describe("navigation uses the legacy routes", () => {
   });
 
   it("groups follow the design system order", () => {
-    expect(NAV.map((g) => g.label)).toEqual(["Read", "Study", "Knowledge base", "Worship", "Literary modules"]);
-    expect(NAV.at(-1)!.optional).toBe("literaryModules");
+    expect(NAV.map((g) => g.label)).toEqual(["Read", "Study", "Knowledge base", "Worship"]);
   });
 });

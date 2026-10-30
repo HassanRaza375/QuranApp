@@ -24,7 +24,6 @@ describe("loading values written by the legacy app", () => {
       reciter: JSON.stringify({ reciter: "Mishary Rashid Al Afasy" }),
       "quran:accessibility:v1": JSON.stringify({ reducedMotion: true, highContrast: true, largeTouchTargets: true, arabicFontScale: 1.3 }),
       "quran:audio-prefs:v1": JSON.stringify({ playbackRate: 1.25, repeatOne: true, autoAdvance: true }),
-      "quran:additional-modules-enabled:v1": "true",
       "quran:hijri-adjust:v1": JSON.stringify({ days: -1 }),
       "quran:prayer-calc:v1": JSON.stringify({ sunniMethod: 1, jafariMethod: 7, asr: "hanafi" }),
       "quran:download-prefs:v1": JSON.stringify({ wifiOnly: true }),
@@ -45,13 +44,13 @@ describe("loading values written by the legacy app", () => {
       largeTouchTargets: true,
       playbackRate: 1.25,
       autoplay: true,
-      literaryModules: true,
       hijriAdjust: -1,
       calc: { sunniMethod: 1, jafariMethod: 7, asr: "hanafi" },
       wifiOnly: true,
       verseLayout: "tr",
       notifications: { enabled: true, prayers: { Fajr: true, Dhuhr: false, Asr: true, Maghrib: true, Isha: false }, offset: 15 },
       marjaId: "sistani",
+      fiqhLang: "ur", // the legacy record's `lang`
     } satisfies Preferences);
   });
 
@@ -146,10 +145,10 @@ describe("saving keeps the legacy formats", () => {
     const next: Preferences = {
       fiqh: "jafari", theme: "dark", arabicScale: 1.2, translationLang: "english", tafsirAuthor: "Maarif Ul Quran",
       reciter: { reciter: "X" }, playbackRate: 1.5, autoplay: true, verseDisplay: "bengali", reducedMotion: true,
-      highContrast: true, largeTouchTargets: true, literaryModules: true, hijriAdjust: 2,
+      highContrast: true, largeTouchTargets: true, hijriAdjust: 2,
       calc: { sunniMethod: 5, jafariMethod: 7, asr: "hanafi" }, wifiOnly: true, verseLayout: "tr",
       notifications: { enabled: true, prayers: { Fajr: false, Dhuhr: true, Asr: true, Maghrib: false, Isha: true }, offset: 30 },
-      marjaId: "sistani",
+      marjaId: "sistani", fiqhLang: "both",
     };
     for (const k of Object.keys(next) as (keyof Preferences)[]) savePreference(k, next[k] as never);
     expect(loadPreferences()).toEqual(next);

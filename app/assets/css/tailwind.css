@@ -43,6 +43,11 @@
   --gold: #9c7a3c;
   --gold-soft: #f1e6d2;
   --danger: #a5433a;
+  /* Hifz (Phase 14): the strength steps and the "needs work" mark. Strong is --gold (Hifz mastery). */
+  --weak: #b4553f;
+  --s1: #d9d6ce;
+  --s2: #9dc0c8;
+  --s3: #4e8a99;
 
   --radius: 0.625rem; /* cards 10px; controls use --radius-md (8px) */
   --arabic-font-scale: 1; /* set from the Arabic size setting (legacy key quran:accessibility:v1) */
@@ -61,6 +66,10 @@
   --gold: #c9a15e;
   --gold-soft: #2e2717;
   --danger: #d97b72;
+  --weak: #d9806b;
+  --s1: #2a3438;
+  --s2: #2f5a64;
+  --s3: #5ca0af;
 }
 
 /* Accessibility "high contrast" (legacy flag: data-high-contrast on <html>) strengthens the muted tokens. */
@@ -147,6 +156,10 @@
   --color-ink-3: var(--ink-3);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
+  --color-weak: var(--weak);
+  --color-s1: var(--s1);
+  --color-s2: var(--s2);
+  --color-s3: var(--s3);
   --color-sunken: var(--sunken);
   --color-surface: var(--surface);
 

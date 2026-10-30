@@ -17,6 +17,8 @@ Devices to try where a row says so: **iPhone Safari**, **Chrome on Android**, **
 
 Until at least A and C are done, keep new phases small (a bug found late costs more than one found now).
 
+**2026-10-28: the owner reports that Firefox and Safari have been tested.** Marked "owner reports tested" below: A1, A2, A3 (iPhone Safari), A5 (Firefox), D10 (iPhone Safari) and D16 (Firefox). These are the owner's word, not a result pasted back, so the "Results to paste back" block is still empty. **Left open** because they name something other than Safari or Firefox: Chrome on Android (A4, D11), the installed Home Screen app and its timing (S1, N5, D9), the compass (C1 to C8), notifications, Hijri and Ja'fari times, and Daily Fiqh F1 to F3.
+
 ---
 
 ## Phase 0: shell, install, update
@@ -78,11 +80,11 @@ Use the **Surah listing** Play buttons (and the reader's "Play surah"). Surah 1 
 
 | # | Steps | Expected | What I saw |
 | --- | --- | --- | --- |
-| A1 | **iPhone Safari**: play surah 1 with reciter 1, then reciter 2 | Plays. If not, write the exact message under the mini player | |
-| A2 | iPhone Safari: play surah 3 with reciter 1, then reciter 2 | Plays (the large file). If it fails: the exact message, and how long it waited first | |
-| A3 | iPhone Safari: play surah 18 with two reciters | Same as A2 | |
+| A1 | **iPhone Safari**: play surah 1 with reciter 1, then reciter 2 | Plays. If not, write the exact message under the mini player | owner reports tested (2026-10-28) |
+| A2 | iPhone Safari: play surah 3 with reciter 1, then reciter 2 | Plays (the large file). If it fails: the exact message, and how long it waited first | owner reports tested (2026-10-28) |
+| A3 | iPhone Safari: play surah 18 with two reciters | Same as A2 | owner reports tested (2026-10-28) |
 | A4 | **Chrome on Android**: repeat A1 to A3 | Same | |
-| A5 | **Firefox** (only if you use it): repeat A1 to A3 | Same | |
+| A5 | **Firefox** (only if you use it): repeat A1 to A3 | Same | owner reports tested (2026-10-28) |
 | A6 | While a large file plays, open the sheet (tap the title) and drag the position slider to the middle | The sound jumps there without a long wait (the host supports ranges). Write whether it works and how long it took | |
 | A7 | Pause and Play; change speed to 1.5×; Back 10 s and Forward 10 s | Each does what it says; the speed is audible | |
 | A8 | Switch reciter in the sheet | The note "Switching reciter restarts this surah." is shown first; the other reciter plays from the start | |
@@ -171,7 +173,78 @@ Use the **Surah listing** Play buttons (and the reader's "Play surah"). Surah 1 
 | D2 | Sajda: open the list, tap "Open in the reader" on one | The reader opens at that ayah | |
 | D3 | Tasbeeh, Asma and Sajda at 375 in dark | Nothing cut off; targets easy to hit | |
 
+## Phase 10: Search
+
+| # | Steps | Expected | What I saw |
+| --- | --- | --- | --- |
+| X1 | Phone: open Search from the header icon | The page opens and the keyboard does **not** open by itself; tapping the box opens it | |
+| X2 | Type `mercy`, then `yusuf`, then an Arabic word | Surahs, People and Stories show at once; ayahs follow after a moment; the Arabic result is right to left and readable at your Arabic size | |
+| X3 | Type `2:255` | "Open Al-Baqara 2:255" opens the reader at that ayah | |
+| X4 | Switch on airplane mode and search `mercy`, then `2:255` | The offline message for ayahs; the ayah number still opens; People and Stories still answer; Try again works once you are back online | |
+| X5 | Filters: pick Urdu, then a surah, then a juz; Done | The sheet comes up from the bottom, every control is easy to hit, the number on Filters is right, the results follow | |
+| X6 | A hardware keyboard on a tablet or laptop: press `/` on Home | Search opens with the cursor in the box | |
+
 ---
+
+## Phase 11: Downloads
+
+Open the Vercel preview of branch `phase-11-downloads` on the phone. Use **Wi-Fi** for downloads. The smallest file is Al-Ikhlaas (about 0.4 MB); good real tests are Al-Mulk (about 7 MB) and Yaseen (about 17 MB).
+
+**Result so far (2026-10-23, Pixel 7 Pro, Android 17, Chrome, first slice):** D2 pass (Al-Ikhlas downloaded and listed), D4 pass (played offline in airplane mode). Not yet tried: seeking offline, reopening offline, Al-Baqarah.
+
+| # | What | Expect | You saw |
+| --- | --- | --- | --- |
+| D1 | Open **Downloads**. The line under Preferences | "Reciter: <your reciter> · Change in Settings". On iPhone in Safari (not the Home Screen app) one note about adding the app to the Home Screen | |
+| D2 | Add **Al-Ikhlaas** (Add surahs, tick it, Download) | A progress bar, then the surah is listed under Saved with Text and Audio ticked and its size. "Offline playback is ready." at the bottom (reload once if it says it needs one more load) | **Pass** on Pixel 7 Pro, Android 17, Chrome |
+| D3 | Add **Al-Mulk** or **Yaseen** | Same; the percentage and "MB of MB" move. Note the time and the network | |
+| D4 | **Airplane mode**, then press Play on a saved surah | It plays from the first second | **Pass** on the same phone |
+| **D4b (open)** | Still offline: **seek** in the player sheet (to the middle, and near the end) | It jumps and keeps playing | **Not tested yet** |
+| **D5 (open)** | Still offline: **close the app completely**, open it again, go to Downloads, press Play | The surah is still listed and still plays | **Not tested yet** |
+| D6 | Offline: press Play on a surah that is **not** saved | "Couldn't play. Audio needs a connection unless it was downloaded." with Try again; no endless spinner | |
+| D7 | Online: **Remove** a saved surah, then **Undo** within a few seconds; remove again and wait | It comes back; the second time it is gone and Settings, Data and privacy shows less used | |
+| **D8 (open)** | **Al-Baqarah** (90 to 121 MB, on Wi-Fi): download it, play it offline, seek near the end | It plays and seeks, or say exactly what happened (the page reloaded, the audio stopped, low memory) | **Not tried** |
+| **D9 (open)** | iPhone only: a day or more later, open the app and look at Downloads | The saved surahs are still there (Safari may clear a site's data after a week without a visit unless the app is on the Home Screen: the **7-day Safari check**) | |
+| **D10 (open)** | **iPhone Safari**: repeat D2 to D7 (in the browser tab, then from the Home Screen) | Each works, or say which step fails and the message | owner reports tested (2026-10-28) |
+| D11 | Android Chrome: Settings, Audio, turn on **Download on Wi-Fi only**; on **mobile data** add a surah with audio | The text is saved; the audio says "Waiting for Wi-Fi"; join Wi-Fi and it starts by itself | |
+| D12 | Add a surah with **Tafsir** ticked; airplane mode; open that surah in the reader and open an ayah's tafsir | It opens with no connection | |
+| D13 | **Save the text of the whole Qur'an** (Wi-Fi), airplane mode, open a few surahs | Each opens; the page says 114 surahs | |
+| D14 | `/surah-audios/36`: Play a reciter that is not yours; Download another | The Settings reciter does not change; Saved shows with the size | |
+| D15 | In the player sheet press **Save audio to listen offline** | Progress, then "Saved on this device" | |
+| D16 | Firefox (only if you use it): D2 and D4 | Works, or "This browser can't keep files…" | owner reports tested (2026-10-28) |
+
+## Phase 13: Daily Fiqh
+
+- **K1 (Khamenei against leader.ir): waived by the owner on 2026-10-28.** The 30 entries of `docs/phases/phase-13-khamenei-spot-check.md` were not checked; his pointers stay as built, and Phase 13 is accepted without it. Not a claim that his text was checked.
+- **F1 (installed phone, offline):** open Daily Fiqh online, choose a marja', open Taqlid and one Salat topic; switch to airplane mode and reload both: the rulings show. Open a category you did not open: it says it is not on the device with Try again. Back online, Save all for offline, then offline again: every topic opens.
+- **F2 (a phone that never opened Daily Fiqh):** offline, open `/fiqh` in a new tab: a plain "Daily Fiqh isn't on this device yet" page, not a blank one.
+- **F3 (Urdu on a phone):** choose Urdu and Both on a Sistani topic: the Nastaliq text reads well at 375 px and nothing is cut off.
+
+## Phase 14: Hifz
+
+Hifz is built and tested in a desktop browser with synthetic text and a recorded audio element. These need a real device and a real voice.
+
+| # | Check | Pass when |
+| --- | --- | --- |
+| H1 | **A phone, in your hand.** Add a surah, press Start, recite an ayah aloud, tap a word, Reveal all, mark a slip, Done, Continue | Every control is easy to hit with a thumb; the words are readable at your usual Arabic size; nothing is cut off; the keyboard does not cover a button |
+| H2 | **Listen and Read along with real audio** (online, then with the surah downloaded and the connection off) | A play counts only when it reaches the end; three plays give "Next: read along"; the whole ayah is lit while it plays and not after; offline and not downloaded, the step says audio needs a connection and can be skipped |
+| H3 | **Recite to someone** with a real listener | Nothing is hidden; the note says to hand over the phone; the listener can tap a word once to mark a slip and again to clear it |
+| H4 | **A real week.** Use it for several days | The plan is the size you expect; a word you slip on, on two days, shows up before its ayah; "About N minutes" gets close to the real time after 10 sessions |
+| H5 | **iPhone Safari**: the Add sheet and Practise sheet as bottom sheets; the select for the surah | The sheet is not taller than the screen; the select opens; Add works with the keyboard up |
+| H6 | **An installed app, offline**: open Hifz and a session with the connection off, for a surah you have read | The plan and the session work; a surah you have not read shows the message and Try again |
+| H7 | **Your legacy Hifz data** (if you used the legacy app): open Hifz on the revamp | Your surahs, counts and strengths are there; nothing looks reset; going back to the legacy app still shows your progress |
+
+## Phase 15: Reading goals, Calendar and the small pages
+
+Goals, the Calendar and the three small pages are built and tested in a desktop browser with a fixed clock, recorded real calendar months and synthetic reader text. These need a real device and real time.
+
+| # | Check | Pass when |
+| --- | --- | --- |
+| G1 | **A phone, in your hand.** Open Reading goals, start a goal of each kind, log reading from a mushaf, open the Calendar, add a reminder | The sheets rise from the bottom and are not taller than the screen; steppers, chips, the date field and every button are easy to hit with a thumb; the Calendar grid is readable at 375 px; the keyboard does not cover Add |
+| G2 | **The Hijri date against a calendar you trust**, for today and for the first and last day of this month; then set the Hijri adjustment to +1 and -1 in Settings | The Calendar's Hijri date matches your calendar (or differs by the one day the page says it can); with +1 and -1 every Gregorian date moves by that day and the first and last cells of the month are right |
+| G3 | **A real week of reading.** Read in the reader for several days with a goal running | The count on Goals and on Home is what you expect (the reader counts an ayah after about 1.5 s on screen); "Next up" is the ayah after your place; "Your last 7 days" matches your sense of it; nothing says you are behind |
+| G4 | **Finish by a date.** Make a goal for a date a few days away, then wait for the date | The amount each day is sensible; on the date and after it the page says "Your date has passed. Choose a new date or keep reading." and nothing else scolds |
+| G5 | **An installed app, offline:** open Goals, About, the Sitemap and Surah videos with the connection off; open the Calendar for a month you have seen and one you have not | The first four open and work; the seen month shows; the unseen one says it needs a connection once and offers Try again |
+| G6 | **Your legacy goals and reminders** (if you used the legacy app): open Goals and the Calendar on the revamp; add a reminder that repeats by Hijri date; go back to the legacy app | Your goals, targets and reminders are there and unchanged; the legacy app still shows your reminders (it ignores the repeat) and your goals |
 
 ## Manual review (not on a device)
 
@@ -185,7 +258,7 @@ These need your judgement, not a phone. Details are in `docs/CONTENT_TO_VERIFY.m
 | V4 | The 99 names (apostrophes, repeated meanings), the list of 15 sajda verses, the five dhikr | CONTENT_TO_VERIFY (Asma, Sajda, Tasbeeh) |
 | V5 | The "not a line-for-line copy" sentence on Per page | CONTENT_TO_VERIFY (Per page) |
 | V6 | The screenshots I did not look at one by one (each compare README says which I did) | `docs/design/*-compare/` |
-| V7 | Screen-reader passes (VoiceOver and TalkBack) on Home, Settings, the listing, the reader, the player, Per page | Rows P6, R6 and your own |
+| V7 | **Done (owner, 2026-10-29): TalkBack on a Pixel 7 Pro, pass on Home, Search and Hifz.** Screen-reader passes (VoiceOver and TalkBack) on Home, Settings, the listing, the reader, the player, Per page. **Not covered by that pass (still open if you want them): VoiceOver on an iPhone, and TalkBack on Settings, the listing, the reader, the player and Per page.** | Rows P6 (Home, TalkBack: done), R6, and your own |
 
 ## Results to paste back
 

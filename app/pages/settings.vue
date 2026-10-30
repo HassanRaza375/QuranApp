@@ -13,7 +13,6 @@ const SECTIONS = [
   { id: "prayer", label: "Prayer & location", icon: "lucide:map-pin" },
   { id: "notifications", label: "Notifications", icon: "lucide:bell" },
   { id: "accessibility", label: "Accessibility", icon: "lucide:accessibility" },
-  { id: "modules", label: "Modules", icon: "lucide:layers" },
   { id: "data", label: "Data & privacy", icon: "lucide:shield" },
 ] as const;
 type SectionId = (typeof SECTIONS)[number]["id"];
@@ -37,7 +36,7 @@ const pickerOptions: MenuOption[] = SECTIONS.map((s) => ({ value: s.id, label: s
     <div class="mb-5 md:hidden">
       <ResponsiveMenu :model-value="current" :options="pickerOptions" label="Settings section" title="Settings section" @update:model-value="go">
         <template #trigger="{ current: cur }">
-          <Button variant="outline" class="min-h-11 w-full justify-between gap-2" aria-label="Settings section" data-testid="section-picker">
+          <Button variant="outline" class="min-h-11 w-full justify-between gap-2" :aria-label="`${cur?.label ?? ''}, settings section`" data-testid="section-picker">
             <span class="flex items-center gap-2"><Icon :name="cur?.icon ?? 'lucide:settings'" size="16" />{{ cur?.label }}</span>
             <Icon name="lucide:chevron-down" size="14" class="text-ink-2" />
           </Button>
@@ -74,7 +73,6 @@ const pickerOptions: MenuOption[] = SECTIONS.map((s) => ({ value: s.id, label: s
         <SettingsSectionPrayer v-else-if="current === 'prayer'" />
         <SettingsSectionNotifications v-else-if="current === 'notifications'" />
         <SettingsSectionAccessibility v-else-if="current === 'accessibility'" />
-        <SettingsSectionModules v-else-if="current === 'modules'" />
         <SettingsSectionData v-else />
       </section>
     </div>

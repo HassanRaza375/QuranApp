@@ -20,6 +20,8 @@ export interface GregorianMonthRecord {
   days: GregorianMonthDay[];
   /** the service's own English name for each Hijri month it reports in this Gregorian month */
   hijriNames: Record<number, string>;
+  /** the service's own Arabic name for each of them (Phase 15, for the Calendar); absent in a month saved before then */
+  hijriNamesAr?: Record<number, string>;
 }
 
 export const gregorianMonthKey = (month: string) => `g:${month}`;
@@ -50,9 +52,10 @@ export function normalizeGregorianMonth(json: unknown, month: string, fetchedAt:
   if (data.length !== length) return { ok: false, reason: `The month has ${data.length} days; expected ${length}.` };
   const days: GregorianMonthDay[] = [];
   const hijriNames: Record<number, string> = {};
+  const hijriNamesAr: Record<number, string> = {};
   let method = "";
   for (let i = 0; i < data.length; i++) {
-    const h = data[i]?.hijri as { day?: unknown; year?: unknown; method?: unknown; month?: { number?: unknown; en?: unknown } } | undefined;
+    const h = data[i]?.hijri as { day?: unknown; year?: unknown; method?: unknown; month?: { number?: unknown; en?: unknown; ar?: unknown } } | undefined;
     const date = isoOf((data[i]?.gregorian as { date?: unknown } | undefined)?.date);
     if (!h || !date) return { ok: false, reason: `Day ${i + 1} has no usable date.` };
     if (date !== `${y}-${String(m).padStart(2, "0")}-${String(i + 1).padStart(2, "0")}`) return { ok: false, reason: `Day ${i + 1} is dated ${date}.` };
@@ -68,10 +71,11 @@ export function normalizeGregorianMonth(json: unknown, month: string, fetchedAt:
     }
     if (typeof h.method === "string" && h.method) method = h.method;
     if (typeof h.month?.en === "string" && h.month.en) hijriNames[hMonth] = h.month.en;
+    if (typeof h.month?.ar === "string" && h.month.ar) hijriNamesAr[hMonth] = h.month.ar;
     days.push({ date, hDay, hMonth, hYear });
   }
   if (!method) return { ok: false, reason: "The calendar response does not say which calendar it uses." };
-  return { ok: true, record: { key: gregorianMonthKey(month), month, method, fetchedAt, days, hijriNames } };
+  return { ok: true, record: { key: gregorianMonthKey(month), month, method, fetchedAt, days, hijriNames, ...(Object.keys(hijriNamesAr).length ? { hijriNamesAr } : {}) } };
 }
 
 /** The "YYYY-MM" keys from `from` for `count` months. */

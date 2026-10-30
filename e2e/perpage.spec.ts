@@ -406,7 +406,7 @@ test.describe("the listing", () => {
 
   test("the 'not rebuilt yet' notice and page are gone for per-page-read", async ({ page }) => {
     await open(page, "?page=3");
-    await expect(page.getByText("This page is not rebuilt yet")).toHaveCount(0);
+    await expect(page.getByText("Page not found")).toHaveCount(0);
     await page.goto("/surah-listing?tab=page");
     await expect(page.getByTestId("readers-notice")).toHaveCount(0);
   });

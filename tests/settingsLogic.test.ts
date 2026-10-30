@@ -112,7 +112,7 @@ describe("new and shared preference keys", () => {
   it("every new key feeds the cross-tab map", () => {
     expect(preferencesForKey(KEYS.calc)).toEqual(["calc"]);
     expect(preferencesForKey("prayerSettings")).toEqual(["notifications"]);
-    expect(preferencesForKey("quran:fiqh-prefs:v1")).toEqual(["marjaId"]);
+    expect(preferencesForKey("quran:fiqh-prefs:v1")).toEqual(["marjaId", "fiqhLang"]);
     expect(preferencesForKey("quran:verse-layout:v1")).toEqual(["verseLayout"]);
     expect(preferencesForKey("quran:download-prefs:v1")).toEqual(["wifiOnly"]);
     expect(Object.keys(DESCRIPTORS).length).toBe(Object.keys(loadPreferences()).length);
@@ -353,15 +353,15 @@ describe("Reset settings", () => {
   it("restores the defaults for settings only, keeps shared-object fields it does not own, and keeps all data", () => {
     const s = use({ ...FULL });
     resetSettings();
-    for (const k of ["prayerFiqh", "themeMode", "translationDefaultLang", "tafsirDefaultAuthor", "reciter", "prayerSettings", "quran:additional-modules-enabled:v1", "quran:prayer-calc:v1", "quran:download-prefs:v1", "quran:hijri-adjust:v1", "quran:verse-layout:v1"]) {
+    for (const k of ["prayerFiqh", "themeMode", "translationDefaultLang", "tafsirDefaultAuthor", "reciter", "prayerSettings", "quran:prayer-calc:v1", "quran:download-prefs:v1", "quran:hijri-adjust:v1", "quran:verse-layout:v1"]) {
       expect(s.data.has(k), k).toBe(false);
     }
     expect(JSON.parse(s.data.get("quran:accessibility:v1")!)).toEqual({ futureField: "keep" });
     expect(JSON.parse(s.data.get("quran:audio-prefs:v1")!)).toEqual({ repeatOne: true });
-    for (const k of ["quran:bookmarks:v1", "quran:library:v1", "quran:reading-progress:v1", "quran:location:v1", "last_location", "quran:fiqh-prefs:v1", "preferredVerseDisplay", "quran:nav-open:v1", "ayah-of-day"]) {
+    for (const k of ["quran:bookmarks:v1", "quran:library:v1", "quran:reading-progress:v1", "quran:location:v1", "last_location", "quran:fiqh-prefs:v1", "preferredVerseDisplay", "quran:nav-open:v1", "ayah-of-day", "quran:additional-modules-enabled:v1" /* Poets is deferred: this key is never read or written (DECISIONS.md) */]) {
       expect(s.data.get(k), k).toBe(FULL[k as keyof typeof FULL]);
     }
-    expect(loadPreferences()).toMatchObject({ theme: "light", fiqh: "sunni", arabicScale: 1, playbackRate: 1, autoplay: false, reducedMotion: false, literaryModules: false, hijriAdjust: 0, marjaId: "sistani" });
+    expect(loadPreferences()).toMatchObject({ theme: "light", fiqh: "sunni", arabicScale: 1, playbackRate: 1, autoplay: false, reducedMotion: false, hijriAdjust: 0, marjaId: "sistani" });
   });
 
   it("an object whose only fields were settings is removed, not left empty", () => {

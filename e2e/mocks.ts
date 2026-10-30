@@ -226,6 +226,32 @@ export async function mockQuranText(context: BrowserContext, mode: QuranTextMock
   return state;
 }
 
+// ---- Phase 14 (Hifz): the words of an ayah are found by their Arabic LETTERS, and fakeChapter's "TEST ARABIC 67:3" has none. This is SYNTHETIC text with the
+// right shape: every ayah is 4 to 7 "words" made of one repeated letter (a different letter for each word and ayah, never a real word), and ayah 3 of
+// every surah has a pause mark standing alone between two of them (it must not become a word). No Qur'an text is stored in a test.
+const LETTER_BASE = 0x628;
+const pauseMark = String.fromCodePoint(0x6d6);
+export const hifzWords = (n: number, a: number): string[] =>
+  Array.from({ length: 4 + ((n + a) % 4) }, (_, k) => String.fromCodePoint(LETTER_BASE + ((a * 3 + k * 5 + n) % 24)).repeat(3 + (k % 2)));
+export const hifzAyahText = (n: number, a: number): string => {
+  const w = hifzWords(n, a);
+  return (a === 3 ? [w[0]!, pauseMark, ...w.slice(1)] : w).join(" ");
+};
+/** Answers the reader's chapter request with the synthetic Arabic above (register after mockQuranText: the latest route wins). */
+export async function mockHifzText(context: BrowserContext, mode: QuranTextMock["mode"] = "ok"): Promise<QuranTextMock> {
+  const state: QuranTextMock = { chapters: [], tafsirs: [], mode, delayMs: 0 };
+  await context.route(/https:\/\/quranapi\.pages\.dev\/api\/\d+\.json/, async (route: Route) => {
+    const n = Number(/api\/(\d+)\.json/.exec(route.request().url())![1]);
+    state.chapters.push(n);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    const c = fakeChapter(n);
+    c.arabic1 = Array.from({ length: c.totalAyah }, (_, i) => hifzAyahText(n, i + 1));
+    return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify(c) });
+  });
+  return state;
+}
+
 /** Replaces the browser's Audio with a recorder; `window.__audio.fail = true` makes play() fail like a missing file. */
 export const stubAudio = (context: BrowserContext) =>
   context.addInitScript(() => {
@@ -238,8 +264,8 @@ export const stubAudio = (context: BrowserContext) =>
       /** play() resolves but the file never starts (a stalled load) */
       stall: boolean;
       duration: number;
-      tick(t: number): void;
-      end(): void;
+      tick(t: number): void | Promise<void>;
+      end(): void | Promise<void>;
       emit(name: string): void;
     };
     const w = window as unknown as { __audio: Hooks; Audio: unknown };
@@ -302,11 +328,17 @@ export const stubAudio = (context: BrowserContext) =>
       playError: null,
       stall: false,
       duration: 3600,
-      tick: (t) => {
+      // Like end(): a file that has not been loaded yet cannot play (the player loads it after an asynchronous lookup), so wait, up to 3 s, until one is.
+      tick: async (t) => {
+        for (let waited = 0; waited < 3000 && !(els.length && last().src); waited += 10) await new Promise((r) => setTimeout(r, 10));
         last().currentTime = t;
         last().emit("timeupdate");
       },
-      end: () => {
+      // A real element cannot end before it has started. The player starts a file after an asynchronous lookup, so a test that sends "ended"
+      // right after pressing Play used to race it (under load the first file was skipped and the queue ended up one ayah ahead: the cause
+      // of the old queue.spec.ts flakiness). Wait, for up to 3 s, until the file is actually playing; after that behave as before.
+      end: async () => {
+        for (let waited = 0; waited < 3000 && !(els.length && !last().paused); waited += 10) await new Promise((r) => setTimeout(r, 10));
         const e = last();
         e.ended = true;
         e.paused = true;
@@ -402,3 +434,78 @@ export const stubSensors = (context: BrowserContext, opts: { ios?: boolean } = {
       });
     }
   }, opts);
+
+// ---- Phase 10: the ayah text search (api.alquran.cloud /search/<text>/<surah or all>/<edition>)
+
+export interface SearchMock {
+  /** every request, as "text|scope|edition" */
+  calls: string[];
+  mode: "ok" | "http500" | "network";
+  /** milliseconds to hold the answer for a given text, to make a slow request */
+  delays: Record<string, number>;
+}
+
+const SEARCH_FIXTURES: Record<string, string> = {
+  "mercy|all|en.pickthall": "alquran-search-mercy-all-pickthall.json",
+  "ease|all|en.pickthall": "alquran-search-ease-all-pickthall.json",
+  "ease|94|en.pickthall": "alquran-search-ease-94-pickthall.json",
+};
+/** The recorded answers are REAL responses of the upstream (tests/fixtures/alquran-search-*.json). A scope the recording does not have is
+ * derived from the recorded "all" answer by keeping that surah's matches, which is what the upstream does. Anything else is "nothing found". */
+export const RABBI_TEXT = String.fromCodePoint(0x631, 0x628, 0x64a);
+export const RAHMAT_TEXT = String.fromCodePoint(0x631, 0x62d, 0x645, 0x62a); // "mercy" in Urdu
+
+export async function mockSearch(context: BrowserContext, mode: SearchMock["mode"] = "ok"): Promise<SearchMock> {
+  const state: SearchMock = { calls: [], mode, delays: {} };
+  await context.route(/https:\/\/api\.alquran\.cloud\/v1\/search\//, async (route: Route) => {
+    const parts = new URL(route.request().url()).pathname.split("/"); // "", v1, search, text, scope, edition
+    const text = decodeURIComponent(parts[3] ?? "");
+    const scope = parts[4] ?? "all";
+    const edition = parts[5] ?? "";
+    const key = `${text}|${scope}|${edition}`;
+    state.calls.push(key);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    if (state.delays[text]) await new Promise((r) => setTimeout(r, state.delays[text]));
+    const headers = { "access-control-allow-origin": "*" };
+    let body: string | null = null;
+    const file =
+      SEARCH_FIXTURES[key] ??
+      (text === RABBI_TEXT && scope === "all" && edition === "quran-simple" ? "alquran-search-rabbi-all-simple.json" : text === RAHMAT_TEXT && scope === "all" && edition === "ur.jalandhry" ? "alquran-search-rahmat-all-jalandhry.json" : null);
+    if (file) body = fixture(file);
+    else if (scope !== "all" && SEARCH_FIXTURES[`${text}|all|${edition}`]) {
+      const all = JSON.parse(fixture(SEARCH_FIXTURES[`${text}|all|${edition}`]!)) as { data: { count: number; matches: Array<{ surah: { number: number } }> } };
+      const matches = all.data.matches.filter((m) => m.surah.number === Number(scope));
+      body = matches.length ? JSON.stringify({ ...all, data: { count: matches.length, matches } }) : null;
+    }
+    try {
+      if (!body) return await route.fulfill({ status: 404, contentType: "application/json", headers, body: fixture("alquran-search-none.json") });
+      return await route.fulfill({ status: 200, contentType: "application/json", headers, body });
+    } catch {
+      // the page cancelled this request while it was being held (a newer search replaced it)
+    }
+  });
+  return state;
+}
+
+// ---- Phase 12: a dua's transliteration (api.alquran.cloud /ayah/<s>:<a>/en.transliteration). 2:127 is the REAL recorded answer (tests/fixtures); any other ayah
+// gets the same shape with an obviously fake text, so a page can only show what the service returned.
+
+export interface TransliterationMock {
+  /** every request, as "surah:ayah" */
+  calls: string[];
+  mode: "ok" | "http500" | "network";
+}
+export async function mockTransliteration(context: BrowserContext, mode: TransliterationMock["mode"] = "ok"): Promise<TransliterationMock> {
+  const state: TransliterationMock = { calls: [], mode };
+  await context.route(/https:\/\/api\.alquran\.cloud\/v1\/ayah\/\d+:\d+\/en\.transliteration/, (route: Route) => {
+    const ref = /ayah\/(\d+:\d+)\//.exec(route.request().url())![1]!;
+    state.calls.push(ref);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    const headers = { "access-control-allow-origin": "*" };
+    if (ref === "2:127") return route.fulfill({ status: 200, contentType: "application/json", headers, body: fixture("alquran-translit-2-127.json") });
+    return route.fulfill({ status: 200, contentType: "application/json", headers, body: JSON.stringify({ code: 200, status: "OK", data: { text: `Test transliteration ${ref}` } }) });
+  });
+  return state;
+}

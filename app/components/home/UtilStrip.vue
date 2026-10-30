@@ -17,8 +17,11 @@ const nextValue = computed(() => {
 const prayerBusy = computed(() => prayer.status.value === "loading" || (prayer.status.value === "ready" && !prayer.next.value && prayer.refreshing.value));
 
 const qibla = computed(() => (location.value ? `${Math.round(qiblaBearing(location.value.lat, location.value.lon))}°` : ""));
-const goal = computed(() => (state.value?.goal ? `${state.value.goal.count} / ${state.value.goal.target} ayahs` : "Not set"));
-const hifz = computed(() => (state.value?.hifz === "has-data" ? "Open Hifz" : "Not started"));
+const goal = computed(() => {
+  const g = state.value?.goal;
+  return g ? (g.target === null ? `${g.count} ayahs` : `${g.count} / ${g.target} ayahs`) : "Not set";
+});
+const hifz = computed(() => (state.value?.hifz !== "has-data" ? "Not started" : state.value.hifzDue > 0 ? `${state.value.hifzDue} to practice` : "Open Hifz"));
 
 async function setLocation() {
   if (await requestDevice()) await prayer.load();

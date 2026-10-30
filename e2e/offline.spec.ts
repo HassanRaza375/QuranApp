@@ -44,7 +44,7 @@ test.describe("offline shell", () => {
     await expect(tab.getByRole("heading", { name: "Foundation check" })).toBeVisible();
     const tab2 = await context.newPage();
     await tab2.goto("/some/route/that/does/not/exist");
-    await expect(tab2.getByRole("heading", { name: "This page is not rebuilt yet" })).toBeVisible();
+    await expect(tab2.getByRole("heading", { name: "Page not found" })).toBeVisible();
   });
 
   test("API routes are not answered with the shell", async ({ page, context }) => {

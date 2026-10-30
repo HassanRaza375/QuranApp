@@ -254,7 +254,7 @@ test.describe("a pieced-together story (Adam and Iblis)", () => {
 });
 
 test.describe("entities and links", () => {
-  test("a person chip opens a sheet with an Open page link; a place chip says its page comes later and has no link; events are inert", async ({ page }) => {
+  test("a person chip opens a sheet with an Open page link; a place chip opens a sheet that links to the place; an event chip is a link", async ({ page }) => {
     await open(page, "/stories/yusufstory");
     const person = page.locator('[data-testid="entity-chip"][data-kind="person"]').first();
     await person.click();
@@ -268,18 +268,17 @@ test.describe("entities and links", () => {
     await expect(person).toBeFocused(); // focus returns to the chip
     const place = page.locator('[data-testid="entity-chip"][data-kind="place"]').first();
     await place.click();
-    await expect(page.getByTestId("entity-later")).toHaveText("Its own page arrives in a later phase.");
-    await expect(page.getByTestId("entity-open")).toHaveCount(0);
+    await expect(page.getByTestId("entity-open")).toHaveAttribute("href", /^\/places\//);
     await page.keyboard.press("Escape");
     await open(page, "/stories/adamandiblis");
     const events = page.getByTestId("event-chip");
     if ((await events.count()) > 0) {
-      await expect(events.first()).toHaveJSProperty("tagName", "SPAN"); // not a link or a button
-      await expect(page.getByTestId("events-note")).toContainText("Events arrive in a later phase");
+      await expect(events.first()).toHaveAttribute("href", /^\/events\//);
     }
   });
 
   test("no link on a story page, the directory or a person's Story tab goes to a missing route", async ({ page }) => {
+    test.setTimeout(120_000); // up to 40 page loads: it took 22 to 37 s on a busy machine against the 30 s default
     const seen = new Set<string>();
     for (const path of ["/stories/yusufstory", "/stories/adamandiblis", "/stories", "/persons/yusuf"]) {
       await open(page, path, path === "/stories" ? "stories-list" : path.startsWith("/persons") ? "person-page" : "story-page");
@@ -292,7 +291,7 @@ test.describe("entities and links", () => {
     for (const href of [...seen].slice(0, 40)) {
       await page.goto(href);
       await expect(page.getByRole("heading", { level: 1 }).first(), href).toBeVisible();
-      await expect(page.getByRole("heading", { level: 1 }).first(), href).not.toHaveText("This page is not rebuilt yet");
+      await expect(page.getByRole("heading", { level: 1 }).first(), href).not.toHaveText("Page not found");
     }
   });
 

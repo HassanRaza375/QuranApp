@@ -38,7 +38,6 @@ const WHOLE_KEYS = [
   "tafsirDefaultAuthor",
   "reciter",
   "prayerSettings",
-  "quran:additional-modules-enabled:v1",
   CALC_KEY,
   "quran:download-prefs:v1",
   "quran:hijri-adjust:v1",

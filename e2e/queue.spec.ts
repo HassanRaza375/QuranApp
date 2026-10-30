@@ -20,7 +20,7 @@ test.afterEach(() => {
   expect(leaks, "a test reached a real upstream API").toEqual([]);
 });
 
-type Hooks = { srcs: string[]; rates: number[]; fail: boolean; playError: string | null; stall: boolean; duration: number; tick(t: number): void; end(): void; emit(n: string): void };
+type Hooks = { srcs: string[]; rates: number[]; fail: boolean; playError: string | null; stall: boolean; duration: number; tick(t: number): void | Promise<void>; end(): void | Promise<void>; emit(n: string): void };
 const A = (page: Page) => page.evaluate(() => ({ ...(window as unknown as { __audio: Hooks }).__audio }));
 const hook = <K extends keyof Hooks>(page: Page, k: K, v: Hooks[K]) => page.evaluate(([key, val]) => (((window as unknown as { __audio: Record<string, unknown> }).__audio[key as string]) = val), [k, v] as const);
 const tick = (page: Page, t: number) => page.evaluate((x) => (window as unknown as { __audio: Hooks }).__audio.tick(x), t);
@@ -53,7 +53,8 @@ test.describe("Play page", () => {
     await page.getByTestId("play-page").click();
     await expect(page.getByTestId("play-page")).toHaveText("Pause page");
     await expect(page.getByTestId("play-page")).toHaveAttribute("aria-pressed", "true");
-    expect((await A(page)).srcs).toEqual([url(1, list[0]!.s, list[0]!.a)]);
+    // the button turns to "Pause page" while the first file is still being looked up; the element is asked to play a moment later
+    await expect.poll(async () => (await A(page)).srcs).toEqual([url(1, list[0]!.s, list[0]!.a)]);
     await expect(page.getByTestId("mini-title")).toHaveText("Page 3");
     await expect(page.getByTestId("mini-status")).toHaveText(`${name(list[0]!.s)} ${list[0]!.s}:${list[0]!.a} · ayah 1 of ${list.length}`);
     await expect(mark(page, list[0]!.s, list[0]!.a)).toHaveAttribute("aria-current", "true");

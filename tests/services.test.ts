@@ -30,4 +30,10 @@ describe("services", () => {
     expect(SajdaService.getAllSajdas()).toBe("https://q2.example/v1/sajda/quran-uthmani");
     expect(PageService.getPageByNumber(604)).toBe("https://q2.example/v1/page/604/quran-uthmani");
   });
+
+  it("search uses the second API, encodes the text, and passes the scope and edition through (Phase 10)", async () => {
+    const { SearchService } = await import("../app/services/search.service");
+    expect(SearchService.search({ text: "mercy", scope: "all", edition: "en.pickthall" })).toBe("https://q2.example/v1/search/mercy/all/en.pickthall");
+    expect(SearchService.search({ text: "a b/c?", scope: 2, edition: "ur.jalandhry" })).toBe("https://q2.example/v1/search/a%20b%2Fc%3F/2/ur.jalandhry");
+  });
 });

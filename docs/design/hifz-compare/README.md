@@ -1,0 +1,9 @@
+# Hifz: prototype and build, side by side (Phase 14)
+
+Made by `node scripts/screenshots/phase-14-hifz.mjs` against a production build (it needs the internet: the Arabic is the reader's real text from quranapi.pages.dev). The progress is a seeded sample matching the prototype's (Al-Mulk 2 ayahs started, Al-Ikhlaas 4: strong, strong, needs work, memorized). `proto-*` files are the prototype (`docs/design/prototype-hifz.html`) in the same state; the others are the build. Pairs compare layout and behaviour, not words or numbers.
+
+**Looked at one by one (2026-10-28), in the build:** home-desktop-light, home-mobile-dark, empty-desktop-light, add-range-mobile-light, review-hidden-mobile-light, review-revealed-desktop-light, review-verdict-mobile-dark, learn-1-listen-desktop-light, learn-2-readalong-desktop-light, learn-3-fade-mobile-dark, learn-4-recite-desktop-light, learn-5-join-mobile-dark, check-mobile-light, surah-desktop-light, surah-mobile-dark, done-desktop-light; and in the prototype: proto-home-desktop-light, proto-review-hidden-mobile-light, proto-review-slip-desktop-light. Several were looked at on the build just before two spacing fixes (more room under the verse, a neater hidden-word shape); the files here were regenerated afterwards, and the ones that changed visibly (learn-3, learn-4) were looked at again.
+
+**Not looked at:** the other light/dark and desktop/mobile variants of the same scenes (home-desktop-dark, home-mobile-light, the other review states in dark and desktop, add-desktop-light, add-mobile-light, join-mobile-light, join-weak-mobile-light, learn-* in the other themes, surah-mobile-light, surah-long-desktop-light), and the remaining proto-* files.
+
+**Differences that show:** one progress bar instead of a segment per step; the Done tick is the accent (gold is for verse markers and Hifz mastery); the app's header and sidebar around the page; the verdict wording; real counts and times.

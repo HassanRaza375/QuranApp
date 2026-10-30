@@ -1,0 +1,41 @@
+# Roadmap
+
+Kept in step with `STATUS_2026-10-22.md` and `PROGRESS.md` (which wins if they differ). This file lives in `docs/`; the copy in the context pack is no longer the source.
+
+## Built (verified in automated tests; real-device checks pending)
+
+Shell, Home, Settings, Search, Downloads (and Surah audios), Surah listing (Surah, Juz, Page), Surah reader, Prayer & Qibla, Library, Prophets & People (directory, timeline, person), Story reader and Stories directory, Ramadan (Today, Timetable, Events), Per page, Tasbeeh, Sajda, Asma-ul-Husna, and the player (whole surah, per ayah, queues).
+
+## Prototyped (2026-10-22), to build
+
+Two prototypes are agreed: `design/prototype-remaining-pages.html` and `design/prototype-hifz.html` (map: `design/PROTOTYPE_MAP.md`). Each phase starts with a short legacy report and a plan, waits for approval, then builds (workflow in `CLAUDE.md`). Every sample in the prototypes is listed in `CONTENT_TO_VERIFY.md`; real data wins over the prototypes everywhere.
+
+| Phase | Page | Routes | Notes |
+| --- | --- | --- | --- |
+| 10 | Search | `/search` | **Built, awaiting review** (`phases/phase-10-search.md`): ayahs, surahs, people, stories, notes; every legacy filter behind one Filters control; history stays `string[]`. Ayah search is online only (level C) with a designed offline state |
+| 11 | Downloads and offline manager | `/downloads`, `/surah-audios/[id]` | **Built, awaiting review** (`phases/phase-11-downloads.md`): text, opt-in tafsir and one reciter's audio per surah, the whole-Qur'an text, a queue with offline and Wi-Fi waits, saved audio played through the service worker; `/surah-audios/[id]` rebuilt small. Device checks still open: offline seek, reopen offline, Al-Baqarah, iPhone Safari, the 7-day Safari check |
+| 12 | Knowledge modules | `/peoples`, `/places`, `/themes`, `/duas`, `/events`, `/signs`, `/commands`, each with `/[id]` (14 routes) | **Built, awaiting review** (`phases/phase-12-knowledge.md`): all seven modules on one list and one detail page, the Library's seven legacy bookmark kinds, Search's Duas and Knowledge base groups, story and person links |
+| 13 | Daily Fiqh (Wajibat) | `/fiqh`, `/fiqh/choose-marja`, `/fiqh/glossary`, `/fiqh/[category]`, `/fiqh/[category]/[topic]` | **Accepted 2026-10-28 (13a and 13b):** the five routes on the legacy data, the Library kind, the Search group, the guided steps, recitations and the live panel; the four helpers are on in production with "Not scholar-reviewed" (owner decision: no sign-off required). Ja'fari only for now; marja' choice on `quran:fiqh-prefs:v1`. The legacy category and topic ids are used |
+| 14 | Hifz | `/hifz`, `/hifz/session`, a surah page | New simple mode (`design/prototype-hifz.html`); word-slip grading, new key `quran:hifz-words:v1`, legacy engine rules and data kept. Grading: 0 slips and no hints is `good`, any slip is `again`, `easy` only from an optional "This was easy" button. Read along highlights the whole ayah (no word timings exist). See `DECISIONS.md` |
+| 15 | Reading goals, Calendar, About, Sitemap, Surah videos, `/juz/[id]` | `/goals`, `/calender`, `/about`, `/sitemap`, `/surah-vedios`, `/juz/[id]` | **Built, awaiting review** (`phases/phase-15-goals-calendar.md`): goals on the legacy record (a finish-by-date amount worked out from where you are, no "behind", a new goal pauses the main one with Undo), a Hijri month calendar on the service's own dates with reminders that repeat by Hijri or Gregorian date, the three pages without a prototype (approved at a screenshot checkpoint), and the juz redirect |
+
+## Not yet prototyped
+
+| Page | Routes | Notes |
+| --- | --- | --- |
+| About, Sitemap, Surah videos | `/about`, `/sitemap`, `/surah-vedios` | Keep routes unchanged. Apply the design system; no prototype yet |
+| Poets | `/poets`, `/poets/[slug]` | Deferred with no stub (2026-10-29): shows "Page not found"; no nav row. A later phase with a content review |
+
+Decided: `/juz/[id]` redirects to the reader at the juz's first ayah (`DECISIONS.md`).
+
+## How to start the next page
+
+1. Ask for a "legacy report" for the page (read-only access to the legacy repo).
+2. Write the plan (the report, what the prototype adds and drops, the design, risks, decisions needed) in `phases/phase-NN-<name>-plan.md` and wait for approval.
+3. Build, verify (`npm run verify`, browser pass at 1280 and 375 px, light and dark), then write the phase doc and the page doc and update `PROGRESS.md`.
+
+## Standing work
+
+- Device checks: `DEVICE_CHECKS.md`.
+- Content review: `CONTENT_TO_VERIFY.md`.
+- Cutover list: `DECISIONS.md`, section 5, and the checklist in `PLAN.md`.

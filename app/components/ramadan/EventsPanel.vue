@@ -70,7 +70,7 @@ const noMonths = computed(() => state.value === "needs-connection" || state.valu
       <p class="mt-1 text-[13px] text-ink-2">Each month’s dates come from the calendar service and are saved on this device after that.</p>
       <Button variant="outline" class="mt-3 min-h-11 md:min-h-9" data-testid="events-retry" @click="retry">Try again</Button>
     </div>
-    <div v-else-if="state === 'idle' || (state === 'loading' && !list.length)" class="mt-4 space-y-2" aria-busy="true" aria-label="Loading events" data-testid="events-loading"><Skeleton class="h-16 w-full" /><Skeleton class="h-16 w-full" /><Skeleton class="h-16 w-full" /></div>
+    <div v-else-if="state === 'idle' || (state === 'loading' && !list.length)" class="mt-4 space-y-2" role="status" aria-busy="true" aria-label="Loading events" data-testid="events-loading"><Skeleton class="h-16 w-full" /><Skeleton class="h-16 w-full" /><Skeleton class="h-16 w-full" /></div>
     <template v-else>
       <p class="mt-3 text-[12.5px] text-ink-2" data-testid="events-basis">{{ basis }}<template v-if="adjust"> {{ adjust }}.</template></p>
       <p v-if="few" class="mt-2 rounded-lg border border-dashed px-3 py-2 text-[13px]" data-testid="events-few">{{ FEW_LINE }}</p>

@@ -10,8 +10,10 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:helpers": "playwright test e2e/fiqhHelpers.spec.ts",
     "verify": "npm run build && npm run lint && npm test && npm run test:dev && npm run test:e2e",
-    "test:dev": "node scripts/dev-smoke.mjs"
+    "test:dev": "node scripts/dev-smoke.mjs",
+    "test:a11y": "playwright test --config scripts/measure/playwright.config.ts a11y"
   },
   "dependencies": {
     "@fontsource-variable/instrument-sans": "^5.3.0",
@@ -36,6 +38,7 @@
     "vue-sonner": "^2.0.9"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@iconify-json/lucide": "^1.2.144",
     "@nuxt/eslint": "^1.12.1",
     "@nuxt/icon": "^2.5.1",

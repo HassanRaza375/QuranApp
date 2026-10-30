@@ -15,7 +15,6 @@ export interface NavGroup {
   id: string;
   label: string;
   items: NavItem[];
-  optional?: "literaryModules";
 }
 
 export const HOME_ITEM: NavItem = { label: "Home", to: "/", icon: "lucide:house", phase: 1 };
@@ -48,13 +47,11 @@ export const NAV: NavGroup[] = [
     { label: "Prayer times", to: "/prayerTime", icon: "lucide:clock", phase: 5 },
     { label: "Qibla", to: "/qibla-direction", icon: "lucide:compass", phase: 5 },
     { label: "Ramadan", to: "/ramadan", icon: "lucide:moon", phase: 8 },
+    { label: "Calendar", to: "/calender", icon: "lucide:calendar", phase: 15 },
     { label: "Tasbeeh", to: "/tasbeeh", icon: "lucide:circle-dot", phase: 9 },
     { label: "Sajda", to: "/sajda", icon: "lucide:arrow-down-to-line", phase: 9 },
     { label: "Asma-ul-Husna", to: "/asma-ul-husna", icon: "lucide:badge-info", phase: 9 },
     { label: "Daily Fiqh", to: "/fiqh", icon: "lucide:scale", phase: 13 },
-  ] },
-  { id: "literary", label: "Literary modules", optional: "literaryModules", items: [
-    { label: "Poets", to: "/poets", icon: "lucide:feather", phase: 12 },
   ] },
 ];
 export const NAV_FOOTER: NavItem[] = [

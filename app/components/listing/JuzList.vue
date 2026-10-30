@@ -22,7 +22,7 @@ const surahName = (n: number) => SURAH_ROWS[n - 1]!.name;
         >
           {{ j.n }}
         </span>
-        <NuxtLink :to="juzHref(j.startSurah, j.startAyah)" class="flex min-h-14 min-w-0 flex-1 flex-col justify-center py-2" :aria-label="`Open Juz ${j.n}`">
+        <NuxtLink :to="juzHref(j.startSurah, j.startAyah)" class="flex min-h-14 min-w-0 flex-1 flex-col justify-center py-2">
           <span class="font-serif text-[16px] font-medium">Juz {{ j.n }}</span>
           <span class="block text-[12.5px] text-ink-2">Starts at {{ surahName(j.startSurah) }} {{ j.startSurah }}:{{ j.startAyah }} · Pages {{ j.firstPage }}–{{ j.lastPage }}</span>
           <span v-if="j.midPageStart" class="block text-[12.5px] text-ink-2">Starts partway down page {{ j.firstPage }}</span>

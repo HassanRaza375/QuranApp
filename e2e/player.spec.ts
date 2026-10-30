@@ -16,7 +16,7 @@ test.afterEach(() => {
   expect(leaks, "a test reached a real upstream API").toEqual([]);
 });
 
-type Hooks = { srcs: string[]; rates: number[]; fail: boolean; playError: string | null; stall: boolean; duration: number; tick(t: number): void; end(): void; emit(n: string): void };
+type Hooks = { srcs: string[]; rates: number[]; fail: boolean; playError: string | null; stall: boolean; duration: number; tick(t: number): void | Promise<void>; end(): void | Promise<void>; emit(n: string): void };
 const A = (page: Page) => page.evaluate(() => ({ ...(window as unknown as { __audio: Hooks }).__audio }));
 const hook = <K extends keyof Hooks>(page: Page, k: K, v: Hooks[K]) => page.evaluate(([key, val]) => (((window as unknown as { __audio: Record<string, unknown> }).__audio[key as string]) = val), [k, v] as const);
 const tick = (page: Page, t: number) => page.evaluate((x) => (window as unknown as { __audio: Hooks }).__audio.tick(x), t);
@@ -79,8 +79,9 @@ test.describe("nothing plays by itself", () => {
     await openListing(page);
     await page.getByTestId("mini-toggle").click();
     await expect(page.getByTestId("mini-toggle")).toHaveAccessibleName("Pause");
+    // the button turns to Pause while the file is still being looked up; the element is asked to play a moment later, so wait for it (a one-shot read failed once in a full run)
+    await expect.poll(async () => (await A(page)).srcs).toHaveLength(1);
     const a = await A(page);
-    expect(a.srcs).toHaveLength(1);
     expect(a.srcs[0]).toMatch(/\/2\/18\.mp3$/); // reciter 2 (Abu Bakr Al Shatri), surah 18
     expect(a.srcs[0]).not.toContain("audio.test");
   });
@@ -134,18 +135,17 @@ test.describe("the mini player and the sheet", () => {
     expect((await A(page)).srcs[0]).toMatch(/\/2\/18\.mp3$/);
   });
 
-  test("Save audio is a visible, real button with aria-disabled and its reason; no offline claim anywhere in the sheet", async ({ page }) => {
+  test("Save audio is a real, enabled button for a surah (with the size); it says what a saved surah covers, and does nothing until pressed", async ({ page }) => {
     await openListing(page);
     await start(page, 1);
     await openSheet(page);
     const save = page.getByTestId("player-save");
     expect(await save.evaluate((el) => el.tagName)).toBe("BUTTON");
-    await expect(save).toHaveAttribute("aria-disabled", "true");
-    await expect(save).toHaveAccessibleDescription("Saving audio arrives with Downloads");
-    await save.click({ force: true });
-    expect((await A(page)).srcs).toHaveLength(1); // nothing was requested
-    const text = (await page.getByTestId("player-sheet").textContent())!;
-    expect(text).not.toMatch(/plays? offline|works offline|available offline/i);
+    await expect(save).toBeEnabled();
+    await expect(save).not.toHaveAttribute("aria-disabled", "true");
+    await expect(save).toContainText("Save audio to listen offline · ");
+    await expect(page.getByTestId("save-note")).toContainText("plays the whole recitation");
+    expect((await A(page)).srcs).toHaveLength(1); // nothing was requested by showing it
   });
 });
 
@@ -314,6 +314,7 @@ test.describe("Space and the keyboard", () => {
     await start(page, 1);
     await openSheet(page);
     const slider = page.getByTestId("player-slider");
+    await expect(page.getByTestId("player-status")).toHaveText("Playing"); // not while it still says Loading…: Space would land on a file that is not playing yet
     await slider.focus();
     await page.keyboard.press("Space");
     await expect(page.getByTestId("player-status")).toHaveText(/Paused/);
@@ -408,9 +409,10 @@ test.describe("errors never leave a spinner", () => {
     await openListing(page);
     await hook(page, "fail", true);
     await page.getByTestId("surah-row-1").getByTestId("row-play").click();
-    const msg = (await page.getByTestId("mini-status").textContent())!;
-    expect(msg).toMatch(/needs a connection/);
-    expect(msg).not.toMatch(/offline/i);
+    // The status first reads "Loading…" and then the failure: wait for it (the assertion retries) instead of reading it once.
+    const status = page.getByTestId("mini-status");
+    await expect(status).toHaveText(/needs a connection/);
+    await expect(status).not.toHaveText(/offline/i);
   });
 });
 

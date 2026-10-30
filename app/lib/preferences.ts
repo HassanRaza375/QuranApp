@@ -32,7 +32,6 @@ export const KEYS = {
   reciter: "reciter", // JSON object, resolved by name per surah
   accessibility: "quran:accessibility:v1", // JSON {reducedMotion, highContrast, largeTouchTargets, arabicFontScale}
   audioPrefs: "quran:audio-prefs:v1", // JSON {playbackRate, repeatOne, autoAdvance}
-  literaryModules: "quran:additional-modules-enabled:v1", // JSON boolean
   hijriAdjust: "quran:hijri-adjust:v1", // NEW (approved): JSON {days}
   calc: CALC_KEY, // NEW: JSON {sunniMethod, jafariMethod, asr}; the legacy app ignores it
   wifiOnly: "quran:download-prefs:v1", // NEW: JSON {wifiOnly}
@@ -57,7 +56,6 @@ export interface Preferences {
   reducedMotion: boolean;
   highContrast: boolean;
   largeTouchTargets: boolean;
-  literaryModules: boolean;
   hijriAdjust: number;
   calc: PrayerCalc;
   wifiOnly: boolean;
@@ -65,6 +63,8 @@ export interface Preferences {
   notifications: NotifyConfig;
   /** the Daily Fiqh marja' (separate from the calculation method); null = not chosen */
   marjaId: string | null;
+  /** the language Daily Fiqh rulings are read in (the legacy `lang` field of the same record): English, Urdu or both */
+  fiqhLang: "en" | "ur" | "both";
 }
 
 export const DEFAULTS: Preferences = {
@@ -80,13 +80,13 @@ export const DEFAULTS: Preferences = {
   reducedMotion: false,
   highContrast: false,
   largeTouchTargets: false,
-  literaryModules: false,
   hijriAdjust: 0,
   calc: DEFAULT_CALC,
   wifiOnly: false,
   verseLayout: "ar",
   notifications: DEFAULT_NOTIFY,
   marjaId: null,
+  fiqhLang: "en",
 };
 
 const isOneOf = <T extends string>(list: readonly T[], v: unknown): v is T => typeof v === "string" && (list as readonly string[]).includes(v);
@@ -173,10 +173,6 @@ export const DESCRIPTORS: Descriptors = {
     read: () => bool(accessibility().largeTouchTargets, false),
     write: (v) => void mergeJSON(KEYS.accessibility, { largeTouchTargets: v }),
   },
-  literaryModules: {
-    read: () => bool(getJSON<unknown>(KEYS.literaryModules, false), false),
-    write: (v) => void setJSON(KEYS.literaryModules, v),
-  },
   hijriAdjust: {
     read: () => clamp(Math.round(num(getJSON<Record<string, unknown>>(KEYS.hijriAdjust, {}).days, 0)), HIJRI_ADJUST.min, HIJRI_ADJUST.max),
     write: (v) => void setJSON(KEYS.hijriAdjust, { days: clamp(Math.round(v), HIJRI_ADJUST.min, HIJRI_ADJUST.max) }),
@@ -210,6 +206,13 @@ export const DESCRIPTORS: Descriptors = {
       return typeof id === "string" && MARJA_IDS.includes(id) ? id : null;
     },
     write: (v) => void mergeJSON(KEYS.marja, { marjaId: v && MARJA_IDS.includes(v) ? v : null, updatedAt: Date.now() }),
+  },
+  fiqhLang: {
+    read: () => {
+      const l = objectOf(KEYS.marja).lang;
+      return l === "ur" || l === "both" ? l : "en";
+    },
+    write: (v) => void mergeJSON(KEYS.marja, { lang: v === "ur" || v === "both" ? v : "en", updatedAt: Date.now() }),
   },
 };
 
@@ -245,13 +248,12 @@ export function preferencesForKey(storageKey: string | null): (keyof Preferences
     [KEYS.reciter]: ["reciter"],
     [KEYS.accessibility]: ["arabicScale", "reducedMotion", "highContrast", "largeTouchTargets"],
     [KEYS.audioPrefs]: ["playbackRate", "autoplay"],
-    [KEYS.literaryModules]: ["literaryModules"],
     [KEYS.hijriAdjust]: ["hijriAdjust"],
     [KEYS.calc]: ["calc"],
     [KEYS.wifiOnly]: ["wifiOnly"],
     [KEYS.verseLayout]: ["verseLayout"],
     [KEYS.notifications]: ["notifications"],
-    [KEYS.marja]: ["marjaId"],
+    [KEYS.marja]: ["marjaId", "fiqhLang"],
   };
   return map[storageKey] ?? [];
 }

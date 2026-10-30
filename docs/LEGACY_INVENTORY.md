@@ -63,7 +63,9 @@ What the legacy app (its own repo; `legacy/` here holds only the files this proj
 | `quran:bookmarks:added-at:v1` | JSON map key to timestamp | `useBookmarks` |
 | `quran:library:v1` | JSON `{collections[], itemMeta{key: {note, tags, collectionIds, updatedAt}}}` | `useLibrary` |
 | `quran:reading-progress:v1`, `quran:reading-goals:v1` | JSON | progress, goals |
-| `quran:hifz:v2` (reads `quran:hifz:v1` once to migrate), `quran:hifz-session:v1` | JSON | Hifz |
+| `quran:hifz:v2` (reads `quran:hifz:v1` once to migrate), `quran:hifz-session:v1` | JSON | Hifz (Phase 14 reads and writes both in the legacy shape and keeps unknown fields; the session may carry one optional extra field, `mode: "check"`) |
+| `quran:hifz-words:v1` | JSON `{v:1, ayahs:{"<surah>:<ayah>":{"<wordIndex>":{word, slipDays[], cleanDays[], last}}}}` | **new, revamp only** (Phase 14): the words slipped on. The legacy app ignores it |
+| `quran:hifz-timing:v1` | JSON `{v:1, sessions, secs[]}` | **new, revamp only** (Phase 14): finished daily sessions and the last 60 seconds-per-item, for the time estimate |
 | `quran:ramadan:v1`, `quran:reminders:v1`, `quran:tasbeeh:v1` | JSON | Ramadan, reminders, Tasbeeh |
 | `quran:persons-study:v1`, `quran:search-history:v1` | JSON | persons study, search |
 | `quran:downloads:v1` | JSON manifest of downloaded surahs | `useDownloads` |
@@ -127,6 +129,19 @@ Reading a raw key through `JSON.parse` fails silently, so the revamp's `app/lib/
 | `tafsirDefaultAuthor` | The Tafsir source (`Ibn Kathir`, `Maarif Ul Quran`, `Tazkirul Quran`) pre-selected for the per-ayah tafsir panel. Written when a source is picked in the reader or `AyahReferenceCard`, and settable (or clearable) in Settings; shared by both places. |
 
 In the revamp's preferences store these map to `verseDisplay`, `translationLang` and `tafsirAuthor`, with the same keys and raw formats.
+
+## The legacy goals, calendar and small pages (read in Phase 15)
+
+Read from legacy commit 7120b6c (`goals/index.vue`, `useReadingGoals.ts`, `calender.vue`, `useReminders.ts`, `islamicEvents.js`, `about.vue`, `sitemap.vue`, `surah-vedios.vue`, `juz/[id].vue`). The full report is in `phases/phase-15-goals-calendar-plan.md`.
+
+- **`quran:reading-goals:v1`** = `{ goals[], activeGoalId, dailyLog }`. A goal: `id, type, label, startDate, targetDate, dailyAyahTarget, startAbsoluteAyah, preferredDays, status, createdAt`. Types: `finish-by-date`, `ayahs-per-day`, `pages-per-day`, `juz-per-week`, `custom`; statuses `active`, `paused`, `completed`, `abandoned`. The amount is turned into ayahs a day when the goal is made; progress is the saved place minus `startAbsoluteAyah`.
+- **Things the revamp does differently on purpose:** no streak (computed and shown with a fire icon by the legacy), no "Behind pace" catch-up amount, no blocking delete dialog; a new goal pauses the main goal (the legacy left it `active`); `completed` is set for finish-by-date goals (the legacy never set it).
+- **Bugs found:** the wizard's earliest date is `new Date().toISOString().slice(0, 10)`, the UTC date (the file's own header warns about exactly this); `recurringYearly` is never set by the UI and never read by the lists; the calendar polls for a saved place every 100 ms for ever and never loads without one.
+- **`quran:reminders:v1`** = `[{ id, title, date, note, recurringYearly, done, createdAt }]`; the legacy lists show upcoming and overdue, done ones hidden. The revamp keeps this shape and adds an optional `repeat` field per reminder (the legacy app ignores it and keeps it when it edits the list).
+- **The legacy calendar** is a Gregorian month from AlAdhan `/v1/calendar` by saved place and fiqh, cached in `calendar_v2_<lat>_<lon>_<fiqh>_<m>_<y>` (one key per month, never expiring); it ignores the Hijri adjustment and shows Suhoor and Iftar for every day. The revamp never reads or writes those keys.
+- **The reader's log** (legacy): the ayah above the 35% line after a 400 ms pause, once a day; the revamp's reader writes the same key with its own 1.5 s rule (Phase 4A).
+- **Small pages:** Surah videos says "Coming Soon..." (no content exists); the Sitemap typed its counts; About named Vuetify and two services; `/juz/[id]` is a full-juz reader from `alquran.cloud` (the revamp redirects instead).
+- **New key in the revamp (additive):** `quran:calendar-prefs:v1`.
 
 ## PWA, as the legacy app ships it
 

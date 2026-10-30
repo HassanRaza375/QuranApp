@@ -59,7 +59,7 @@ const noRamadanDates = computed(() => plan.value.state === "unknown");
       <p class="mt-1 text-[13px] text-ink-2">Ramadan’s dates come from the calendar service and are saved on this device after that.</p>
       <Button variant="outline" class="mt-3 min-h-11 md:min-h-9" data-testid="dates-retry" @click="retry">Try again</Button>
     </div>
-    <div v-else-if="noRamadanDates" aria-busy="true" aria-label="Loading Ramadan" data-testid="dates-loading"><Skeleton class="h-28 w-full" /></div>
+    <div v-else-if="noRamadanDates" role="status" aria-busy="true" aria-label="Loading Ramadan" data-testid="dates-loading"><Skeleton class="h-28 w-full" /></div>
 
     <!-- before -->
     <section v-else-if="plan.state === 'before'" aria-labelledby="before-h" data-testid="before">
