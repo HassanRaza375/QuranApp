@@ -28,7 +28,9 @@ const check = async (name, fn) => {
 const must = (cond, msg) => {
   if (!cond) throw new Error(msg);
 };
-const get = (path, init) => fetch(base + path, { redirect: "manual", ...init });
+// A preview behind Vercel login needs the project's automation bypass secret (env VERCEL_AUTOMATION_BYPASS_SECRET). It is sent as a header and never printed or written.
+const bypass = process.env.VERCEL_AUTOMATION_BYPASS_SECRET ? { "x-vercel-protection-bypass": process.env.VERCEL_AUTOMATION_BYPASS_SECRET } : {};
+const get = (path, init) => fetch(base + path, { redirect: "manual", ...init, headers: { ...bypass, ...(init?.headers ?? {}) } });
 const head = async (path) => {
   const r = await get(path);
   return { r, text: await r.text() };
@@ -105,7 +107,7 @@ await check("sitemap.xml: 136 routes at one host, none of Poets, /foundation or 
 // ---- in a browser ----
 const browser = await chromium.launch();
 try {
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: "allow" });
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: "allow", extraHTTPHeaders: bypass });
   const page = await context.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -160,7 +162,7 @@ try {
   await context.close();
 
   // a clean first run: no storage, no worker
-  const fresh = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: "block" });
+  const fresh = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: "block", extraHTTPHeaders: bypass });
   const p2 = await fresh.newPage();
   const errs2 = [];
   p2.on("pageerror", (e) => errs2.push(e.message));
