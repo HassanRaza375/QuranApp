@@ -15,7 +15,7 @@ Say plainly what the app is, what stays on the device, which services it asks fo
 One narrow column, hairline dividers between sections, no cards, no emoji.
 
 1. **About**, and a one-sentence lede.
-2. **What stays on your device:** no account; your place, bookmarks, notes, goals, Hifz progress and settings are saved in this browser and not uploaded; a link to Settings, Data & privacy.
+2. **What stays on your device:** no account; "A fresh start: nothing from the older version of this app carries over to this address, so you begin with nothing saved." (Phase 16); your place, bookmarks, notes, goals, Hifz progress and settings are saved in this browser and not uploaded; a link to Settings, Data & privacy.
 3. **Where things come from:** the five services, each with its name (a link), its host, what it provides and what is sent to it.
 4. **The study pages:** how entries are grounded (each points to its ayahs; where one rests on tradition or interpretation it says so, in the data's own words) and the seven modules, each a link with its question.
 5. **What it is not:** not affiliated with any religious institution; nothing in it is a ruling; where traditions differ it shows them side by side; follow your own marja' or a local scholar.

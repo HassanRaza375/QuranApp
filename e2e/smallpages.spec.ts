@@ -33,6 +33,7 @@ test.describe("About", () => {
     await page.goto("/about");
     await expect(page.getByRole("heading", { level: 1, name: "About" })).toBeVisible();
     await expect(page.getByTestId("about-device")).toContainText("saved in this browser, on this device, and are not uploaded anywhere");
+    await expect(page.getByTestId("about-fresh")).toHaveText("A fresh start: nothing from the older version of this app carries over to this address, so you begin with nothing saved.");
     const rows = page.getByTestId("about-source");
     await expect(rows).toHaveCount(5);
     const hosts = await rows.evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.host!));

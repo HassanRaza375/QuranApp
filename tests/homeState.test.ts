@@ -233,12 +233,11 @@ describe("nav structure and state", () => {
     expect(normalizeNavOpen({ read: false, study: true, bogus: true })).toEqual({ read: false, study: true });
     expect(normalizeNavOpen("x")).toEqual({ read: true });
   });
-  it("Study holds Library and Downloads; five groups in the prototype's order", () => {
-    expect(NAV.map((g) => g.id)).toEqual(["read", "study", "knowledge", "worship", "literary"]);
+  it("Study holds Library and Downloads; four groups (Poets is deferred, no nav row)", () => {
+    expect(NAV.map((g) => g.id)).toEqual(["read", "study", "knowledge", "worship"]);
     const study = NAV.find((g) => g.id === "study")!.items.map((i) => i.label);
     expect(study).toContain("Library");
     expect(study).toContain("Downloads");
-    expect(NAV.at(-1)!.optional).toBe("literaryModules");
   });
   it("finds the group of the current page and a header title for every route", () => {
     expect(groupForPath("/bookmarks")).toBe("study");

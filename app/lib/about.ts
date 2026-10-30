@@ -27,6 +27,7 @@ export const ABOUT = {
   lede: "A local-first Qur’an companion: reading, translations, tafsir, audio, prayer times and study tools, kept on your device.",
   metaDescription: "About the Quran App: where its text, audio and prayer times come from, and what stays on your device.",
   what: "There is no account to make. Your place in the Qur’an, bookmarks, notes, reading goals, Hifz progress and settings are saved in this browser, on this device, and are not uploaded anywhere. Pages that need a connection say so, and parts you have opened or saved keep working without one.",
+  fresh: "A fresh start: nothing from the older version of this app carries over to this address, so you begin with nothing saved.",
   sources: "The app asks these services for what it does not hold itself. Like any website, a service can see your device’s network address when your device asks it for something.",
   grounding:
     "Each entry in the study pages (people, places, themes, duas, events, signs and commands) points to the ayahs it comes from. Where an entry rests on tradition or on scholars’ interpretation rather than on the Qur’an stating it, the entry says so, in words such as “Traditional identification”, “Scholarly interpretation” or “Disputed interpretation”.",

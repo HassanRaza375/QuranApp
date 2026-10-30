@@ -135,17 +135,17 @@ test.describe("desktop shell (1280px)", () => {
     await page.goto("/foundation");
     const nav = page.getByRole("navigation", { name: "Main" }).first();
     for (const g of ["Read", "Study", "Knowledge base", "Worship"]) await expect(nav.getByText(g, { exact: true })).toBeVisible();
-    await expect(nav.getByText("Literary modules")).toHaveCount(0); // hidden until enabled in Settings
+    await expect(nav.getByText("Literary modules")).toHaveCount(0); // Poets is deferred: no nav row
     await expect(page.getByRole("button", { name: "Open menu" })).toBeHidden();
     await page.getByRole("link", { name: "Surahs" }).first().click();
     const active = page.getByRole("link", { name: "Surahs" }).first();
     await expect(active).toHaveAttribute("aria-current", "page");
   });
 
-  test("the Literary modules group appears when the legacy flag is on", async ({ page }) => {
+  test("the legacy Literary modules flag adds nothing to the sidebar (Poets is deferred)", async ({ page }) => {
     await seed(page, { "quran:additional-modules-enabled:v1": "true" });
     await page.goto("/foundation");
-    await expect(page.getByRole("navigation", { name: "Main" }).first().getByText("Literary modules")).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Main" }).first().getByText("Literary modules")).toHaveCount(0);
   });
 
   test("the menu is a popover on desktop", async ({ page }) => {
@@ -214,9 +214,9 @@ test.describe("mobile shell (375px)", () => {
 });
 
 test.describe("shell basics", () => {
-  test("an unbuilt legacy route shows a clear message, not a blank page", async ({ page }) => {
-    await page.goto("/poets"); // Poets is deferred (Phase 16 decides); /goals was the example until Phase 15, /hifz until Phase 14
-    await expect(page.getByRole("heading", { name: "This page is not rebuilt yet" })).toBeVisible();
+  test("an address that is not a page shows a clear message, not a blank page", async ({ page }) => {
+    await page.goto("/no-such-page"); // every legacy route has a page now (Phase 16); an unknown address says so
+    await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
   });
 
   test("no console errors or hydration warnings on the public pages", async ({ page, context }) => {

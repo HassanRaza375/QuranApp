@@ -227,13 +227,13 @@ const allTextJob = computed(() => store.active.find((j) => j.kind === "text-all"
       <div class="mt-6" data-testid="dl-prefs">
         <h2 class="text-[13px] font-medium uppercase tracking-wide text-ink-2">Preferences</h2>
         <div class="mt-1 rounded-[10px] border px-4">
-          <div class="flex items-center gap-3 border-b py-3" :class="store.knowsConnection ? '' : 'opacity-60'" data-testid="dl-wifi-row">
+          <div class="flex items-center gap-3 border-b py-3" data-testid="dl-wifi-row">
             <div class="min-w-0 flex-1">
               <div id="dl-wifi-l" class="text-[14px]">Download on Wi-Fi only</div>
               <div class="text-[12.5px] text-ink-2">Audio waits until you’re on Wi-Fi. Text and tafsir are small and don’t wait.</div>
               <div v-if="!store.knowsConnection" class="mt-1 text-[12.5px] text-ink-2" data-testid="dl-wifi-note">This browser does not tell the app whether you are on Wi-Fi, so downloads cannot be limited to Wi-Fi here. Chrome on Android does.</div>
             </div>
-            <Switch :model-value="prefs.prefs.wifiOnly" :disabled="!store.knowsConnection" aria-labelledby="dl-wifi-l" data-testid="dl-wifi" @update:model-value="(v) => prefs.set('wifiOnly', !!v)" />
+            <Switch :model-value="prefs.prefs.wifiOnly" :disabled="!store.knowsConnection" :class="store.knowsConnection ? '' : 'opacity-60'" aria-labelledby="dl-wifi-l" data-testid="dl-wifi" @update:model-value="(v) => prefs.set('wifiOnly', !!v)" />
           </div>
           <div class="flex items-center gap-3 border-b py-3">
             <div class="min-w-0 flex-1">

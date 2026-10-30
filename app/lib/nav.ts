@@ -15,7 +15,6 @@ export interface NavGroup {
   id: string;
   label: string;
   items: NavItem[];
-  optional?: "literaryModules";
 }
 
 export const HOME_ITEM: NavItem = { label: "Home", to: "/", icon: "lucide:house", phase: 1 };
@@ -53,9 +52,6 @@ export const NAV: NavGroup[] = [
     { label: "Sajda", to: "/sajda", icon: "lucide:arrow-down-to-line", phase: 9 },
     { label: "Asma-ul-Husna", to: "/asma-ul-husna", icon: "lucide:badge-info", phase: 9 },
     { label: "Daily Fiqh", to: "/fiqh", icon: "lucide:scale", phase: 13 },
-  ] },
-  { id: "literary", label: "Literary modules", optional: "literaryModules", items: [
-    { label: "Poets", to: "/poets", icon: "lucide:feather", phase: 12 },
   ] },
 ];
 export const NAV_FOOTER: NavItem[] = [

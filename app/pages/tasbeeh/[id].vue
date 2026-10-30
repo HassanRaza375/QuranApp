@@ -103,7 +103,7 @@ const dash = computed(() => C * (1 - fraction(entry.value)));
       <button
         type="button"
         class="tap relative grid size-[240px] place-items-center rounded-full outline-offset-4 focus-visible:outline-2"
-        :aria-label="`Count. ${countAnnouncement(entry)}`"
+        :aria-label="`${countAnnouncement(entry)}, tap to count`"
         data-testid="tap"
         @click="onTap"
         @keydown="onKeydown"
@@ -113,7 +113,7 @@ const dash = computed(() => C * (1 - fraction(entry.value)));
           <circle class="ring-bar" cx="120" cy="120" :r="R" fill="none" stroke="var(--primary)" stroke-width="14" stroke-linecap="round" :stroke-dasharray="C" :stroke-dashoffset="dash" />
         </svg>
         <span class="relative flex flex-col items-center" aria-hidden="true">
-          <span class="text-[52px] font-semibold leading-none tabular-nums" data-testid="count-value">{{ entry.count }}</span>
+          <span class="text-[52px] font-semibold leading-none tabular-nums" data-testid="count-value">{{ entry.count }}</span>{{ " " }}
           <span class="mt-1 text-[15px] text-ink-2" data-testid="count-target">of {{ entry.target }}</span>
         </span>
       </button>

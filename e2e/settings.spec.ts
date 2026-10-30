@@ -53,7 +53,7 @@ const notifs = (page: Page) => page.evaluate(() => (window as unknown as { __not
 test.describe("sections and navigation", () => {
   test("eight sections; ?section= opens one; the list updates the URL; unknown falls back to Appearance", async ({ page }) => {
     await open(page);
-    for (const id of ["appearance", "reading", "audio", "prayer", "notifications", "accessibility", "modules", "data"]) await expect(page.getByTestId(`section-${id}`)).toBeVisible();
+    for (const id of ["appearance", "reading", "audio", "prayer", "notifications", "accessibility", "data"]) await expect(page.getByTestId(`section-${id}`)).toBeVisible();
     await expect(page.getByTestId("section-title")).toHaveText("Appearance");
     await expect(page.getByTestId("page-title")).toHaveText("Settings");
     await page.getByTestId("section-prayer").click();
@@ -74,7 +74,7 @@ test.describe("sections and navigation", () => {
     page.on("console", (m) => (m.type() === "error" || m.type() === "warning") && !m.text().includes("Service Worker registration blocked") && problems.push(m.text()));
     page.on("pageerror", (e) => problems.push(String(e)));
     page.on("request", (r) => hosts.add(new URL(r.url()).host));
-    for (const id of ["appearance", "reading", "audio", "prayer", "notifications", "accessibility", "modules", "data"]) {
+    for (const id of ["appearance", "reading", "audio", "prayer", "notifications", "accessibility", "data"]) {
       await open(page, id);
       await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
       await expect(page.getByTestId("section-title")).toBeVisible();
@@ -195,7 +195,7 @@ test.describe("Appearance, Reading, Audio write the legacy keys and formats", ()
     expect(await sw.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(43, 103, 119)"); // checked: the accent
   });
 
-  test("accessibility and modules switches write the shared accessibility object and the modules key", async ({ context, page }) => {
+  test("the accessibility switches write the shared accessibility object, and there is no literary modules switch", async ({ context, page }) => {
     await seed(context, { "quran:accessibility:v1": JSON.stringify({ arabicFontScale: 1.2, futureField: 1 }) });
     await open(page, "accessibility");
     await page.getByRole("switch", { name: "Reduce motion" }).click();
@@ -205,10 +205,9 @@ test.describe("Appearance, Reading, Audio write the legacy keys and formats", ()
     await expect(page.locator("html")).toHaveAttribute("data-high-contrast", "true");
     await expect(page.locator("html")).toHaveAttribute("data-reduced-motion", "true");
     await expect(page.locator("html")).toHaveAttribute("data-large-touch", "true");
-    await open(page, "modules");
-    await page.getByRole("switch", { name: "Show literary modules in the sidebar" }).click();
-    expect((await readStorage(page))["quran:additional-modules-enabled:v1"]).toBe("true");
-    await expect(page.getByRole("navigation", { name: "Main" }).first().getByText("Literary modules")).toBeVisible();
+    await open(page, "data");
+    await expect(page.getByRole("switch", { name: "Show literary modules in the sidebar" })).toHaveCount(0); // removed with Poets (deferred)
+    expect((await readStorage(page))["quran:additional-modules-enabled:v1"]).toBeUndefined(); // never written
   });
 });
 
@@ -677,7 +676,7 @@ test.describe("mobile (375px)", () => {
     await mockAladhan(context);
     await stubNotifications(context, "granted");
     await seed(context, { last_location: LAHORE_LEGACY, prayerFiqh: "jafari" });
-    for (const id of ["appearance", "reading", "audio", "prayer", "notifications", "accessibility", "modules", "data"]) {
+    for (const id of ["appearance", "reading", "audio", "prayer", "notifications", "accessibility", "data"]) {
       await open(page, id);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `${id}: no horizontal scroll`).toBe(true);
       // (a link inside a sentence is exempt from the minimum target size, as in WCAG 2.5.8; every other control is checked)
@@ -764,7 +763,7 @@ test.describe("offline", () => {
     await expect(page.getByTestId("update-now")).toBeDisabled();
     await expect(page.getByTestId("update-offline")).toBeVisible();
     await expect(page.getByText(/You’re offline, so the saved times are still in use/)).toBeVisible();
-    for (const id of ["appearance", "reading", "audio", "notifications", "accessibility", "modules", "data"]) {
+    for (const id of ["appearance", "reading", "audio", "notifications", "accessibility", "data"]) {
       await page.goto(`/settings?section=${id}`);
       await expect(page.getByTestId("section-title")).toBeVisible();
     }

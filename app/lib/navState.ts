@@ -1,7 +1,7 @@
 // Which nav groups are open. A per-viewer convenience kept in `quran:nav-open:v1` (new, additive). Read is open by
 // default; the group that holds the current page is always opened so the active item is never hidden.
 export const NAV_OPEN_KEY = "quran:nav-open:v1";
-export const NAV_GROUP_IDS = ["read", "study", "knowledge", "worship", "literary"] as const;
+export const NAV_GROUP_IDS = ["read", "study", "knowledge", "worship"] as const;
 
 export type NavOpen = Record<string, boolean>;
 

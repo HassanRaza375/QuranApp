@@ -1,0 +1,62 @@
+// The page files of the legacy app (`app/pages` at legacy commit 7120b6c, read 2026-10-29), as routes. Every one must answer with a page or a redirect in
+// the revamp (except the deferred ones below) (tests/legacyRoutes.test.ts, e2e/routes.spec.ts). Vue Router syntax: [x] is a parameter.
+/** Legacy routes deliberately without a page: Poets is deferred (owner, 2026-10-29), so these show "Page not found" for now. */
+export const DEFERRED_ROUTES = ["/poets", "/poets/[slug]"] as const;
+
+export const LEGACY_ROUTES = [
+  "/",
+  "/about",
+  "/asma-ul-husna",
+  "/bookmarks",
+  "/calender",
+  "/commands",
+  "/commands/[id]",
+  "/downloads",
+  "/duas",
+  "/duas/[id]",
+  "/events",
+  "/events/[id]",
+  "/fiqh",
+  "/fiqh/[category]",
+  "/fiqh/[category]/[topic]",
+  "/fiqh/choose-marja",
+  "/fiqh/glossary",
+  "/goals",
+  "/hifz",
+  "/hifz/session",
+  "/juz",
+  "/juz/[id]",
+  "/peoples",
+  "/peoples/[id]",
+  "/per-page-read",
+  "/persons",
+  "/persons/[id]",
+  "/persons/timeline",
+  "/places",
+  "/places/[id]",
+  "/poets",
+  "/poets/[slug]",
+  "/prayerTime",
+  "/qibla-direction",
+  "/ramadan",
+  "/sajda",
+  "/search",
+  "/settings",
+  "/signs",
+  "/signs/[id]",
+  "/sitemap",
+  "/stories",
+  "/stories/[id]",
+  "/surah-audios/[id]",
+  "/surah-listing",
+  "/surah-vedios",
+  "/surah/[id]",
+  "/tasbeeh",
+  "/tasbeeh/[id]",
+  "/themes",
+  "/themes/[id]",
+] as const;
+
+/** A concrete address for a pattern. */
+export const concrete = (route: string): string =>
+  route.replace("[category]", "foundations").replace("[topic]", "taqlid").replace("[slug]", "mir-anis").replace("[id]", "1");

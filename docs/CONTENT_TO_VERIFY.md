@@ -363,6 +363,11 @@ Built 2026-10-28 and approved at the screenshot checkpoint. All the wording is o
 - [ ] **Sitemap:** the group names (taken from the sidebar), "Every page of the app, in one place.", "No videos yet. Every surah has audio."
 - [ ] **Surah videos:** "There are no videos in the app yet.", "Every surah does have audio instead: five reciters, to play here or to save and listen to with no connection. Choose a surah.", "All surahs to read or play".
 
+## Phase 16 (cutover): wording of ours
+
+- [ ] **About:** "A fresh start: nothing from the older version of this app carries over to this address, so you begin with nothing saved."
+- [ ] **Page not found:** "Page not found", "There is no page at <address>.", "Go to Home", "Search", "See every page in the Sitemap".
+
 ## Hifz (Phase 14, `prototype-hifz.html`)
 
 Built 2026-10-28. What was a sample is now real or computed; what is ours is listed so you can read it.

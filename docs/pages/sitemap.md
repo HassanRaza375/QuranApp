@@ -16,7 +16,7 @@ A heading and one line, then the groups in columns (three on a wide screen, two 
 
 ## Data
 
-Built from `lib/nav.ts` (`lib/sitemap.ts`), so a page added to the sidebar is here too. The optional Literary group is left out (its page is not built). **No counts are shown**: the legacy page typed them in.
+Built from `lib/nav.ts` (`lib/sitemap.ts`), so a page added to the sidebar is here too. Poets is deferred and has no row. **No counts are shown**: the legacy page typed them in.
 
 ## Tests
 
@@ -24,4 +24,4 @@ Built from `lib/nav.ts` (`lib/sitemap.ts`), so a page added to the sidebar is he
 
 ## Open questions
 
-None. `/poets` is not listed until it is built (Phase 16 checklist).
+None.

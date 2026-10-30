@@ -48,7 +48,7 @@ const onClick = (e: MouseEvent) => {
         >
           {{ s.n }}<span v-if="completed.has(s.n)" class="sr-only"> (completed)</span>
         </span>
-        <a :href="surahHref(s.n)" data-act="open" :data-n="s.n" class="flex min-h-14 min-w-0 flex-1 items-center justify-between gap-3 py-2" :aria-label="`Open ${s.name}, ${s.en}`">
+        <a :href="surahHref(s.n)" data-act="open" :data-n="s.n" class="flex min-h-14 min-w-0 flex-1 items-center justify-between gap-3 py-2">
           <span class="min-w-0">
             <span class="flex flex-wrap items-baseline gap-x-2">
               <span class="font-serif text-[16px] font-medium">{{ s.name }}</span>

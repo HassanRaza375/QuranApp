@@ -47,7 +47,7 @@ function remove(g: Goal) {
       <Button variant="outline" class="min-h-11 md:min-h-9" data-testid="goals-new" @click="newOpen = true"><Icon name="lucide:plus" size="16" />New goal</Button>
     </div>
 
-    <div v-if="!store.loaded" class="mt-6 space-y-3" aria-busy="true" aria-label="Loading">
+    <div v-if="!store.loaded" class="mt-6 space-y-3" role="status" aria-busy="true" aria-label="Loading">
       <Skeleton class="h-40 w-full" />
       <Skeleton class="h-24 w-full" />
     </div>

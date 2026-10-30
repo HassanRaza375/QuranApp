@@ -18,6 +18,7 @@ const modules = MODULE_ORDER.map((id) => MODULES[id]);
     <section class="mt-8 border-t pt-6" aria-labelledby="about-device">
       <h2 id="about-device" class="font-serif text-[22px] font-medium">What stays on your device</h2>
       <p class="mt-2 text-[15px] leading-relaxed" data-testid="about-device">{{ ABOUT.what }}</p>
+      <p class="mt-2 text-[15px] leading-relaxed" data-testid="about-fresh">{{ ABOUT.fresh }}</p>
       <p class="mt-2 text-[15px] leading-relaxed">Export your data, reset the settings, or clear everything, in Settings.</p>
       <NuxtLink to="/settings" class="inline-flex min-h-11 items-center text-[15px] text-brand underline underline-offset-2 md:min-h-9" data-testid="about-settings">Open Settings, Data &amp; privacy</NuxtLink>
     </section>

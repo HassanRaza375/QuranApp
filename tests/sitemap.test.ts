@@ -23,8 +23,8 @@ describe("the Sitemap", () => {
   it("links only to pages that are built", () => {
     for (const l of links) expect(built(l.to), l.to).toBe(true);
   });
-  it("has every sidebar row (except the optional Literary group, whose page is not built), the footer rows, Home, the Calendar and Reading goals", () => {
-    const want = [HOME_ITEM, ...NAV.filter((g) => !g.optional).flatMap((g) => g.items), ...NAV_FOOTER].map((i) => i.to);
+  it("has every sidebar row (Poets is deferred and has no row), the footer rows, Home, the Calendar and Reading goals", () => {
+    const want = [HOME_ITEM, ...NAV.flatMap((g) => g.items), ...NAV_FOOTER].map((i) => i.to);
     for (const to of want) expect(links.map((l) => l.to), to).toContain(to);
     expect(links.map((l) => l.to)).toEqual(expect.arrayContaining(["/calender", "/goals", "/about", "/sitemap", "/surah-vedios", "/juz"]));
     expect(links.map((l) => l.to)).not.toContain("/poets");
