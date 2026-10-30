@@ -60,7 +60,7 @@ test.describe("counting", () => {
     await open(page);
     const tap = page.getByTestId("tap");
     expect(await tap.evaluate((el) => el.tagName)).toBe("BUTTON");
-    await expect(tap).toHaveAttribute("aria-label", "Count. 0 of 33");
+    await expect(tap).toHaveAttribute("aria-label", "0 of 33, tap to count");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("SubhanAllah");
     expect(await record(page)).toEqual({}); // viewing writes nothing
     for (let i = 0; i < 3; i++) await tap.click();
@@ -68,7 +68,7 @@ test.describe("counting", () => {
     await expect(page.getByTestId("count-target")).toHaveText("of 33");
     await expect(page.getByTestId("lifetime")).toHaveText("3");
     await expect(page.getByTestId("cycles")).toHaveText("0");
-    await expect(tap).toHaveAttribute("aria-label", "Count. 3 of 33");
+    await expect(tap).toHaveAttribute("aria-label", "3 of 33, tap to count");
     expect(await record(page)).toEqual({ subhanallah: { count: 3, target: 33, cycles: 0, lifetime: 3 } });
     const offset = Number(await page.locator(".ring-bar").getAttribute("stroke-dashoffset"));
     const full = Number(await page.locator(".ring-bar").getAttribute("stroke-dasharray"));

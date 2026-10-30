@@ -99,7 +99,6 @@ watch(() => route.hash, fromHash);
         <button
           type="button"
           class="flex w-full flex-col items-center gap-1 rounded-[10px] px-3 pb-4 pt-9 text-center hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2"
-          :aria-label="`${n.shownTransliteration}, ${n.shownEnglish}. Open`"
           data-testid="name-open"
           @click="openName(n.id)"
         >

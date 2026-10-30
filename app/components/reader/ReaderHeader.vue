@@ -28,7 +28,7 @@ const reciterOptions: MenuOption[] = RECITER_NAMES.map((r) => ({ value: r, label
     <h1 class="ar mb-1 !text-[32px] !leading-[2.2] md:!text-[42px]" lang="ar" dir="rtl" data-testid="reader-title">{{ props.chapter.arLong }}</h1>
     <p class="mb-4 text-[13px] text-ink-2" data-testid="reader-sub">Surah {{ chapter.n }} · {{ chapter.total }} ayahs · {{ chapter.place }}</p>
     <div class="grid grid-cols-2 gap-2 md:flex md:flex-wrap md:items-center md:justify-center [&>div>button]:w-full [&>div>button]:justify-between md:[&>div>button]:w-auto">
-      <Button class="col-span-2 min-h-11 gap-2 rounded-full md:min-h-9" :aria-label="active ? `Pause ${chapter.name}` : `Play ${chapter.name}`" data-testid="play-surah" @click="emit('play')">
+      <Button class="col-span-2 min-h-11 gap-2 rounded-full md:min-h-9" data-testid="play-surah" @click="emit('play')">
         <Icon :name="active ? 'lucide:pause' : 'lucide:play'" size="16" />{{ active ? "Pause surah" : "Play surah" }}
       </Button>
       <div class="min-w-0">

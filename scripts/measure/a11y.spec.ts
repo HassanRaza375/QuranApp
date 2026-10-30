@@ -16,7 +16,9 @@ import { forbidRealApis, freezeClock, LAHORE_LEGACY, mockAladhan, mockHijri, moc
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = process.env.OUT ?? path.resolve(HERE, "a11y-result.json");
-const ROUTES = LEGACY_ROUTES.filter((r) => !(DEFERRED_ROUTES as readonly string[]).includes(r)).map(concrete);
+// A11Y_ONLY=/juz,/tasbeeh limits the sweep to routes starting with one of the prefixes (for working on a fix); the full sweep is the default.
+const ONLY = (process.env.A11Y_ONLY ?? "").split(",").filter(Boolean);
+const ROUTES = LEGACY_ROUTES.filter((r) => !(DEFERRED_ROUTES as readonly string[]).includes(r)).map(concrete).filter((r) => !ONLY.length || ONLY.some((p) => r.startsWith(p)));
 const VIEWS = [
   { name: "1280", width: 1280, height: 900 },
   { name: "375", width: 375, height: 812 },
@@ -59,7 +61,7 @@ test("axe: every route, 1280 and 375, light and dark", async ({ browser }) => {
       for (const route of ROUTES) {
         await open(page, route);
         const r = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
-        result.axe[`${theme} ${v.name} ${route}`] = r.violations.map((x) => ({ id: x.id, impact: x.impact, help: x.help, count: x.nodes.length, first: x.nodes[0]?.target?.join(" ") ?? "", html: String(x.nodes[0]?.html ?? "").slice(0, 160) }));
+        result.axe[`${theme} ${v.name} ${route}`] = r.violations.map((x) => ({ id: x.id, impact: x.impact, help: x.help, count: x.nodes.length, first: x.nodes[0]?.target?.join(" ") ?? "", html: String(x.nodes[0]?.html ?? "").slice(0, 400), why: String(x.nodes[0]?.any?.[0]?.message ?? x.nodes[0]?.failureSummary ?? "").slice(0, 300) }));
       }
       save();
       await context.close();

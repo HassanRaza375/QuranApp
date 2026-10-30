@@ -36,7 +36,7 @@ const pickerOptions: MenuOption[] = SECTIONS.map((s) => ({ value: s.id, label: s
     <div class="mb-5 md:hidden">
       <ResponsiveMenu :model-value="current" :options="pickerOptions" label="Settings section" title="Settings section" @update:model-value="go">
         <template #trigger="{ current: cur }">
-          <Button variant="outline" class="min-h-11 w-full justify-between gap-2" aria-label="Settings section" data-testid="section-picker">
+          <Button variant="outline" class="min-h-11 w-full justify-between gap-2" :aria-label="`${cur?.label ?? ''}, settings section`" data-testid="section-picker">
             <span class="flex items-center gap-2"><Icon :name="cur?.icon ?? 'lucide:settings'" size="16" />{{ cur?.label }}</span>
             <Icon name="lucide:chevron-down" size="14" class="text-ink-2" />
           </Button>

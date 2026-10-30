@@ -31,6 +31,12 @@ const firstOptions = [
   { value: "gregorian", label: "Gregorian" },
 ];
 
+// The two numbers a day cell shows (the first calendar's day, then the other's). The cell's spoken name starts with exactly this text (WCAG 2.5.3, Label in Name).
+function cellNumbers(d: { date: string; hDay: number }, i: number): [string, string] {
+  const g = Number(d.date.slice(8, 10));
+  return cal.first.value === "hijri" ? [String(d.hDay), `${g === 1 || i === 0 ? `${monthShort(d.date)} ` : ""}${g}`] : [String(g), String(d.hDay)];
+}
+
 function label(d: { date: string; hDay: number }) {
   const m = cal.marks(d.date, d.hDay);
   const e = sel.value && d.date === sel.value.day.date ? sel.value.events : null;
@@ -116,7 +122,7 @@ const repeatText = (r: { repeat?: ReminderRepeat }) => (r.repeat ? (r.repeat.by 
               class="relative flex min-h-[58px] flex-col gap-0.5 border-b border-r bg-surface p-1.5 text-left hover:bg-sunken focus-visible:z-10 md:min-h-[86px] md:p-2"
               :class="[cal.sel.value === d.date ? '!bg-accent' : '', d.date === cal.today.value ? 'cal-today' : '']"
               :aria-pressed="cal.sel.value === d.date"
-              :aria-label="label(d)"
+              :aria-label="`${cellNumbers(d, i).join(' ')}, ${label(d)}`"
               :tabindex="cal.sel.value === d.date ? 0 : -1"
               :data-date="d.date"
               :data-hday="d.hDay"
@@ -124,8 +130,8 @@ const repeatText = (r: { repeat?: ReminderRepeat }) => (r.repeat ? (r.repeat.by 
               data-testid="cal-day"
               @click="cal.sel.value = d.date"
             >
-              <span class="font-serif text-[18px] font-medium leading-none tabular-nums md:text-[22px]" :class="d.date === cal.today.value ? 'text-brand' : ''" aria-hidden="true">{{ cal.first.value === "hijri" ? d.hDay : Number(d.date.slice(8, 10)) }}</span>
-              <span class="text-[10.5px] text-ink-2 tabular-nums md:text-[11px]" aria-hidden="true">{{ cal.first.value === "hijri" ? (Number(d.date.slice(8, 10)) === 1 || i === 0 ? `${monthShort(d.date)} ` : "") + Number(d.date.slice(8, 10)) : d.hDay }}</span>
+              <span class="font-serif text-[18px] font-medium leading-none tabular-nums md:text-[22px]" :class="d.date === cal.today.value ? 'text-brand' : ''" aria-hidden="true">{{ cellNumbers(d, i)[0] }}</span>{{ " " }}
+              <span class="text-[10.5px] text-ink-2 tabular-nums md:text-[11px]" aria-hidden="true">{{ cellNumbers(d, i)[1] }}</span>
               <span class="mt-auto flex flex-wrap gap-[3px]" aria-hidden="true">
                 <i v-if="cal.marks(d.date, d.hDay).events" class="block size-1.5 rounded-full bg-brand" data-testid="cal-dot-event" />
                 <i v-if="cal.marks(d.date, d.hDay).reminders" class="block size-1.5 rounded-full shadow-[inset_0_0_0_1.5px_var(--ink-2)]" data-testid="cal-dot-reminder" />
