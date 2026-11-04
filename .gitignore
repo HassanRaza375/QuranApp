@@ -16,6 +16,8 @@ dist
 .vscode/*
 !.vscode/extensions.json
 .vercel
+# Phase 17: the Prisma client, written by `prisma generate` (postinstall)
+server/generated
 test-results
 playwright-report
 coverage

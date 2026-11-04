@@ -1,5 +1,19 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// Phase 17: the servers under test can reach no real service, whatever the shell or a local .env holds. `.invalid` never resolves, and
+// every service key is blank (tests/syncFoundation.test.ts checks this file).
+const NO_SERVICES = {
+  DATABASE_URL: "postgres://blocked.invalid:5432/none",
+  BETTER_AUTH_SECRET: "",
+  GOOGLE_CLIENT_ID: "",
+  GOOGLE_CLIENT_SECRET: "",
+  CLOUDINARY_URL: "",
+  CLOUDINARY_CLOUD_NAME: "",
+  CLOUDINARY_API_KEY: "",
+  CLOUDINARY_API_SECRET: "",
+  RESEND_API_KEY: "",
+};
+
 // Runs against the PRODUCTION build (offline and the service worker do not work in dev):
 //   npm run build && npm run test:e2e
 export default defineConfig({
@@ -12,11 +26,23 @@ export default defineConfig({
   retries: 0,
   reporter: [["list"]],
   use: { trace: "retain-on-failure", screenshot: "only-on-failure", baseURL: "http://localhost:3011", ...devices["Desktop Chrome"], serviceWorkers: "allow" },
-  webServer: {
-    command: "node .output/server/index.mjs",
-    env: { PORT: "3011", NITRO_PORT: "3011" },
-    url: "http://localhost:3011",
-    reuseExistingServer: false,
-    timeout: 60_000,
-  },
+  webServer: [
+    {
+      // The app as production runs it today: sync off.
+      command: "node .output/server/index.mjs",
+      env: { PORT: "3011", NITRO_PORT: "3011", NUXT_PUBLIC_SYNC_ENABLED: "false", ...NO_SERVICES },
+      url: "http://localhost:3011",
+      reuseExistingServer: false,
+      timeout: 60_000,
+    },
+    {
+      // Phase 17: the same build with the server's sync flag on (Nuxt reads NUXT_PUBLIC_SYNC_ENABLED at request time), for the server
+      // routes only. Its database URL cannot resolve, so /api/health must answer "down" quickly instead of hanging.
+      command: "node .output/server/index.mjs",
+      env: { PORT: "3013", NITRO_PORT: "3013", NUXT_PUBLIC_SYNC_ENABLED: "1", ...NO_SERVICES },
+      url: "http://localhost:3013",
+      reuseExistingServer: false,
+      timeout: 60_000,
+    },
+  ],
 });

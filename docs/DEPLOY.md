@@ -16,7 +16,7 @@ new project; the rollback is Vercel's Instant Rollback (section 6). Legacy data 
 | Framework Preset | Nuxt | detected; Nitro switches to its `vercel` preset when `VERCEL=1` |
 | Root Directory | the repo root (leave empty) | nothing is imported from outside the repo |
 | Node.js Version | **22.x** (Settings, General) | same as `.nvmrc` and `engines`; the generated function runtime is `nodejs22.x` |
-| Install Command | `npm ci` | exact versions from `package-lock.json`; the only install hook is `postinstall: nuxt prepare` |
+| Install Command | `npm ci` | exact versions from `package-lock.json`; the only install hook is `postinstall: nuxt prepare && prisma generate` (Phase 17A; generate needs no database) |
 | Build Command | `npm run build` (= `nuxt build`) | no network; runs none of the `scripts/gen-*.mjs` generators or `sync-legacy.mjs` |
 | Output Directory | leave empty | Nitro writes the Build Output API (`.vercel/output`) |
 | Ignored Build Step | none | one repo, one project |
@@ -34,9 +34,12 @@ Set for **Production** and **Preview** (Vercel's own variables are not set by ha
 | `GOOGLE_SITE_VERIFICATION` | **yes, in Production** (section 5) | the token from Google Search Console's "HTML tag" method; written into the pages' head **only in a production build** |
 | `NUXT_PUBLIC_SITE_URL` | only if the address is a custom domain | `https://your.domain`. Otherwise the address is read from `VERCEL_PROJECT_PRODUCTION_URL`, which Vercel sets itself |
 | `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` = `1` | optional | the build needs no browser |
+| `NUXT_PUBLIC_SYNC_ENABLED` | **Phase 17**: `1` in **Preview** only; leave unset (off) in **Production** until 17E is accepted | Account & Sync. Read at build time (the prerendered pages carry it) and by the server at request time, so a change needs a redeploy. Off: no account requests, `/api/health` touches no database |
+| `DATABASE_URL` | **Phase 17**, a **different value per environment** (section 7) | the Aiven service URI with `sslmode=require`: Production uses the production database, Preview (and Development) `quran_preview`. Server-only, read at request time; never in `runtimeConfig` |
 
 Do **not** set `ALLOW_INDEXING` on Vercel (it is for rehearsing a production build locally). Do not copy `NUXT_PUBLIC_WAJIBAT_SHOW_UNREVIEWED_HELPERS`,
-`NUXT_PUBLIC_SUPABASE_*`, or anything else the legacy project has: nothing here reads them.
+`NUXT_PUBLIC_SUPABASE_*`, or anything else the legacy project has: nothing here reads them. Later Phase 17 variables (`BETTER_AUTH_*`, `GOOGLE_CLIENT_*`,
+`CLOUDINARY_*`, an email key) are added by their sub-phase.
 
 ## 3. What search engines are told (`app/lib/seo.ts`)
 
@@ -98,3 +101,18 @@ the owner first. A rolled-back build that finds a database from a newer version 
 
 **Same `sw.js` name and scope.** Keep file `/sw.js`, scope `/`, no manifest `id`, `registerType: "prompt"` and the cache names
 (`quran-api-cache`, `quran-audio-cache`): they are in the `pwa` block of `nuxt.config.ts`.
+
+## 7. The account database (Phase 17, Aiven PostgreSQL)
+
+One Aiven service (free plan: 1 GB disk, 20 connections, no pooler; it is powered off after a period without use, and Aiven may move it),
+**two databases**: production (`defaultdb`) and `quran_preview`. A preview deployment never touches production data.
+
+- **Schema and migrations** live in `prisma/` (Prisma 7.10.1; URL for the CLI in `prisma.config.ts`, which loads `.env` itself). Migrations are written
+  offline and applied by hand, never by the app at runtime:
+  `npx prisma migrate deploy` with `DATABASE_URL` set to the target database in the shell. Run it against `quran_preview` first, then production.
+- **Check:** `GET /api/health` on the deployment. `{ ok: true, sync: "off" }` means the flag is off there (no database touched);
+  `{ ok: true, sync: "on", db: "up" }` means the database answered; `503 … "down"` means it did not (powered off, wrong URL, TLS), within about 5 s.
+- **Region:** set Vercel, Settings, Functions, Function Region to the one closest to the Aiven service's region (shown in the Aiven console).
+- **TLS:** the URI's `sslmode=require` is enough; if certificate errors appear, add Aiven's CA with `NODE_EXTRA_CA_CERTS`, never `rejectUnauthorized: false`.
+- **If the service is powered off**, sign-in and sync stop until it is powered on again in the Aiven console; the app itself is unaffected.
+- **Rollback:** turning `NUXT_PUBLIC_SYNC_ENABLED` off and redeploying removes every account request. Migrations are additive; a destructive one needs its own approval.

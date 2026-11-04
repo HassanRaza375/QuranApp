@@ -10,5 +10,5 @@ export default defineConfig({
       "@legacy": LEGACY_APP,
     },
   },
-  test: { include: ["tests/**/*.test.ts"] },
+  test: { include: ["tests/**/*.test.ts"], setupFiles: ["tests/setup/noServices.ts"] },
 });
