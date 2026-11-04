@@ -10,9 +10,9 @@ Every decision made while designing and building the revamp, with the reason. Ph
 - **Borders over shadows.** Shadows only on floating layers (menus, sheets).
 - **Arabic is the most cared-for text:** larger, generous line height, never letter-spaced, follows the user's Arabic size setting.
 - **Navigation is grouped by intent:** Read, Study (Library, Downloads, goals, Hifz), Knowledge base, Worship, optional Literary modules; Settings and About pinned at the bottom. One row per real destination, with 16px Lucide icons.
-- **Responsive menus:** popover on desktop, bottom sheet on mobile. **Undo instead of confirm** for removals; only "Clear all data" asks first.
+- **Responsive menus:** popover on desktop, bottom sheet on mobile. **Undo instead of confirm** for removals; only "Clear all data" and "Delete account" (Phase 17, typed confirmation) ask first.
 - **Quiet progress.** No streaks, badges, points, flames or guilt wording anywhere.
-- **No depictions of any person** (prophets, companions, angels, family, silhouettes, avatars). Calligraphy, places, objects and geometry only.
+- **No depictions of any person** (prophets, companions, angels, family, silhouettes, avatars). Calligraphy, places, objects and geometry only. **One exception (Phase 17, 2026-11-04):** a signed-in user may upload an optional photo of **their own**, shown only to them (Account area and header menu), never inside Qur'an, story, person or knowledge content. The default is geometric (no silhouette), and the Google profile photo is never imported automatically.
 - **Both traditions, honestly.** Sunni and Ja'fari are a user setting. Where practice differs, show both and say which one the user follows. Never state a ruling as app advice; say "follow your own marja' or local scholar".
 - **Content integrity.** Qur'an text, translations, tafsir, audio and prayer data come only from the legacy services and data files. Anything we wrote ourselves (labels, notices, summaries) is flagged in `CONTENT_TO_VERIFY.md`.
 
@@ -126,6 +126,16 @@ Every decision made while designing and building the revamp, with the reason. Ph
 10. **About:** written from facts, in our words. The services it names are one list in `lib/about.ts`, and a test compares it with the hosts the code calls.
 11. **`/juz/[id]`** opens the reader at the juz's first ayah and replaces the URL; anything else goes to the Juz tab.
 12. **About's body is not prerendered** (recorded 2026-10-29, correcting the plan). With `ssr: false` the build prerenders only each route's head tags (title, description, Open Graph) as the SPA shell (the Phase 0 spike result, unchanged). Home, About and the Surah listing all work that way, so with JavaScript off About shows no text; link previews get the title and description. The plan's "About prerendered text present with JS off" was wrong and is withdrawn; `e2e/prerender.spec.ts` checks the head tags only.
+
+**Phase 17, Account & Sync: owner decisions, 2026-11-04** (plan `phases/phase-17-plan.md` at 35a2d1d, approved with these decisions; brief `phases/phase-17-account-sync-brief.md`; screens `design/phase-17/`).
+1. **Avatar amendment approved** (section 1): the user's own optional photo, shown only to them, never inside Qur'an, story, person or knowledge content; a geometric default, no silhouette; no automatic import of the Google photo. Built in 17F only.
+2. **Delete account asks first, with a typed confirmation** (section 1 amended).
+3. **"Clear all data"** clears this device **and signs this device out**; the Account section says that synced data stays on the server. This changes the Phase 2 decision ("legacy parity plus deleting `quran-revamp-db` only"): it also deletes the sync queue database.
+4. **Icons:** Google's "G" logo is allowed as **one bundled local file**, on the Google sign-in button only (Google's brand rule). It is the one exception to the Lucide-only icon rule; nothing is loaded from a CDN.
+5. **Merging:** Phase 17 sub-phases merge into **`main`** (production since the Phase 16 cutover), not `chore/standalone-repo`, each with `NUXT_PUBLIC_SYNC_ENABLED` **off in Production**. This replaces the 2026-10-28 merge rule for Phase 17. Every sub-phase still waits for a full verify on its own branch, a preview check and the owner's approval.
+6. **Technical:** Prisma pinned to **7.10.1** (`prisma`, `@prisma/client`, `@prisma/adapter-pg`; npm's `latest` for `prisma` is an 8.0 release candidate). The sync queue lives in a **new IndexedDB database, `quran-sync-db`**, never in `quran-revamp-db` (its version stays 4, so an Instant Rollback stays safe). Pure sync code lives in **`app/lib/sync/`**.
+7. **What syncs:** the Sunni/Ja'fari choice and marja' sync under the **Settings** toggle (its description says so); the saved city and coordinates **never** sync; search history **never** syncs.
+8. **Still open until 17B:** the email provider (Resend needs a domain we own), Google sign-in on preview deployments, and the Aiven free-plan risk (idle power-off, 1 GB, 20 connections).
 
 ## 4. Deliberate content gaps
 
