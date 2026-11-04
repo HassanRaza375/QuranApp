@@ -23,7 +23,7 @@ that with the flag off the app makes no account request. Plan: `phase-17-plan.md
 - `server/utils/db.ts`: one client per server instance, made on first use; pool `max: 1`, `connectionTimeoutMillis: 5000`, `idleTimeoutMillis: 10000`;
   `DATABASE_URL` read from `process.env` at request time (a value put into `runtimeConfig` at build time lands in the build output).
 - `GET /api/health` (`server/api/health.get.ts`, logic in `server/utils/health.ts`): flag off, `{ ok: true, sync: "off" }` with no database touched;
-  flag on, a `SELECT 1` with a 6 s limit: `{ ok: true, sync: "on", db: "up" }` or 503 `db: "down"` / `"unconfigured"`. No host, user or error text in the answer.
+  flag on, a `SELECT 1` with a 6 s limit, **its result (up or down) kept for 30 s per server instance and shared by requests that arrive while it runs** (follow-up a: repeated requests open no extra connections on the 20-connection free plan): `{ ok: true, sync: "on", db: "up" }` or 503 `db: "down"` / `"unconfigured"`. No host, user or error text in the answer.
 - **`server/api/[...].ts`: an `/api/` path no route serves is a JSON 404.** Found while writing the service-worker test: with `ssr: false` the page
   renderer answered every unmatched `/api/` path (for example `/api/auth/get-session`) with the SPA shell and status 200. Named routes still win (the four
   legacy proxies, `/api/health`, and Better Auth's `/api/auth/[...all]` in 17B).

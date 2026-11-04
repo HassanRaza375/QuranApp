@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { isSyncOn, syncEnabled } from "../app/lib/sync/flag";
-import { healthReport } from "../server/utils/health";
+import { cachedProbe, HEALTH_CACHE_MS, healthReport, pingOnce } from "../server/utils/health";
 
 const ROOT = path.resolve(__dirname, "..");
 const read = (f: string) => fs.readFileSync(path.join(ROOT, f), "utf8");
@@ -25,26 +25,115 @@ describe("/api/health", () => {
   const never = () => {
     throw new Error("the database was touched");
   };
+  const report = (enabled: boolean, configured: boolean, ping: () => Promise<unknown>, timeoutMs = 6000) =>
+    healthReport({ enabled, configured, probe: () => pingOnce(ping, timeoutMs) });
+
   it("with sync off it reports off and never touches the database", async () => {
-    expect(await healthReport({ enabled: false, configured: true, ping: never })).toEqual({ status: 200, body: { ok: true, sync: "off" } });
-    expect(await healthReport({ enabled: false, configured: false, ping: never })).toEqual({ status: 200, body: { ok: true, sync: "off" } });
+    expect(await report(false, true, never)).toEqual({ status: 200, body: { ok: true, sync: "off" } });
+    expect(await report(false, false, never)).toEqual({ status: 200, body: { ok: true, sync: "off" } });
   });
   it("with sync on and no DATABASE_URL it says unconfigured without trying", async () => {
-    expect(await healthReport({ enabled: true, configured: false, ping: never })).toEqual({ status: 503, body: { ok: false, sync: "on", db: "unconfigured" } });
+    expect(await report(true, false, never)).toEqual({ status: 503, body: { ok: false, sync: "on", db: "unconfigured" } });
   });
   it("up when the database answers, down when it fails, and down (not hanging) when it does not answer in time", async () => {
-    expect(await healthReport({ enabled: true, configured: true, ping: async () => [{ "?column?": 1 }] })).toEqual({ status: 200, body: { ok: true, sync: "on", db: "up" } });
-    expect(await healthReport({ enabled: true, configured: true, ping: async () => Promise.reject(new Error("password authentication failed for user x at host y")) })).toEqual({
-      status: 503,
-      body: { ok: false, sync: "on", db: "down" },
-    });
+    expect(await report(true, true, async () => [{ "?column?": 1 }])).toEqual({ status: 200, body: { ok: true, sync: "on", db: "up" } });
+    expect(await report(true, true, async () => Promise.reject(new Error("password authentication failed for user x at host y")))).toEqual({ status: 503, body: { ok: false, sync: "on", db: "down" } });
     const t0 = Date.now();
-    expect(await healthReport({ enabled: true, configured: true, ping: () => new Promise(() => {}), timeoutMs: 50 })).toEqual({ status: 503, body: { ok: false, sync: "on", db: "down" } });
+    expect(await report(true, true, () => new Promise(() => {}), 50)).toEqual({ status: 503, body: { ok: false, sync: "on", db: "down" } });
     expect(Date.now() - t0).toBeLessThan(1000);
   });
   it("never puts the error text in the answer (it can carry connection details)", async () => {
-    const r = await healthReport({ enabled: true, configured: true, ping: async () => Promise.reject(new Error("postgres://user:secret@host/db")) });
+    const r = await report(true, true, async () => Promise.reject(new Error("postgres://user:secret@host/db")));
     expect(JSON.stringify(r)).not.toMatch(/secret|postgres:|host/);
+  });
+  it("with sync off the cached probe is never called either", async () => {
+    let calls = 0;
+    const probe = cachedProbe(async () => calls++);
+    for (let i = 0; i < 5; i++) await healthReport({ enabled: false, configured: true, probe });
+    expect(calls).toBe(0);
+  });
+});
+
+describe("the health probe's 30-second cache (one SELECT 1 per server instance per 30 s)", () => {
+  const clock = () => {
+    let t = 1_000_000;
+    return { now: () => t, advance: (ms: number) => (t += ms) };
+  };
+
+  it("pings on the first request, answers from the cache inside 30 s, and pings again after 30 s", async () => {
+    const c = clock();
+    let calls = 0;
+    const probe = cachedProbe(async () => calls++, { now: c.now });
+    expect(HEALTH_CACHE_MS).toBe(30_000);
+    expect(await probe()).toBe("up");
+    expect(calls).toBe(1);
+    c.advance(1000);
+    expect(await probe()).toBe("up");
+    c.advance(28_999); // 29.999 s after the ping
+    expect(await probe()).toBe("up");
+    expect(calls).toBe(1);
+    c.advance(1); // 30 s
+    expect(await probe()).toBe("up");
+    expect(calls).toBe(2);
+  });
+
+  it("caches a 'down' result too, so a powered-off database is not hammered, and recovers once the 30 s are over", async () => {
+    const c = clock();
+    let calls = 0;
+    let up = false;
+    const probe = cachedProbe(
+      async () => {
+        calls++;
+        if (!up) throw new Error("connect ECONNREFUSED");
+      },
+      { now: c.now },
+    );
+    expect(await probe()).toBe("down");
+    up = true; // the database comes back...
+    c.advance(10_000);
+    expect(await probe()).toBe("down"); // ...but the cached result stands for 30 s
+    expect(calls).toBe(1);
+    c.advance(20_000);
+    expect(await probe()).toBe("up");
+    expect(calls).toBe(2);
+  });
+
+  it("a timed-out ping is cached as down", async () => {
+    const c = clock();
+    let calls = 0;
+    const probe = cachedProbe(
+      () => {
+        calls++;
+        return new Promise(() => {});
+      },
+      { now: c.now, timeoutMs: 20 },
+    );
+    expect(await probe()).toBe("down");
+    expect(await probe()).toBe("down");
+    expect(calls).toBe(1);
+  });
+
+  it("requests that arrive while a ping is running share it (no extra connection)", async () => {
+    const c = clock();
+    let calls = 0;
+    let release!: () => void;
+    const probe = cachedProbe(
+      () => {
+        calls++;
+        return new Promise<void>((r) => (release = r));
+      },
+      { now: c.now },
+    );
+    const all = Promise.all([probe(), probe(), probe(), probe(), probe()]);
+    release();
+    expect(await all).toEqual(["up", "up", "up", "up", "up"]);
+    expect(calls).toBe(1);
+  });
+
+  it("the route keeps one cached probe per server instance (made once, at module level)", () => {
+    const route = read("server/api/health.get.ts");
+    expect(route).toMatch(/^const probe = cachedProbe\(/m);
+    expect(route).not.toMatch(/defineEventHandler[\s\S]*cachedProbe\(/);
   });
 });
 
