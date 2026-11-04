@@ -27,7 +27,7 @@ For feature behaviour, the legacy docs still win: `docs/legacy-reference/MODULE_
 ## Hard rules
 
 1. **Stay inside this repository, and never edit `legacy/` or `docs/legacy-reference/` by hand.** Nothing is read from or written to a sibling checkout. New legacy files come in only through `scripts/sync-legacy.mjs` (dev-only; the build never calls it) after the code that needs them exists; the file list is `scripts/lib/legacy-files.mjs`.
-2. **No Vuetify and no `@mdi/font`.** UI comes from shadcn-vue components and Tailwind tokens. Icons are Lucide through `@nuxt/icon`, bundled locally. Never load fonts or icons from a CDN, because they must work offline.
+2. **No Vuetify and no `@mdi/font`.** UI comes from shadcn-vue components and Tailwind tokens. Icons are Lucide through `@nuxt/icon`, bundled locally (one exception: Google's "G" logo as a bundled local file on the Google sign-in button, Phase 17). Never load fonts or icons from a CDN, because they must work offline.
 3. **Reuse the legacy app, do not fork its data.**
    - Pure code (JSON data, `app/utils`) is imported through the `@legacy` alias, which points at the vendored snapshot (`@legacy/utils/x` is `legacy/app/utils/x`). It is never copied into `app/`, so there is one copy.
    - Code that depends on Nuxt plugins or auto-imports (composables, `$storage`, `$api`) is copied and adapted into `app/`. The two legacy composables that the parity tests run (`useAudioPlayer`, `useTasbeeh`) sit in the snapshot unmodified; `scripts/lib/legacy-*.mjs` load them in memory.
@@ -48,7 +48,8 @@ For feature behaviour, the legacy docs still win: `docs/legacy-reference/MODULE_
    - Touch targets are at least 44px on mobile. Desktop menus are popovers; mobile menus are bottom sheets.
    - No streaks, badges, points or guilt reminders anywhere.
    - No depictions of any person (prophets, companions, angels, family). Use calligraphy, places, objects and geometry only.
-   - Removing something offers Undo instead of a blocking confirm, except for wiping all data.
+   - The one exception to "no depictions": a signed-in user's own optional profile photo, shown only to them in the Account area and header menu (Phase 17F; geometric default, never the Google photo imported automatically).
+   - Removing something offers Undo instead of a blocking confirm, except for wiping all data and deleting the account (typed confirmation).
 8. **Rendering and offline** (details in `docs/PLAN.md`)
    - SPA by default; at most a few public pages are prerendered (Home, About, Surah listing), **as the SPA shell with their own head tags only** (title, description, Open Graph, from `app/lib/publicMeta.ts`). Their bodies are not prerendered: with JavaScript off a page shows no text.
    - Offline pages work from one precached app shell. Every page declares its offline level (A, B or C) in its page doc.
