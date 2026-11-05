@@ -47,7 +47,8 @@ export const seed = (context: BrowserContext, values: Record<string, string>) =>
  */
 export async function forbidRealApis(context: BrowserContext): Promise<string[]> {
   const leaks: string[] = [];
-  await context.route(/https:\/\/(api\.aladhan\.com|quranapi\.pages\.dev|api\.alquran\.cloud|geocoding-api\.open-meteo\.com)\//, (route: Route) => {
+  // Phase 17: the account services too (Aiven, Cloudinary, Google sign-in, Resend). No browser test may reach them; the sync API is mocked.
+  await context.route(/https:\/\/(api\.aladhan\.com|quranapi\.pages\.dev|api\.alquran\.cloud|geocoding-api\.open-meteo\.com|[a-z0-9.-]+\.aivencloud\.com|(api|res)\.cloudinary\.com|accounts\.google\.com|oauth2\.googleapis\.com|api\.resend\.com)\//, (route: Route) => {
     leaks.push(route.request().url());
     return route.abort("blockedbyclient");
   });

@@ -1,0 +1,36 @@
+// Phase 17 (Account & Sync). The server database: Aiven PostgreSQL through Prisma 7 (docs/phases/phase-17-plan.md, section e).
+// The connection URL is not here: it is in prisma.config.ts (for the CLI) and read from DATABASE_URL at request time (server/utils/db.ts).
+// Migrations are additive; a destructive one needs its own approval (brief, section 13).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../server/generated/prisma" // gitignored; `prisma generate` runs in postinstall
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// One generic store for every synced record; the server never queries by content. Payloads are validated per namespace
+// (app/lib/sync/, from 17C). The link to the user (onDelete: Cascade) is added in 17B together with Better Auth's User table.
+model SyncRecord {
+  userId    String
+  namespace String // allowlisted, e.g. "library.item"
+  recordKey String // e.g. "ayah:2:255", "singleton"
+  payload   Json? // null when deleted
+  schemaVer Int       @default(1)
+  revision  BigInt // from SyncCursor: rises per user
+  updatedAt DateTime  @default(now()) @updatedAt // server time, never the client's
+  deletedAt DateTime? // tombstone
+  bytes     Int // payload size, for the per-user cap
+
+  @@id([userId, namespace, recordKey])
+  @@index([userId, revision])
+}
+
+// One row per user: the revision counter (bumped inside the push transaction, so two devices' pushes are ordered) and the bytes stored.
+model SyncCursor {
+  userId   String @id
+  revision BigInt @default(0)
+  bytes    Int    @default(0)
+}

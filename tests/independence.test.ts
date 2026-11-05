@@ -34,11 +34,12 @@ describe("independence", () => {
     expect(bad).toEqual([]);
   });
 
-  it("package.json has no linked or file: dependencies, no install hooks beyond nuxt prepare, and never calls the legacy sync", () => {
+  it("package.json has no linked or file: dependencies, no install hooks beyond nuxt prepare and prisma generate, and never calls the legacy sync", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8")) as { scripts: Record<string, string>; dependencies: Record<string, string>; devDependencies: Record<string, string>; engines: { node: string } };
     for (const [name, range] of Object.entries({ ...pkg.dependencies, ...pkg.devDependencies })) expect(range, name).not.toMatch(/^(file|link|portal|workspace):|\.\./);
     const hooks = Object.keys(pkg.scripts).filter((s) => /^(pre|post)(install|publish|prepare)$|^(prepare|install)$/.test(s));
-    expect(hooks.map((h) => `${h}: ${pkg.scripts[h]}`)).toEqual(["postinstall: nuxt prepare"]);
+    // Phase 17A, deliberately: `prisma generate` writes the Prisma client (server/generated, gitignored); it needs no database and no network.
+    expect(hooks.map((h) => `${h}: ${pkg.scripts[h]}`)).toEqual(["postinstall: nuxt prepare && prisma generate"]);
     expect(Object.values(pkg.scripts).filter((s) => /sync-legacy|scripts\/gen-|LEGACY_REPO/.test(s))).toEqual([]);
     expect(pkg.scripts.build).toBe("nuxt build");
     expect(pkg.engines.node).toMatch(/^22(\.|$)/);

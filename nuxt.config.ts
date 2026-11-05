@@ -5,6 +5,7 @@ import { shipsTestPages, TEST_ONLY_ROUTES } from "./build/testPages";
 import { NO_FLASH_SCRIPT } from "./app/lib/noFlashScript";
 import { injectPublicMeta } from "./app/lib/publicMeta";
 import { isIndexable, NOINDEX, seoHeadTags, siteUrl } from "./app/lib/seo";
+import { syncEnabled } from "./app/lib/sync/flag";
 
 // Where this build is made decides what search engines may do (app/lib/seo.ts): only a Vercel production build is indexable.
 const SITE = siteUrl(process.env);
@@ -106,7 +107,11 @@ export default defineNuxtConfig({
   nitro: {
     prerender: { routes: ["/", "/about", "/surah-listing", "/robots.txt", "/sitemap.xml"], crawlLinks: false },
     // A preview, a local build and a dev server are not indexable: every response says so (Vercel adds the same header to previews itself; this makes it ours).
-    routeRules: INDEXABLE ? {} : { "/**": { headers: { "X-Robots-Tag": NOINDEX } } },
+    routeRules: {
+      ...(INDEXABLE ? {} : { "/**": { headers: { "X-Robots-Tag": NOINDEX } } }),
+      // Phase 17: no HTTP cache (and no service worker added later) may keep a session or sync answer.
+      "/api/**": { headers: { "cache-control": "no-store" } },
+    },
     hooks: {
       "prerender:generate"(route) {
         if (route.contents && typeof route.contents === "string" && !/\.(txt|xml)$/.test(route.route)) {
@@ -120,6 +125,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteUrl: SITE,
+      // Phase 17 (Account & Sync): off unless NUXT_PUBLIC_SYNC_ENABLED is 1 or true (app/lib/sync/flag.ts). Off in Production until 17E.
+      syncEnabled: syncEnabled(process.env),
       indexable: INDEXABLE,
       googleSiteVerification: process.env.GOOGLE_SITE_VERIFICATION || "",
       quranApiBase: process.env.QURAN_API_BASE || "https://quranapi.pages.dev/api",
@@ -155,7 +162,9 @@ export default defineNuxtConfig({
       globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
       // Daily Fiqh ruling data (Phase 13) is not part of the install: it is cached when a category is opened or when "Save all for offline" is pressed.
       globIgnores: ["**/wajibat-data-*.js"],
-      // Every navigation falls back to the precached SPA shell, except API routes.
+      // Every navigation falls back to the precached SPA shell, except API routes. Load-bearing for Phase 17: Google's sign-in comes
+      // back as a navigation to /api/auth/callback/google, and no runtimeCaching rule below may ever match a same-origin /api/ URL, so
+      // /api/* (and /api/auth/* in particular) always reaches the network as if there were no worker (tests/serviceWorkerApi.test.ts).
       navigateFallback: "/",
       navigateFallbackDenylist: [/^\/api\//, /^\/robots\.txt$/, /^\/sitemap\.xml$/],
       cleanupOutdatedCaches: true,
