@@ -19,6 +19,21 @@ Two prototypes are agreed: `design/prototype-remaining-pages.html` and `design/p
 | 14 | Hifz | `/hifz`, `/hifz/session`, a surah page | New simple mode (`design/prototype-hifz.html`); word-slip grading, new key `quran:hifz-words:v1`, legacy engine rules and data kept. Grading: 0 slips and no hints is `good`, any slip is `again`, `easy` only from an optional "This was easy" button. Read along highlights the whole ayah (no word timings exist). See `DECISIONS.md` |
 | 15 | Reading goals, Calendar, About, Sitemap, Surah videos, `/juz/[id]` | `/goals`, `/calender`, `/about`, `/sitemap`, `/surah-vedios`, `/juz/[id]` | **Built, awaiting review** (`phases/phase-15-goals-calendar.md`): goals on the legacy record (a finish-by-date amount worked out from where you are, no "behind", a new goal pauses the main one with Undo), a Hijri month calendar on the service's own dates with reminders that repeat by Hijri or Gregorian date, the three pages without a prototype (approved at a screenshot checkpoint), and the juz redirect |
 
+## Live, and the phase in progress
+
+- **Phase 16, cutover:** live at the new project's own address since 2026-10-30 (`phases/phase-16-cutover.md`).
+- **Phase 17, Account & Sync** (`phases/phase-17-plan.md`, decisions in `DECISIONS.md`). Sub-phases merge into `main` one by one with
+  `NUXT_PUBLIC_SYNC_ENABLED` off in Production until 17E is accepted.
+
+| Sub-phase | What | Status |
+| --- | --- | --- |
+| 17A | Foundation: Prisma 7.10.1 on Aiven, `/api/health`, the sync flag, `/api/` JSON 404, service-worker and no-real-service tests | **Done 2026-11-05**, merged as 029e21d (`phases/phase-17a-foundation.md`) |
+| 17B | Auth: Better Auth (email and password, Google), its tables, rate limiting, the Account section | **Next.** Needs the email-provider decision, the Google OAuth client and `BETTER_AUTH_SECRET` |
+| 17C | Sync engine | To build |
+| 17D | Library sync | To build |
+| 17E | Progress and Settings sync; the decision to turn the flag on in Production | To build |
+| 17F | Profile photo (own photo only, geometric default) | To build |
+
 ## Not yet prototyped
 
 | Page | Routes | Notes |

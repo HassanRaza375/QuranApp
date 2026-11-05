@@ -2,7 +2,8 @@
 
 - Branch: `phase-17a-foundation` (from `main` at 1be8834, the docs-only landing of the Phase 17 plan)
 - Date: 2026-11-04
-- Status: **Built and verified on its branch; waiting for the owner's preview check and approval.** Not merged.
+- Status: **Done. Merged into `main` as 029e21d on 2026-11-05** after the owner's preview check (`db: "up"` on `quran_preview`). Production: sync off.
+  Merged-head verify: 1016 unit, browser 777 of 778 (one sub-pixel flake in `e2e/goals.spec.ts`, 43.99997 px against 44; passed 3 of 3 alone, spec 20 of 20).
 
 ## Goal
 
