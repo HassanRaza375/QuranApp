@@ -141,11 +141,12 @@ describe("the database client", () => {
   const db = read("server/utils/db.ts");
   it("uses the pg driver adapter with one connection per instance and timeouts", () => {
     expect(db).toMatch(/from "@prisma\/adapter-pg"/);
-    expect(db).toMatch(/max: 1, connectionTimeoutMillis: 5000, idleTimeoutMillis: 10_000/);
+    expect(db).toContain("new PrismaPg(poolConfig(url, process.env.DATABASE_CA_CERT || undefined))");
+    expect(read("server/utils/dbConfig.ts")).toMatch(/max: 1, connectionTimeoutMillis: 5000, idleTimeoutMillis: 10_000/);
   });
   it("reads DATABASE_URL at request time, never through runtimeConfig (a build-time value lands in the build output)", () => {
     expect(db).toMatch(/process\.env\.DATABASE_URL/);
-    expect(read("nuxt.config.ts")).not.toMatch(/DATABASE_URL|CLOUDINARY|BETTER_AUTH|GOOGLE_CLIENT/);
+    expect(read("nuxt.config.ts")).not.toMatch(/DATABASE_URL|DATABASE_CA_CERT|CLOUDINARY|BETTER_AUTH|GOOGLE_CLIENT/);
   });
   it("is created on first use, not when the module loads", () => {
     expect(db).not.toMatch(/^const client = new PrismaClient/m);

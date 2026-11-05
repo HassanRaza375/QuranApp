@@ -2,6 +2,7 @@
 // database or call Cloudinary, Google or Resend; tests/syncFoundation.test.ts checks these are unset.
 for (const k of [
   "DATABASE_URL",
+  "DATABASE_CA_CERT",
   "BETTER_AUTH_SECRET",
   "BETTER_AUTH_URL",
   "GOOGLE_CLIENT_ID",

@@ -36,6 +36,7 @@ Set for **Production** and **Preview** (Vercel's own variables are not set by ha
 | `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` = `1` | optional | the build needs no browser |
 | `NUXT_PUBLIC_SYNC_ENABLED` | **Phase 17**: `1` in **Preview** only; leave unset (off) in **Production** until 17E is accepted | Account & Sync. Read at build time (the prerendered pages carry it) and by the server at request time, so a change needs a redeploy. Off: no account requests, `/api/health` touches no database |
 | `DATABASE_URL` | **Phase 17**, a **different value per environment** (section 7) | the Aiven service URI with `sslmode=require`: Production uses the production database, Preview (and Development) `quran_preview`. Server-only, read at request time; never in `runtimeConfig` |
+| `DATABASE_CA_CERT` | **Phase 17**: **Preview now, Production later** (section 7, TLS) | the Aiven project CA certificate as PEM text; without it a Vercel function cannot verify Aiven's certificate. Server-only, read at request time |
 
 Do **not** set `ALLOW_INDEXING` on Vercel (it is for rehearsing a production build locally). Do not copy `NUXT_PUBLIC_WAJIBAT_SHOW_UNREVIEWED_HELPERS`,
 `NUXT_PUBLIC_SUPABASE_*`, or anything else the legacy project has: nothing here reads them. Later Phase 17 variables (`BETTER_AUTH_*`, `GOOGLE_CLIENT_*`,
@@ -112,7 +113,22 @@ One Aiven service (free plan: 1 GB disk, 20 connections, no pooler; it is powere
   `npx prisma migrate deploy` with `DATABASE_URL` set to the target database in the shell. Run it against `quran_preview` first, then production.
 - **Check:** `GET /api/health` on the deployment. `{ ok: true, sync: "off" }` means the flag is off there (no database touched);
   `{ ok: true, sync: "on", db: "up" }` means the database answered; `503 … "down"` means it did not (powered off, wrong URL, TLS), within about 5 s.
+  The result is kept for 30 s per function instance, so after fixing something wait 30 s (or redeploy) before checking again. **Why it was down** is in
+  the function's log only (Vercel, the deployment, Logs, filter `[health]`): a line `[health] database unreachable: code=… message=…` with the URI, host,
+  user and password removed. Common codes: `SELF_SIGNED_CERT_IN_CHAIN` or `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` (the CA below is missing or wrong),
+  `ENOTFOUND` (host), `28P01` (password), `3D000` (database name), `ETIMEDOUT` or `ECONNREFUSED` (powered off, network), `DB_CA_INVALID` (the CA
+  variable is not PEM text).
 - **Region:** set Vercel, Settings, Functions, Function Region to the one closest to the Aiven service's region (shown in the Aiven console).
-- **TLS:** the URI's `sslmode=require` is enough; if certificate errors appear, add Aiven's CA with `NODE_EXTRA_CA_CERTS`, never `rejectUnauthorized: false`.
+- **TLS: `DATABASE_CA_CERT` (required on Vercel).** With `pg` 8.23, `sslmode=require` in the URI means *verify the certificate fully*, and Aiven signs its
+  certificate with a **project CA that Node does not trust**, so a Vercel function cannot connect without it (`prisma migrate deploy` from your machine
+  does not verify, which is why the migration worked). Set the CA as PEM text, and the app then trusts exactly that CA with full checking (host name
+  included) and removes the URI's SSL parameters so they cannot override it (`server/utils/dbConfig.ts`). Certificate checks are never turned off.
+  1. Aiven console, your project, the PostgreSQL service, **Overview**, *Connection information*: next to **CA certificate**, choose **Download** (a file
+     `ca.pem`) or **Show** and copy all of it, from `-----BEGIN CERTIFICATE-----` to `-----END CERTIFICATE-----` inclusive.
+  2. Vercel, Settings, Environment Variables, **Add**: name `DATABASE_CA_CERT`, value the whole PEM text (paste it as is; several lines are fine,
+     one line with `\n` escapes is also accepted), **Sensitive** on, environment **Preview** now. **Production later**, together with Production's
+     `DATABASE_URL` (the same CA serves both databases, since they are in one service and one project). Locally, the same name in `.env` if needed.
+  3. Redeploy the deployment (variables are read when a function starts), wait 30 s, open `/api/health`.
+  The CA is a public certificate, not a password, but treat it like the other variables: never in git or chat.
 - **If the service is powered off**, sign-in and sync stop until it is powered on again in the Aiven console; the app itself is unaffected.
 - **Rollback:** turning `NUXT_PUBLIC_SYNC_ENABLED` off and redeploying removes every account request. Migrations are additive; a destructive one needs its own approval.

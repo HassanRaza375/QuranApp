@@ -4,6 +4,7 @@ import { defineConfig, devices } from "@playwright/test";
 // every service key is blank (tests/syncFoundation.test.ts checks this file).
 const NO_SERVICES = {
   DATABASE_URL: "postgres://blocked.invalid:5432/none",
+  DATABASE_CA_CERT: "",
   BETTER_AUTH_SECRET: "",
   GOOGLE_CLIENT_ID: "",
   GOOGLE_CLIENT_SECRET: "",

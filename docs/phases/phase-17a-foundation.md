@@ -36,6 +36,25 @@ that with the flag off the app makes no account request. Plan: `phase-17-plan.md
   the credentials before every file (`tests/setup/noServices.ts`). Playwright now starts a second server from the same build on port 3013 with the
   server's sync flag on (Nuxt reads the flag at request time on the server).
 
+## Follow-up: the preview could not reach Aiven (2026-11-05)
+
+The owner's preview check showed `{"ok":false,"sync":"on","db":"down"}` although the flag, the Vercel variables and the migration (run from the owner's
+machine) were all right. **Cause, confirmed in the installed code** (pg 8.23.1, pg-connection-string 2.14.1, pg-pool 3.14.0):
+- `sslmode=require` is an alias of **verify-full** (`pg-connection-string/index.js`, the default branch: `prefer`, `require` and `verify-ca` all
+  fall through to verify-full, with a deprecation warning). The URL gives `ssl = {}`, so Node's TLS checks the certificate against its own roots,
+  and Aiven's is signed by a per-project CA it does not have. `prisma migrate deploy` does not verify, which is why the migration worked.
+- pg lays the parsed URL **over** the options it is given (`pg/lib/connection-parameters.js`: `Object.assign({}, config, parse(config.connectionString))`),
+  so an `ssl` option next to an `sslmode` in the URL is silently replaced. A test shows both with pg's own `ConnectionParameters`.
+
+**Fix:** `server/utils/dbConfig.ts` `poolConfig(url, ca)`. With `DATABASE_CA_CERT` (PEM text; `
+` escapes and Windows line ends accepted) it passes
+`ssl: { ca, rejectUnauthorized: true }` and removes `ssl`, `sslmode`, `sslrootcert`, `sslcert`, `sslkey` and `uselibpqcompat` from the URL, keeping
+everything else. Without it, today's behaviour. A value that is not PEM is refused with `DB_CA_INVALID`. Certificate checks are never turned off (a test
+scans the server code). **The health route logs why it is down** to the server log only, once per 30-second window: `[health] database unreachable:
+code=… message=…`, codes from the error and from the driver error Prisma wraps, the message with the URI, host, user and password (as written,
+decoded and encoded) removed. The answer is still only `{ ok, sync, db }`. DEPLOY.md section 7 says how to get the CA from Aiven and set it (Preview
+now, Production later). Tests: `tests/dbConfig.test.ts` (19).
+
 ## Decisions and why
 
 | Decision | Alternatives considered | Reason |
