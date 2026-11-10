@@ -59,13 +59,12 @@ describe("the credits", () => {
     expect(c.text).toContain("for non-commercial purposes only");
     expect(c.text).toContain("permission from the translator or the publisher");
     expect(c.text).toContain("free and not monetised");
-    expect(c.text).not.toMatch(/p{Extended_Pictographic}/u);
+    expect(c.text).not.toMatch(/\p{Extended_Pictographic}/u);
   });
   it("name no host the code asks (tanzil.net is a credit, not a service)", () => {
     expect(SOURCE_HOSTS).not.toContain("tanzil.net");
-    const code = [...walk(path.join(ROOT, "app")).map((f) => fs.readFileSync(f, "utf8")), read("nuxt.config.ts")].join("
-");
-    expect(code).not.toMatch(/fetch([^)]*tanzil.net/);
+    const code = [...walk(path.join(ROOT, "app")).map((f) => fs.readFileSync(f, "utf8")), read("nuxt.config.ts")].join("\n");
+    expect(code).not.toMatch(/fetch\([^)]*tanzil\.net/);
   });
 });
 
