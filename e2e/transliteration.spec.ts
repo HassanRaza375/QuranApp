@@ -126,7 +126,7 @@ test.describe("Surah reader", () => {
     await expect(page.getByTestId("ayah-translit")).toHaveCount(7);
     await expect(page.locator("html")).toHaveClass(/dark/);
     expect(await noScroll(page)).toBe(true);
-    const box = await page.getByTestId("translit-toggle").locator("xpath=ancestor::label").boundingBox();
+    const box = await page.getByTestId("translit-toggle").boundingBox(); // the button itself, not a wrapper
     expect(box!.height).toBeGreaterThanOrEqual(44);
     const color = await page.getByTestId("ayah-translit").first().evaluate((el) => getComputedStyle(el).color);
     expect(color).not.toBe(await page.locator("body").evaluate((el) => getComputedStyle(el).backgroundColor));
