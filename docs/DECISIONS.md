@@ -137,6 +137,14 @@ Every decision made while designing and building the revamp, with the reason. Ph
 7. **What syncs:** the Sunni/Ja'fari choice and marja' sync under the **Settings** toggle (its description says so); the saved city and coordinates **never** sync; search history **never** syncs.
 8. **Still open until 17B:** the email provider (Resend needs a domain we own), Google sign-in on preview deployments, and the Aiven free-plan risk (idle power-off, 1 GB, 20 connections).
 
+**Reader transliteration (Surah and Page views): owner decisions, 2026-11-10.** Result: `phases/transliteration.md`.
+- **Where:** the Surah reader and the Page reader, one switch ("Transliteration") in each, sharing one setting and one composable (`useTransliteration`). The Juz tab opens the Surah reader, so it gets the line too; there is still no separate Juz reader (decision 11 above stands).
+- **Source:** api.alquran.cloud, edition `en.transliteration` ("English Transliteration"), one request per surah (`/v1/surah/<n>/en.transliteration`), the same service and edition the Duas already use. No transliteration dataset is bundled (content rule: Qur’an-related text comes only from the existing services). **Licence: the API does not state one, and I have not verified the upstream terms.** The edition appears to come from the Tanzil project; that is an assumption, listed in `CONTENT_TO_VERIFY.md`. Nothing is altered by the app: the text is shown as the service returns it (trimmed).
+- **Offline:** each surah’s lines are cached whole in a new `quran-revamp-db` store, `transliterations` (database version 4 to 5; created only, nothing changed or removed; `quran-app-db` is untouched). Level B like the reader: a surah opened once with the switch on works offline. Not part of Downloads (yet).
+- **Setting:** `transliteration: true` in `quran:reader-prefs:v1` (additive; the legacy app ignores it; off is the default and is stored as `null`). No font-size option: the reader has none for translations, and Arabic size is the only text-size setting.
+- **Layout:** under the Arabic, above the translation, left-to-right Latin text (`lang="ar-Latn" dir="ltr"`) in an italic serif. The Page reader shows a surah that has lines ayah by ayah (a line under each) instead of one flowing paragraph; without lines it flows as before.
+- **No bundled data and no guess:** a failed or incomplete answer is never shown or stored; the view says it needs a connection once, with Try again. An ayah with no text shows no line.
+
 ## 4. Deliberate content gaps
 
 Ja'fari Laylat al-Qadr nights (19, 21, 23); the Sunni versus Ja'fari compare table and iftar/suhoor explanations; the Arabic of hadith duas; "After prayer" dhikr sequences; Arabic prayer names; revelation order; Juz names; translator and tafsir-school attribution; per-tradition event wording. Each becomes a data file once wording and a source are supplied.

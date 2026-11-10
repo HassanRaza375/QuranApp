@@ -48,6 +48,10 @@ Read the Qur'an one page at a time, in the order and page breaks of the standard
 | Invalid address | Page 1 with the notice above |
 | Invalid Go to | "Enter a page from 1 to 604." under the box; no navigation |
 
+## Transliteration
+
+The same "Transliteration" switch sits in the tool row and shares its setting with the Surah reader. On, a surah that has lines is shown ayah by ayah (the Arabic with its marker, then its line); a page that crosses two surahs reads each ayah’s line from its own surah. Off, or while the lines are unavailable, the text flows as before. Details: `phases/transliteration.md`.
+
 ## Data and storage
 
 Reads: the `chapters` store of `quran-revamp-db`, `quran:pins:v1`, `quran:bookmarks:v1` (+ added-at), `quran:accessibility:v1`. Writes: `quran:pins:v1` (the `page` field only), `quran:bookmarks:v1` and `quran:bookmarks:added-at:v1` (the `page:N` key), `quran:accessibility:v1` (`arabicFontScale`), and the `chapters` cache. `quran-app-db` is never opened.

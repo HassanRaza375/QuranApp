@@ -15,3 +15,5 @@ The legacy page was a full-juz reader (a whole juz's text on one page, fetched f
 ## Tests
 
 `tests/juzRedirect.test.ts` (4: all 30 juz, a juz that starts partway down a page, invalid ids, a repeated parameter), `e2e/smallpages.spec.ts` (the reader opens at the ayah and Back goes to `/juz`; juz 1, 2 and 30; invalid numbers).
+
+The reader it opens has the optional transliteration line (`phases/transliteration.md`); there is no separate Juz reader.
