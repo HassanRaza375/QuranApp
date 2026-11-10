@@ -20,4 +20,6 @@ export const TransliterationService = {
       return null; // not remembered: the next try (online again) asks again
     }
   },
+  /** A whole surah in one request (the reader's source; its answer is checked and cached by `lib/transliteration.ts`). Throws on failure. */
+  surah: (n: number): Promise<unknown> => useQuranApi2()(`/surah/${n}/en.transliteration`),
 };

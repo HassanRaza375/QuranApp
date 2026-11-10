@@ -10,11 +10,20 @@ export const TRANSLATION_LABELS: Record<TranslationLang, string> = { english: "E
 
 export interface ReaderPrefs {
   translation?: "off";
+  /** the transliteration line under the Arabic (additive field; absent = off) */
+  transliteration?: true;
 }
 
 export function readReaderPrefs(): ReaderPrefs {
   const v = getJSON<unknown>(READER_PREFS_KEY, null);
-  return v && typeof v === "object" && !Array.isArray(v) && (v as ReaderPrefs).translation === "off" ? { translation: "off" } : {};
+  if (!v || typeof v !== "object" || Array.isArray(v)) return {};
+  const r = v as ReaderPrefs;
+  return { ...(r.translation === "off" ? { translation: "off" as const } : {}), ...(r.transliteration === true ? { transliteration: true as const } : {}) };
+}
+
+/** Turns the transliteration line on or off, keeping any other field in the record. */
+export function setTransliterationOn(on: boolean): void {
+  mergeJSON(READER_PREFS_KEY, { transliteration: on ? true : null });
 }
 
 /** Turns "Off" on or off, keeping any other field in the record. */
