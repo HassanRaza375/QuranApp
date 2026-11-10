@@ -21,6 +21,7 @@ const store = usePreferencesStore();
 const player = usePlayerStore();
 const undo = useUndoToast();
 const text = useQuranText();
+const translit = useTransliteration();
 
 const surahNo = computed(() => parseSurahParam(route.params.id));
 const status = ref<"loading" | "ready" | "error" | "notfound">("loading");
@@ -35,6 +36,10 @@ useSeoMeta({
   title: () => (chapter.value ? `${chapter.value.name} (${chapter.value.en}) · Quran App` : "Surah · Quran App"),
   description: () => (chapter.value ? `Read Surah ${chapter.value.name}, ${chapter.value.en}: ${chapter.value.total} ayahs, with translation and tafsir.` : "Read a surah of the Quran."),
 });
+
+// ---- transliteration (shared with the Page reader): loaded for the open surah while the setting is on
+watch(() => chapter.value?.n, (n) => n && void translit.ensure([n]), { immediate: true });
+const translitLines = computed(() => (translit.enabled.value && chapter.value ? (translit.lines.value[chapter.value.n] ?? null) : null));
 
 // ---- preferences
 const readerPrefs = ref<ReaderPrefs>({});
@@ -410,6 +415,7 @@ const next = computed(() => (chapter.value && chapter.value.n < 114 ? SURAH_ROWS
         :chapter="chapter"
         :order="store.prefs.verseLayout"
         :translation="translation"
+        :translit="translitLines"
         :panels="panels"
         :saved="saved"
         :pinned="pinned"

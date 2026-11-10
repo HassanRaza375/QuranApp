@@ -49,9 +49,11 @@ const reciterOptions: MenuOption[] = RECITER_NAMES.map((r) => ({ value: r, label
         <ResponsiveMenu :model-value="reciter" :options="reciterOptions" label="Reciter" title="Choose a reciter" @update:model-value="(v) => emit('reciter', v)" />
       </div>
     </div>
+    <div class="mt-3 flex flex-wrap items-center justify-center gap-x-2">
+      <ReaderTransliterationToggle :surahs="[chapter.n]" />
     <button
       type="button"
-      class="mt-3 inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-[12.5px] md:min-h-9"
+      class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-[12.5px] md:min-h-9"
       :class="completed ? 'text-brand' : 'text-ink-2 hover:text-foreground'"
       :aria-pressed="completed"
       data-testid="mark-read"
@@ -59,5 +61,6 @@ const reciterOptions: MenuOption[] = RECITER_NAMES.map((r) => ({ value: r, label
     >
       <Icon :name="completed ? 'lucide:circle-check' : 'lucide:circle'" size="16" />{{ completed ? "Marked as read" : "Mark as read" }}
     </button>
+    </div>
   </header>
 </template>
