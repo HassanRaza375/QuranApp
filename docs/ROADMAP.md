@@ -4,7 +4,7 @@ Kept in step with `STATUS_2026-10-22.md` and `PROGRESS.md` (which wins if they d
 
 ## Built (verified in automated tests; real-device checks pending)
 
-Shell, Home, Settings, Search, Downloads (and Surah audios), Surah listing (Surah, Juz, Page), Surah reader, Prayer & Qibla, Library, Prophets & People (directory, timeline, person), Story reader and Stories directory, Ramadan (Today, Timetable, Events), Per page, Tasbeeh, Sajda, Asma-ul-Husna, and the player (whole surah, per ayah, queues).
+Shell, Home, Settings, Search, Downloads (and Surah audios), Surah listing (Surah, Juz, Page), Surah reader (with an optional transliteration line, shared with Per page; `phases/transliteration.md`), Prayer & Qibla, Library, Prophets & People (directory, timeline, person), Story reader and Stories directory, Ramadan (Today, Timetable, Events), Per page, Tasbeeh, Sajda, Asma-ul-Husna, and the player (whole surah, per ayah, queues).
 
 ## Prototyped (2026-10-22), to build
 

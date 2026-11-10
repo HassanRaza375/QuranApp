@@ -18,6 +18,8 @@ const props = defineProps<{
   chapter: Chapter;
   order: "ar" | "tr";
   translation: TranslationLang | null;
+  /** this surah's transliteration, one line per ayah, when the reader has it on and it has loaded; null otherwise */
+  translit?: string[] | null;
   panels: Record<number, TafsirPanelState>;
   saved: Set<number>;
   pinned: number | null;
@@ -80,6 +82,7 @@ const onClick = (e: MouseEvent) => {
         <p class="ar mb-3 text-right" lang="ar" dir="rtl" data-testid="ayah-arabic">
           {{ chapter.arabic1[n - 1] }}<span class="verse-mark" aria-hidden="true">{{ n }}</span>
         </p>
+        <p v-if="translit?.[n - 1]" class="translit mb-4 max-w-[600px] text-left text-ink-2" lang="ar-Latn" dir="ltr" data-testid="ayah-translit">{{ translit[n - 1] }}</p>
         <p v-if="texts" :class="trClass" class="mb-4 max-w-[600px] text-ink-2" :lang="trLang" :dir="trRtl ? 'rtl' : 'ltr'" :style="trRtl ? 'text-align: right; margin-left: auto' : ''" data-testid="ayah-translation">{{ texts[n - 1] }}</p>
       </template>
       <template v-else>
@@ -87,6 +90,7 @@ const onClick = (e: MouseEvent) => {
         <p class="ar mb-3 text-right" lang="ar" dir="rtl" data-testid="ayah-arabic">
           {{ chapter.arabic1[n - 1] }}<span class="verse-mark" aria-hidden="true">{{ n }}</span>
         </p>
+        <p v-if="translit?.[n - 1]" class="translit mb-4 max-w-[600px] text-left text-ink-2" lang="ar-Latn" dir="ltr" data-testid="ayah-translit">{{ translit[n - 1] }}</p>
       </template>
 
       <div class="flex items-center gap-0.5 text-ink-2">
@@ -198,6 +202,12 @@ const onClick = (e: MouseEvent) => {
 .ayah-row {
   content-visibility: auto;
   contain-intrinsic-size: auto 230px;
+}
+.translit {
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  font-style: italic;
+  line-height: 1.65;
 }
 .verse-mark {
   display: inline-flex;

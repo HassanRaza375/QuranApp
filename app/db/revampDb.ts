@@ -5,12 +5,13 @@ import { openDB, type IDBPDatabase } from "idb";
 import type { PrayerMonthRecord } from "~/lib/prayerMonth";
 
 export const REVAMP_DB_NAME = "quran-revamp-db";
-// Version 2 (Phase 4A) adds the reader's text caches; version 3 (Phase 6) adds `ayah-text`, the Library's ayah snippets; version 4 (Phase 8A) adds `hijri-months`, the Ramadan month from the calendar service. Upgrades only ever create stores; nothing is changed or removed.
-export const REVAMP_DB_VERSION = 4;
+// Version 2 (Phase 4A) adds the reader's text caches; version 3 (Phase 6) adds `ayah-text`, the Library's ayah snippets; version 4 (Phase 8A) adds `hijri-months`, the Ramadan month from the calendar service; version 5 adds `transliterations`, a surah's transliteration lines. Upgrades only ever create stores; nothing is changed or removed.
+export const REVAMP_DB_VERSION = 5;
 export const PRAYER_MONTHS = "prayer-months";
 export const CHAPTERS = "chapters"; // key: surah number
 export const TAFSIRS = "tafsirs"; // key: "<surah>_<ayah>"
 export const AYAH_TEXT = "ayah-text"; // key: "<surah>:<ayah>", value: the Arabic text of that one ayah
+export const TRANSLITERATIONS = "transliterations"; // key: surah number, value: string[] (one line per ayah; lib/transliteration.ts)
 export const HIJRI_MONTHS = "hijri-months"; // key: "<hijri year>-<hijri month>", value: a HijriMonthRecord (lib/hijriMonths.ts)
 
 let dbPromise: Promise<IDBPDatabase> | null = null;
@@ -18,7 +19,7 @@ let dbPromise: Promise<IDBPDatabase> | null = null;
 export function getRevampDb(): Promise<IDBPDatabase> {
   dbPromise ??= openDB(REVAMP_DB_NAME, REVAMP_DB_VERSION, {
     upgrade(db) {
-      for (const name of [PRAYER_MONTHS, CHAPTERS, TAFSIRS, AYAH_TEXT, HIJRI_MONTHS]) if (!db.objectStoreNames.contains(name)) db.createObjectStore(name);
+      for (const name of [PRAYER_MONTHS, CHAPTERS, TAFSIRS, AYAH_TEXT, HIJRI_MONTHS, TRANSLITERATIONS]) if (!db.objectStoreNames.contains(name)) db.createObjectStore(name);
     },
     // Another tab asked to delete or upgrade the database (Clear all data): let go of it so that request is not blocked.
     blocking() {
@@ -92,7 +93,7 @@ export async function pruneOldPrayerMonths(keepFromMonth: string): Promise<numbe
 
 // ---- the reader's text caches (immutable text: fetched once, read from here afterwards). Never load-bearing: every
 // read returns undefined and every write is dropped quietly when IndexedDB is unavailable or full.
-export async function getCached<T>(store: typeof CHAPTERS | typeof TAFSIRS | typeof AYAH_TEXT | typeof HIJRI_MONTHS, key: number | string): Promise<T | undefined> {
+export async function getCached<T>(store: typeof CHAPTERS | typeof TAFSIRS | typeof AYAH_TEXT | typeof HIJRI_MONTHS | typeof TRANSLITERATIONS, key: number | string): Promise<T | undefined> {
   try {
     return (await (await getRevampDb()).get(store, key)) as T | undefined;
   } catch {
@@ -100,7 +101,7 @@ export async function getCached<T>(store: typeof CHAPTERS | typeof TAFSIRS | typ
   }
 }
 
-export async function putCached(store: typeof CHAPTERS | typeof TAFSIRS | typeof AYAH_TEXT | typeof HIJRI_MONTHS, key: number | string, value: unknown): Promise<void> {
+export async function putCached(store: typeof CHAPTERS | typeof TAFSIRS | typeof AYAH_TEXT | typeof HIJRI_MONTHS | typeof TRANSLITERATIONS, key: number | string, value: unknown): Promise<void> {
   try {
     await (await getRevampDb()).put(store, value, key);
   } catch {

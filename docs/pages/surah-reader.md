@@ -42,6 +42,10 @@ Read a surah: the Arabic with a translation, the tafsir of any ayah, and the too
 - Writes: `quran:reading-progress:v1` (the legacy record, only after you scroll on), `quran:reading-goals:v1` (the daily log only), `quran:bookmarks:v1` and `added-at`, `quran:pins:v1` (new), `quran:read-surahs:v1` (new), `quran:reader-prefs:v1` (new), `translationDefaultLang` and `tafsirDefaultAuthor` (when you choose, as legacy), `reciter` (when you choose).
 - Never opens `quran-app-db`.
 
+## Transliteration
+
+A "Transliteration" switch in the header (next to Mark as read) shows a Roman-script line under each Arabic ayah, above the translation. Off by default; the choice is `transliteration` in `quran:reader-prefs:v1` and is shared with Per page. The lines are fetched once per surah from api.alquran.cloud (`en.transliteration`) and cached in `quran-revamp-db` (`transliterations`); with no connection and nothing saved the Arabic and translation still show and the switch says so, with Try again. An ayah with no text shows no line. Details: `phases/transliteration.md`.
+
 ## What counts as read
 
 - **Your place:** the last ayah above 35% of the screen, after you stop scrolling for 0.4 s. Opening a surah does not change it until you scroll on.

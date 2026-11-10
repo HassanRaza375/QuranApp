@@ -43,6 +43,8 @@ test.describe("About", () => {
       await expect(a).toHaveAttribute("rel", /noopener/);
     }
     await expect(page.getByTestId("about-source").filter({ hasText: "Open-Meteo" })).toContainText("Only the city you type, and only when you press Search.");
+    await expect(page.getByTestId("about-credit")).toContainText("for non-commercial purposes only");
+    await expect(page.getByTestId("about-credit")).toContainText("free and not monetised");
     await expect(page.getByTestId("about-grounding")).toContainText("points to the ayahs it comes from");
     await expect(page.getByTestId("about-limits")).toContainText("follow your own marja’ or a local scholar");
     await expect(page.locator("body")).not.toContainText(/vuetify|nuxt/i);

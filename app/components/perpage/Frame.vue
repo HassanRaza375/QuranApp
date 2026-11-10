@@ -21,6 +21,8 @@ defineProps<{
   bismillahState: "none" | "loading" | "ready";
   /** the ayah the player is on (alone or in a queue), so its text can be highlighted */
   playing?: { surah: number; ayah: number } | null;
+  /** the transliteration lines by surah, when the reader has it on. A surah with lines is shown ayah by ayah (a line under each); one without flows as before. */
+  translit?: Record<number, string[] | undefined> | null;
 }>();
 </script>
 
@@ -40,7 +42,13 @@ defineProps<{
             <div v-else-if="bismillahState === 'loading'" class="h-[72px]" aria-hidden="true" />
           </template>
         </template>
-        <p class="ar page-text mt-4" lang="ar" dir="rtl" data-testid="page-text">
+        <div v-if="translit?.[g.surah]" class="mt-4" data-testid="page-ayahs">
+          <div v-for="(t, i) in g.ayahs" :key="g.from + i" class="border-b py-4 last:border-b-0" data-testid="page-ayah">
+            <p class="ar" lang="ar" dir="rtl" data-testid="page-ayah-ar"><span class="ayah-text" :class="playing && playing.surah === g.surah && playing.ayah === g.from + i ? 'ayah-playing' : ''" :aria-current="playing && playing.surah === g.surah && playing.ayah === g.from + i ? 'true' : undefined" :data-surah="g.surah" :data-ayah="g.from + i" data-testid="ayah-text">{{ t }}<span class="verse-mark" data-testid="verse-mark" :data-ayah="g.from + i"><span class="sr-only" lang="en" dir="ltr"> ayah </span>{{ g.from + i }}</span></span></p>
+            <p v-if="translit[g.surah]![g.from + i - 1]" class="translit mt-2 text-left text-ink-2" lang="ar-Latn" dir="ltr" data-testid="ayah-translit">{{ translit[g.surah]![g.from + i - 1] }}</p>
+          </div>
+        </div>
+        <p v-else class="ar page-text mt-4" lang="ar" dir="rtl" data-testid="page-text">
           <template v-for="(t, i) in g.ayahs" :key="g.from + i"><span class="ayah-text" :class="playing && playing.surah === g.surah && playing.ayah === g.from + i ? 'ayah-playing' : ''" :aria-current="playing && playing.surah === g.surah && playing.ayah === g.from + i ? 'true' : undefined" :data-surah="g.surah" :data-ayah="g.from + i" data-testid="ayah-text">{{ t }}<span class="verse-mark" data-testid="verse-mark" :data-ayah="g.from + i"><span class="sr-only" lang="en" dir="ltr"> ayah </span>{{ g.from + i }}</span></span>{{ " " }}</template>
         </p>
       </section>
@@ -49,6 +57,12 @@ defineProps<{
 </template>
 
 <style scoped>
+.translit {
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  font-style: italic;
+  line-height: 1.65;
+}
 .page-text {
   text-align: justify;
   overflow-wrap: break-word;

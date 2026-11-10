@@ -2,7 +2,7 @@
 // About (Phase 15; no prototype): a calm reading page from the existing type scale. What it says is checked against the code: the services are the list in
 // lib/about.ts (a test compares it with the hosts the app calls); the knowledge modules are read from the one module list. Level A: static, nothing is
 // read from storage and nothing is requested. Its title and description are repeated in lib/publicMeta.ts for the prerendered head tags.
-import { ABOUT, DATA_SOURCES } from "~/lib/about";
+import { ABOUT, CREDITS, DATA_SOURCES } from "~/lib/about";
 import { MODULE_ORDER, MODULES } from "~/lib/knowledge/modules";
 import { PUBLIC_META } from "~/lib/publicMeta";
 
@@ -36,6 +36,14 @@ const modules = MODULE_ORDER.map((id) => MODULES[id]);
           <dd class="mt-0.5 text-[13px] text-ink-2"><b class="font-medium">Sent:</b> {{ s.sends }}</dd>
         </div>
       </dl>
+    </section>
+
+    <section class="mt-6 border-t pt-6" aria-labelledby="about-credits">
+      <h2 id="about-credits" class="font-serif text-[22px] font-medium">Credits</h2>
+      <div v-for="c in CREDITS" :key="c.id" class="mt-3" data-testid="about-credit">
+        <a :href="c.href" class="inline-flex min-h-11 items-center text-[15px] font-medium text-brand underline underline-offset-2 md:min-h-9" target="_blank" rel="noopener noreferrer">{{ c.name }}</a>
+        <p class="text-[14.5px] leading-relaxed">{{ c.text }}</p>
+      </div>
     </section>
 
     <section class="mt-6 border-t pt-6" aria-labelledby="about-study">

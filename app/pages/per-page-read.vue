@@ -6,7 +6,7 @@ import type { FrameSegment } from "~/components/perpage/Frame.vue";
 import { SURAH_ROWS } from "~/data/quranMeta.generated";
 import { addBookmark, bookmarkAddedAt, hasBookmark, pageBookmarkKey, removeBookmark } from "~/lib/bookmarks";
 import { bismillahFrom, ChapterError, type Chapter } from "~/lib/chapter";
-import { firstAyahOf, GO_TO_ERROR, isPageNumber, juzLine, PAGE_FAILED, PAGE_NOTE, PAGE_OFFLINE, pageSegments, parseGoTo, parsePageParam, surahNamesLine } from "~/lib/pageReader";
+import { firstAyahOf, GO_TO_ERROR, isPageNumber, juzLine, PAGE_FAILED, PAGE_NOTE, PAGE_OFFLINE, pageSegments, pageSurahNumbers, parseGoTo, parsePageParam, surahNamesLine } from "~/lib/pageReader";
 import { pageQueue, pageQueueId } from "~/lib/audioQueue";
 import { readPagePin, writePagePin, type PagePin } from "~/lib/pins";
 import { reciterName } from "~/lib/surahAudio";
@@ -19,6 +19,7 @@ const store = usePreferencesStore();
 const undo = useUndoToast();
 const player = usePlayerStore();
 const text = useQuranText();
+const translit = useTransliteration();
 
 const param = computed(() => parsePageParam(route.query.page));
 const page = computed(() => param.value.page);
@@ -36,6 +37,11 @@ const juz = computed(() => juzLine(page.value));
 const names = computed(() => surahNamesLine(page.value));
 const first = computed(() => firstAyahOf(page.value));
 const firstName = computed(() => (first.value ? SURAH_ROWS[first.value.surah - 1]!.name : ""));
+
+// ---- transliteration (shared with the Surah reader): loaded for every surah on the page while the setting is on
+const pageSurahs = computed(() => pageSurahNumbers(page.value));
+watch(pageSurahs, (s) => void translit.ensure(s), { immediate: true });
+const translitLines = computed(() => (translit.enabled.value ? translit.lines.value : null));
 
 // ---- loading (the surah reader's cache first, then the network)
 let focusTitle = false; // focus the title after Previous, Next or Go (not on the first load, and not from the slider, which keeps focus so it can be adjusted again)
@@ -188,6 +194,7 @@ watch(page, () => void load());
       <Button variant="outline" class="min-h-11 min-w-11 rounded-full md:min-h-9 md:min-w-9" :disabled="atMin" aria-label="A−, smaller Arabic text" data-testid="text-smaller" @click="bump(-0.1)">A−</Button>
       <span class="w-10 text-center text-[12.5px] tabular-nums text-ink-2" data-testid="text-scale">{{ scale.toFixed(1) }}×</span>
       <Button variant="outline" class="min-h-11 min-w-11 rounded-full md:min-h-9 md:min-w-9" :disabled="atMax" aria-label="A+, larger Arabic text" data-testid="text-bigger" @click="bump(0.1)">A+</Button>
+      <ReaderTransliterationToggle :surahs="pageSurahs" />
       <Button variant="outline" class="min-h-11 gap-1.5 rounded-full md:min-h-9" :aria-pressed="pinned" :class="pinned ? 'border-brand text-brand' : ''" data-testid="pin-page" @click="onPin">
         <Icon name="lucide:pin" size="15" />{{ pinned ? "Pinned" : "Pin page" }}
       </Button>
@@ -207,7 +214,7 @@ watch(page, () => void load());
         <p class="text-[15px]" role="status" data-testid="load-error">{{ errorMessage }}</p>
         <Button variant="outline" class="mt-3 min-h-11 md:min-h-9" data-testid="load-retry" @click="load()">Try again</Button>
       </div>
-      <PerpageFrame v-else :page="page" :juz="juz" :names="names" :segments="segments" :bismillah="bismillah" :bismillah-state="bismillahState" :playing="player.playingAyah" />
+      <PerpageFrame v-else :page="page" :juz="juz" :names="names" :segments="segments" :bismillah="bismillah" :bismillah-state="bismillahState" :playing="player.playingAyah" :translit="translitLines" />
     </div>
 
     <p class="mt-3 text-center text-[12.5px] text-ink-2" data-testid="page-note">{{ PAGE_NOTE }}</p>
