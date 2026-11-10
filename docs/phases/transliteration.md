@@ -66,7 +66,7 @@ None; new items added to `CONTENT_TO_VERIFY.md` (source, licence, accuracy, our 
 
 ## Open issues and risks
 
-- **Source and licence are unverified.** The API states neither. The edition looks like Tanzil's transliteration; confirm the terms before cutover and add a credit to About if they ask for one.
+- **Licence:** Tanzil’s terms were read on 2026-11-10 (non-commercial only; see `DECISIONS.md`). Met on the owner’s statement that the app is free and not monetised; **a release blocker if that ever changes**. About carries the credit. AlQuran Cloud’s own terms for the edition are still unstated.
 - No type-check step exists in this repo (`vue-tsc` is not installed); Nuxt's build and ESLint are the gate.
 - The verify was run on Node 24 (no Node 22 on this machine), against `.nvmrc` 22.
 - Transliteration is not included in Downloads or the saved-surahs list.

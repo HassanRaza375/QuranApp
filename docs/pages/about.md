@@ -48,3 +48,7 @@ One `h1`, `h2` per section, links at least 44px on a phone, the services as a de
 ## Open questions
 
 - All the wording is ours (`docs/CONTENT_TO_VERIFY.md`, About): confirm or change it.
+
+## Credits
+
+A "Credits" section (`CREDITS` in `lib/about.ts`) credits the Tanzil Project for the transliteration line, states its non-commercial condition and that the app is free and not monetised (the owner’s statement, 2026-11-10). It is a credit, not a service the app asks: `tanzil.net` is never fetched. See `phases/transliteration.md`.

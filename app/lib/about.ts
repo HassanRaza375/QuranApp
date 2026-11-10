@@ -22,6 +22,23 @@ export const DATA_SOURCES: DataSource[] = [
 /** The hosts above, for the test. */
 export const SOURCE_HOSTS: string[] = [...DATA_SOURCES.map((s) => s.host), "media.githubusercontent.com"];
 
+/** Credits for text that carries terms of its own (docs/DECISIONS.md, reader transliteration). Not a service the app asks: the lines arrive through AlQuran Cloud above. */
+export interface Credit {
+  id: string;
+  name: string;
+  href: string;
+  text: string;
+}
+
+export const CREDITS: Credit[] = [
+  {
+    id: "tanzil-transliteration",
+    name: "Tanzil Project",
+    href: "https://tanzil.net/trans/",
+    text: "The transliteration line in the readers comes from AlQuran Cloud’s English Transliteration edition, which matches the English Transliteration that the Tanzil Project lists. Tanzil’s terms: its translations are for non-commercial purposes only; any other use needs permission from the translator or the publisher. This app is free and not monetised.",
+  },
+];
+
 export const ABOUT = {
   title: "About",
   lede: "A local-first Qur’an companion: reading, translations, tafsir, audio, prayer times and study tools, kept on your device.",

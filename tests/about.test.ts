@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { ABOUT, DATA_SOURCES, SOURCE_HOSTS } from "../app/lib/about";
+import { ABOUT, CREDITS, DATA_SOURCES, SOURCE_HOSTS } from "../app/lib/about";
 import { GEOCODE_BASE } from "../app/lib/geocode";
 import { PUBLIC_META } from "../app/lib/publicMeta";
 import { ALADHAN_BASE } from "../app/services/prayer.service";
@@ -49,6 +49,23 @@ describe("the data sources on the About page", () => {
     expect(aladhan.sends).toMatch(/rounded to about 1 km/);
     expect(read("app/lib/prayerMonth.ts")).toContain("Rounds a coordinate to 2 decimals (about 1 km)");
     expect(read("app/lib/gregorianMonths.ts")).toMatch(/gToHCalendar\/\$\{m\}\/\$\{y\}/); // a month and a year, nothing else
+  });
+});
+
+describe("the credits", () => {
+  it("state Tanzil’s non-commercial condition and that the app is free and not monetised, with a link", () => {
+    const c = CREDITS.find((x) => x.id === "tanzil-transliteration")!;
+    expect(c.href).toBe("https://tanzil.net/trans/");
+    expect(c.text).toContain("for non-commercial purposes only");
+    expect(c.text).toContain("permission from the translator or the publisher");
+    expect(c.text).toContain("free and not monetised");
+    expect(c.text).not.toMatch(/p{Extended_Pictographic}/u);
+  });
+  it("name no host the code asks (tanzil.net is a credit, not a service)", () => {
+    expect(SOURCE_HOSTS).not.toContain("tanzil.net");
+    const code = [...walk(path.join(ROOT, "app")).map((f) => fs.readFileSync(f, "utf8")), read("nuxt.config.ts")].join("
+");
+    expect(code).not.toMatch(/fetch([^)]*tanzil.net/);
   });
 });
 

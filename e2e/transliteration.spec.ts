@@ -119,6 +119,35 @@ test.describe("Surah reader", () => {
     await expect(page.getByTestId(`ayah-${j.startAyah}`).getByTestId("ayah-translit")).toBeVisible();
   });
 
+  test("/juz/2 starts mid-surah (2:142): the reader opens there and the first line shown is 2:142's own", async ({ page }) => {
+    await seed(page.context(), { "quran:reader-prefs:v1": JSON.stringify({ transliteration: true }) });
+    expect([JUZ[1]!.startSurah, JUZ[1]!.startAyah]).toEqual([2, 142]);
+    await page.goto("/juz/2");
+    await expect(page).toHaveURL(/\/surah\/2#ayah-142$/);
+    const row = page.getByTestId("ayah-142");
+    await expect(row.getByTestId("ayah-translit")).toHaveText("Test transliteration 2:142");
+    await expect(row).toBeFocused(); // the reader focused that ayah
+    // neighbours carry their own numbers, so the line is not merely the first or the last one
+    await expect(page.getByTestId("ayah-141").getByTestId("ayah-translit")).toHaveText("Test transliteration 2:141");
+    await expect(page.getByTestId("ayah-143").getByTestId("ayah-translit")).toHaveText("Test transliteration 2:143");
+    expect(tl.calls).toEqual([2]);
+  });
+
+  test("/juz/1 opens surah 1 with its real lines, and Next to surah 2 (where juz 1 goes on) loads that surah's lines too", async ({ page }) => {
+    await seed(page.context(), { "quran:reader-prefs:v1": JSON.stringify({ transliteration: true }) });
+    await page.goto("/juz/1");
+    await expect(page).toHaveURL(/\/surah\/1#ayah-1$/);
+    const lines = real(1);
+    await expect(page.getByTestId("ayah-translit")).toHaveCount(7);
+    for (let i = 0; i < 7; i++) await expect(page.getByTestId(`ayah-${i + 1}`).getByTestId("ayah-translit")).toHaveText(lines[i]!);
+    await page.getByTestId("next-surah").click();
+    await expect(page).toHaveURL(/\/surah\/2$/);
+    await expect(page.getByTestId("ayah-1").getByTestId("ayah-translit")).toHaveText("Test transliteration 2:1");
+    await expect(page.getByTestId("ayah-translit")).toHaveCount(286);
+    await expect(page.getByTestId("translit-toggle")).toHaveAttribute("aria-checked", "true");
+    expect(tl.calls).toEqual([1, 2]);
+  });
+
   test("phone width and dark: no sideways scroll, the toggle is a 44px target, the line is readable", async ({ page }) => {
     await seed(page.context(), { themeMode: "dark", "quran:reader-prefs:v1": JSON.stringify({ transliteration: true }) });
     await page.setViewportSize({ width: 375, height: 800 });
