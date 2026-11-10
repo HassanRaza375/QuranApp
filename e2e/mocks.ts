@@ -510,3 +510,28 @@ export async function mockTransliteration(context: BrowserContext, mode: Transli
   });
   return state;
 }
+
+// ---- Transliteration in the readers (api.alquran.cloud /surah/<n>/en.transliteration, one request per surah). Surahs 1 and 114 are REAL recorded answers
+// (tests/fixtures); any other surah gets the same shape with the right number of ayahs and an obviously fake text, so a page can only show what the service returned.
+/** The recorded real transliteration of surah 1 or 114, one string per ayah. */
+export const realTransliteration = (n: 1 | 114): string[] => (JSON.parse(fixture(`alquran-translit-surah-${n}.json`)) as { data: { ayahs: { text: string }[] } }).data.ayahs.map((a) => a.text.trim());
+export interface TransliterationSurahMock {
+  /** every request, as the surah number */
+  calls: number[];
+  mode: "ok" | "http500" | "network";
+}
+export async function mockTransliterationSurah(context: BrowserContext, mode: TransliterationSurahMock["mode"] = "ok"): Promise<TransliterationSurahMock> {
+  const state: TransliterationSurahMock = { calls: [], mode };
+  await context.route(/https:\/\/api\.alquran\.cloud\/v1\/surah\/\d+\/en\.transliteration/, (route: Route) => {
+    const n = Number(/surah\/(\d+)\//.exec(route.request().url())![1]);
+    state.calls.push(n);
+    if (state.mode === "network") return route.abort("internetdisconnected");
+    if (state.mode === "http500") return route.fulfill({ status: 500, body: "{}" });
+    const headers = { "access-control-allow-origin": "*" };
+    if (n === 1 || n === 114) return route.fulfill({ status: 200, contentType: "application/json", headers, body: fixture(`alquran-translit-surah-${n}.json`) });
+    const total = fakeChapter(n).totalAyah;
+    const ayahs = Array.from({ length: total }, (_, i) => ({ number: i + 1, numberInSurah: i + 1, text: `Test transliteration ${n}:${i + 1}` }));
+    return route.fulfill({ status: 200, contentType: "application/json", headers, body: JSON.stringify({ code: 200, status: "OK", data: { number: n, ayahs } }) });
+  });
+  return state;
+}
