@@ -128,6 +128,8 @@ export default defineNuxtConfig({
       // Phase 17 (Account & Sync): off unless NUXT_PUBLIC_SYNC_ENABLED is 1 or true (app/lib/sync/flag.ts). Off in Production until 17E.
       syncEnabled: syncEnabled(process.env),
       indexable: INDEXABLE,
+      // Vercel Web Analytics (app/plugins/vercel-analytics.client.ts): only in a build made on Vercel. Local builds, tests and other hosts never load it.
+      vercelAnalytics: Boolean(process.env.VERCEL),
       googleSiteVerification: process.env.GOOGLE_SITE_VERIFICATION || "",
       quranApiBase: process.env.QURAN_API_BASE || "https://quranapi.pages.dev/api",
       // must be https:// (see the README CORS gotcha)

@@ -174,3 +174,13 @@ not linked automatically between sign-in methods. Add a mail provider before ope
 `node scripts/live/sync.live.mjs <url>` (accounts, sync rules, isolation between users, delete cascade),
 `node scripts/live/sync-browser.live.mjs <url>` (two real browsers sync through the database) and `node scripts/live/admin.live.mjs <url>` (super admin). Run them
 again against a Preview URL before turning the flag on in Production: they create and delete their own throw-away accounts and print no secret.
+
+## 9. Vercel Web Analytics
+
+The hosted app counts page visits with `@vercel/analytics` (pinned 2.0.1), only in a build made **on Vercel** (the `VERCEL` build variable sets `public.vercelAnalytics`; a local build, a test run and any other host never load it).
+
+- **Turn it on in Vercel:** your project, the **Analytics** tab, **Enable** (Web Analytics). Until you do, the script address answers 404 and nothing is counted (a harmless line in the browser's console).
+- **What is sent:** the page's path (never anything after `?` or `#`, so never a search), the referrer, a country, device and browser type. The admin page is never counted, and a browser that sends Do Not Track, or is offline, loads nothing. See `app/lib/analytics.ts` and `tests/analytics.test.ts`.
+- **Why a plugin, not the `modules` entry:** the package also ships a Nuxt module, but the module cannot take a `beforeSend` guard, so `app/plugins/vercel-analytics.client.ts` calls the same function with the guard. Do not add `@vercel/analytics` to `modules` as well (a test fails if it is).
+- **Check:** `node scripts/live/analytics.live.mjs <url> on` against a build made with `VERCEL=1` (see the script's header), and `... off` against a normal build.
+- The About page and Data & privacy say this in plain words, only on the hosted build.

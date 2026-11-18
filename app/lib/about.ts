@@ -56,6 +56,9 @@ export const ABOUT = {
   /** the same section while accounts exist on this server (sync flag on): an account is optional and what it keeps is chosen by you */
   whatWithAccount:
     "Everything stays on this device unless you choose otherwise. An account is optional. If you make one and turn sync on, only the parts you choose (your Library, your progress, your settings) are also kept on this app’s server, so your devices stay in step. Your saved place and notification choices are never synced. You can sign out, remove your synced data, or delete your account in Settings, Account.",
+  /** shown only on the hosted app (the `vercelAnalytics` build flag), in the same section */
+  analytics:
+    "This hosted app counts visits to its pages with Vercel Web Analytics, so the person who runs it can see roughly how much it is used. For each visit Vercel records the page’s address (never anything after a question mark, so never what you search for), where you came from, a country, and your device and browser type. It sets no tracking cookies and cannot tell who you are; a visitor is told apart only by a short-lived code that Vercel discards after 24 hours. It is not used on the admin page, and it is skipped if your browser sends Do Not Track or you are offline. What you read, save, search for or write is never part of it.",
   fresh: "A fresh start: nothing from the older version of this app carries over to this address, so you begin with nothing saved.",
   sources: "The app asks these services for what it does not hold itself. Like any website, a service can see your device’s network address when your device asks it for something.",
   grounding:
