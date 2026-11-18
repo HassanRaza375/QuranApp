@@ -13,6 +13,10 @@ const NO_SERVICES = {
   CLOUDINARY_API_KEY: "",
   CLOUDINARY_API_SECRET: "",
   RESEND_API_KEY: "",
+  SMTP_HOST: "",
+  SMTP_USER: "",
+  SMTP_PASS: "",
+  EMAIL_FROM: "",
 };
 
 // Runs against the PRODUCTION build (offline and the service worker do not work in dev):

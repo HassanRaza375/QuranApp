@@ -2,12 +2,16 @@
 // About (Phase 15; no prototype): a calm reading page from the existing type scale. What it says is checked against the code: the services are the list in
 // lib/about.ts (a test compares it with the hosts the app calls); the knowledge modules are read from the one module list. Level A: static, nothing is
 // read from storage and nothing is requested. Its title and description are repeated in lib/publicMeta.ts for the prerendered head tags.
-import { ABOUT, CREDITS, DATA_SOURCES } from "~/lib/about";
+import { ABOUT, ACCOUNT_SOURCES, CREDITS, DATA_SOURCES } from "~/lib/about";
+import { isSyncOn } from "~/lib/sync/flag";
 import { MODULE_ORDER, MODULES } from "~/lib/knowledge/modules";
 import { PUBLIC_META } from "~/lib/publicMeta";
 
 useSeoMeta({ title: PUBLIC_META["/about"]!.title, description: ABOUT.metaDescription });
 const modules = MODULE_ORDER.map((id) => MODULES[id]);
+const sources = computed(() => (syncOn ? [...DATA_SOURCES, ...ACCOUNT_SOURCES] : DATA_SOURCES));
+// with accounts on, the sentence "there is no account to make" would be false: the page says what an account is instead
+const syncOn = isSyncOn(useRuntimeConfig().public.syncEnabled);
 </script>
 
 <template>
@@ -17,7 +21,7 @@ const modules = MODULE_ORDER.map((id) => MODULES[id]);
 
     <section class="mt-8 border-t pt-6" aria-labelledby="about-device">
       <h2 id="about-device" class="font-serif text-[22px] font-medium">What stays on your device</h2>
-      <p class="mt-2 text-[15px] leading-relaxed" data-testid="about-device">{{ ABOUT.what }}</p>
+      <p class="mt-2 text-[15px] leading-relaxed" data-testid="about-device">{{ syncOn ? ABOUT.whatWithAccount : ABOUT.what }}</p>
       <p class="mt-2 text-[15px] leading-relaxed" data-testid="about-fresh">{{ ABOUT.fresh }}</p>
       <p class="mt-2 text-[15px] leading-relaxed">Export your data, reset the settings, or clear everything, in Settings.</p>
       <NuxtLink to="/settings" class="inline-flex min-h-11 items-center text-[15px] text-brand underline underline-offset-2 md:min-h-9" data-testid="about-settings">Open Settings, Data &amp; privacy</NuxtLink>
@@ -27,7 +31,7 @@ const modules = MODULE_ORDER.map((id) => MODULES[id]);
       <h2 id="about-sources" class="font-serif text-[22px] font-medium">Where things come from</h2>
       <p class="mt-2 text-[15px] leading-relaxed">{{ ABOUT.sources }}</p>
       <dl class="mt-3 divide-y border-y" data-testid="about-sources">
-        <div v-for="s in DATA_SOURCES" :key="s.id" class="py-3" data-testid="about-source" :data-host="s.host">
+        <div v-for="s in sources" :key="s.id" class="py-3" data-testid="about-source" :data-host="s.host">
           <dt class="flex flex-wrap items-baseline gap-x-2">
             <a :href="s.href" class="inline-flex min-h-11 items-center text-[15px] font-medium text-brand underline underline-offset-2 md:min-h-9" target="_blank" rel="noopener noreferrer">{{ s.name }}</a>
             <span class="text-[12.5px] text-ink-2">{{ s.host }}</span>

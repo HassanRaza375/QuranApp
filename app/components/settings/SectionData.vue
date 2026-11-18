@@ -1,9 +1,11 @@
 <script setup lang="ts">
 // Data & privacy: storage use, Export, Reset settings (with Undo), Clear all local data (with a confirmation).
 import { closeRevampDb, deleteDatabase } from "~/db/revampDb";
+import { isSyncOn } from "~/lib/sync/flag";
 import { buildExport, clearAllLocalData, exportFileName, resetSettings, restoreSettings } from "~/lib/settingsData";
 
 const store = usePreferencesStore();
+const syncOn = isSyncOn(useRuntimeConfig().public.syncEnabled);
 const undo = useUndoToast();
 
 /* ---- storage use (real figure from the browser, covering IndexedDB and Cache Storage together) ---- */
@@ -57,13 +59,17 @@ async function clearAll() {
   clearing.value = true;
   await closeRevampDb();
   await clearAllLocalData(deleteDatabase);
+  // Phase 17: the sync queue goes too, and this device signs out (what is on the server stays; the Account area says so)
+  await deleteDatabase("quran-sync-db");
+  if (isSyncOn(useRuntimeConfig().public.syncEnabled)) await (await import("~/lib/sync/runtime")).signOutDevice();
   location.reload();
 }
 </script>
 
 <template>
   <div class="space-y-4">
-    <p class="rounded-[10px] bg-sunken px-4 py-3 text-[13px] text-ink-2">Everything in this app is stored locally on this device. Nothing is uploaded anywhere.</p>
+    <p v-if="!syncOn" class="rounded-[10px] bg-sunken px-4 py-3 text-[13px] text-ink-2">Everything in this app is stored locally on this device. Nothing is uploaded anywhere.</p>
+    <p v-else class="rounded-[10px] bg-sunken px-4 py-3 text-[13px] text-ink-2" data-testid="data-sync-note">Everything is stored on this device. If you sign in and turn sync on, the parts you choose are also kept on this app’s server. Clear all data signs this device out; what is already on the server stays until you remove it in Account.</p>
 
     <SettingsGroup>
       <SettingsRow label="Offline data and audio" :desc="usage || 'Checking…'">

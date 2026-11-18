@@ -12,6 +12,10 @@ for (const k of [
   "CLOUDINARY_API_KEY",
   "CLOUDINARY_API_SECRET",
   "RESEND_API_KEY",
+  "SMTP_HOST",
+  "SMTP_USER",
+  "SMTP_PASS",
+  "EMAIL_FROM",
 ]) {
   Reflect.deleteProperty(process.env, k);
 }

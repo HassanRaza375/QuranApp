@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { MenuOption } from "~/components/ResponsiveMenu.vue";
 import { titleForPath } from "~/lib/nav";
+import { isSyncOn } from "~/lib/sync/flag";
 
 defineEmits<{ "open-nav": [] }>();
 const prefs = usePreferencesStore();
+const syncOn = isSyncOn(useRuntimeConfig().public.syncEnabled);
 const route = useRoute();
 const title = computed(() => titleForPath(route.path));
 const themes: MenuOption[] = [
@@ -44,6 +46,7 @@ const themes: MenuOption[] = [
           </Button>
         </template>
       </ResponsiveMenu>
+      <LazyAccountMenu v-if="syncOn" />
       <NuxtLink to="/settings" class="inline-flex size-11 items-center justify-center rounded-md text-ink-2 hover:bg-accent md:size-9" aria-label="Settings">
         <Icon name="lucide:settings" size="18" />
       </NuxtLink>
