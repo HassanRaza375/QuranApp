@@ -54,3 +54,5 @@ Decided: `/juz/[id]` redirects to the reader at the juz's first ayah (`DECISIONS
 - Device checks: `DEVICE_CHECKS.md`.
 - Content review: `CONTENT_TO_VERIFY.md`.
 - Cutover list: `DECISIONS.md`, section 5, and the checklist in `PLAN.md`.
+
+**Phase 17 (Account & Sync)** is built (2026-11-18) and off in Production: accounts, sync of Library, Progress and Settings, an optional profile photo and a read-only admin panel for a super admin. See `phases/phase-17-account-sync.md` for what is and is not verified.

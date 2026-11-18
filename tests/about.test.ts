@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { ABOUT, CREDITS, DATA_SOURCES, SOURCE_HOSTS } from "../app/lib/about";
+import { ABOUT, ACCOUNT_SOURCES, CREDITS, DATA_SOURCES, SOURCE_HOSTS } from "../app/lib/about";
 import { GEOCODE_BASE } from "../app/lib/geocode";
 import { PUBLIC_META } from "../app/lib/publicMeta";
 import { ALADHAN_BASE } from "../app/services/prayer.service";
@@ -49,6 +49,22 @@ describe("the data sources on the About page", () => {
     expect(aladhan.sends).toMatch(/rounded to about 1 km/);
     expect(read("app/lib/prayerMonth.ts")).toContain("Rounds a coordinate to 2 decimals (about 1 km)");
     expect(read("app/lib/gregorianMonths.ts")).toMatch(/gToHCalendar\/\$\{m\}\/\$\{y\}/); // a month and a year, nothing else
+  });
+});
+
+describe("the account services (named on the page only while accounts are on)", () => {
+  it("are optional, say what is sent, and are services the code really uses", () => {
+    expect(ACCOUNT_SOURCES.map((s) => s.id)).toEqual(["cloudinary", "google"]);
+    for (const s of ACCOUNT_SOURCES) {
+      expect(s.provides.length).toBeGreaterThan(10);
+      expect(s.sends.length).toBeGreaterThan(10);
+      expect(s.href).toMatch(/^https:\/\//);
+    }
+    const code = [...walk(path.join(ROOT, "app")), ...walk(path.join(ROOT, "server"))].map((f) => fs.readFileSync(f, "utf8")).join("\n");
+    expect(code).toContain("api.cloudinary.com");
+    expect(code).toMatch(/socialProviders:[\s\S]*google/);
+    expect(ACCOUNT_SOURCES.find((s) => s.id === "google")!.sends).toContain("never your Google photo");
+    expect(SOURCE_HOSTS).not.toContain("api.cloudinary.com"); // the flag-off list is unchanged
   });
 });
 

@@ -159,3 +159,9 @@ Read from legacy commit 7120b6c (`goals/index.vue`, `useReadingGoals.ts`, `calen
 **Legacy prayer code (found in Phase 1):** `stores/prayer.js` reads times with `split(":").map(Number)`. The daily endpoint returns `"04:59"`, but the monthly endpoint returns `"04:59 (PKT)"`, whose minutes become `NaN` with that code, so the legacy parser cannot be reused on the monthly data (the revamp parses with a regex and tests both formats). The legacy store also falls back silently to Lahore when location is unavailable, and keys its cache per day and exact coordinates.
 
 **Observation on the legacy bug G6 (not fixed, logged separately):** the legacy `dist/sw.js` calls `createHandlerBoundToURL("/")` but its precache list has no `/` entry (the legacy app is server-rendered, so there is no `index.html`). Workbox throws `non-precached-url` when the worker script is evaluated, so every `registerRoute` after that line (including the runtime caching rules) is likely never registered. This is the probable root cause of the offline-new-tab failure. It was read from the repo's built `dist/`, which may be older than the deployed build, so verify on the deployed worker before relying on it. The revamp precaches `/` (the SPA shell), and `e2e/offline.spec.ts` proves a new tab opened offline at a deep route renders.
+
+## New in Phase 17 (additive; the legacy app ignores them)
+
+- localStorage `quran:sync-prefs:v1` = `{ categories: { library, progress, settings } }`, the three sync toggles.
+- IndexedDB `quran-sync-db` v1 (stores `state`, `snapshot`). `quran-revamp-db` stays at version 5; `quran-app-db` is never opened.
+- Every other key is classified in `app/lib/sync/inventory.ts`.

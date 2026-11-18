@@ -16,7 +16,27 @@ const ERROR_LINE = /(^|\s)(ERROR|FATAL)\b|\[error\]|Unhandled|UnhandledRejection
 const lines = [];
 const server = spawn("npx", ["nuxt", "dev", "--port", String(PORT)], {
   shell: true,
-  env: { ...process.env, NO_COLOR: "1", NUXT_TELEMETRY_DISABLED: "1" },
+  // Phase 17: like the Playwright servers, the dev server under test reaches no real service and has sync off (the production default), whatever a local .env holds.
+  env: {
+    ...process.env,
+    NO_COLOR: "1",
+    NUXT_TELEMETRY_DISABLED: "1",
+    NUXT_PUBLIC_SYNC_ENABLED: "0",
+    DATABASE_URL: "postgres://blocked.invalid:5432/none",
+    DATABASE_CA_CERT: "",
+    BETTER_AUTH_SECRET: "",
+    GOOGLE_CLIENT_ID: "",
+    GOOGLE_CLIENT_SECRET: "",
+    CLOUDINARY_URL: "",
+    CLOUDINARY_CLOUD_NAME: "",
+    CLOUDINARY_API_KEY: "",
+    CLOUDINARY_API_SECRET: "",
+    RESEND_API_KEY: "",
+    SMTP_HOST: "",
+    SMTP_USER: "",
+    SMTP_PASS: "",
+    EMAIL_FROM: "",
+  },
   stdio: ["ignore", "pipe", "pipe"],
 });
 for (const stream of [server.stdout, server.stderr]) {

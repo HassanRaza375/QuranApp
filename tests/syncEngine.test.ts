@@ -1,7 +1,6 @@
 // Phase 17C: whole conversations between "devices" and a server (the real push and pull rules over an in-memory repository): convergence, the Phase 6 note rule,
 // tombstones, monotone values, the first merge with its snapshot and held push, stale pushes, categories turned on later, and a server that is down.
 import { describe, expect, it } from "vitest";
-import type { Store } from "../app/lib/sync/adapters";
 import { categoriesAdapter, enabledCategories, writeChoice, type Choice } from "../app/lib/sync/categories";
 import { emptyState, syncOnce, SyncHttpError, type Api, type SyncState, type SyncReport } from "../app/lib/sync/engine";
 import { NEVER_KEYS } from "../app/lib/sync/inventory";
@@ -21,7 +20,7 @@ interface Device {
   snapshots: string[][];
   sync(opts?: { hold?: boolean; api?: Api }): Promise<SyncReport>;
   choose(c: Partial<Choice>): void;
-  json(key: string): any;
+  json(key: string): any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 function device(repo: MemoryRepo, initial: Record<string, string> = {}, name = "d"): Device {
   const store = mapStore(initial);

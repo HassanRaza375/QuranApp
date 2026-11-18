@@ -49,7 +49,11 @@ export function memoryRepo(): MemoryRepo {
     },
     async removeAll(userId) {
       let removed = 0;
-      for (const k of [...rows.keys()]) if (k.startsWith(`${userId}\u0000`)) (rows.delete(k), removed++);
+      for (const k of [...rows.keys()]) {
+        if (!k.startsWith(`${userId}\u0000`)) continue;
+        rows.delete(k);
+        removed++;
+      }
       cursors.delete(userId);
       return { removed };
     },

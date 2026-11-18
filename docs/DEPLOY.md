@@ -132,3 +132,43 @@ One Aiven service (free plan: 1 GB disk, 20 connections, no pooler; it is powere
   The CA is a public certificate, not a password, but treat it like the other variables: never in git or chat.
 - **If the service is powered off**, sign-in and sync stop until it is powered on again in the Aiven console; the app itself is unaffected.
 - **Rollback:** turning `NUXT_PUBLIC_SYNC_ENABLED` off and redeploying removes every account request. Migrations are additive; a destructive one needs its own approval.
+
+## 8. Turning Account & Sync on (Phase 17, complete)
+
+Everything below is already in `main` and **off** while `NUXT_PUBLIC_SYNC_ENABLED` is unset in Production. Nothing changes for users until you set it. Do it on a
+**Preview** first (the Preview environment uses `quran_preview`), check it, then repeat for Production.
+
+**Variables** (Vercel, Settings, Environment Variables; every secret **Sensitive**; names exactly as written):
+
+| Name | Needed for | Notes |
+|---|---|---|
+| `DATABASE_URL` | everything | the Aiven URI of the right database for the environment (section 7) |
+| `DATABASE_CA_CERT` | everything | the Aiven project CA as PEM (section 7) |
+| `NUXT_PUBLIC_SYNC_ENABLED` | turns it on | `1`. Read when a function starts and at build time: redeploy after changing it |
+| `BETTER_AUTH_SECRET` | sign-in | at least 32 random characters (`openssl rand -base64 32`). A different value for Preview and Production. Changing it signs everyone out |
+| `BETTER_AUTH_URL` | optional | `https://<your address>`. Without it the app uses Vercel's own address variables (production address in Production; the deployment's own address in a Preview) |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | "Continue with Google" | optional. Without both, the button is not shown. Redirect URIs to register: `https://<production address>/api/auth/callback/google` and `http://localhost:3001/api/auth/callback/google`. A Preview address cannot be registered, so Google sign-in is for Production and localhost |
+| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` (or the single `CLOUDINARY_URL`) | profile photos | optional. Without them the photo controls are not shown. Create a **signed** upload preset in the Cloudinary console with a size limit of about 2 MB; there must be no unsigned preset |
+| `RESEND_API_KEY` and `EMAIL_FROM` | confirm-your-email and password reset | optional. Resend delivers only to your own address until you verify a domain you own; a `vercel.app` address cannot be verified |
+| or `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` and `EMAIL_FROM` | the same, over SMTP | for example a Gmail account with an app password (host `smtp.gmail.com`, port 465) |
+
+With **no** mail variables the app still works: sign-up needs no email confirmation, "Forgot password" is not offered (the sign-in form says so), and accounts are
+not linked automatically between sign-in methods. Add a mail provider before opening sign-up to the public.
+
+**Order of steps**
+1. Apply the new migration to the target database: `npx prisma migrate deploy` with `DATABASE_URL` pointing at it (Preview's `quran_preview` first). It is
+   `20261118000000_auth`: it only adds tables and links (additive, nothing dropped). It was applied to `quran_preview` on 2026-11-18 during the build.
+2. Set the variables above on the Preview environment and redeploy. Open `/api/health` (`{ ok: true, sync: "on", db: "up" }`) and `/api/account/config` (it
+   says which of Google, email and photos this server offers).
+3. Sign up in the app (Settings, Account), then make yourself the super admin from your own machine (see below).
+4. Repeat on Production when you are satisfied.
+
+**Super admin.** Only a person who controls the database can grant the role; no request can. Sign up in the app first, then, in the repo with `DATABASE_URL` (and
+`DATABASE_CA_CERT`, or `DATABASE_CA_FILE=<path to ca.pem>`) in the environment:
+`node scripts/make-super-admin.mjs you@example.com` (add `--revoke` to take it away). Then open `/admin` and sign in. The page is not linked anywhere, carries
+`noindex`, and shows "Page not found" to everyone who is not a super admin.
+
+**Checks that were run for this phase** (against the `quran_preview` database, with the production build):
+`node scripts/live/sync.live.mjs <url>` (accounts, sync rules, isolation between users, delete cascade),
+`node scripts/live/sync-browser.live.mjs <url>` (two real browsers sync through the database) and `node scripts/live/admin.live.mjs <url>` (super admin). Run them
+again against a Preview URL before turning the flag on in Production: they create and delete their own throw-away accounts and print no secret.

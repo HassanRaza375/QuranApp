@@ -19,6 +19,15 @@ export const DATA_SOURCES: DataSource[] = [
   { id: "github", name: "GitHub", host: "raw.githubusercontent.com", href: "https://github.com/", provides: "The full-surah recitation audio files, to stream or to save on this device.", sends: "Nothing but the request for the file." },
 ];
 
+/**
+ * Only when accounts are on (the sync flag): the two outside services an account can involve. Both are optional for the person: Google only if they pick "Continue
+ * with Google", Cloudinary only if they add a profile photo. The app's own server, which holds the account, is not a data source: it is this app.
+ */
+export const ACCOUNT_SOURCES: DataSource[] = [
+  { id: "cloudinary", name: "Cloudinary", host: "api.cloudinary.com", href: "https://cloudinary.com/", provides: "Your profile photo, only if you add one. It is shown only to you.", sends: "The photo you choose, when you press Use photo." },
+  { id: "google", name: "Google sign-in", host: "accounts.google.com", href: "https://accounts.google.com/", provides: "Signing in with your Google account, only if you choose it.", sends: "You leave this app for Google’s own page. The app receives your name and email address, never your Google photo." },
+];
+
 /** The hosts above, for the test. */
 export const SOURCE_HOSTS: string[] = [...DATA_SOURCES.map((s) => s.host), "media.githubusercontent.com"];
 

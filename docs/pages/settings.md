@@ -82,3 +82,7 @@ See `docs/design/settings-compare/README.md`.
 ## Tests
 
 `e2e/settings.spec.ts` (50 checks), `tests/settingsLogic.test.ts` (40), plus the preference tests.
+
+## Account (Phase 17)
+
+With sync on, an eighth section, Account (`pages/account.md`). The Data & privacy text changes to say what an account is, and Clear all data also signs this device out and deletes the sync database. With sync off nothing changes.
