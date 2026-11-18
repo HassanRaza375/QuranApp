@@ -3,10 +3,11 @@
 // Mobile: a section picker. The section is in the URL (`?section=prayer`), so links and the back button work.
 // Every control reads and writes the global preferences store (legacy keys and formats); the page keeps no copy.
 import type { MenuOption } from "~/components/ResponsiveMenu.vue";
+import { isSyncOn } from "~/lib/sync/flag";
 
 useSeoMeta({ title: "Settings · Quran App", robots: "noindex, follow" });
 
-const SECTIONS = [
+const BASE_SECTIONS = [
   { id: "appearance", label: "Appearance", icon: "lucide:palette" },
   { id: "reading", label: "Reading", icon: "lucide:book-open" },
   { id: "audio", label: "Audio", icon: "lucide:volume-2" },
@@ -15,7 +16,10 @@ const SECTIONS = [
   { id: "accessibility", label: "Accessibility", icon: "lucide:accessibility" },
   { id: "data", label: "Data & privacy", icon: "lucide:shield" },
 ] as const;
-type SectionId = (typeof SECTIONS)[number]["id"];
+// Phase 17: the Account section exists only while sync is on (with it off the page is exactly as before)
+const syncOn = isSyncOn(useRuntimeConfig().public.syncEnabled);
+const SECTIONS = syncOn ? [...BASE_SECTIONS, { id: "account", label: "Account", icon: "lucide:user" } as const] : [...BASE_SECTIONS];
+type SectionId = (typeof BASE_SECTIONS)[number]["id"] | "account";
 
 const route = useRoute();
 const router = useRouter();
@@ -73,6 +77,7 @@ const pickerOptions: MenuOption[] = SECTIONS.map((s) => ({ value: s.id, label: s
         <SettingsSectionPrayer v-else-if="current === 'prayer'" />
         <SettingsSectionNotifications v-else-if="current === 'notifications'" />
         <SettingsSectionAccessibility v-else-if="current === 'accessibility'" />
+        <LazyAccountPanel v-else-if="current === 'account'" />
         <SettingsSectionData v-else />
       </section>
     </div>

@@ -47,8 +47,10 @@ export interface SyncState {
   lastSyncedAt: number | null;
   /** the categories this device has pulled in full. Turning one on pulls from the start again; turning one off forgets it. */
   synced: Category[];
+  /** this device has already merged data with the account once (the first merge takes a snapshot for Undo; later ones do not) */
+  merged: boolean;
 }
-export const emptyState = (deviceId: string): SyncState => ({ cursor: "0", records: {}, rejected: {}, deviceId, lastSyncedAt: null, synced: [] });
+export const emptyState = (deviceId: string): SyncState => ({ cursor: "0", records: {}, rejected: {}, deviceId, lastSyncedAt: null, synced: [], merged: false });
 
 export interface StateStore {
   load(): Promise<SyncState>;
@@ -67,6 +69,8 @@ export interface EngineDeps {
   onChanged?: (keys: string[]) => void;
   /** extra adapters (the account's category toggles) */
   extra?: Adapter[];
+  /** after the first merge on a device, write what the account had but do NOT push yet: the person has an Undo window, and Undo must leave the account as it was */
+  holdFirstPush?: boolean;
 }
 
 export interface SyncReport {
@@ -77,6 +81,8 @@ export interface SyncReport {
   written: number;
   /** only on the first round that wrote remote data into a device that had never synced: how many records came from each side */
   firstMerge?: { fromDevice: number; fromAccount: number };
+  /** the first merge wrote data and the push was held back (see `holdFirstPush`) */
+  held?: boolean;
 }
 
 const idOf = (ns: string, key: string) => `${ns}|${key}`;
@@ -101,7 +107,6 @@ export async function syncOnce(deps: EngineDeps): Promise<SyncReport> {
   const report: SyncReport = { status: "ok", rounds: 0, pulled: 0, pushed: 0, written: 0 };
   const adapters = [...ADAPTERS, ...(deps.extra ?? [])];
   let state = await deps.state.load();
-  const firstEver = state.synced.length === 0 && state.lastSyncedAt === null;
   let snapshotted = false;
 
   try {
@@ -134,6 +139,7 @@ export async function syncOnce(deps: EngineDeps): Promise<SyncReport> {
       const changes = new Map<string, Map<string, Payload>>(); // ns -> key -> value
       const ops: PushOp[] = [];
       const bases = { ...state.records };
+      let markMerged = false;
       let fromDevice = 0;
       let fromAccount = 0;
       for (const id of ids) {
@@ -147,13 +153,13 @@ export async function syncOnce(deps: EngineDeps): Promise<SyncReport> {
         if (m.write && !(ns === "settings" && !settingAcceptable(key, m.value))) {
           if (!changes.has(ns)) changes.set(ns, new Map());
           changes.get(ns)!.set(key, m.value);
-          if (m.value !== null || local.get(id) != null) fromAccount++;
+          if (def.category !== "account" && (m.value !== null || local.get(id) != null)) fromAccount++;
         }
         if (m.push) {
           if (m.value === null && !state.records[id] && !r) continue; // nothing was ever there
           if (state.rejected[id] === hashOf(m.value)) continue;
           ops.push({ namespace: ns, recordKey: key, baseRevision: r?.revision ?? state.records[id]?.rev ?? "0", payload: m.value });
-          if (m.value !== null) fromDevice++;
+          if (def.category !== "account" && m.value !== null) fromDevice++;
         } else if (r && remotePayload !== undefined) {
           bases[id] = { rev: r.revision, hash: hashOf(m.value) };
         }
@@ -163,8 +169,10 @@ export async function syncOnce(deps: EngineDeps): Promise<SyncReport> {
       if (changes.size) {
         const keys = new Set<string>();
         for (const a of adapters) if (changes.has(a.ns)) for (const k of a.keys) keys.add(k);
-        if (firstEver && !snapshotted) {
+        const dataChange = [...changes.keys()].some((ns) => categoryOf(ns) !== "account");
+        if (dataChange && !state.merged && !snapshotted) {
           snapshotted = true;
+          markMerged = true;
           await deps.snapshot?.([...keys]);
           report.firstMerge = { fromDevice, fromAccount };
         }
@@ -181,7 +189,14 @@ export async function syncOnce(deps: EngineDeps): Promise<SyncReport> {
         }
         if (rewritten.length) deps.onChanged?.([...new Set(rewritten)]);
       }
-      state = { ...state, cursor, records: bases, synced: [...cats] };
+      state = { ...state, cursor, records: bases, synced: [...cats], merged: state.merged || markMerged };
+      // the first data merge can come in a later round (a second device first follows the account's toggles, then merges), so this is not tied to round 1
+      if (deps.holdFirstPush && markMerged) {
+        report.held = true;
+        state.lastSyncedAt = Date.now();
+        await deps.state.save(state);
+        break;
+      }
 
       // 5. push what the server does not have
       let stale = false;

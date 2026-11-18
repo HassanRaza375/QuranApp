@@ -33,6 +33,33 @@ function backend(): KeyValueStore | null {
   }
 }
 
+// Phase 17C: one listener slot, called with the key after every successful write or removal (and with null after clear-all), unless the write is silent. With the
+// sync flag off nothing sets it, so this costs one null check. Sync applies pulled data with `silently`, so its own writes do not queue more sync.
+type StorageListener = (key: string | null) => void;
+let listener: StorageListener | null = null;
+let silent = 0;
+export function setStorageListener(fn: StorageListener | null) {
+  listener = fn;
+}
+/** Runs `fn` with the change listener muted (writes made by sync itself). */
+export function silently<T>(fn: () => T): T {
+  silent++;
+  try {
+    return fn();
+  } finally {
+    silent--;
+  }
+}
+const changed = (key: string | null) => {
+  if (!silent && listener) {
+    try {
+      listener(key);
+    } catch {
+      /* a listener must never break a write */
+    }
+  }
+};
+
 export function getRaw(key: string): string | null {
   try {
     return backend()?.getItem(key) ?? null;
@@ -46,6 +73,7 @@ export function setRaw(key: string, value: string): boolean {
     const b = backend();
     if (!b) return false;
     b.setItem(key, value);
+    changed(key);
     return true;
   } catch {
     return false;
@@ -70,6 +98,7 @@ export function clearAllKeys(): boolean {
     if (!b) return false;
     if (typeof b.clear === "function") b.clear();
     else for (const k of listKeys()) b.removeItem(k);
+    changed(null);
     return true;
   } catch {
     return false;
@@ -79,6 +108,7 @@ export function clearAllKeys(): boolean {
 export function remove(key: string): void {
   try {
     backend()?.removeItem(key);
+    changed(key);
   } catch {
     /* ignore */
   }

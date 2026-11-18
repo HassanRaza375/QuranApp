@@ -50,7 +50,7 @@ function withAt(root: unknown, path: string[], value: unknown): Obj {
   if (!path.length) return base;
   const [head, ...rest] = path;
   if (rest.length) base[head!] = withAt(base[head!], rest, value);
-  else if (value === undefined) delete base[head!];
+  else if (value === undefined) Reflect.deleteProperty(base, head!);
   else base[head!] = value;
   return base;
 }
@@ -102,7 +102,7 @@ const jsonSetting = (name: string, key: string, path: string[]): Adapter => ({
 });
 
 /** the entries of an object at `path` = records keyed by the entry's key; `wrap` turns a non-object entry into a payload and back */
-const mapEntries = (ns: string, category: Category, key: string, path: string[], wrap?: { to: (v: unknown) => Payload; from: (p: Obj) => unknown }): Adapter => ({
+const mapEntries = (ns: string, category: Category, key: string, path: string[], wrap?: { to: (v: unknown) => Payload; from: (p: Obj) => unknown }, seed?: Obj): Adapter => ({
   ns,
   category,
   keys: [key],
@@ -115,11 +115,12 @@ const mapEntries = (ns: string, category: Category, key: string, path: string[],
   },
   apply: (s, ch) => {
     if (!ch.size) return [];
-    const root = readJson(s, key);
+    const stored = readJson(s, key);
+    const root = stored === undefined && seed ? seed : stored; // a key the legacy app versions (`v: 1`) is created with its marker
     const cur = at(root, path);
     const next: Obj = isObj(cur) ? { ...cur } : {};
     for (const [k, p] of ch) {
-      if (p === null) delete next[k];
+      if (p === null) Reflect.deleteProperty(next, k);
       else next[k] = wrap ? wrap.from(p) : p;
     }
     writeJson(s, key, path.length ? withAt(root, path, next) : { ...next });
@@ -150,7 +151,7 @@ const arrayById = (ns: string, category: Category, key: string, path: string[], 
       } else if (i >= 0) list[i] = p;
       else list.push(p);
     }
-    writeJson(s, key, withAt(root, path, list));
+    writeJson(s, key, path.length ? withAt(root, path, list) : list); // the reminders key IS the array
     return [key];
   },
 });
@@ -239,7 +240,7 @@ const bookmarks: Adapter = {
     for (const [k, p] of ch) {
       if (p === null) {
         list = list.filter((x) => x !== k);
-        delete added[k];
+        Reflect.deleteProperty(added, k);
       } else {
         if (!list.includes(k)) list.push(k);
         added[k] = p.addedAt;
@@ -289,7 +290,7 @@ export const ADAPTERS: Adapter[] = [
   libraryRest,
   // Progress
   singleton("progress.lastRead", "progress", "quran:reading-progress:v1"),
-  mapEntries("progress.readSurah", "progress", "quran:read-surahs:v1", ["surahs"]),
+  mapEntries("progress.readSurah", "progress", "quran:read-surahs:v1", ["surahs"], undefined, { v: 1 }),
   fieldRecords("progress.pin", "progress", "quran:pins:v1", ["reading", "page"]),
   arrayById("progress.goal", "progress", GOALS, ["goals"], "id"),
   singletonField("progress.goalActive", "progress", GOALS, "activeGoalId", (v) => (typeof v === "string" ? { id: v } : { id: null }), (p) => p.id ?? null, null),
@@ -298,9 +299,9 @@ export const ADAPTERS: Adapter[] = [
   arrayById("progress.hifzAyah", "progress", "quran:hifz:v2", ["ayahStates"], "key"),
   arrayById("progress.hifzJoin", "progress", "quran:hifz:v2", ["transitionStates"], "key"),
   arrayById("progress.hifzActivity", "progress", "quran:hifz:v2", ["activity"], "date"),
-  mapEntries("progress.hifzWords", "progress", "quran:hifz-words:v1", ["ayahs"]),
+  mapEntries("progress.hifzWords", "progress", "quran:hifz-words:v1", ["ayahs"], undefined, { v: 1 }),
   mapEntries("progress.tasbeeh", "progress", "quran:tasbeeh:v1", []),
-  mapEntries("progress.story", "progress", "quran:story-progress:v1", ["stories"]),
+  mapEntries("progress.story", "progress", "quran:story-progress:v1", ["stories"], undefined, { v: 1 }),
   mapEntries("progress.personStudy", "progress", "quran:persons-study:v1", []),
   singletonField("progress.ramadanStart", "progress", RAMADAN, "startOverride", (v) => ({ startOverride: typeof v === "string" ? v : null }), (p) => p.startOverride ?? null, null),
   mapEntries("progress.fast", "progress", RAMADAN, ["fastingLog"], { to: (v) => (typeof v === "string" ? { status: v } : null), from: (p) => p.status }),

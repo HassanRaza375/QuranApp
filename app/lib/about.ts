@@ -44,6 +44,9 @@ export const ABOUT = {
   lede: "A local-first Qur’an companion: reading, translations, tafsir, audio, prayer times and study tools, kept on your device.",
   metaDescription: "About the Quran App: where its text, audio and prayer times come from, and what stays on your device.",
   what: "There is no account to make. Your place in the Qur’an, bookmarks, notes, reading goals, Hifz progress and settings are saved in this browser, on this device, and are not uploaded anywhere. Pages that need a connection say so, and parts you have opened or saved keep working without one.",
+  /** the same section while accounts exist on this server (sync flag on): an account is optional and what it keeps is chosen by you */
+  whatWithAccount:
+    "Everything stays on this device unless you choose otherwise. An account is optional. If you make one and turn sync on, only the parts you choose (your Library, your progress, your settings) are also kept on this app’s server, so your devices stay in step. Your saved place and notification choices are never synced. You can sign out, remove your synced data, or delete your account in Settings, Account.",
   fresh: "A fresh start: nothing from the older version of this app carries over to this address, so you begin with nothing saved.",
   sources: "The app asks these services for what it does not hold itself. Like any website, a service can see your device’s network address when your device asks it for something.",
   grounding:
