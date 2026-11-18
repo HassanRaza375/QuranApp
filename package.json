@@ -26,11 +26,14 @@
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
     "@vueuse/core": "^14.4.0",
+    "better-auth": "1.7.16",
     "class-variance-authority": "^0.7.1",
+    "cloudinary": "2.11.0",
     "clsx": "^2.1.1",
     "cn": "^0.4.0",
     "idb": "^8.0.3",
     "lucide-vue-next": "^1.0.0",
+    "nodemailer": "10.6.0",
     "nuxt": "^4.6.1",
     "pg": "8.23.1",
     "pinia": "^3.0.4",
@@ -38,7 +41,8 @@
     "tailwind-merge": "^3.7.0",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4",
-    "vue-sonner": "^2.0.9"
+    "vue-sonner": "^2.0.9",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
