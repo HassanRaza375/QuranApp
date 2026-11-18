@@ -152,6 +152,8 @@ Everything below is already in `main` and **off** while `NUXT_PUBLIC_SYNC_ENABLE
 | `RESEND_API_KEY` and `EMAIL_FROM` | confirm-your-email and password reset | optional. Resend delivers only to your own address until you verify a domain you own; a `vercel.app` address cannot be verified |
 | or `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` and `EMAIL_FROM` | the same, over SMTP | for example a Gmail account with an app password (host `smtp.gmail.com`, port 465) |
 
+**The flag is read at build time as well as at run time.** Set `NUXT_PUBLIC_SYNC_ENABLED=1` in Vercel **before** the deployment is built (a redeploy does it): the prerendered pages and the precached app shell carry the value they were built with, so a build made with the flag off keeps showing no Account area even if the server is later told it is on. People who already have the app installed get the usual "update available" prompt and see the Account area after they update. Turning it off again is the same: change the variable and redeploy.
+
 With **no** mail variables the app still works: sign-up needs no email confirmation, "Forgot password" is not offered (the sign-in form says so), and accounts are
 not linked automatically between sign-in methods. Add a mail provider before opening sign-up to the public.
 

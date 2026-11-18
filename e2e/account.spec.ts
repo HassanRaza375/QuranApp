@@ -4,6 +4,7 @@ import { expect, test, type BrowserContext, type Page } from "@playwright/test";
 import { forbidRealApis, freezeClock, mockAladhan, readStorage, seed } from "./mocks";
 import { AccountServer, mockAccount } from "./accountMocks";
 
+// NOTE: pages the build prerenders (/, /about, /surah-listing) carry the BUILD-time sync flag in their HTML, so account tests use /settings and other pages the server renders at request time.
 test.use({ baseURL: "http://localhost:3013", serviceWorkers: "block", timezoneId: "Asia/Karachi", locale: "en-GB", viewport: { width: 1280, height: 900 } });
 
 const BOOKMARKS = JSON.stringify(["ayah:2:255", "surah:18"]);
@@ -105,14 +106,14 @@ test.describe("the Account area", () => {
   });
 
   test("the header has a quiet account entry: Sign in and Create account, then Account and Sign out", async ({ page }) => {
-    await page.goto("/about");
+    await page.goto("/settings");
     await page.getByTestId("account-menu").click();
     await expect(page.getByRole("menuitemradio", { name: "Sign in" })).toBeVisible();
     await expect(page.getByRole("menuitemradio", { name: "Create account" })).toBeVisible();
     await page.getByRole("menuitemradio", { name: "Create account" }).click();
     await expect(page).toHaveURL(/section=account&mode=signup/);
     await signUp(page, "h@example.test", "Hana");
-    await page.goto("/about");
+    await page.goto("/settings");
     await page.getByTestId("account-menu").click();
     await expect(page.getByRole("menuitemradio", { name: "Account" })).toBeVisible();
     await page.getByRole("menuitemradio", { name: "Sign out" }).click();
@@ -158,7 +159,7 @@ test.describe("sync between two devices", () => {
     await signIn(b);
     await expect.poll(() => ls(b, "prayerFiqh")).toBe("jafari");
     // B changes the theme through the header menu
-    await b.goto("/about");
+    await b.goto("/settings");
     await b.getByRole("button", { name: "Theme" }).click();
     await b.getByRole("menuitemradio", { name: "Dark" }).click();
     await expect.poll(() => ls(b, "themeMode")).toBe("dark");
@@ -200,8 +201,8 @@ test.describe("sync between two devices", () => {
     await page.goto("/settings?section=account");
     await expect(page.getByTestId("account-unavailable")).toBeVisible();
     await expect(page.getByText("Can’t reach the server right now")).toBeVisible();
-    await page.goto("/about");
-    await expect(page.getByTestId("about-page")).toBeVisible();
+    await page.goto("/settings");
+    await expect(page.getByTestId("section-title")).toBeVisible();
     server.mode = 200;
     await page.goto("/settings?section=account");
     await expect(page.getByTestId("account-signed-out")).toBeVisible();
@@ -352,7 +353,7 @@ test.describe("the admin panel", () => {
     await expect(page.getByRole("link", { name: /admin/i })).toHaveCount(0);
   });
   test("is not in the sitemap or the navigation, and says noindex", async ({ page }) => {
-    await page.goto("/about");
+    await page.goto("/settings");
     await expect(page.locator('a[href="/admin"]')).toHaveCount(0);
     await page.goto("/admin");
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);

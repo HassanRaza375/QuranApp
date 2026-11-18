@@ -4,7 +4,7 @@ import { createError, getHeader, readBody } from "h3";
 import { z } from "zod";
 import { LIMITS } from "../../../app/lib/sync/namespaces";
 import { allowRequest } from "../../utils/rateLimit";
-import { requireUser } from "../../utils/session";
+import { apiHandler, requireUser } from "../../utils/session";
 import { push } from "../../utils/syncHandlers";
 import { prismaSyncRepo } from "../../utils/syncRepo";
 
@@ -15,7 +15,7 @@ const body = z.object({
     .max(LIMITS.requestOps),
 });
 
-export default defineEventHandler(async (event) => {
+export default apiHandler(async (event) => {
   const user = await requireUser(event);
   const length = Number(getHeader(event, "content-length") ?? 0);
   if (length > LIMITS.requestBytes) throw createError({ statusCode: 413, statusMessage: "Too large", data: { error: "too_large" } });

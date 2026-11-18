@@ -2,9 +2,9 @@
 // gets 404 (the route's existence is not confirmed). It returns counts and usage, never anything a user synced.
 import { getQuery } from "h3";
 import { useDb } from "../../utils/db";
-import { requireSuperAdmin } from "../../utils/session";
+import { apiHandler, requireSuperAdmin } from "../../utils/session";
 
-export default defineEventHandler(async (event) => {
+export default apiHandler(async (event) => {
   await requireSuperAdmin(event);
   const q = getQuery(event);
   const perPage = Math.max(1, Math.min(Number(q.perPage) || 50, 100));

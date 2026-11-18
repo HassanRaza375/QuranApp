@@ -162,7 +162,8 @@ describe("every account, sync, avatar and admin route starts with its guard", ()
     const rel = path.relative(ROOT, file).replace(/\\/g, "/");
     it(`${rel} calls requireUser, requireSuperAdmin or requireEnabled before anything else`, () => {
       const src = fs.readFileSync(file, "utf8");
-      const body = src.slice(src.indexOf("defineEventHandler"));
+      const body = src.slice(src.indexOf("apiHandler("));
+      expect(src, "wrapped so a refusal is always JSON").toMatch(/export default apiHandler\(/);
       const first = body.search(/requireUser\(|requireSuperAdmin\(|requireEnabled\(/);
       expect(first, "no guard").toBeGreaterThan(-1);
       // nothing that reads the request or the database comes before the guard

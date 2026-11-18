@@ -3,9 +3,9 @@
 import { googleKeys } from "../../utils/authConfig";
 import { cloudinaryKeys } from "../../utils/avatar";
 import { mailerKind } from "../../utils/mailer";
-import { requireEnabled } from "../../utils/session";
+import { apiHandler, requireEnabled } from "../../utils/session";
 
-export default defineEventHandler((event) => {
+export default apiHandler((event) => {
   requireEnabled(event);
   const cloud = cloudinaryKeys(process.env);
   const mail = mailerKind(process.env) !== null;

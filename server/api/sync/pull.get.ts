@@ -2,11 +2,11 @@
 import { createError, getQuery } from "h3";
 import { LIMITS } from "../../../app/lib/sync/namespaces";
 import { allowRequest } from "../../utils/rateLimit";
-import { requireUser } from "../../utils/session";
+import { apiHandler, requireUser } from "../../utils/session";
 import { parseRevision, pull } from "../../utils/syncHandlers";
 import { prismaSyncRepo } from "../../utils/syncRepo";
 
-export default defineEventHandler(async (event) => {
+export default apiHandler(async (event) => {
   const user = await requireUser(event);
   if (!(await allowRequest(`sync:pull:${user.id}`, 60, LIMITS.pullsPerMinute))) throw createError({ statusCode: 429, statusMessage: "Too many requests", data: { error: "rate_limited" } });
   const q = getQuery(event);
