@@ -6,6 +6,7 @@ import { buildExport, clearAllLocalData, exportFileName, resetSettings, restoreS
 
 const store = usePreferencesStore();
 const syncOn = isSyncOn(useRuntimeConfig().public.syncEnabled);
+const analyticsOn = Boolean(useRuntimeConfig().public.vercelAnalytics);
 const undo = useUndoToast();
 
 /* ---- storage use (real figure from the browser, covering IndexedDB and Cache Storage together) ---- */
@@ -68,6 +69,7 @@ async function clearAll() {
 
 <template>
   <div class="space-y-4">
+    <p v-if="analyticsOn" class="rounded-[10px] bg-sunken px-4 py-3 text-[13px] text-ink-2" data-testid="data-analytics-note">This hosted app counts visits to its pages (the page, a country, device and browser type; no cookies, nothing that identifies you, never what you search for or save). It is skipped if your browser sends Do Not Track.</p>
     <p v-if="!syncOn" class="rounded-[10px] bg-sunken px-4 py-3 text-[13px] text-ink-2">Everything in this app is stored locally on this device. Nothing is uploaded anywhere.</p>
     <p v-else class="rounded-[10px] bg-sunken px-4 py-3 text-[13px] text-ink-2" data-testid="data-sync-note">Everything is stored on this device. If you sign in and turn sync on, the parts you choose are also kept on this app’s server. Clear all data signs this device out; what is already on the server stays until you remove it in Account.</p>
 

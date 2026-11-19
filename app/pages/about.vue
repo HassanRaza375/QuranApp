@@ -9,6 +9,8 @@ import { PUBLIC_META } from "~/lib/publicMeta";
 
 useSeoMeta({ title: PUBLIC_META["/about"]!.title, description: ABOUT.metaDescription });
 const modules = MODULE_ORDER.map((id) => MODULES[id]);
+// the hosted app counts page visits (Vercel Web Analytics); a local or self-hosted build does not, and says nothing about it
+const analyticsOn = Boolean(useRuntimeConfig().public.vercelAnalytics);
 const sources = computed(() => (syncOn ? [...DATA_SOURCES, ...ACCOUNT_SOURCES] : DATA_SOURCES));
 // with accounts on, the sentence "there is no account to make" would be false: the page says what an account is instead
 const syncOn = isSyncOn(useRuntimeConfig().public.syncEnabled);
@@ -22,6 +24,7 @@ const syncOn = isSyncOn(useRuntimeConfig().public.syncEnabled);
     <section class="mt-8 border-t pt-6" aria-labelledby="about-device">
       <h2 id="about-device" class="font-serif text-[22px] font-medium">What stays on your device</h2>
       <p class="mt-2 text-[15px] leading-relaxed" data-testid="about-device">{{ syncOn ? ABOUT.whatWithAccount : ABOUT.what }}</p>
+      <p v-if="analyticsOn" class="mt-2 text-[15px] leading-relaxed" data-testid="about-analytics">{{ ABOUT.analytics }}</p>
       <p class="mt-2 text-[15px] leading-relaxed" data-testid="about-fresh">{{ ABOUT.fresh }}</p>
       <p class="mt-2 text-[15px] leading-relaxed">Export your data, reset the settings, or clear everything, in Settings.</p>
       <NuxtLink to="/settings" class="inline-flex min-h-11 items-center text-[15px] text-brand underline underline-offset-2 md:min-h-9" data-testid="about-settings">Open Settings, Data &amp; privacy</NuxtLink>

@@ -160,6 +160,8 @@ Every decision made while designing and building the revamp, with the reason. Ph
 - **About and Data & privacy** say "everything stays on this device" only while sync is off; with it on they say what an account is and that only the parts you choose are kept on the server.
 - **Super admin script runs against whatever `DATABASE_URL` is set**: it prints the role it set and nothing secret; it refuses an address with no account.
 
+**Vercel Web Analytics (2026-11-18, owner's request).** Added `@vercel/analytics` 2.0.1 for the hosted app only. Decisions: (1) loaded only in a build made on Vercel, so tests, local builds and other hosts are unaffected; (2) through our own client plugin, not the package's Nuxt module, so a `beforeSend` guard cuts every address to its path (a search is `/search?q=…` and search text is sensitive), never counts `/admin`, and skips Do Not Track and offline browsers; (3) About and Data & privacy describe it in plain words on the hosted build, because they otherwise say reading data never leaves the device. Vercel's own statement (docs, "Privacy and Compliance", read 2026-11-18): no third-party cookies, visitors identified by a hash of the request that is discarded after 24 hours, no personal identifiers.
+
 ## 4. Deliberate content gaps
 
 Ja'fari Laylat al-Qadr nights (19, 21, 23); the Sunni versus Ja'fari compare table and iftar/suhoor explanations; the Arabic of hadith duas; "After prayer" dhikr sequences; Arabic prayer names; revelation order; Juz names; translator and tafsir-school attribution; per-tradition event wording. Each becomes a data file once wording and a source are supplied.
